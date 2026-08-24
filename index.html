@@ -1,258 +1,1401 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 
 <head>
     <meta charset="UTF-8">
-    <title>個人開銷記錄</title>
+    <title>個人開銷記錄 - AI智能版</title>
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+    <!-- Ionic Framework CSS and JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
     <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
-    <script nomodule src="https://jsdelivr.net"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
     <style>
+        :root {
+            --card-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%);
+            --accent-gold: #fbbf24;
+            --primary-blue: #2563eb;
+        }
+
         ion-content {
             --color: #111827;
-            --background: #f5f6f7;
+            --background: #f8fafc;
         }
 
         ion-toolbar {
-            --background: #0b214f;
-            --color: #F9FAFB;
-            min-height: 85px;
+            --background: #0f172a;
+            --color: #f8fafc;
+            min-height: 65px;
             display: flex;
             align-items: center;
-            box-shadow: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
         }
 
         ion-title {
-            font-size: 26px;
-            font-weight: 700;
+            font-size: 19px;
+            font-weight: 800;
             letter-spacing: 0.5px;
             text-align: center;
             width: 100%;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
         }
 
-        .error-text {
-            color: var(--ion-color-danger, #eb445a);
-            font-size: 14px;
-            margin: 4px 16px 12px 16px;
-            font-weight: 500;
-        }
-
-        .floating-input-group {
+        /* 提款卡 / 信用卡風格卡片 */
+        .debit-card {
+            background: var(--card-gradient);
+            color: white;
+            border-radius: 20px;
+            padding: 22px 20px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
             position: relative;
-            margin: 16px 16px 0 16px;
-            border-bottom: 1px solid #E5E7EB;
-            background: transparent;
-        }
-
-        .floating-input-group input {
-            width: 100%;
-            border: none;
-            outline: none;
-            background: transparent;
-            font-size: 16px;
-            padding: 24px 0 8px 0;
-            color: #111827;
-        }
-
-        .floating-input-group label {
-            position: absolute;
-            left: 0;
-            top: 22px;
-            color: #9CA3AF;
-            font-size: 16px;
-            transition: all 0.2s ease-all;
-            pointer-events: none;
-        }
-
-        .floating-input-group input:focus~label,
-        .floating-input-group input:not(:placeholder-shown)~label {
-            top: 4px;
-            font-size: 12px;
-            color: #1A56DB;
-            font-weight: 500;
-        }
-
-        .custom-sliding-item {
-            margin-bottom: 12px;
-            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            margin-bottom: 20px;
+        }
+
+        .card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-chip {
+            width: 32px;
+            height: 24px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .card-brand {
+            font-weight: 800;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .budget-badge-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+        }
+
+        .budget-badge-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .card-number-sim {
+            font-family: monospace;
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
+
+        .gold-amount-display {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent-gold);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            margin-top: 2px;
+            text-shadow: 0 2px 8px rgba(251, 191, 36, 0.25);
+        }
+
+        .calc-container-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .calc-display {
+            background: #020617;
+            color: white;
+            border-radius: 16px;
+            padding: 16px 20px;
+            text-align: right;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .calc-subscreen {
+            font-size: 13px;
+            color: #94a3b8;
+            min-height: 18px;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .calc-screen {
+            font-size: 34px;
+            font-weight: 800;
+            color: var(--accent-gold);
+            word-break: break-all;
+            font-family: monospace;
+            text-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 0 0 16px 0;
+        }
+
+        .calc-btn {
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: 14px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .calc-btn:active {
+            transform: scale(0.94);
+            background: #334155;
+        }
+
+        .calc-btn.op {
+            background: #0f2042;
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+
+        .calc-btn.op:active {
+            background: #1e3a8a;
+        }
+
+        .calc-btn.action {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+            border: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-btn.action:active {
+            transform: scale(0.94);
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+        }
+
+        /* 列表滑動項目與輸入框樣式 */
+        .custom-sliding-item {
+            border-radius: 16px !important;
+            margin-bottom: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
 
         .custom-sliding-item ion-item {
             --background: transparent;
-            --color: white;
             --padding-start: 12px;
-            --inner-padding-end: 12px;
-            --min-height: 68px;
-        }
-
-        .custom-sliding-item ion-item-options {
-            border: none;
-        }
-
-        .custom-sliding-item ion-item-option {
-            padding: 0;
-            margin: 0;
+            --padding-end: 16px;
+            --inner-padding-end: 0;
         }
 
         .gold-amount-note {
-            color: #FFD700 !important;
-            font-size: 24px !important;
-            font-weight: 900 !important;
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5), 0px 0px 1px rgba(0, 0, 0, 0.8) !important;
-            margin-left: 8px !important;
-            letter-spacing: 0.5px !important;
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.3px;
         }
 
-        /* 原生 Range 拉桿美化 */
-        .native-range-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: #E5E7EB;
-            outline: none;
-            margin: 12px 0 6px 0;
+        .circle-nav-container {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
+            max-width: 95vw;
         }
 
-        .native-range-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
+        .circle-nav-btn {
+            position: relative;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            background: #1A56DB;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(26, 86, 219, 0.4);
+            transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+            outline: none;
+            padding: 0;
+            user-select: none;
         }
-/* 置中加號按鈕樣式微調 */
-ion-fab[horizontal="center"] {
-    margin-bottom: 12px;
-}
 
+        .circle-nav-btn ion-icon {
+            font-size: 20px;
+            transition: transform 0.25s ease;
+        }
+
+        .circle-nav-btn .btn-label {
+            font-size: 8px;
+            font-weight: 700;
+            margin-top: 1px;
+            letter-spacing: 0.1px;
+            white-space: nowrap;
+        }
+
+        .circle-nav-btn.active {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-4px) scale(1.06);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5), 0 0 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .circle-nav-btn.active ion-icon {
+            transform: scale(1.1);
+        }
+
+        .circle-nav-btn.primary-add-btn {
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #ec4899 100%);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45), 0 0 15px rgba(245, 158, 11, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .circle-nav-btn.primary-add-btn ion-icon {
+            font-size: 30px;
+        }
+
+        .circle-nav-btn.primary-add-btn:active {
+            transform: translateY(0px) scale(0.92);
+        }
+
+        .circle-nav-btn:active:not(.primary-add-btn) {
+            transform: scale(0.92);
+        }
+
+        .view-page {
+            display: none;
+            padding-bottom: 110px;
+        }
+
+        .view-page.active-page {
+            display: block;
+        }
+
+        .receipt-preview {
+            max-height: 180px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 2px dashed #CBD5E1;
+            width: 100%;
+            margin-top: 10px;
+            background: #f8fafc;
+        }
+
+        ion-checkbox.red-checkbox {
+            --checkbox-background-checked: #dc2626;
+            --border-color-checked: #dc2626;
+            --border-color: #ef4444;
+            --color-checked: #ffffff;
+            --size: 22px;
+        }
+
+        /* 統一所有 Modal 彈窗深色背景 */
+        ion-modal ion-content {
+            --background: #0f172a;
+            --color: #f8fafc;
+        }
+
+        /* 自訂所有 Alert 確認彈窗色彩風格 */
+        ion-alert {
+            --background: #1e293b;
+            --color: #f8fafc;
+            --max-width: 90vw;
+            --border-radius: 18px;
+        }
+
+        ion-alert .alert-wrapper {
+            background: #1e293b !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5) !important;
+            border-radius: 20px !important;
+        }
+
+        ion-alert .alert-head {
+            padding-bottom: 8px;
+        }
+
+        ion-alert .alert-title {
+            color: #34d399 !important;
+            /* 儲蓄主題翡翠綠色 */
+            font-size: 18px !important;
+            font-weight: 800 !important;
+        }
+
+        ion-alert.expense-alert .alert-title {
+            color: #fbbf24 !important;
+            /* 開銷主題金色 */
+        }
+
+        ion-alert .alert-message {
+            color: #cbd5e1 !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+        }
+
+        ion-alert .alert-button-group {
+            padding: 8px;
+            gap: 8px;
+        }
+
+        ion-alert .alert-button {
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+        }
+
+        ion-alert .alert-button-role-cancel {
+            color: #94a3b8 !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        ion-alert .alert-button-role-destructive {
+            color: #ffffff !important;
+            background: #ef4444 !important;
+        }
+
+        /* 擴大日期選擇器的觸控範圍與顯示樣式，解決行事曆太細按不到的問題 */
+        input[type="date"].modal-dark-input {
+            color-scheme: dark;
+            font-family: inherit;
+            cursor: pointer;
+            min-height: 56px;
+            font-size: 18px !important;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            transform: scale(1.4);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .modal-header-box {
+            background: var(--card-gradient);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header-title {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-dark-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            background: #1e293b;
+            color: #ffffff;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .modal-dark-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        .modal-dark-group {
+            position: relative;
+            margin: 14px 0;
+        }
+
+        .modal-dark-group label {
+            position: absolute;
+            left: 12px;
+            top: -9px;
+            background: #0f172a;
+            padding: 0 6px;
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 700;
+            border-radius: 4px;
+        }
+
+        input[type="date"].modal-dark-input {
+            color-scheme: dark;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        ion-segment.dark-segment {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        ion-segment.dark-segment ion-segment-button {
+            --color: #94a3b8;
+            --color-checked: #ffffff;
+            --indicator-color: #2563eb;
+            font-weight: 700;
+            font-size: 13px;
+        }
     </style>
 </head>
 
-<body class="header1">
+<body>
     <ion-app>
-        <ion-header>
+        <!-- Header 工具列 -->
+        <ion-header class="ion-no-border">
             <ion-toolbar>
-                <ion-title>個人開銷記錄</ion-title>
+                <ion-title id="pageHeaderTitle">個人開銷記錄 <span
+                        style="font-size: 11px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; margin-left: 4px;">✨
+                        Gemini AI</span></ion-title>
             </ion-toolbar>
         </ion-header>
 
         <ion-content class="ion-padding">
-            <ion-card style="margin: 0 0 16px 0; background: #1A56DB; color: white; border-radius: 12px;">
-                <ion-card-content style="padding: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <p style="margin: 0; font-size: 14px; opacity: 0.8; color: white;">目前累積總開銷</p>
-                        <ion-button id="changeBudgetBtn" fill="clear" size="small"
-                            style="--color: white; margin: 0; padding: 0; font-size: 13px; font-weight: normal; opacity: 0.9;">
-                            每月預算: $<span id="budgetLimitDisplay">3,000</span>
-                            <ion-icon name="create-outline" slot="end"
-                                style="font-size: 14px; margin-left: 4px;"></ion-icon>
+
+            <!-- 頁面 1：首頁 (開銷清單與提款卡卡號總覽) -->
+            <div id="pageHome" class="view-page active-page">
+                <!-- 提款卡/信用卡風格累計BOX -->
+                <div class="debit-card">
+                    <div class="card-top-row"
+                        style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="card-chip"></div>
+                                <span class="card-brand">PERSONAL WALLET (HKD)</span>
+                            </div>
+                            <div class="card-number-sim" id="cardDateDisplay" style="margin-top: 8px;">•••• •••• ••••
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+                            <button id="changeBudgetBtn" class="budget-badge-btn" type="button">
+                                ⚙️ 設定預算上限
+                            </button>
+                            <span style="font-size: 13px; font-weight: 700; color: #cbd5e1; text-align: right;">
+                                每月預算：<span style="font-size: 17px; font-weight: 900; color: #ffffff;">HK$<span
+                                        id="budgetLimitDisplay">5,000</span></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 14px;">
+                        <p style="margin: 0; font-size: 12px; color: #cbd5e1; font-weight: 500;">目前累積總開銷</p>
+                        <div class="gold-amount-display">
+                            HK$<span id="totalAmountDisplay">0</span>
+                        </div>
+                    </div>
+
+                    <ion-progress-bar id="budgetProgressBar" value="0"
+                        style="--background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-top: 8px;"></ion-progress-bar>
+                    <p id="budgetTip"
+                        style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.95; color: white; font-weight: 600;"></p>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
+                    <h3 style="margin: 0; font-size: 17px; font-weight: 800; color: #1e293b;">📋 消費記錄明細</h3>
+                    <div style="display: flex; gap: 2px;">
+                        <ion-button id="toggleMultiSelectBtn" fill="clear" size="small"
+                            style="--color: #ef4444; font-weight: 700;">
+                            ☑️ 批次刪除
+                        </ion-button>
+                        <ion-button id="seedDataBtn" fill="clear" size="small"
+                            style="--color: #2563eb; font-weight: 600;">
+                            🎲 載入測試範例
+                        </ion-button>
+                    </div>
+                </div>
+
+                <div id="multiSelectBar"
+                    style="display: none; background: #fee2e2; border: 1px solid #fca5a5; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <ion-checkbox id="selectAllCheckbox" class="red-checkbox"></ion-checkbox>
+                        <span style="font-size: 13px; font-weight: 800; color: #991b1b;">全選 (<span
+                                id="selectedCountDisplay">0</span>)</span>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <ion-button id="deleteSelectedBtn" size="small" color="danger"
+                            style="--border-radius: 8px; font-weight: 800;" disabled>
+                            🗑️ 刪除已選
+                        </ion-button>
+                        <ion-button size="small" fill="outline" color="dark"
+                            style="--border-radius: 8px; font-weight: 700;" onclick="exitMultiSelectMode()">
+                            完成
+                        </ion-button>
+                    </div>
+                </div>
+
+                <ion-list id="recordContainer" lines="none" style="background: transparent;"></ion-list>
+            </div>
+
+            <!-- 頁面 2：計算機 (Calculator) -->
+            <div id="pageCalc" class="view-page">
+                <div class="calc-container-card">
+                    <div class="calc-display">
+                        <div id="calcSubscreen" class="calc-subscreen"></div>
+                        <div id="calcScreen" class="calc-screen">0</div>
+                    </div>
+
+                    <div class="calc-grid">
+                        <div class="calc-btn op" onclick="calcInput('C')">C</div>
+                        <div class="calc-btn op" onclick="calcInput('DEL')">⌫</div>
+                        <div class="calc-btn op" onclick="calcInput('/')">÷</div>
+                        <div class="calc-btn op" onclick="calcInput('*')">×</div>
+
+                        <div class="calc-btn" onclick="calcInput('7')">7</div>
+                        <div class="calc-btn" onclick="calcInput('8')">8</div>
+                        <div class="calc-btn" onclick="calcInput('9')">9</div>
+                        <div class="calc-btn op" onclick="calcInput('-')">-</div>
+
+                        <div class="calc-btn" onclick="calcInput('4')">4</div>
+                        <div class="calc-btn" onclick="calcInput('5')">5</div>
+                        <div class="calc-btn" onclick="calcInput('6')">6</div>
+                        <div class="calc-btn op" onclick="calcInput('+')">+</div>
+
+                        <div class="calc-btn" onclick="calcInput('1')">1</div>
+                        <div class="calc-btn" onclick="calcInput('2')">2</div>
+                        <div class="calc-btn" onclick="calcInput('3')">3</div>
+                        <div class="calc-btn action" style="grid-row: span 2; height: 122px;" onclick="calcInput('=')">=
+                        </div>
+
+                        <div class="calc-btn" style="grid-column: span 2;" onclick="calcInput('0')">0</div>
+                        <div class="calc-btn" onclick="calcInput('.')">.</div>
+                    </div>
+
+                    <div style="padding-top: 4px;">
+                        <ion-button id="applyCalcToExpenseBtn" expand="block" color="warning"
+                            style="--border-radius: 14px; font-weight: bold; --color: #0f172a;">
+                            📥 將計算結果帶入記帳金額
+                        </ion-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 頁面 3：AI 分析 (AI Diagnostics) -->
+            <div id="pageAI" class="view-page">
+                <div
+                    style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; border-radius: 20px; padding: 20px; box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25); margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="font-weight: 800; margin: 0; font-size: 20px;">✨ Gemini AI 理財健檢</h2>
+                        <ion-chip id="aiHealthChip"
+                            style="background: rgba(255,255,255,0.25); color: white; font-weight: bold; font-size: 12px; margin: 0;">
+                            待分析
+                        </ion-chip>
+                    </div>
+                    <p style="margin: 8px 0 0 0; font-size: 13px; opacity: 0.9;">根據您的每月香港生活預算與消費習慣進行深度分析，提供省錢建議。</p>
+                </div>
+
+                <div class="calc-container-card" style="margin-bottom: 20px;">
+                    <div id="aiAdviceLoading"
+                        style="display: none; text-align: center; padding: 20px 0; color: #38bdf8;">
+                        <ion-spinner name="crescent"></ion-spinner>
+                        <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Gemini AI 正在分析您的開銷...</p>
+                    </div>
+
+                    <div id="aiAdviceContent">
+                        <h3 id="aiAdviceSummary"
+                            style="color: #fbbf24; margin: 0 0 10px 0; font-size: 16px; font-weight: 800;">點擊下方按鈕開始進行 AI
+                            智能理財診斷</h3>
+                        <p id="aiAdviceObservations"
+                            style="color: #cbd5e1; font-size: 13px; line-height: 1.5; margin-bottom: 12px;">AI
+                            將根據您的每筆開銷類別、累積總金額及預算設定進行精準分析。</p>
+
+                        <div
+                            style="background: rgba(15, 23, 42, 0.6); border-radius: 12px; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.1);">
+                            <span style="font-size: 12px; font-weight: bold; color: #38bdf8;">💡 香港在地慳錢建議：</span>
+                            <ul id="aiAdviceTips"
+                                style="margin: 8px 0 0 0; padding-left: 18px; color: #e2e8f0; font-size: 13px; line-height: 1.6;">
+                                <li>點擊下方按鈕以獲取個人化建議</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <ion-button id="refreshAiAdviceBtn" expand="block" color="tertiary"
+                        style="margin-top: 16px; --border-radius: 12px; font-weight: bold;">
+                        <ion-icon name="sparkles-outline" slot="start"></ion-icon>
+                        產生最新 AI 財務建議
+                    </ion-button>
+                </div>
+            </div>
+
+            <!-- 頁面 4：儲蓄目標與紀錄 (Savings Tracker) -->
+            <div id="pageSavings" class="view-page">
+                <div
+                    style="background: linear-gradient(135deg, #065f46 0%, #047857 50%, #0f766e 100%); color: white; border-radius: 20px; padding: 20px; box-shadow: 0 12px 28px rgba(4, 120, 87, 0.35); margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <span
+                                style="font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.75);">SAVINGS
+                                GOAL</span>
+                            <div
+                                style="font-size: 32px; font-weight: 900; color: #34d399; margin-top: 4px; text-shadow: 0 2px 8px rgba(52, 211, 153, 0.3);">
+                                HK$<span id="savingsTotalDisplay">0</span>
+                            </div>
+                        </div>
+                        <button id="changeSavingsGoalBtn" class="budget-badge-btn" type="button"
+                            onclick="popupChangeSavingsGoalAlert()">
+                            ⚙️ 設定儲蓄目標
+                        </button>
+                    </div>
+
+                    <div style="margin-top: 14px; font-size: 13px; font-weight: 700; color: #a7f3d0;">
+                        目標進度：<span style="color: #ffffff;">HK$<span id="savingsGoalDisplay">20,000</span></span>
+                    </div>
+
+                    <ion-progress-bar id="savingsProgressBar" value="0"
+                        style="--background: rgba(255,255,255,0.2); --progress-background: #34d399; height: 10px; border-radius: 5px; margin-top: 8px;"></ion-progress-bar>
+                    <p id="savingsTip"
+                        style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.95; color: white; font-weight: 600;"></p>
+                </div>
+
+                <div class="calc-container-card"
+                    style="margin-bottom: 20px; border: 1px solid rgba(52, 211, 153, 0.3);">
+                    <h3 style="margin: 0 0 14px 0; font-size: 16px; font-weight: 800; color: #34d399;">🐷 存入一筆儲蓄</h3>
+
+                    <div class="modal-dark-group">
+                        <input type="text" id="savingsTitleInput" class="modal-dark-input" placeholder="例如：旅行基金 / 緊急儲蓄"
+                            autocomplete="off">
+                        <label for="savingsTitleInput">📝 儲蓄備註或目的</label>
+                    </div>
+
+                    <!-- 儲蓄存入金額 Range 滑桿組件 -->
+                    <div
+                        style="background: #1e293b; padding: 14px 16px; border-radius: 12px; border: 1.5px solid rgba(52, 211, 153, 0.25); margin-bottom: 14px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">💵 存入金額 (HKD)</span>
+                            <span style="font-size: 22px; font-weight: 800; color: #34d399;">
+                                HK$<span id="savingsRangeAmountValue">1,000</span>
+                            </span>
+                        </div>
+
+                        <input type="range" id="savingsAmountRange" min="100" max="20000" value="1000" step="50"
+                            style="width: 100%; accent-color: #34d399; cursor: pointer; height: 6px;"
+                            oninput="updateSavingsRangeValue(this.value)">
+
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 12px; color: #94a3b8;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span>下限:</span>
+                                <input type="number" id="savingsMinInput" value="100"
+                                    style="width: 60px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 6px; text-align: center; font-size: 12px;"
+                                    onchange="updateSavingsRangeLimits()">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span>上限:</span>
+                                <input type="number" id="savingsMaxInput" value="20000"
+                                    style="width: 75px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 6px; text-align: center; font-size: 12px;"
+                                    onchange="updateSavingsRangeLimits()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 黑金風格存入儲蓄按鈕 -->
+                    <ion-button expand="block" onclick="addSavingsRecord()"
+                        style="--background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%); --border-radius: 14px; font-weight: 900; margin-top: 16px; --color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); font-size: 16px; letter-spacing: 0.5px;">
+                        👑 確認存入儲蓄
+                    </ion-button>
+                </div>
+
+                <h3 style="margin: 0 0 12px 4px; font-size: 17px; font-weight: 800; color: #1e293b;">📜 儲蓄存入紀錄</h3>
+                <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
+            </div>
+
+            <ion-modal id="addModal" trigger="openModalBtn" initial-breakpoint="0.85" handle="true">
+                <ion-content class="ion-padding">
+                    <div class="modal-header-box">
+                        <h2 class="modal-header-title">
+                            <span>✨</span> 新增開銷記錄
+                        </h2>
+                    </div>
+
+                    <ion-segment id="inputModeSegment" value="manual" class="dark-segment" style="margin-bottom: 16px;">
+                        <ion-segment-button value="manual">
+                            <ion-label>📝 手動輸入</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="ai-text">
+                            <ion-label>💬 AI 自然語言</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="ai-image">
+                            <ion-label>📷 AI 拍立記</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+
+                    <div id="manualInputSection">
+                        <div class="modal-dark-group">
+                            <input type="date" id="finalDateInput" class="modal-dark-input"
+                                style="font-size: 18px; padding: 18px 16px; text-align: center; font-weight: 700; height: 60px;">
+                            <label for="finalDateInput">📅 消費日期</label>
+                        </div>
+
+                        <div class="modal-dark-group">
+                            <input type="text" id="finalTitleInput" class="modal-dark-input" placeholder=" "
+                                autocomplete="off" name="expense-title-field">
+                            <label for="finalTitleInput">🏷️ 項目名稱 (例如: 茶餐廳午餐)</label>
+                        </div>
+                        <p id="expTitleError" style="color: #f87171; font-size: 12px; margin: -6px 0 10px 4px;"></p>
+
+                        <div
+                            style="background: #1e293b; padding: 14px 16px; border-radius: 12px; border: 1.5px solid rgba(255, 255, 255, 0.2); margin-bottom: 14px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; color: #94a3b8; font-weight: 700;">💵 金額 (HKD)</span>
+                                <span style="font-size: 22px; font-weight: 800; color: #fbbf24;">
+                                    HK$<span id="rangeAmountValue">65</span>
+                                </span>
+                            </div>
+
+                            <input type="range" id="finalAmountRange" min="1" max="1000" value="65" step="1"
+                                style="width: 100%; accent-color: #38bdf8; cursor: pointer; height: 6px;"
+                                oninput="updateRangeValue(this.value)">
+
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 12px; color: #94a3b8;">
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <span>下限:</span>
+                                    <input type="number" id="rangeMinInput" value="1"
+                                        style="width: 60px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 6px; text-align: center; font-size: 12px;"
+                                        onchange="updateRangeLimits()">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <span>上限:</span>
+                                    <input type="number" id="rangeMaxInput" value="1000"
+                                        style="width: 70px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 6px; text-align: center; font-size: 12px;"
+                                        onchange="updateRangeLimits()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-dark-group">
+                            <select id="manualCategorySelect" class="modal-dark-input"
+                                style="color: #ffffff; background-color: #1e293b; cursor: pointer; appearance: auto; text-align: center; text-align-last: center; padding: 16px 18px; font-size: 16px; font-weight: 600; height: 56px;">
+                                <option value="" disabled selected hidden>✨ 點選選擇分類 ✨</option>
+                                <option value="餐飲" style="background: #1e293b; color: #fff;">🍱 餐飲食品</option>
+                                <option value="交通" style="background: #1e293b; color: #fff;">🚇 交通出行</option>
+                                <option value="購物" style="background: #1e293b; color: #fff;">🛒 購物消費</option>
+                                <option value="娛樂" style="background: #1e293b; color: #fff;">🎮 娛樂消遣</option>
+                                <option value="居家" style="background: #1e293b; color: #fff;">🏠 居家水電</option>
+                                <option value="醫療" style="background: #1e293b; color: #fff;">💊 醫療健康</option>
+                                <option value="通訊" style="background: #1e293b; color: #fff;">📱 數碼通訊</option>
+                                <option value="美容" style="background: #1e293b; color: #fff;">🛍️ 服飾美容</option>
+                                <option value="旅遊" style="background: #1e293b; color: #fff;">✈️ 旅遊外遊</option>
+                                <option value="寵物" style="background: #1e293b; color: #fff;">🐾 寵物照顧</option>
+                                <option value="社交" style="background: #1e293b; color: #fff;">🎁 禮物人情</option>
+                                <option value="理財" style="background: #1e293b; color: #fff;">📈 投資儲蓄</option>
+                                <option value="教育" style="background: #1e293b; color: #fff;">🎓 教育學習</option>
+                                <option value="其他" style="background: #1e293b; color: #fff;">🪙 其他開銷</option>
+                            </select>
+                            <label for="manualCategorySelect">📂 項目分類</label>
+                        </div>
+                    </div>
+
+                    <div id="aiTextInputSection" style="display: none; padding: 0 4px;">
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">用語音或廣東話輸入一句話，Gemini AI
+                            會自動提取項目、金額同分類！</p>
+                        <div class="modal-dark-group">
+                            <textarea id="aiTextInput" class="modal-dark-input" rows="3" placeholder=" "
+                                style="resize: none;"></textarea>
+                            <label for="aiTextInput">例如：「喺茶餐廳食午餐 65 蚊」或「八達通加值 500」</label>
+                        </div>
+                        <ion-button id="aiParseTextBtn" expand="block" color="tertiary"
+                            style="margin-top: 14px; --border-radius: 12px; font-weight: bold;">
+                            <ion-icon name="sparkles-outline" slot="start"></ion-icon>
+                            ✨ Gemini AI 智能解析並帶入
                         </ion-button>
                     </div>
 
-                    <h1 style="margin: 8px 0 12px 0; font-size: 36px; font-weight: bold; color: white;">
-                        $<span id="totalAmountDisplay">0</span>
-                    </h1>
+                    <div id="aiImageInputSection" style="display: none; padding: 0 4px;">
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">上傳香港超市、餐廳或單據照片，Gemini Vision
+                            會自動讀取金額同品名！</p>
+                        <input type="file" id="receiptFileInput" accept="image/*" style="display: none;"
+                            onchange="handleReceiptImageSelected(event)">
 
-                    <ion-progress-bar id="budgetProgressBar" value="0"
-                        style="--background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px;"></ion-progress-bar>
-                    <p id="budgetTip"
-                        style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9; color: white; font-weight: 500;"></p>
-                </ion-card-content>
-            </ion-card>
+                        <div id="uploadImageArea"
+                            style="text-align: center; border: 2px dashed #38bdf8; border-radius: 14px; padding: 20px; background: rgba(56, 189, 248, 0.08); cursor: pointer;"
+                            onclick="document.getElementById('receiptFileInput').click()">
+                            <ion-icon name="cloud-upload-outline" style="font-size: 36px; color: #38bdf8;"></ion-icon>
+                            <p style="margin: 6px 0 0 0; font-size: 14px; font-weight: 700; color: #38bdf8;">點擊上傳或拍攝單據照片
+                            </p>
+                        </div>
+                        <img id="receiptImagePreview" class="receipt-preview" style="display: none;" alt="收據預覽">
 
-            <ion-list id="recordContainer" lines="none" style="background: transparent; margin-top: 10px;"></ion-list>
-
-            <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-                <ion-fab-button id="openModalBtn">
-                    <ion-icon name="add"></ion-icon>
-                </ion-fab-button>
-            </ion-fab>
-
-            <ion-modal id="addModal" trigger="openModalBtn" initial-breakpoint="0.6">
-                <ion-content class="ion-padding">
-                    <h2 style="margin-left: 16px; font-weight: bold; margin-bottom: 24px; color: #111827;">新增開銷項目</h2>
-
-                    <div class="floating-input-group" id="expTitleItem">
-                        <input type="text" id="finalTitleInput" placeholder=" " autocomplete="off"
-                            name="expense-title-field">
-                        <label for="finalTitleInput">項目名稱</label>
+                        <ion-button id="aiParseImageBtn" expand="block" color="secondary"
+                            style="margin-top: 14px; --border-radius: 12px; font-weight: bold;" disabled>
+                            <ion-icon name="scan-outline" slot="start"></ion-icon>
+                            📸 Gemini AI 掃描照片並提取資料
+                        </ion-button>
                     </div>
-                    <p id="expTitleError" class="error-text"></p>
 
-                    <!-- ✨ 超穩定 Range 金額選擇器 -->
-                    <div style="margin: 16px 16px 0 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 14px; color: #6B7280; font-weight: 500;">金額</span>
-                            <span style="font-size: 22px; font-weight: 800; color: #1A56DB;">$<span id="rangeAmountValue">100</span></span>
-                        </div>
-                        <input type="range" id="finalAmountRange" min="10" max="10000" step="10" value="100" class="native-range-slider" oninput="updateRangeValue(this.value)">
-                        <div style="display: flex; justify-content: space-between; color: #9CA3AF; font-size: 12px;">
-                            <span>$10</span>
-                            <span>$10,000</span>
-                        </div>
-                    </div>
-                   
+                    <div style="height: 20px;"></div>
 
-                    <ion-item lines="inset" id="expCategoryItem"
-                        style="--background: transparent; margin: 12px 16px 0 16px; padding: 0;">
-                        <div style="display: flex; flex-direction: column; width: 100%; padding: 4px 0;">
-                            <span style="font-size: 12px; color: #666; margin-bottom: 4px;">分類</span>
-                            <ion-select interface="popover" placeholder="點選選擇分類"
-                                style="font-size: 16px; padding: 4px 0; --padding-start: 0; color: #111827;">
-                                <ion-select-option value="餐飲">🍔 餐飲食品</ion-select-option>
-                                <ion-select-option value="交通">🚗 交通出行</ion-select-option>
-                                <ion-select-option value="購物">🛒 購物消費</ion-select-option>
-                                <ion-select-option value="娛樂">🎮 娛樂消遣</ion-select-option>
-                                <ion-select-option value="居家">🏠 居家水電</ion-select-option>
-                                <ion-select-option value="其他">🪙 其他開銷</ion-select-option>
-                            </ion-select>
-                        </div>
-                    </ion-item>
-                    <div style="height: 24px;"></div>
-
-                    <ion-button id="confirmAddBtn" expand="block" color="success" style="margin-inline: 16px;">確認新增</ion-button>
+                    <ion-button id="confirmAddBtn" expand="block" color="success"
+                        style="margin-inline: 0px; --border-radius: 12px; font-weight: bold; font-size: 16px;">確認新增記錄</ion-button>
                     <ion-button id="cancelBtn" expand="block" color="danger"
-                        style="margin-inline: 16px;">取消</ion-button>
+                        style="margin-inline: 0px; margin-top: 8px; --border-radius: 12px; font-weight: bold; font-size: 16px;">取消</ion-button>
+
+                    <!-- 底部安全留白，防止被 Sheet 邊緣切到 -->
+                    <div style="height: 50px;"></div>
+                </ion-content>
+            </ion-modal>
+
+            <!-- 1. 每月預算上限 Range 調整彈窗 -->
+            <ion-modal id="budgetModal" initial-breakpoint="0.65" handle="true">
+                <ion-content class="ion-padding">
+                    <div class="modal-header-box">
+                        <h2 class="modal-header-title">⚙️ 設定每月預算上限</h2>
+                    </div>
+                    <div
+                        style="background: #1e293b; padding: 18px; border-radius: 14px; border: 1.5px solid rgba(255, 255, 255, 0.2); margin-bottom: 20px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 13px; color: #94a3b8; font-weight: 700;">💳 預算金額 (HKD)</span>
+                            <span style="font-size: 26px; font-weight: 900; color: #fbbf24;">
+                                HK$<span id="budgetModalValue">5,000</span>
+                            </span>
+                        </div>
+                        <input type="range" id="budgetRangeInput" min="500" max="50000" step="100" value="5000"
+                            style="width: 100%; accent-color: #fbbf24; cursor: pointer; height: 8px;"
+                            oninput="updateBudgetModalValue(this.value)">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 12px; color: #94a3b8;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span>下限:</span>
+                                <input type="number" id="budgetMinInput" value="500"
+                                    style="width: 70px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 4px; text-align: center;"
+                                    onchange="updateBudgetLimits()">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span>上限:</span>
+                                <input type="number" id="budgetMaxInput" value="50000"
+                                    style="width: 80px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 4px; text-align: center;"
+                                    onchange="updateBudgetLimits()">
+                            </div>
+                        </div>
+                    </div>
+                    <ion-button expand="block" color="warning" onclick="confirmSaveBudget()"
+                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; --color: #0f172a;">確認修改預算</ion-button>
+                    <ion-button expand="block" color="danger" onclick="document.getElementById('budgetModal').dismiss()"
+                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
+
+                    <!-- 底部安全留白 -->
+                    <div style="height: 50px;"></div>
+                </ion-content>
+            </ion-modal>
+
+            <!-- 2. 每月儲蓄目標 Range 調整彈窗 -->
+            <ion-modal id="savingsGoalModal" initial-breakpoint="0.65" handle="true">
+                <ion-content class="ion-padding">
+                    <div class="modal-header-box"
+                        style="background: linear-gradient(135deg, #065f46 0%, #047857 100%); border-color: rgba(52, 211, 153, 0.3);">
+                        <h2 class="modal-header-title" style="color: #34d399;">⚙️ 設定每月儲蓄目標</h2>
+                    </div>
+                    <div
+                        style="background: #1e293b; padding: 18px; border-radius: 14px; border: 1.5px solid rgba(52, 211, 153, 0.25); margin-bottom: 20px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 13px; color: #a7f3d0; font-weight: 700;">🐷 目標金額 (HKD)</span>
+                            <span style="font-size: 26px; font-weight: 900; color: #34d399;">
+                                HK$<span id="savingsGoalModalValue">20,000</span>
+                            </span>
+                        </div>
+                        <input type="range" id="savingsGoalRangeInput" min="1000" max="100000" step="500" value="20000"
+                            style="width: 100%; accent-color: #34d399; cursor: pointer; height: 8px;"
+                            oninput="updateSavingsGoalModalValue(this.value)">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 12px; color: #94a3b8;">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span>下限:</span>
+                                <input type="number" id="savingsGoalMinInput" value="1000"
+                                    style="width: 70px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 4px; text-align: center;"
+                                    onchange="updateSavingsGoalLimits()">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span>上限:</span>
+                                <input type="number" id="savingsGoalMaxInput" value="100000"
+                                    style="width: 80px; background: #0f172a; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 4px; text-align: center;"
+                                    onchange="updateSavingsGoalLimits()">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 目標調整彈窗按鈕也同步改為高質感黑金風格 -->
+                    <ion-button expand="block" onclick="confirmSaveSavingsGoal()"
+                        style="--background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%); --border-radius: 14px; font-weight: 900; font-size: 16px; --color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 4px 14px rgba(0,0,0,0.4);">確認修改目標</ion-button>
+                    <ion-button expand="block" color="danger"
+                        onclick="document.getElementById('savingsGoalModal').dismiss()"
+                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
+
+                    <!-- 底部安全留白 -->
+                    <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
         </ion-content>
+
+        <!-- 懸浮圓形導覽列 (移至 ion-app 層級，解決可見度問題) -->
+        <div class="circle-nav-container">
+            <!-- 1. 首頁按鈕 -->
+            <button class="circle-nav-btn active" id="navBtnHome" onclick="switchPage('home')">
+                <ion-icon name="home-outline"></ion-icon>
+                <span class="btn-label">首頁</span>
+            </button>
+
+            <!-- 2. 計算機圓形按鈕 -->
+            <button class="circle-nav-btn" id="navBtnCalc" onclick="switchPage('calc')">
+                <ion-icon name="calculator-outline"></ion-icon>
+                <span class="btn-label">計算</span>
+            </button>
+
+            <!-- 3. 中央核心 ADD 圓形按鈕 -->
+            <button class="circle-nav-btn primary-add-btn" id="openModalBtn">
+                <ion-icon name="add-outline"></ion-icon>
+            </button>
+
+            <!-- 4. 儲蓄圓形按鈕 -->
+            <button class="circle-nav-btn" id="navBtnSavings" onclick="switchPage('savings')">
+                <ion-icon name="wallet-outline"></ion-icon>
+                <span class="btn-label">儲蓄</span>
+            </button>
+
+            <!-- 5. AI 分析圓形按鈕 -->
+            <button class="circle-nav-btn" id="navBtnAi" onclick="switchPage('ai')">
+                <ion-icon name="sparkles-outline"></ion-icon>
+                <span class="btn-label">AI分析</span>
+            </button>
+        </div>
     </ion-app>
 
     <script>
         let records = [];
-        let budgetLimit = 3000;
+        let savingsRecords = [];
+        let budgetLimit = 5000;
+        let savingsGoal = 20000;
+        let selectedReceiptBase64 = null;
+        let calcExpr = "";
+        let isMultiSelectMode = false;
+        let selectedRecordIds = new Set();
+
+        const CATEGORY_MAP = {
+            '餐飲': { name: '🍱 餐飲食品', emoji: '🍱', color: '#FF7A00' },
+            '交通': { name: '🚇 交通出行', emoji: '🚇', color: '#1A56DB' },
+            '購物': { name: '🛒 購物消費', emoji: '🛒', color: '#A855F7' },
+            '娛樂': { name: '🎮 娛樂消遣', emoji: '🎮', color: '#10B981' },
+            '居家': { name: '🏠 居家水電', emoji: '🏠', color: '#475569' },
+            '醫療': { name: '💊 醫療健康', emoji: '💊', color: '#EC4899' },
+            '通訊': { name: '📱 數碼通訊', emoji: '📱', color: '#06B6D4' },
+            '美容': { name: '🛍️ 服飾美容', emoji: '🛍️', color: '#F43F5E' },
+            '旅遊': { name: '✈️ 旅遊外遊', emoji: '✈️', color: '#0EA5E9' },
+            '寵物': { name: '🐾 寵物照顧', emoji: '🐾', color: '#F97316' },
+            '社交': { name: '🎁 禮物人情', emoji: '🎁', color: '#8B5CF6' },
+            '理財': { name: '📈 投資儲蓄', emoji: '📈', color: '#059669' },
+            '教育': { name: '🎓 教育學習', emoji: '🎓', color: '#6366F1' },
+            '其他': { name: '🪙 其他開銷', emoji: '🪙', color: '#6B7280' }
+        };
 
         const addModal = document.getElementById('addModal');
 
+        function getTodayDateString() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             loadData();
+            const dateInput = document.getElementById('finalDateInput');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = getTodayDateString();
+            }
             renderList();
-
-            if (addModal) {
-                addModal.breakpoints = [0, 0.6, 0.9];
-            }
-
-            const changeBudgetBtn = document.getElementById('changeBudgetBtn');
-            if (changeBudgetBtn) {
-                changeBudgetBtn.addEventListener('click', popupChangeBudgetAlert);
-            }
+            renderSavingsList();
+            setupEventListeners();
         });
 
-        // 即時連動更新數字
+        function switchPage(pageKey) {
+            document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active-page'));
+
+            document.getElementById('navBtnHome')?.classList.remove('active');
+            document.getElementById('navBtnCalc')?.classList.remove('active');
+            document.getElementById('navBtnSavings')?.classList.remove('active');
+            document.getElementById('navBtnAi')?.classList.remove('active');
+
+            const titleEl = document.getElementById('pageHeaderTitle');
+
+            if (pageKey === 'home') {
+                document.getElementById('pageHome').classList.add('active-page');
+                document.getElementById('navBtnHome')?.classList.add('active');
+                if (titleEl) titleEl.childNodes[0].nodeValue = "個人開銷記錄 ";
+            } else if (pageKey === 'calc') {
+                document.getElementById('pageCalc').classList.add('active-page');
+                document.getElementById('navBtnCalc')?.classList.add('active');
+                if (titleEl) titleEl.childNodes[0].nodeValue = "開銷計算機 ";
+            } else if (pageKey === 'savings') {
+                document.getElementById('pageSavings').classList.add('active-page');
+                document.getElementById('navBtnSavings')?.classList.add('active');
+                if (titleEl) titleEl.childNodes[0].nodeValue = "儲蓄目標與紀錄 ";
+            } else if (pageKey === 'ai') {
+                document.getElementById('pageAI').classList.add('active-page');
+                document.getElementById('navBtnAi')?.classList.add('active');
+                if (titleEl) titleEl.childNodes[0].nodeValue = "AI 財務分析 ";
+            }
+        }
+
+        function calcInput(val) {
+            const screen = document.getElementById('calcScreen');
+            const subscreen = document.getElementById('calcSubscreen');
+
+            if (val === 'C') {
+                calcExpr = "";
+                screen.textContent = "0";
+                subscreen.textContent = "";
+            } else if (val === 'DEL') {
+                calcExpr = calcExpr.slice(0, -1);
+                screen.textContent = calcExpr || "0";
+            } else if (val === '=') {
+                try {
+                    const result = Function('"use strict";return (' + calcExpr + ')')();
+                    subscreen.textContent = calcExpr + " =";
+                    calcExpr = String(result);
+                    screen.textContent = calcExpr;
+                } catch (e) {
+                    screen.textContent = "Error";
+                    calcExpr = "";
+                }
+            } else {
+                calcExpr += val;
+                screen.textContent = calcExpr;
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('changeBudgetBtn')?.addEventListener('click', popupChangeBudgetAlert);
+            document.getElementById('cancelBtn')?.addEventListener('click', () => {
+                addModal.dismiss();
+                clearForm();
+            });
+
+            document.getElementById('confirmAddBtn')?.addEventListener('click', handleConfirmAdd);
+            document.getElementById('seedDataBtn')?.addEventListener('click', loadSeedData);
+            document.getElementById('toggleMultiSelectBtn')?.addEventListener('click', toggleMultiSelectMode);
+            document.getElementById('deleteSelectedBtn')?.addEventListener('click', deleteSelectedRecords);
+
+            const selectAllCb = document.getElementById('selectAllCheckbox');
+            if (selectAllCb) {
+                selectAllCb.addEventListener('ionChange', (e) => {
+                    toggleSelectAll(e.detail.checked);
+                });
+            }
+
+            document.getElementById('applyCalcToExpenseBtn')?.addEventListener('click', () => {
+                const screenVal = parseFloat(document.getElementById('calcScreen').textContent);
+                if (!isNaN(screenVal) && screenVal > 0) {
+                    const rangeEl = document.getElementById('finalAmountRange');
+                    if (rangeEl) rangeEl.value = screenVal;
+                    updateRangeValue(screenVal);
+                    addModal.present();
+                    showToast(`已帶入計算金額 HK$${screenVal}`);
+                } else {
+                    showToast('請先進行有效計算');
+                }
+            });
+
+            const segment = document.getElementById('inputModeSegment');
+            if (segment) {
+                segment.addEventListener('ionChange', (e) => {
+                    const mode = e.detail.value;
+                    document.getElementById('manualInputSection').style.display = mode === 'manual' ? 'block' : 'none';
+                    document.getElementById('aiTextInputSection').style.display = mode === 'ai-text' ? 'block' : 'none';
+                    document.getElementById('aiImageInputSection').style.display = mode === 'ai-image' ? 'block' : 'none';
+                });
+            }
+
+            document.getElementById('aiParseTextBtn')?.addEventListener('click', parseTextWithGemini);
+            document.getElementById('aiParseImageBtn')?.addEventListener('click', parseImageWithGemini);
+            document.getElementById('refreshAiAdviceBtn')?.addEventListener('click', generateAiAdvice);
+        }
+
+        async function fetchGeminiApi(payload, retries = 3, delay = 1000) {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+                    return await response.json();
+                } catch (err) {
+                    if (i === retries - 1) throw err;
+                    await new Promise(res => setTimeout(res, delay * Math.pow(2, i)));
+                }
+            }
+        }
+
+        async function parseTextWithGemini() {
+            const inputVal = document.getElementById('aiTextInput').value.trim();
+            if (!inputVal) {
+                showToast('請先輸入或貼上記帳文字！');
+                return;
+            }
+
+            showLoading('Gemini AI 解析中...');
+
+            const systemPrompt = "你是一個精準的香港記帳助手。請從使用者的自然語言輸入（可能包含廣東話/繁體中文）中，解析出以下欄位：\n1. title: 項目簡短名稱\n2. amount: 金額 (數字, HKD 港幣)\n3. category: 最符合的分類，限定選擇 [餐飲, 交通, 購物, 娛樂, 居家, 醫療, 通訊, 美容, 旅遊, 寵物, 社交, 理財, 教育, 其他]";
+
+            const payload = {
+                contents: [{ role: 'user', parts: [{ text: inputVal }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "title": { "type": "STRING" },
+                            "amount": { "type": "NUMBER" },
+                            "category": { "type": "STRING", "enum": ["餐飲", "交通", "購物", "娛樂", "居家", "醫療", "通訊", "美容", "旅遊", "寵物", "社交", "理財", "教育", "其他"] }
+                        },
+                        "propertyOrdering": ["title", "amount", "category"]
+                    }
+                }
+            };
+
+            try {
+                const res = await fetchGeminiApi(payload);
+                hideLoading();
+
+                const parsedText = res.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (parsedText) {
+                    const data = JSON.parse(parsedText);
+                    applyParsedDataToForm(data.title, data.amount, data.category);
+                    showToast('✨ 解析成功！已自動帶入表單');
+                } else {
+                    showToast('無法辨識相關資料，請試試寫得更清楚');
+                }
+            } catch (err) {
+                hideLoading();
+                console.error(err);
+                showToast('AI 解析失敗，請稍後重試');
+            }
+        }
+
+        function handleReceiptImageSelected(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                const imgPreview = document.getElementById('receiptImagePreview');
+                imgPreview.src = evt.target.result;
+                imgPreview.style.display = 'block';
+
+                selectedReceiptBase64 = evt.target.result.split(',')[1];
+                document.getElementById('aiParseImageBtn').disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function parseImageWithGemini() {
+            if (!selectedReceiptBase64) {
+                showToast('請先選擇收據/發票照片');
+                return;
+            }
+
+            showLoading('Gemini Vision 掃描照片中...');
+
+            const prompt = "請辨識這張香港店舖收據或單據照片，提取主要的消費品名/店家名稱 (title)、總金額 HKD (amount) 與最適分類 (category: 餐飲, 交通, 購物, 娛樂, 居家, 醫療, 通訊, 美容, 旅遊, 寵物, 社交, 理財, 教育, 其他)。";
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [
+                        { text: prompt },
+                        {
+                            inlineData: {
+                                mimeType: "image/jpeg",
+                                data: selectedReceiptBase64
+                            }
+                        }
+                    ]
+                }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "title": { "type": "STRING" },
+                            "amount": { "type": "NUMBER" },
+                            "category": { "type": "STRING", "enum": ["餐飲", "交通", "購物", "娛樂", "居家", "醫療", "通訊", "美容", "旅遊", "寵物", "社交", "理財", "教育", "其他"] }
+                        },
+                        "propertyOrdering": ["title", "amount", "category"]
+                    }
+                }
+            };
+
+            try {
+                const res = await fetchGeminiApi(payload);
+                hideLoading();
+
+                const parsedText = res.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (parsedText) {
+                    const data = JSON.parse(parsedText);
+                    applyParsedDataToForm(data.title, data.amount, data.category);
+                    showToast('📸 收據辨識成功！已帶入欄位');
+                } else {
+                    showToast('無法辨識照片中的收據資訊');
+                }
+            } catch (err) {
+                hideLoading();
+                console.error(err);
+                showToast('圖片辨識失敗，請重新拍攝或手動輸入');
+            }
+        }
+
+        function applyParsedDataToForm(title, amount, category) {
+            document.getElementById('inputModeSegment').value = 'manual';
+            document.getElementById('manualInputSection').style.display = 'block';
+            document.getElementById('aiTextInputSection').style.display = 'none';
+            document.getElementById('aiImageInputSection').style.display = 'none';
+
+            if (title) document.getElementById('finalTitleInput').value = title;
+            if (amount) {
+                const rangeEl = document.getElementById('finalAmountRange');
+                const maxInput = document.getElementById('rangeMaxInput');
+                if (rangeEl && maxInput) {
+                    if (amount > Number(rangeEl.max)) {
+                        maxInput.value = Math.ceil(amount);
+                        updateRangeLimits();
+                    }
+                    rangeEl.value = amount;
+                    updateRangeValue(amount);
+                }
+            }
+            if (category) {
+                const selectEl = document.getElementById('manualCategorySelect');
+                selectEl.value = category;
+            }
+        }
+
+        async function generateAiAdvice() {
+            const loadingBox = document.getElementById('aiAdviceLoading');
+            const contentBox = document.getElementById('aiAdviceContent');
+
+            loadingBox.style.display = 'block';
+            contentBox.style.opacity = '0.4';
+
+            let totalSpent = records.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+            const prompt = `使用者每月預算為 HK$${budgetLimit}，截至目前總開銷為 HK$${totalSpent}。
+開銷明細：${JSON.stringify(records, null, 2)}
+請針對香港生活消費環境分析其開銷，給出：
+1. healthRating: "健康" / "警訊" / "超支"
+2. summary: 一句精闢診斷話語
+3. observations: 2 句消費觀察
+4. tips: 3 條具體可行的香港在地省錢建議`;
+
+            const payload = {
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: "你是親切且專業的 AI 香港個人財務顧問，請以繁體中文/香港廣東話風格回應。" }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "healthRating": { "type": "STRING" },
+                            "summary": { "type": "STRING" },
+                            "observations": { "type": "STRING" },
+                            "tips": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            }
+                        },
+                        "propertyOrdering": ["healthRating", "summary", "observations", "tips"]
+                    }
+                }
+            };
+
+            try {
+                const res = await fetchGeminiApi(payload);
+                loadingBox.style.display = 'none';
+                contentBox.style.opacity = '1';
+
+                const parsedText = res.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (parsedText) {
+                    const data = JSON.parse(parsedText);
+                    document.getElementById('aiHealthChip').textContent = `健康度: ${data.healthRating || '良好'}`;
+                    document.getElementById('aiAdviceSummary').textContent = data.summary || '保持良好的記帳習慣！';
+                    document.getElementById('aiAdviceObservations').textContent = data.observations || '整體消費表現平穩。';
+
+                    const tipsContainer = document.getElementById('aiAdviceTips');
+                    tipsContainer.innerHTML = (data.tips || ['維持良好的開銷記錄習慣']).map(tip => `<li>${escapeHtml(tip)}</li>`).join('');
+                }
+            } catch (err) {
+                loadingBox.style.display = 'none';
+                contentBox.style.opacity = '1';
+
+                console.error(err);
+                showToast('AI 診斷連線失敗');
+            }
+        }
+
         function updateRangeValue(val) {
             const rangeValueDisplay = document.getElementById('rangeAmountValue');
             if (rangeValueDisplay) {
@@ -260,70 +1403,156 @@ ion-fab[horizontal="center"] {
             }
         }
 
-        document.getElementById('cancelBtn').addEventListener('click', () => {
-            addModal.dismiss();
-            clearForm();
-        });
+        function updateRangeLimits() {
+            const rangeEl = document.getElementById('finalAmountRange');
+            const minInput = document.getElementById('rangeMinInput');
+            const maxInput = document.getElementById('rangeMaxInput');
+
+            if (!rangeEl || !minInput || !maxInput) return;
+
+            let newMin = Number(minInput.value);
+            let newMax = Number(maxInput.value);
+
+            if (isNaN(newMin) || newMin < 0) newMin = 0;
+            if (isNaN(newMax) || newMax <= newMin) newMax = newMin + 100;
+
+            minInput.value = newMin;
+            maxInput.value = newMax;
+
+            rangeEl.min = newMin;
+            rangeEl.max = newMax;
+
+            let currentVal = Number(rangeEl.value);
+            if (currentVal < newMin) currentVal = newMin;
+            if (currentVal > newMax) currentVal = newMax;
+
+            rangeEl.value = currentVal;
+            updateRangeValue(currentVal);
+        }
 
         function saveData() {
             localStorage.setItem('records', JSON.stringify(records));
+            localStorage.setItem('savings_records', JSON.stringify(savingsRecords));
             localStorage.setItem('user_budget_limit', budgetLimit);
+            localStorage.setItem('user_savings_goal', savingsGoal);
         }
 
         function loadData() {
             const savedText = localStorage.getItem('records');
-            if (savedText) {
-                records = JSON.parse(savedText);
-            }
+            if (savedText) records = JSON.parse(savedText);
+
+            const savedSavings = localStorage.getItem('savings_records');
+            if (savedSavings) savingsRecords = JSON.parse(savedSavings);
+
             const savedBudget = localStorage.getItem('user_budget_limit');
-            if (savedBudget) {
-                budgetLimit = Number(savedBudget);
+            if (savedBudget) budgetLimit = Number(savedBudget);
+
+            const savedGoal = localStorage.getItem('user_savings_goal');
+            if (savedGoal) savingsGoal = Number(savedGoal);
+        }
+
+        function loadSeedData() {
+            const today = getTodayDateString();
+            records = [
+                { id: Date.now() - 5000, title: '🍱 茶餐廳常餐午膳', amount: 65, category: '餐飲', date: today },
+                { id: Date.now() - 4000, title: '🚇 八達通自動增值', amount: 500, category: '交通', date: today },
+                { id: Date.now() - 3000, title: '🛒 惠康/百佳買餸', amount: 320, category: '購物', date: today },
+                { id: Date.now() - 2000, title: '🎬 戲院睇戲加爆谷', amount: 160, category: '娛樂', date: today },
+                { id: Date.now() - 1000, title: '🏠 中電電費單', amount: 850, category: '居家', date: today }
+            ];
+            isMultiSelectMode = false;
+            selectedRecordIds.clear();
+            updateMultiSelectUI();
+            saveData();
+            renderList();
+            showToast('已成功載入香港測試開銷資料！');
+        }
+
+        function toggleMultiSelectMode() {
+            if (records.length === 0) {
+                showToast('現時沒有記錄可供刪除');
+                return;
+            }
+            isMultiSelectMode = !isMultiSelectMode;
+            selectedRecordIds.clear();
+            updateMultiSelectUI();
+            renderList();
+        }
+
+        function exitMultiSelectMode() {
+            isMultiSelectMode = false;
+            selectedRecordIds.clear();
+            updateMultiSelectUI();
+            renderList();
+        }
+
+        function updateMultiSelectUI() {
+            const bar = document.getElementById('multiSelectBar');
+            const toggleBtn = document.getElementById('toggleMultiSelectBtn');
+            const countDisplay = document.getElementById('selectedCountDisplay');
+            const deleteBtn = document.getElementById('deleteSelectedBtn');
+
+            if (bar) bar.style.display = isMultiSelectMode ? 'flex' : 'none';
+            if (toggleBtn) toggleBtn.style.display = isMultiSelectMode ? 'none' : 'inline-block';
+            if (countDisplay) countDisplay.textContent = selectedRecordIds.size;
+
+            if (deleteBtn) {
+                if (selectedRecordIds.size === 0) {
+                    deleteBtn.setAttribute('disabled', 'true');
+                    deleteBtn.disabled = true;
+                } else {
+                    deleteBtn.removeAttribute('disabled');
+                    deleteBtn.disabled = false;
+                }
             }
         }
 
-        async function popupChangeBudgetAlert() {
-            const alert = document.createElement('ion-alert');
-            alert.header = '自訂每月預算';
-            alert.message = '請輸入您每月的最高預算金額上限：';
-            alert.inputs = [
-                {
-                    name: 'newBudget',
-                    type: 'number',
-                    placeholder: '例如：5000',
-                    value: budgetLimit
-                }
-            ];
-            alert.buttons = [
-                { text: '取消', role: 'cancel' },
-                {
-                    text: '確認修改',
-                    handler: (data) => {
-                        const inputNum = Number(data.newBudget);
-                        if (inputNum > 0 && !isNaN(inputNum)) {
-                            budgetLimit = inputNum;
-                            saveData();
-                            renderList();
-                        }
-                    }
-                }
-            ];
-            document.body.appendChild(alert);
-            await alert.present();
+        function toggleSelectRecord(id) {
+            if (selectedRecordIds.has(id)) {
+                selectedRecordIds.delete(id);
+            } else {
+                selectedRecordIds.add(id);
+            }
+
+            const selectAllCb = document.getElementById('selectAllCheckbox');
+            if (selectAllCb) {
+                selectAllCb.checked = (records.length > 0 && selectedRecordIds.size === records.length);
+            }
+
+            updateMultiSelectUI();
+            renderList();
         }
 
-        async function confirmDelete(index) {
+        function toggleSelectAll(checked) {
+            if (checked) {
+                records.forEach(r => selectedRecordIds.add(r.id));
+            } else {
+                selectedRecordIds.clear();
+            }
+            updateMultiSelectUI();
+            renderList();
+        }
+
+        async function deleteSelectedRecords() {
+            if (selectedRecordIds.size === 0) return;
+
+            const count = selectedRecordIds.size;
             const alert = document.createElement('ion-alert');
-            alert.header = '確認刪除';
-            alert.message = '確定要刪除這筆記錄嗎？';
+            alert.header = '確認批次刪除';
+            alert.message = `確定要刪除已選取的 ${count} 筆記錄嗎？`;
             alert.buttons = [
                 { text: '取消', role: 'cancel' },
                 {
                     text: '確認刪除',
                     role: 'destructive',
                     handler: () => {
-                        records.splice(index, 1);
+                        records = records.filter(item => !selectedRecordIds.has(item.id));
+                        selectedRecordIds.clear();
+                        if (records.length === 0) isMultiSelectMode = false;
                         saveData();
+                        updateMultiSelectUI();
                         renderList();
+                        showToast(`已成功刪除 ${count} 筆記錄`);
                     }
                 }
             ];
@@ -331,68 +1560,368 @@ ion-fab[horizontal="center"] {
             await alert.present();
         }
 
-        function validateForm() {
-            let isValid = true;
-            const titleValue = document.getElementById('finalTitleInput').value.trim();
-            const rangeEl = document.getElementById('finalAmountRange');
-            const amountValue = Number(rangeEl ? rangeEl.value : 0);
+        // 開啟預算上限 Range 彈窗
+        function popupChangeBudgetAlert() {
+            const modal = document.getElementById('budgetModal');
+            const rangeInput = document.getElementById('budgetRangeInput');
+            const minInput = document.getElementById('budgetMinInput');
+            const maxInput = document.getElementById('budgetMaxInput');
 
-            if (titleValue === "") {
-                document.getElementById('expTitleError').textContent = "項目名稱不能空白";
-                isValid = false;
-            } else {
-                document.getElementById('expTitleError').textContent = "";
+            if (budgetLimit > Number(maxInput.value)) {
+                maxInput.value = Math.ceil(budgetLimit * 1.5);
             }
+            rangeInput.min = minInput.value;
+            rangeInput.max = maxInput.value;
+            rangeInput.value = budgetLimit;
 
-            return isValid;
+            updateBudgetModalValue(budgetLimit);
+            modal.present();
         }
 
-        document.getElementById('confirmAddBtn').addEventListener('click', () => {
-            if (!validateForm()) return;
+        function updateBudgetModalValue(val) {
+            const display = document.getElementById('budgetModalValue');
+            if (display) display.textContent = Number(val).toLocaleString();
+        }
+
+        function updateBudgetLimits() {
+            const rangeEl = document.getElementById('budgetRangeInput');
+            const minInput = document.getElementById('budgetMinInput');
+            const maxInput = document.getElementById('budgetMaxInput');
+
+            let newMin = Number(minInput.value);
+            let newMax = Number(maxInput.value);
+
+            if (isNaN(newMin) || newMin < 0) newMin = 0;
+            if (isNaN(newMax) || newMax <= newMin) newMax = newMin + 1000;
+
+            minInput.value = newMin;
+            maxInput.value = newMax;
+            rangeEl.min = newMin;
+            rangeEl.max = newMax;
+
+            let currentVal = Number(rangeEl.value);
+            if (currentVal < newMin) currentVal = newMin;
+            if (currentVal > newMax) currentVal = newMax;
+            rangeEl.value = currentVal;
+            updateBudgetModalValue(currentVal);
+        }
+
+        function confirmSaveBudget() {
+            const rangeEl = document.getElementById('budgetRangeInput');
+            const inputNum = Number(rangeEl.value);
+            if (inputNum > 0 && !isNaN(inputNum)) {
+                budgetLimit = inputNum;
+                saveData();
+                renderList();
+                document.getElementById('budgetModal').dismiss();
+                showToast('已成功更新每月預算上限！');
+            }
+        }
+
+        // 開啟儲蓄目標 Range 彈窗
+        function popupChangeSavingsGoalAlert() {
+            const modal = document.getElementById('savingsGoalModal');
+            const rangeInput = document.getElementById('savingsGoalRangeInput');
+            const minInput = document.getElementById('savingsGoalMinInput');
+            const maxInput = document.getElementById('savingsGoalMaxInput');
+
+            if (!modal || !rangeInput || !minInput || !maxInput) return;
+
+            if (savingsGoal > Number(maxInput.value)) {
+                maxInput.value = Math.ceil(savingsGoal * 1.5);
+            }
+            if (savingsGoal < Number(minInput.value)) {
+                minInput.value = Math.max(0, Math.floor(savingsGoal / 2));
+            }
+            rangeInput.min = minInput.value;
+            rangeInput.max = maxInput.value;
+            rangeInput.value = savingsGoal;
+
+            updateSavingsGoalModalValue(savingsGoal);
+            modal.present();
+        }
+
+        function updateSavingsGoalModalValue(val) {
+            const display = document.getElementById('savingsGoalModalValue');
+            if (display) display.textContent = Number(val).toLocaleString();
+        }
+
+        function updateSavingsGoalLimits() {
+            const rangeEl = document.getElementById('savingsGoalRangeInput');
+            const minInput = document.getElementById('savingsGoalMinInput');
+            const maxInput = document.getElementById('savingsGoalMaxInput');
+
+            let newMin = Number(minInput.value);
+            let newMax = Number(maxInput.value);
+
+            if (isNaN(newMin) || newMin < 0) newMin = 0;
+            if (isNaN(newMax) || newMax <= newMin) newMax = newMin + 1000;
+
+            minInput.value = newMin;
+            maxInput.value = newMax;
+            rangeEl.min = newMin;
+            rangeEl.max = newMax;
+
+            let currentVal = Number(rangeEl.value);
+            if (currentVal < newMin) currentVal = newMin;
+            if (currentVal > newMax) currentVal = newMax;
+            rangeEl.value = currentVal;
+            updateSavingsGoalModalValue(currentVal);
+        }
+
+        function confirmSaveSavingsGoal() {
+            const rangeEl = document.getElementById('savingsGoalRangeInput');
+            const inputNum = Number(rangeEl.value);
+            if (inputNum > 0 && !isNaN(inputNum)) {
+                savingsGoal = inputNum;
+                saveData();
+                renderSavingsList();
+                document.getElementById('savingsGoalModal').dismiss();
+                showToast('已成功更新每月儲蓄目標！');
+            }
+        }
+
+        // 頁面 4 儲蓄存入 Range 滑桿動態控制
+        function updateSavingsRangeValue(val) {
+            const display = document.getElementById('savingsRangeAmountValue');
+            if (display) display.textContent = Number(val).toLocaleString();
+        }
+
+        function updateSavingsRangeLimits() {
+            const rangeEl = document.getElementById('savingsAmountRange');
+            const minInput = document.getElementById('savingsMinInput');
+            const maxInput = document.getElementById('savingsMaxInput');
+
+            if (!rangeEl || !minInput || !maxInput) return;
+
+            let newMin = Number(minInput.value);
+            let newMax = Number(maxInput.value);
+
+            if (isNaN(newMin) || newMin < 0) newMin = 0;
+            if (isNaN(newMax) || newMax <= newMin) newMax = newMin + 500;
+
+            minInput.value = newMin;
+            maxInput.value = newMax;
+            rangeEl.min = newMin;
+            rangeEl.max = newMax;
+
+            let currentVal = Number(rangeEl.value);
+            if (currentVal < newMin) currentVal = newMin;
+            if (currentVal > newMax) currentVal = newMax;
+            rangeEl.value = currentVal;
+            updateSavingsRangeValue(currentVal);
+        }
+
+        function handleConfirmAdd() {
+            const titleValue = document.getElementById('finalTitleInput').value.trim();
+            if (!titleValue) {
+                document.getElementById('expTitleError').textContent = '請填寫項目名稱';
+                return;
+            }
 
             const rangeEl = document.getElementById('finalAmountRange');
+            const selectEl = document.getElementById('manualCategorySelect');
+            const dateValue = document.getElementById('finalDateInput').value || getTodayDateString();
 
             const newRecord = {
-                title: document.getElementById('finalTitleInput').value.trim(),
-                amount: Number(rangeEl.value),
-                category: document.getElementById('expCategoryItem').querySelector('ion-select').value || "其他"
+                id: Date.now(),
+                title: titleValue,
+                amount: rangeEl ? Number(rangeEl.value) : 0,
+                category: selectEl.value || '其他',
+                date: dateValue,
+                createdAt: new Date().toISOString()
             };
 
-            records.push(newRecord);
+            records.unshift(newRecord);
             saveData();
             renderList();
             addModal.dismiss();
             clearForm();
-        });
-
-        function clearForm() {
-            document.getElementById('finalTitleInput').value = "";
-            const rangeEl = document.getElementById('finalAmountRange');
-            if (rangeEl) {
-                rangeEl.value = 100;
-            }
-            updateRangeValue(100);
-            document.getElementById('expCategoryItem').querySelector('ion-select').value = "";
-            document.getElementById('expTitleError').textContent = "";
-            
+            switchPage('home');
+            showToast('已新增開銷項目！');
         }
 
-        function createRecordHTML(item, index) {
-            const iconConfig = getCategoryIcon(item.category);
+        async function confirmDelete(id) {
+            const record = records.find(item => item.id === id);
+            const titleText = record ? record.title : '此項目';
 
-            let displayCategory = escapeHtml(item.category);
-            if (item.category === '餐飲') displayCategory = '🍔 餐飲食品';
-            if (item.category === '交通') displayCategory = '🚗 交通出行';
-            if (item.category === '購物') displayCategory = '🛒 購物消費';
-            if (item.category === '娛樂') displayCategory = '🎮 娛樂消遣';
-            if (item.category === '居家') displayCategory = '🏠 居家水電';
-            if (item.category === '其他') displayCategory = '🪙 其他開銷';
+            const alert = document.createElement('ion-alert');
+            alert.header = '⚠️ 確認刪除開銷';
+            alert.message = `確定要刪除「${escapeHtml(titleText)}」這筆記錄嗎？此操作無法復原。`;
+            alert.buttons = [
+                { text: '取消', role: 'cancel' },
+                {
+                    text: '確認刪除',
+                    role: 'destructive',
+                    handler: () => {
+                        records = records.filter(item => item.id !== id);
+                        saveData();
+                        renderList();
+                        showToast('已成功刪除開銷記錄');
+                    }
+                }
+            ];
+            document.body.appendChild(alert);
+            await alert.present();
+        }
+
+        function addSavingsRecord() {
+            const titleInput = document.getElementById('savingsTitleInput');
+            const rangeEl = document.getElementById('savingsAmountRange');
+
+            const title = titleInput.value.trim() || '日常儲蓄存款';
+            const amount = rangeEl ? Number(rangeEl.value) : 0;
+
+            if (!amount || amount <= 0 || isNaN(amount)) {
+                showToast('請選擇有效的存入金額！');
+                return;
+            }
+
+            const newSavings = {
+                id: Date.now(),
+                title: title,
+                amount: amount,
+                date: getTodayDateString()
+            };
+
+            savingsRecords.unshift(newSavings);
+            saveData();
+            renderSavingsList();
+
+            titleInput.value = '';
+            showToast(`🎉 成功存入 HK$${amount.toLocaleString()}！`);
+        }
+
+        async function confirmDeleteSavings(id) {
+            const item = savingsRecords.find(s => s.id === id);
+            const titleText = item ? item.title : '這筆儲蓄';
+
+            const alert = document.createElement('ion-alert');
+            alert.header = '🐷 確認刪除儲蓄紀錄';
+            alert.message = `確定要刪除「${escapeHtml(titleText)}」這筆儲蓄紀錄嗎？`;
+            alert.buttons = [
+                { text: '取消', role: 'cancel' },
+                {
+                    text: '確認刪除',
+                    role: 'destructive',
+                    handler: () => {
+                        savingsRecords = savingsRecords.filter(s => s.id !== id);
+                        saveData();
+                        renderSavingsList();
+                        showToast('已刪除該筆儲蓄紀錄');
+                    }
+                }
+            ];
+            document.body.appendChild(alert);
+            await alert.present();
+        }
+
+        function renderSavingsList() {
+            const container = document.getElementById('savingsRecordContainer');
+            const totalDisplay = document.getElementById('savingsTotalDisplay');
+            const goalDisplay = document.getElementById('savingsGoalDisplay');
+            const progressBar = document.getElementById('savingsProgressBar');
+            const savingsTip = document.getElementById('savingsTip');
+
+            const totalSaved = savingsRecords.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+            if (totalDisplay) totalDisplay.textContent = totalSaved.toLocaleString();
+            if (goalDisplay) goalDisplay.textContent = savingsGoal.toLocaleString();
+
+            if (progressBar && savingsTip) {
+                const ratio = Math.min(totalSaved / savingsGoal, 1);
+                progressBar.value = ratio;
+
+                const percent = Math.floor((totalSaved / savingsGoal) * 100);
+                if (totalSaved >= savingsGoal) {
+                    savingsTip.textContent = `🎉 太棒了！已達成目標儲蓄額度 (${percent}%)！`;
+                } else {
+                    const remain = savingsGoal - totalSaved;
+                    savingsTip.textContent = `💪 已達成 ${percent}%，還差 HK$${remain.toLocaleString()} 即可達標！`;
+                }
+            }
+
+            if (!container) return;
+
+            if (savingsRecords.length === 0) {
+                container.innerHTML = `
+                <ion-item lines="none" style="--background: transparent;">
+                    <ion-label class="ion-text-center" style="color: #6B7280; padding: 20px 0; font-size: 14px;">
+                        暫無儲蓄紀錄<br>在上方輸入金額開始累積第一筆儲蓄吧！
+                    </ion-label>
+                </ion-item>
+                `;
+                return;
+            }
+
+            container.innerHTML = savingsRecords.map(item => `
+                <ion-item-sliding class="custom-sliding-item" style="background-color: #047857;">
+                    <ion-item lines="none">
+                        <div slot="start" style="
+                            background-color: rgba(255, 255, 255, 0.95); 
+                            width: 42px; 
+                            height: 42px; 
+                            border-radius: 50%; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center;
+                            margin-right: 8px;
+                            font-size: 20px;
+                        ">
+                            🐷
+                        </div>
+                        <ion-label style="margin-left: 4px;">
+                            <h2 style="color: white; font-size: 16px; margin-bottom: 4px; font-weight: 700;">${escapeHtml(item.title)}</h2>
+                            <p style="margin: 0; color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 600;">
+                                📅 ${escapeHtml(item.date)}
+                            </p>
+                        </ion-label>
+                        <ion-note slot="end" class="gold-amount-note" style="color: #34d399;">
+                            +HK$${item.amount.toLocaleString()}
+                        </ion-note>
+                    </ion-item>
+                    <ion-item-options side="end">
+                        <ion-item-option color="danger" onclick="confirmDeleteSavings(${item.id})" style="width: 70px;">
+                            <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            `).join('');
+        }
+
+        function clearForm() {
+            document.getElementById('finalTitleInput').value = '';
+            document.getElementById('aiTextInput').value = '';
+            const rangeEl = document.getElementById('finalAmountRange');
+            if (rangeEl) {
+                rangeEl.value = 65;
+                updateRangeValue(65);
+            }
+            document.getElementById('manualCategorySelect').value = '';
+            document.getElementById('expTitleError').textContent = '';
+            document.getElementById('receiptFileInput').value = '';
+            document.getElementById('receiptImagePreview').style.display = 'none';
+            document.getElementById('finalDateInput').value = getTodayDateString();
+            selectedReceiptBase64 = null;
+            document.getElementById('aiParseImageBtn').disabled = true;
+        }
+
+        function createRecordHTML(item) {
+            const config = CATEGORY_MAP[item.category] || CATEGORY_MAP['其他'];
+            const isChecked = selectedRecordIds.has(item.id);
+            const itemDate = item.date || (item.createdAt ? item.createdAt.split('T')[0] : getTodayDateString());
 
             return `
-            <ion-item-sliding class="custom-sliding-item" style="background-color: ${iconConfig.color};">
-                <ion-item lines="none">
+            <ion-item-sliding class="custom-sliding-item" style="background-color: ${config.color};">
+                <ion-item lines="none" onclick="${isMultiSelectMode ? `toggleSelectRecord(${item.id})` : ''}">
+                    ${isMultiSelectMode ? `
+                        <div slot="start" style="display: flex; align-items: center; padding-right: 6px;" onclick="event.stopPropagation(); toggleSelectRecord(${item.id});">
+                            <ion-checkbox checked="${isChecked}" class="red-checkbox"></ion-checkbox>
+                        </div>
+                    ` : ''}
+
                     <div slot="start" style="
-                        background-color: rgba(255, 255, 255, 0.9); 
+                        background-color: rgba(255, 255, 255, 0.95); 
                         width: 44px; 
                         height: 44px; 
                         border-radius: 50%; 
@@ -400,43 +1929,37 @@ ion-fab[horizontal="center"] {
                         align-items: center; 
                         justify-content: center;
                         margin-right: 8px;
-                        font-size: 24px;
+                        font-size: 22px;
                     ">
-                        ${iconConfig.emoji}
+                        ${config.emoji}
                     </div>
 
                     <ion-label style="margin-left: 4px;">
-                        <h2 style="color: white; font-size: 18px; margin-bottom: 4px;"><strong>${escapeHtml(item.title)}</strong></h2>
-                        <p style="margin: 0;">
-                            <span style="background: rgba(255,255,255,0.25); color: white; font-weight: 600; padding: 3px 8px; border-radius: 6px; font-size: 12px;">
-                                ${displayCategory}
+                        <h2 style="color: white; font-size: 17px; margin-bottom: 4px; font-weight: 700;">${escapeHtml(item.title)}</h2>
+                        <p style="margin: 0; display: flex; align-items: center; gap: 6px;">
+                            <span style="background: rgba(255,255,255,0.25); color: white; font-weight: 600; padding: 2px 8px; border-radius: 6px; font-size: 11px;">
+                                ${config.name}
+                            </span>
+                            <span style="color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 600;">
+                                📅 ${escapeHtml(itemDate)}
                             </span>
                         </p>
                     </ion-label>
 
                     <ion-note slot="end" class="gold-amount-note">
-                        $${item.amount}
+                        HK$${item.amount.toLocaleString()}
                     </ion-note>
                 </ion-item>
                 
+                ${!isMultiSelectMode ? `
                 <ion-item-options side="end">
-                    <ion-item-option color="danger" onclick="confirmDelete(${index})" style="width: 70px;">
+                    <ion-item-option color="danger" onclick="confirmDelete(${item.id})" style="width: 70px;">
                         <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
                     </ion-item-option>
                 </ion-item-options>
+                ` : ''}
             </ion-item-sliding>
             `;
-        }
-
-        function getCategoryIcon(category) {
-            if (category === '餐飲') return { emoji: '🍔', color: '#FF7A00' };
-            if (category === '交通') return { emoji: '🚗', color: '#1A56DB' };
-            if (category === '購物') return { emoji: '🛒', color: '#A855F7' };
-            if (category === '娛樂') return { emoji: '🎮', color: '#10B981' };
-            if (category === '居家') return { emoji: '🏠', color: '#1F2937' };
-            if (category === '其他') return { emoji: '🪙', color: '#6B7280' };
-
-            return { emoji: '🪙', color: '#6B7280' };
         }
 
         function renderList() {
@@ -445,15 +1968,21 @@ ion-fab[horizontal="center"] {
             const progressBar = document.getElementById('budgetProgressBar');
             const budgetTip = document.getElementById('budgetTip');
             const budgetLimitDisplay = document.getElementById('budgetLimitDisplay');
+            const cardDateDisplay = document.getElementById('cardDateDisplay');
+
+            if (cardDateDisplay) {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                cardDateDisplay.textContent = `•••• •••• •••• ${year}/${month}/${day}`;
+            }
 
             if (budgetLimitDisplay) {
                 budgetLimitDisplay.textContent = budgetLimit.toLocaleString();
             }
 
-            let totalSum = 0;
-            records.forEach(item => {
-                totalSum += Number(item.amount || 0);
-            });
+            let totalSum = records.reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
             if (totalDisplay) {
                 totalDisplay.textContent = totalSum.toLocaleString();
@@ -461,44 +1990,65 @@ ion-fab[horizontal="center"] {
 
             if (progressBar && budgetTip) {
                 let progressRatio = totalSum / budgetLimit;
-
-                progressBar.value = progressRatio > 1 ? 1 : progressRatio;
+                progressBar.value = Math.min(progressRatio, 1);
 
                 if (progressRatio >= 1) {
                     progressBar.color = 'danger';
                     let overPay = totalSum - budgetLimit;
-                    budgetTip.textContent = `⚠️ 您已超支 $${overPay.toLocaleString()}！請克制一下！`;
-                    budgetTip.style.color = '#ff4d4d';
+                    budgetTip.textContent = `⚠️ 已超支 HK$${overPay.toLocaleString()}！建議切換至 AI 分析獲取建議。`;
                 } else if (progressRatio >= 0.8) {
                     progressBar.color = 'warning';
                     let remain = budgetLimit - totalSum;
-                    budgetTip.textContent = `🔔 預算快用完了！僅剩 $${remain.toLocaleString()}，請注意開銷。`;
-                    budgetTip.style.color = '#ffcc00';
+                    budgetTip.textContent = `🔔 預算僅剩 HK$${remain.toLocaleString()}，請注意控制花費。`;
                 } else {
                     progressBar.color = 'success';
                     let remain = budgetLimit - totalSum;
-                    budgetTip.textContent = `💡 剩餘可用預算：$${remain.toLocaleString()}，保持得很好！`;
-                    budgetTip.style.color = '#ffffff';
+                    budgetTip.textContent = `💡 剩餘可用預算：HK$${remain.toLocaleString()}，保持得很好！`;
                 }
             }
 
             if (records.length === 0) {
                 container.innerHTML = `
-                <ion-item lines="none">
-                    <ion-label class="ion-text-center" style="color: #666; padding: 20px 0;">
-                    目前沒有記錄，點擊右下角按鈕開始新增
+                <ion-item lines="none" style="--background: transparent;">
+                    <ion-label class="ion-text-center" style="color: #6B7280; padding: 30px 0; font-size: 14px;">
+                        目前沒有記錄<br>點擊下方「+」或使用 ✨ AI 語音/圖片快速記帳吧！
                     </ion-label>
                 </ion-item>
                 `;
                 return;
             }
 
-            container.innerHTML = records.map((item, index) => createRecordHTML(item, index)).join('');
+            container.innerHTML = records.map(item => createRecordHTML(item)).join('');
+        }
+
+        async function showToast(message) {
+            const toast = document.createElement('ion-toast');
+            toast.message = message;
+            toast.duration = 2000;
+            toast.position = 'top';
+            toast.color = 'dark';
+            document.body.appendChild(toast);
+            await toast.present();
+        }
+
+        let loadingElement = null;
+        async function showLoading(msg) {
+            loadingElement = document.createElement('ion-loading');
+            loadingElement.message = msg;
+            document.body.appendChild(loadingElement);
+            await loadingElement.present();
+        }
+
+        async function hideLoading() {
+            if (loadingElement) {
+                await loadingElement.dismiss();
+                loadingElement = null;
+            }
         }
 
         function escapeHtml(text) {
             if (!text) return '';
-            return text
+            return String(text)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
