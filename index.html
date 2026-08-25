@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>個人開銷記錄 - AI智能版</title>
+    <title>個人開銷記錄</title>
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -364,14 +364,12 @@
 
         ion-alert .alert-title {
             color: #34d399 !important;
-            /* 儲蓄主題翡翠綠色 */
             font-size: 18px !important;
             font-weight: 800 !important;
         }
 
         ion-alert.expense-alert .alert-title {
             color: #fbbf24 !important;
-            /* 開銷主題金色 */
         }
 
         ion-alert .alert-message {
@@ -401,20 +399,22 @@
             background: #ef4444 !important;
         }
 
-        /* 擴大日期選擇器的觸控範圍與顯示樣式，解決行事曆太細按不到的問題 */
+        /* 修復日期選擇器出界與排版問題 */
         input[type="date"].modal-dark-input {
             color-scheme: dark;
             font-family: inherit;
             cursor: pointer;
-            min-height: 56px;
-            font-size: 18px !important;
+            width: 100%;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
-            transform: scale(1.4);
+            transform: scale(1.1);
             cursor: pointer;
-            padding: 4px;
+            padding: 0px;
         }
 
         .modal-header-box {
@@ -438,10 +438,10 @@
 
         .modal-dark-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 12px;
             border: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
             background: #1e293b;
             color: #ffffff;
@@ -457,6 +457,8 @@
         .modal-dark-group {
             position: relative;
             margin: 14px 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .modal-dark-group label {
@@ -469,12 +471,7 @@
             color: #94a3b8;
             font-weight: 700;
             border-radius: 4px;
-        }
-
-        input[type="date"].modal-dark-input {
-            color-scheme: dark;
-            font-family: inherit;
-            cursor: pointer;
+            z-index: 5;
         }
 
         ion-segment.dark-segment {
@@ -490,12 +487,24 @@
             font-weight: 700;
             font-size: 13px;
         }
+
+        .row-grid-2 {
+            display: flex;
+            gap: 12px;
+            margin: 14px 0;
+            width: 100%;
+        }
+
+        .row-grid-2 .modal-dark-group {
+            margin: 0;
+            flex: 1;
+        }
     </style>
 </head>
 
 <body>
     <ion-app>
-        <!-- Header 工具列 -->
+        <!-- Header 工具列 (已移除 Gemini AI 字句) -->
         <ion-header class="ion-no-border">
             <ion-toolbar>
                 <ion-title id="pageHeaderTitle">個人開銷記錄</ion-title>
@@ -628,7 +637,7 @@
                 <div
                     style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; border-radius: 20px; padding: 20px; box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25); margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h2 style="font-weight: 800; margin: 0; font-size: 20px;">✨ Gemini AI 理財健檢</h2>
+                        <h2 style="font-weight: 800; margin: 0; font-size: 20px;">✨ 理財健檢</h2>
                         <ion-chip id="aiHealthChip"
                             style="background: rgba(255,255,255,0.25); color: white; font-weight: bold; font-size: 12px; margin: 0;">
                             待分析
@@ -641,15 +650,15 @@
                     <div id="aiAdviceLoading"
                         style="display: none; text-align: center; padding: 20px 0; color: #38bdf8;">
                         <ion-spinner name="crescent"></ion-spinner>
-                        <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">Gemini AI 正在分析您的開銷...</p>
+                        <p style="margin-top: 8px; font-size: 14px; font-weight: bold;">正在分析您的開銷...</p>
                     </div>
 
                     <div id="aiAdviceContent">
                         <h3 id="aiAdviceSummary"
-                            style="color: #fbbf24; margin: 0 0 10px 0; font-size: 16px; font-weight: 800;">點擊下方按鈕開始進行 AI
+                            style="color: #fbbf24; margin: 0 0 10px 0; font-size: 16px; font-weight: 800;">點擊下方按鈕開始進行
                             智能理財診斷</h3>
                         <p id="aiAdviceObservations"
-                            style="color: #cbd5e1; font-size: 13px; line-height: 1.5; margin-bottom: 12px;">AI
+                            style="color: #cbd5e1; font-size: 13px; line-height: 1.5; margin-bottom: 12px;">
                             將根據您的每筆開銷類別、累積總金額及預算設定進行精準分析。</p>
 
                         <div
@@ -665,7 +674,7 @@
                     <ion-button id="refreshAiAdviceBtn" expand="block" color="tertiary"
                         style="margin-top: 16px; --border-radius: 12px; font-weight: bold;">
                         <ion-icon name="sparkles-outline" slot="start"></ion-icon>
-                        產生最新 AI 財務建議
+                        產生最新財務建議
                     </ion-button>
                 </div>
             </div>
@@ -766,18 +775,45 @@
                             <ion-label>📝 手動輸入</ion-label>
                         </ion-segment-button>
                         <ion-segment-button value="ai-text">
-                            <ion-label>💬 AI 自然語言</ion-label>
+                            <ion-label>💬 智能語音</ion-label>
                         </ion-segment-button>
                         <ion-segment-button value="ai-image">
-                            <ion-label>📷 AI 拍立記</ion-label>
+                            <ion-label>📷 拍立記</ion-label>
                         </ion-segment-button>
                     </ion-segment>
 
                     <div id="manualInputSection">
-                        <div class="modal-dark-group">
-                            <input type="date" id="finalDateInput" class="modal-dark-input"
-                                style="font-size: 18px; padding: 18px 16px; text-align: center; font-weight: 700; height: 60px;">
-                            <label for="finalDateInput">📅 消費日期</label>
+                        <!-- 並排排列：消費日期 與 支付方式 -->
+                        <div class="row-grid-2">
+                            <div class="modal-dark-group">
+                                <input type="date" id="finalDateInput" class="modal-dark-input"
+                                    style="font-size: 14px; padding: 16px 8px; text-align: center; font-weight: 700; height: 56px;">
+                                <label for="finalDateInput">📅 消費日期</label>
+                            </div>
+
+                            <div class="modal-dark-group">
+                                <select id="manualPaymentSelect" class="modal-dark-input"
+                                    style="color: #ffffff; background-color: #1e293b; cursor: pointer; appearance: auto; text-align: center; text-align-last: center; padding: 16px 8px; font-size: 14px; font-weight: 600; height: 56px;">
+                                    <option value="現金" selected style="background: #1e293b; color: #fff;">💵 現金 (Cash)
+                                    </option>
+                                    <option value="八達通" style="background: #1e293b; color: #fff;">🚇 八達通 (Octopus)
+                                    </option>
+                                    <option value="信用卡" style="background: #1e293b; color: #fff;">💳 信用卡 (Credit)
+                                    </option>
+                                    <option value="支付寶" style="background: #1e293b; color: #fff;">💙 支付寶 (Alipay)
+                                    </option>
+                                    <option value="微信支付" style="background: #1e293b; color: #fff;">💚 微信支付 (WeChat)
+                                    </option>
+                                    <option value="PayMe" style="background: #1e293b; color: #fff;">💛 PayMe</option>
+                                    <option value="BOCPAY" style="background: #1e293b; color: #fff;">❤️ BOC Pay</option>
+                                    <option value="FPS轉數快" style="background: #1e293b; color: #fff;">⚡ 轉數快 (FPS)
+                                    </option>
+                                    <option value="ApplePay" style="background: #1e293b; color: #fff;">🍎 Apple Pay
+                                    </option>
+                                    <option value="其他支付" style="background: #1e293b; color: #fff;">🪙 其他支付</option>
+                                </select>
+                                <label for="manualPaymentSelect">💳 支付方式</label>
+                            </div>
                         </div>
 
                         <div class="modal-dark-group">
@@ -842,23 +878,22 @@
                     </div>
 
                     <div id="aiTextInputSection" style="display: none; padding: 0 4px;">
-                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">用語音或廣東話輸入一句話，Gemini AI
-                            會自動提取項目、金額同分類！</p>
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">
+                            用語音或廣東話輸入一句話，會自動提取項目、金額、分類同支付方式！</p>
                         <div class="modal-dark-group">
                             <textarea id="aiTextInput" class="modal-dark-input" rows="3" placeholder=" "
                                 style="resize: none;"></textarea>
-                            <label for="aiTextInput">例如：「喺茶餐廳食午餐 65 蚊」或「八達通加值 500」</label>
+                            <label for="aiTextInput">例如：「用八達通喺茶餐廳食午餐 65 蚊」</label>
                         </div>
                         <ion-button id="aiParseTextBtn" expand="block" color="tertiary"
                             style="margin-top: 14px; --border-radius: 12px; font-weight: bold;">
                             <ion-icon name="sparkles-outline" slot="start"></ion-icon>
-                            ✨ Gemini AI 智能解析並帶入
+                            ✨ 智能解析並帶入
                         </ion-button>
                     </div>
 
                     <div id="aiImageInputSection" style="display: none; padding: 0 4px;">
-                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">上傳香港超市、餐廳或單據照片，Gemini Vision
-                            會自動讀取金額同品名！</p>
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">上傳香港超市、餐廳或單據照片，會自動讀取金額同品名！</p>
                         <input type="file" id="receiptFileInput" accept="image/*" style="display: none;"
                             onchange="handleReceiptImageSelected(event)">
 
@@ -874,7 +909,7 @@
                         <ion-button id="aiParseImageBtn" expand="block" color="secondary"
                             style="margin-top: 14px; --border-radius: 12px; font-weight: bold;" disabled>
                             <ion-icon name="scan-outline" slot="start"></ion-icon>
-                            📸 Gemini AI 掃描照片並提取資料
+                            📸 掃描照片並提取資料
                         </ion-button>
                     </div>
 
@@ -885,7 +920,7 @@
                     <ion-button id="cancelBtn" expand="block" color="danger"
                         style="margin-inline: 0px; margin-top: 8px; --border-radius: 12px; font-weight: bold; font-size: 16px;">取消</ion-button>
 
-                    <!-- 底部安全留白，防止被 Sheet 邊緣切到 -->
+                    <!-- 底部安全留白 -->
                     <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
@@ -929,7 +964,6 @@
                     <ion-button expand="block" color="danger" onclick="document.getElementById('budgetModal').dismiss()"
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
 
-                    <!-- 底部安全留白 -->
                     <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
@@ -969,46 +1003,39 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 目標調整彈窗按鈕也同步改為高質感黑金風格 -->
                     <ion-button expand="block" onclick="confirmSaveSavingsGoal()"
                         style="--background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%); --border-radius: 14px; font-weight: 900; font-size: 16px; --color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 4px 14px rgba(0,0,0,0.4);">確認修改目標</ion-button>
                     <ion-button expand="block" color="danger"
                         onclick="document.getElementById('savingsGoalModal').dismiss()"
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
 
-                    <!-- 底部安全留白 -->
                     <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
         </ion-content>
 
-        <!-- 懸浮圓形導覽列 (移至 ion-app 層級，解決可見度問題) -->
+        <!-- 懸浮圓形導覽列 -->
         <div class="circle-nav-container">
-            <!-- 1. 首頁按鈕 -->
             <button class="circle-nav-btn active" id="navBtnHome" onclick="switchPage('home')">
                 <ion-icon name="home-outline"></ion-icon>
                 <span class="btn-label">首頁</span>
             </button>
 
-            <!-- 2. 計算機圓形按鈕 -->
             <button class="circle-nav-btn" id="navBtnCalc" onclick="switchPage('calc')">
                 <ion-icon name="calculator-outline"></ion-icon>
                 <span class="btn-label">計算</span>
             </button>
 
-            <!-- 3. 中央核心 ADD 圓形按鈕 -->
             <button class="circle-nav-btn primary-add-btn" id="openModalBtn">
                 <ion-icon name="add-outline"></ion-icon>
             </button>
 
-            <!-- 4. 儲蓄圓形按鈕 -->
             <button class="circle-nav-btn" id="navBtnSavings" onclick="switchPage('savings')">
                 <ion-icon name="wallet-outline"></ion-icon>
                 <span class="btn-label">儲蓄</span>
             </button>
 
-            <!-- 5. AI 分析圓形按鈕 -->
             <button class="circle-nav-btn" id="navBtnAi" onclick="switchPage('ai')">
                 <ion-icon name="sparkles-outline"></ion-icon>
                 <span class="btn-label">AI分析</span>
@@ -1041,6 +1068,19 @@
             '理財': { name: '📈 投資儲蓄', emoji: '📈', color: '#059669' },
             '教育': { name: '🎓 教育學習', emoji: '🎓', color: '#6366F1' },
             '其他': { name: '🪙 其他開銷', emoji: '🪙', color: '#6B7280' }
+        };
+
+        const PAYMENT_ICONS = {
+            '現金': '💵',
+            '八達通': '🚇',
+            '信用卡': '💳',
+            '支付寶': '💙',
+            '微信支付': '💚',
+            'PayMe': '💛',
+            'BOCPAY': '❤️',
+            'FPS轉數快': '⚡',
+            'ApplePay': '🍎',
+            '其他支付': '🪙'
         };
 
         const addModal = document.getElementById('addModal');
@@ -1077,19 +1117,19 @@
             if (pageKey === 'home') {
                 document.getElementById('pageHome').classList.add('active-page');
                 document.getElementById('navBtnHome')?.classList.add('active');
-                if (titleEl) titleEl.childNodes[0].nodeValue = "個人開銷記錄 ";
+                if (titleEl) titleEl.textContent = "個人開銷記錄";
             } else if (pageKey === 'calc') {
                 document.getElementById('pageCalc').classList.add('active-page');
                 document.getElementById('navBtnCalc')?.classList.add('active');
-                if (titleEl) titleEl.childNodes[0].nodeValue = "開銷計算機 ";
+                if (titleEl) titleEl.textContent = "開銷計算機";
             } else if (pageKey === 'savings') {
                 document.getElementById('pageSavings').classList.add('active-page');
                 document.getElementById('navBtnSavings')?.classList.add('active');
-                if (titleEl) titleEl.childNodes[0].nodeValue = "儲蓄目標與紀錄 ";
+                if (titleEl) titleEl.textContent = "儲蓄目標與紀錄";
             } else if (pageKey === 'ai') {
                 document.getElementById('pageAI').classList.add('active-page');
                 document.getElementById('navBtnAi')?.classList.add('active');
-                if (titleEl) titleEl.childNodes[0].nodeValue = "AI 財務分析 ";
+                if (titleEl) titleEl.textContent = "財務分析";
             }
         }
 
@@ -1195,9 +1235,9 @@
                 return;
             }
 
-            showLoading('Gemini AI 解析中...');
+            showLoading('解析中...');
 
-            const systemPrompt = "你是一個精準的香港記帳助手。請從使用者的自然語言輸入（可能包含廣東話/繁體中文）中，解析出以下欄位：\n1. title: 項目簡短名稱\n2. amount: 金額 (數字, HKD 港幣)\n3. category: 最符合的分類，限定選擇 [餐飲, 交通, 購物, 娛樂, 居家, 醫療, 通訊, 美容, 旅遊, 寵物, 社交, 理財, 教育, 其他]";
+            const systemPrompt = "你是一個精準的香港記帳助手。請從使用者的自然語言輸入（可能包含廣東話/繁體中文）中，解析出以下欄位：\n1. title: 項目簡短名稱\n2. amount: 金額 (數字, HKD 港幣)\n3. category: 最符合的分類，限定選擇 [餐飲, 交通, 購物, 娛樂, 居家, 醫療, 通訊, 美容, 旅遊, 寵物, 社交, 理財, 教育, 其他]\n4. payment: 支付方式，限定選擇 [現金, 八達通, 信用卡, 支付寶, 微信支付, PayMe, BOCPAY, FPS轉數快, ApplePay, 其他支付]";
 
             const payload = {
                 contents: [{ role: 'user', parts: [{ text: inputVal }] }],
@@ -1209,9 +1249,10 @@
                         properties: {
                             "title": { "type": "STRING" },
                             "amount": { "type": "NUMBER" },
-                            "category": { "type": "STRING", "enum": ["餐飲", "交通", "購物", "娛樂", "居家", "醫療", "通訊", "美容", "旅遊", "寵物", "社交", "理財", "教育", "其他"] }
+                            "category": { "type": "STRING", "enum": ["餐飲", "交通", "購物", "娛樂", "居家", "醫療", "通訊", "美容", "旅遊", "寵物", "社交", "理財", "教育", "其他"] },
+                            "payment": { "type": "STRING", "enum": ["現金", "八達通", "信用卡", "支付寶", "微信支付", "PayMe", "BOCPAY", "FPS轉數快", "ApplePay", "其他支付"] }
                         },
-                        "propertyOrdering": ["title", "amount", "category"]
+                        "propertyOrdering": ["title", "amount", "category", "payment"]
                     }
                 }
             };
@@ -1223,7 +1264,7 @@
                 const parsedText = res.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (parsedText) {
                     const data = JSON.parse(parsedText);
-                    applyParsedDataToForm(data.title, data.amount, data.category);
+                    applyParsedDataToForm(data.title, data.amount, data.category, data.payment);
                     showToast('✨ 解析成功！已自動帶入表單');
                 } else {
                     showToast('無法辨識相關資料，請試試寫得更清楚');
@@ -1231,7 +1272,7 @@
             } catch (err) {
                 hideLoading();
                 console.error(err);
-                showToast('AI 解析失敗，請稍後重試');
+                showToast('解析失敗，請稍後重試');
             }
         }
 
@@ -1257,9 +1298,9 @@
                 return;
             }
 
-            showLoading('Gemini Vision 掃描照片中...');
+            showLoading('掃描照片中...');
 
-            const prompt = "請辨識這張香港店舖收據或單據照片，提取主要的消費品名/店家名稱 (title)、總金額 HKD (amount) 與最適分類 (category: 餐飲, 交通, 購物, 娛樂, 居家, 醫療, 通訊, 美容, 旅遊, 寵物, 社交, 理財, 教育, 其他)。";
+            const prompt = "請辨識這張香港店舖收據或單據照片，提取主要的消費品名/店家名稱 (title)、總金額 HKD (amount)、最適分類 (category: 餐飲, 交通, 購物, 娛樂, 居家, 醫療, 通訊, 美容, 旅遊, 寵物, 社交, 理財, 教育, 其他) 與可能的支付方式 (payment: 現金, 八達通, 信用卡, 支付寶, 微信支付, PayMe, BOCPAY, FPS轉數快, ApplePay, 其他支付)。";
 
             const payload = {
                 contents: [{
@@ -1281,9 +1322,10 @@
                         properties: {
                             "title": { "type": "STRING" },
                             "amount": { "type": "NUMBER" },
-                            "category": { "type": "STRING", "enum": ["餐飲", "交通", "購物", "娛樂", "居家", "醫療", "通訊", "美容", "旅遊", "寵物", "社交", "理財", "教育", "其他"] }
+                            "category": { "type": "STRING", "enum": ["餐飲", "交通", "購物", "娛樂", "居家", "醫療", "通訊", "美容", "旅遊", "寵物", "社交", "理財", "教育", "其他"] },
+                            "payment": { "type": "STRING", "enum": ["現金", "八達通", "信用卡", "支付寶", "微信支付", "PayMe", "BOCPAY", "FPS轉數快", "ApplePay", "其他支付"] }
                         },
-                        "propertyOrdering": ["title", "amount", "category"]
+                        "propertyOrdering": ["title", "amount", "category", "payment"]
                     }
                 }
             };
@@ -1295,7 +1337,7 @@
                 const parsedText = res.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (parsedText) {
                     const data = JSON.parse(parsedText);
-                    applyParsedDataToForm(data.title, data.amount, data.category);
+                    applyParsedDataToForm(data.title, data.amount, data.category, data.payment);
                     showToast('📸 收據辨識成功！已帶入欄位');
                 } else {
                     showToast('無法辨識照片中的收據資訊');
@@ -1307,7 +1349,7 @@
             }
         }
 
-        function applyParsedDataToForm(title, amount, category) {
+        function applyParsedDataToForm(title, amount, category, payment) {
             document.getElementById('inputModeSegment').value = 'manual';
             document.getElementById('manualInputSection').style.display = 'block';
             document.getElementById('aiTextInputSection').style.display = 'none';
@@ -1327,8 +1369,10 @@
                 }
             }
             if (category) {
-                const selectEl = document.getElementById('manualCategorySelect');
-                selectEl.value = category;
+                document.getElementById('manualCategorySelect').value = category;
+            }
+            if (payment) {
+                document.getElementById('manualPaymentSelect').value = payment;
             }
         }
 
@@ -1351,7 +1395,7 @@
 
             const payload = {
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                systemInstruction: { parts: [{ text: "你是親切且專業的 AI 香港個人財務顧問，請以繁體中文/香港廣東話風格回應。" }] },
+                systemInstruction: { parts: [{ text: "你是親切且專業的香港個人財務顧問，請以繁體中文/香港廣東話風格回應。" }] },
                 generationConfig: {
                     responseMimeType: "application/json",
                     responseSchema: {
@@ -1390,8 +1434,34 @@
                 contentBox.style.opacity = '1';
 
                 console.error(err);
-                showToast('AI 診斷連線失敗');
+                showToast('診斷連線失敗');
             }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showLoading(msg) {
+            showToast(msg);
+        }
+
+        function hideLoading() { }
+
+        function showToast(msg) {
+            const toast = document.createElement('ion-toast');
+            toast.message = msg;
+            toast.duration = 1800;
+            toast.position = 'bottom';
+            toast.style.paddingBottom = '60px';
+            document.body.appendChild(toast);
+            toast.present();
         }
 
         function updateRangeValue(val) {
@@ -1437,7 +1507,12 @@
 
         function loadData() {
             const savedText = localStorage.getItem('records');
-            if (savedText) records = JSON.parse(savedText);
+            if (savedText) {
+                records = JSON.parse(savedText);
+                records.forEach(r => {
+                    if (!r.payment) r.payment = '現金';
+                });
+            }
 
             const savedSavings = localStorage.getItem('savings_records');
             if (savedSavings) savingsRecords = JSON.parse(savedSavings);
@@ -1452,18 +1527,18 @@
         function loadSeedData() {
             const today = getTodayDateString();
             records = [
-                { id: Date.now() - 5000, title: '🍱 茶餐廳常餐午膳', amount: 65, category: '餐飲', date: today },
-                { id: Date.now() - 4000, title: '🚇 八達通自動增值', amount: 500, category: '交通', date: today },
-                { id: Date.now() - 3000, title: '🛒 惠康/百佳買餸', amount: 320, category: '購物', date: today },
-                { id: Date.now() - 2000, title: '🎬 戲院睇戲加爆谷', amount: 160, category: '娛樂', date: today },
-                { id: Date.now() - 1000, title: '🏠 中電電費單', amount: 850, category: '居家', date: today }
+                { id: Date.now() - 5000, title: '🍱 茶餐廳常餐午膳', amount: 65, category: '餐飲', payment: '八達通', date: today },
+                { id: Date.now() - 4000, title: '🚇 八達通自動增值', amount: 500, category: '交通', payment: '信用卡', date: today },
+                { id: Date.now() - 3000, title: '🛒 惠康/百佳買餸', amount: 320, category: '購物', payment: '支付寶', date: today },
+                { id: Date.now() - 2000, title: '🎬 戲院睇戲加爆谷', amount: 160, category: '娛樂', payment: 'PayMe', date: today },
+                { id: Date.now() - 1000, title: '🏠 中電電費單', amount: 850, category: '居家', payment: 'FPS轉數快', date: today }
             ];
             isMultiSelectMode = false;
             selectedRecordIds.clear();
             updateMultiSelectUI();
             saveData();
             renderList();
-            showToast('已成功載入香港測試開銷資料！');
+            showToast('已成功載入測試開銷資料！');
         }
 
         function toggleMultiSelectMode() {
@@ -1558,7 +1633,6 @@
             await alert.present();
         }
 
-        // 開啟預算上限 Range 彈窗
         function popupChangeBudgetAlert() {
             const modal = document.getElementById('budgetModal');
             const rangeInput = document.getElementById('budgetRangeInput');
@@ -1616,7 +1690,6 @@
             }
         }
 
-        // 開啟儲蓄目標 Range 彈窗
         function popupChangeSavingsGoalAlert() {
             const modal = document.getElementById('savingsGoalModal');
             const rangeInput = document.getElementById('savingsGoalRangeInput');
@@ -1679,7 +1752,6 @@
             }
         }
 
-        // 頁面 4 儲蓄存入 Range 滑桿動態控制
         function updateSavingsRangeValue(val) {
             const display = document.getElementById('savingsRangeAmountValue');
             if (display) display.textContent = Number(val).toLocaleString();
@@ -1719,6 +1791,7 @@
 
             const rangeEl = document.getElementById('finalAmountRange');
             const selectEl = document.getElementById('manualCategorySelect');
+            const paymentSelect = document.getElementById('manualPaymentSelect');
             const dateValue = document.getElementById('finalDateInput').value || getTodayDateString();
 
             const newRecord = {
@@ -1726,6 +1799,7 @@
                 title: titleValue,
                 amount: rangeEl ? Number(rangeEl.value) : 0,
                 category: selectEl.value || '其他',
+                payment: paymentSelect ? paymentSelect.value : '現金',
                 date: dateValue,
                 createdAt: new Date().toISOString()
             };
@@ -1896,6 +1970,7 @@
                 updateRangeValue(65);
             }
             document.getElementById('manualCategorySelect').value = '';
+            document.getElementById('manualPaymentSelect').value = '現金';
             document.getElementById('expTitleError').textContent = '';
             document.getElementById('receiptFileInput').value = '';
             document.getElementById('receiptImagePreview').style.display = 'none';
@@ -1906,6 +1981,8 @@
 
         function createRecordHTML(item) {
             const config = CATEGORY_MAP[item.category] || CATEGORY_MAP['其他'];
+            const paymentMethod = item.payment || '現金';
+            const paymentIcon = PAYMENT_ICONS[paymentMethod] || '💳';
             const isChecked = selectedRecordIds.has(item.id);
             const itemDate = item.date || (item.createdAt ? item.createdAt.split('T')[0] : getTodayDateString());
 
@@ -1934,9 +2011,12 @@
 
                     <ion-label style="margin-left: 4px;">
                         <h2 style="color: white; font-size: 17px; margin-bottom: 4px; font-weight: 700;">${escapeHtml(item.title)}</h2>
-                        <p style="margin: 0; display: flex; align-items: center; gap: 6px;">
+                        <p style="margin: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                             <span style="background: rgba(255,255,255,0.25); color: white; font-weight: 600; padding: 2px 8px; border-radius: 6px; font-size: 11px;">
                                 ${config.name}
+                            </span>
+                            <span style="background: rgba(0,0,0,0.25); color: #fbbf24; font-weight: 700; padding: 2px 8px; border-radius: 6px; font-size: 11px;">
+                                ${paymentIcon} ${escapeHtml(paymentMethod)}
                             </span>
                             <span style="color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 600;">
                                 📅 ${escapeHtml(itemDate)}
@@ -2009,7 +2089,7 @@
                 container.innerHTML = `
                 <ion-item lines="none" style="--background: transparent;">
                     <ion-label class="ion-text-center" style="color: #6B7280; padding: 30px 0; font-size: 14px;">
-                        目前沒有記錄<br>點擊下方「+」或使用 ✨ AI 語音/圖片快速記帳吧！
+                        目前沒有記錄<br>點擊下方「+」或使用語音/圖片快速記帳
                     </ion-label>
                 </ion-item>
                 `;
@@ -2017,41 +2097,6 @@
             }
 
             container.innerHTML = records.map(item => createRecordHTML(item)).join('');
-        }
-
-        async function showToast(message) {
-            const toast = document.createElement('ion-toast');
-            toast.message = message;
-            toast.duration = 2000;
-            toast.position = 'top';
-            toast.color = 'dark';
-            document.body.appendChild(toast);
-            await toast.present();
-        }
-
-        let loadingElement = null;
-        async function showLoading(msg) {
-            loadingElement = document.createElement('ion-loading');
-            loadingElement.message = msg;
-            document.body.appendChild(loadingElement);
-            await loadingElement.present();
-        }
-
-        async function hideLoading() {
-            if (loadingElement) {
-                await loadingElement.dismiss();
-                loadingElement = null;
-            }
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            return String(text)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
         }
     </script>
 </body>
