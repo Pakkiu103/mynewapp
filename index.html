@@ -15,6 +15,71 @@
 
     <style>
         :root {
+        /* 💡 熄燈模式 / 深色主題 (Dark Mode) */
+       /* 1. 熄燈模式背景顏色 */
+ion-app.dark-theme ion-content {
+    --background: #090d16 !important;
+}
+
+/* 2. 頂部 Header 標題列：固定藍黑色 (#0f172a)，文字固定為白色 */
+ion-toolbar {
+    --background: #0f172a !important;
+    --color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+ion-toolbar ion-title {
+    color: #ffffff !important;
+    font-weight: 800;
+}
+
+/* 3. 頂部右上角的熄燈模式切換按鈕 */
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.85);
+}
+
+/* 4. 分區標題（開燈時深灰藍，熄燈時自動變白） */
+.section-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #334155;
+    margin: 16px 0 8px 4px;
+    transition: color 0.3s ease;
+}
+
+ion-app.dark-theme .section-title {
+    color: #ffffff !important;
+}
+
+
+
+        ion-content {
+            --color: var(--app-text, #111827);
+            --background: var(--app-bg, #f8fafc);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        ion-toolbar {
+            --background: var(--toolbar-bg, #ffffff);
+            --color: var(--toolbar-text, #0f172a);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
             --card-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%);
             --savings-card-gradient: linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%);
             --loan-card-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
@@ -165,6 +230,68 @@ border-bottom: 2px solid #fbbf24; /* 下邊金黃色幼邊 */
             transform: scale(0.95);
             background: rgba(255, 255, 255, 0.3);
         }
+/* 右下角的半透明修改按鈕樣式 */
+.semi-edit-btn {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fde047; /* 淡黃色文字 */
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease;
+}
+
+/* 按下時的 3D 按壓手感反饋 */
+.semi-edit-btn:active {
+    transform: scale(0.9) translateY(2px) !important;
+    background: rgba(255, 255, 255, 0.3);
+    opacity: 0.9;
+}
+
+/* 只針對彈出視窗內的確認、取消、儲存按鈕加上 3D 按壓效果 */
+ion-modal ion-button:active {
+    transform: scale(0.96) translateY(2px) !important;
+    opacity: 0.9;
+    transition: transform 0.1s ease;
+}
+/* /* =========================================================
+   ✨ 柔和阻尼感滑動選單 (解決彈得太快、太突兀問題)
+   ========================================================= */
+
+/* 1. 限制選項容器，讓拉動過程順暢平滑 */
+ion-item-options {
+    background: transparent !important;
+    border: none !important;
+    padding: 3px 6px;
+    gap: 8px;
+}
+
+/* 2. 為滑動按鈕加入柔和的 CSS 緩和時間與阻尼曲線 */
+ion-item-option {
+    border-radius: 14px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    /* 💡 使用更平緩的 cubic-bezier 曲線，讓滑出過程不突兀 */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                opacity 0.3s ease !important;
+}
+
+/* 3. 當選單拉開時，圖示帶有極微小的漸顯效果，增加質感 */
+ion-item-option ion-icon {
+    font-size: 22px !important;
+    transition: transform 0.2s ease;
+}
+
+/* 4. 手指點按時的平滑下壓感 */
+ion-item-option:active {
+    transform: scale(0.92) !important;
+    opacity: 0.85;
+}
 
         .card-number-sim {
             font-family: 'Courier New', Courier, monospace;
@@ -436,19 +563,54 @@ border-bottom: 2px solid #fbbf24; /* 下邊金黃色幼邊 */
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        .custom-sliding-item {
-            border-radius: 16px !important;
-            margin-bottom: 12px;
-            overflow: hidden;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-        }
+/* 【升級】3D 立體卡片清單項目 */
+.custom-sliding-item {
+    border-radius: 18px !important;
+    margin-bottom: 14px;
+    overflow: hidden;
+    /* 1. 多層次立體陰影：外部懸浮深陰影 + 內部高光 */
+    box-shadow: 
+        0 10px 20px -5px rgba(0, 0, 0, 0.25),
+        0 4px 6px -2px rgba(0, 0, 0, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+    /* 2. 微光白邊框，增加精緻層次感 */
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
 
-        .custom-sliding-item ion-item {
-            --background: transparent;
-            --padding-start: 14px;
-            --padding-end: 16px;
-            --inner-padding-end: 0;
-        }
+/* 點擊時的 3D 按壓沉降效果 */
+.custom-sliding-item:active {
+    transform: scale(0.98) translateY(2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.custom-sliding-item ion-item {
+    --background: transparent;
+    --padding-start: 14px;
+    --padding-end: 16px;
+    --inner-padding-end: 0;
+}
+
+/* 3D 立體徽章圓圈 (Icon 容器) */
+.item-badge-3d {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 22px;
+    /* 圓圈內陰影與立體凸起感 */
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.25),
+        inset 0 2px 3px rgba(255, 255, 255, 0.9),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    flex-shrink: 0;
+}
+
 
         .circle-nav-container {
             position: fixed;
@@ -665,12 +827,20 @@ select.modal-dark-input {
 </head>
 
 <body>
-    <ion-app>
+    <ion-app id="appContainer">
         <!-- Header 工具列 -->
         <ion-header class="ion-no-border">
             <ion-toolbar>
-                <ion-title id="pageHeaderTitle">個人開銷記錄</ion-title>
-            </ion-toolbar>
+    <ion-title id="pageHeaderTitle">個人開銷記錄</ion-title>
+
+    <!-- 💡 頂部右上角的熄燈模式按鈕 -->
+    <div slot="end" style="padding-right: 12px;">
+        <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()">
+            🌙
+        </button>
+    </div>
+</ion-toolbar>
+
         </ion-header>
 
         <ion-content class="ion-padding">
@@ -715,7 +885,7 @@ select.modal-dark-input {
 
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
-                    <h3 style="margin: 0; font-size: 17px; font-weight: 800; color: #1e293b;">📋 消費記錄明細</h3>
+                    <h3 class="section-title" style="margin: 0; font-size: 17px; font-weight: 800;">📋 消費記錄明細</h3>
                     <div style="display: flex; gap: 2px;">
                         <ion-button id="toggleMultiSelectBtn" fill="clear" size="small"
                             style="--color: #ef4444; font-weight: 700;">
@@ -841,7 +1011,7 @@ select.modal-dark-input {
 
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
-                    <h3 style="margin: 0; font-size: 17px; font-weight: 800; color: #1e293b;">💳 每月還款計劃與到期日提醒</h3>
+                    <h3 class="section-title" style="margin: 0; font-size: 17px; font-weight: 800;">💳 每月還款計劃與到期日提醒</h3>
                 </div>
 
                 <ion-list id="loanRecordContainer" lines="none" style="background: transparent;"></ion-list>
@@ -932,7 +1102,7 @@ select.modal-dark-input {
                     </ion-button>
                 </div>
 
-                <h3 style="margin: 0 0 12px 4px; font-size: 17px; font-weight: 800; color: #1e293b;">📜 儲蓄存入紀錄</h3>
+                <h3 class="section-title" style="margin: 0 0 12px 4px; font-size: 17px; font-weight: 800;">📜 儲蓄存入紀錄</h3>
                 <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
 
@@ -1350,23 +1520,54 @@ select.modal-dark-input {
         let isMultiSelectMode = false;
         let selectedRecordIds = new Set();
         let currentEditingLoanId = null;
+/* 💡 熄燈/深色模式初始化與切換邏輯 */
+function initTheme() {
+    const savedTheme = localStorage.getItem('app_theme');
+    const app = document.getElementById('appContainer');
+    const btn = document.getElementById('themeToggleBtn');
 
-        const CATEGORY_MAP = {
-            '餐飲': { name: '🍱 餐飲食品', emoji: '🍱', color: '#FF7A00' },
-            '交通': { name: '🚇 交通出行', emoji: '🚇', color: '#1A56DB' },
-            '購物': { name: '🛒 購物消費', emoji: '🛒', color: '#A855F7' },
-            '娛樂': { name: '🎮 娛樂消遣', emoji: '🎮', color: '#10B981' },
-            '居家': { name: '🏠 居家水電', emoji: '🏠', color: '#475569' },
-            '醫療': { name: '💊 醫療健康', emoji: '💊', color: '#EC4899' },
-            '通訊': { name: '📱 數碼通訊', emoji: '📱', color: '#06B6D4' },
-            '美容': { name: '🛍️ 服飾美容', emoji: '🛍️', color: '#F43F5E' },
-            '旅遊': { name: '✈️ 旅遊外遊', emoji: '✈️', color: '#0EA5E9' },
-            '寵物': { name: '🐾 寵物照顧', emoji: '🐾', color: '#F97316' },
-            '社交': { name: '🎁 禮物人情', emoji: '🎁', color: '#8B5CF6' },
-            '理財': { name: '📈 投資儲蓄', emoji: '📈', color: '#059669' },
-            '教育': { name: '🎓 教育學習', emoji: '🎓', color: '#6366F1' },
-            '其他': { name: '🪙 其他開銷', emoji: '🪙', color: '#6B7280' }
-        };
+    if (savedTheme === 'dark') {
+        app.classList.add('dark-theme');
+        if (btn) btn.textContent = '☀️';
+    } else {
+        app.classList.remove('dark-theme');
+        if (btn) btn.textContent = '🌙';
+    }
+}
+
+function toggleTheme() {
+    const app = document.getElementById('appContainer');
+    const btn = document.getElementById('themeToggleBtn');
+    
+    // toggle() 會自動切換 Class 的存在狀態 (有變無，無變有)
+    const isDark = app.classList.toggle('dark-theme');
+
+    if (isDark) {
+        if (btn) btn.textContent = '☀️';
+        localStorage.setItem('app_theme', 'dark');
+    } else {
+        if (btn) btn.textContent = '🌙';
+        localStorage.setItem('app_theme', 'light');
+    }
+}
+
+const CATEGORY_MAP = {
+    '餐飲': { name: '🍱 餐飲食品', emoji: '🍱', color: 'linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%)' },
+    '交通': { name: '🚇 交通出行', emoji: '🚇', color: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)' },
+    '購物': { name: '🛒 購物消費', emoji: '🛒', color: 'linear-gradient(135deg, #a855f7 0%, #9333ea 50%, #7e22ce 100%)' },
+    '娛樂': { name: '🎮 娛樂消遣', emoji: '🎮', color: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)' },
+    '居家': { name: '🏠 居家水電', emoji: '🏠', color: 'linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%)' },
+    '醫療': { name: '💊 醫療健康', emoji: '💊', color: 'linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be123c 100%)' },
+    '通訊': { name: '📱 數碼通訊', emoji: '📱', color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)' },
+    '美容': { name: '🛍️ 服飾美容', emoji: '🛍️', color: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%)' },
+    '旅遊': { name: '✈️ 旅遊外遊', emoji: '✈️', color: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%)' },
+    '寵物': { name: '🐾 寵物照顧', emoji: '🐾', color: 'linear-gradient(135deg, #f97316 0%, #d97706 50%, #b45309 100%)' },
+    '社交': { name: '🎁 禮物人情', emoji: '🎁', color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)' },
+    '理財': { name: '📈 投資儲蓄', emoji: '📈', color: 'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)' },
+    '教育': { name: '🎓 教育學習', emoji: '🎓', color: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%)' },
+    '其他': { name: '🪙 其他開銷', emoji: '🪙', color: 'linear-gradient(135deg, #6b7280 0%, #4b5563 50%, #374151 100%)' }
+};
+
 
         const LOAN_CATEGORY_MAP = {
             '信用卡': { name: '💳 信用卡分期', emoji: '💳', color: '#4f46e5' },
@@ -1441,6 +1642,7 @@ const PAYMENT_MAP = {
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+          	initTheme();
             loadData();
             const dateInput = document.getElementById('finalDateInput');
             if (dateInput && !dateInput.value) dateInput.value = getTodayDateString();
@@ -2029,7 +2231,7 @@ const PAYMENT_MAP = {
 
             if (cardDateDisplay) {
                 const now = new Date();
-                cardDateDisplay.textContent = `•••• •••• •••• ${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}`;
+                cardDateDisplay.textContent = `•••• •••• WALLET ${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
             }
 
             const totalExpense = records.reduce((sum, item) => sum + Number(item.amount || 0), 0);
@@ -2065,60 +2267,52 @@ const PAYMENT_MAP = {
                 return;
             }
 
-            container.innerHTML = records.map(item => {
-                const catConfig = CATEGORY_MAP[item.category] || CATEGORY_MAP['其他'];
-                const isSelected = selectedRecordIds.has(item.id);
+container.innerHTML = records.map(item => {
+    const catConfig = CATEGORY_MAP[item.category] || CATEGORY_MAP['其他'];
+    const isSelected = selectedRecordIds.has(item.id);
 
-                let selectCheckboxHtml = '';
-                if (isMultiSelectMode) {
-                    selectCheckboxHtml = `
-                    <div slot="start" style="display: flex; align-items: center; margin-right: 10px;" onclick="event.stopPropagation(); toggleSelectRecord(${item.id});">
-                        <ion-checkbox class="red-checkbox" checked="${isSelected}"></ion-checkbox>
-                    </div>
-                    `;
-                }
+    let selectCheckboxHtml = '';
+    if (isMultiSelectMode) {
+        selectCheckboxHtml = `
+        <div slot="start" style="display: flex; align-items: center; margin-right: 10px;" onclick="event.stopPropagation(); toggleSelectRecord(${item.id});">
+            <ion-checkbox class="red-checkbox" checked="${isSelected}"></ion-checkbox>
+        </div>
+        `;
+    }
 
-                return `
-                <ion-item-sliding class="custom-sliding-item" style="background-color: ${catConfig.color};">
-                    <ion-item lines="none" onclick="${isMultiSelectMode ? `toggleSelectRecord(${item.id})` : ''}">
-                        ${selectCheckboxHtml}
-                        <div slot="start" style="
-                            background-color: rgba(255, 255, 255, 0.95); 
-                            width: 42px; 
-                            height: 42px; 
-                            border-radius: 50%; 
-                            display: flex; 
-                            align-items: center; 
-                            justify-content: center;
-                            margin-right: 8px;
-                            font-size: 20px;
-                            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                        ">
-                            ${catConfig.emoji}
-                        </div>
+    return `
+    <!-- background 使用漸變色 background: ${catConfig.color} -->
+    <ion-item-sliding class="custom-sliding-item" style="background: ${catConfig.color};">
+        <ion-item lines="none" onclick="${isMultiSelectMode ? `toggleSelectRecord(${item.id})` : ''}">
+            ${selectCheckboxHtml}
+            
+            <!-- 套用 3D 立體圓圈徽章 class="item-badge-3d" -->
+            <div slot="start" class="item-badge-3d">
+                ${catConfig.emoji}
+            </div>
 
-                        <ion-label style="margin-left: 4px; padding: 8px 0;">
-                            <h2 style="color: white; font-size: 15px; font-weight: 800; margin: 0;">${escapeHtml(item.title)}</h2>
-                            <p style="color: rgba(255,255,255,0.85); font-size: 12px; margin: 3px 0 0 0; font-weight: 600; display: flex; gap: 8px;">
-    <span>📅 ${item.date || ''}</span>
-    <span>${escapeHtml(PAYMENT_MAP[item.payment] || ('💳 ' + item.payment))}</span>
-</p>
-                     
-                        </ion-label>
+            <ion-label style="margin-left: 4px; padding: 10px 0;">
+                <h2 style="color: white; font-size: 16px; font-weight: 800; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">${escapeHtml(item.title)}</h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 12px; margin: 4px 0 0 0; font-weight: 600; display: flex; gap: 8px;">
+                    <span>📅 ${item.date || ''}</span>
+                    <span>${escapeHtml(PAYMENT_MAP[item.payment] || ('💳 ' + item.payment))}</span>
+                </p>
+            </ion-label>
 
-                        <div slot="end" style="text-align: right;">
-                            <span style="font-size: 17px; font-weight: 900; color: #ffffff;">-HK$${Number(item.amount).toLocaleString()}</span>
-                        </div>
-                    </ion-item>
+            <div slot="end" style="text-align: right;">
+                <span style="font-size: 18px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">-HK$${Number(item.amount).toLocaleString()}</span>
+            </div>
+        </ion-item>
 
-                    <ion-item-options side="end">
-                        <ion-item-option color="danger" onclick="confirmDelete(${item.id})" style="width: 70px;">
-                            <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
-                        </ion-item-option>
-                    </ion-item-options>
-                </ion-item-sliding>
-                `;
-            }).join('');
+        <ion-item-options side="end">
+            <ion-item-option color="danger" onclick="confirmDelete(${item.id})" style="width: 70px;">
+                <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
+            </ion-item-option>
+        </ion-item-options>
+    </ion-item-sliding>
+    `;
+}).join('');
+
         }
 
         function renderLoansList() {
@@ -2183,50 +2377,64 @@ const PAYMENT_MAP = {
                 const monthly = Number(item.monthlyPayment) || Math.ceil(totalAmt / (item.totalPeriods || 12));
 
                 return `
-                <ion-item-sliding class="custom-sliding-item" style="background-color: ${loanCatConfig.color};">
-                    <ion-item lines="none" onclick="openEditLoanModal(${item.id})">
-                        <div slot="start" style="
-                            background-color: rgba(255, 255, 255, 0.95); 
-                            width: 42px; 
-                            height: 42px; 
-                            border-radius: 50%; 
-                            display: flex; 
-                            align-items: center; 
-                            justify-content: center;
-                            margin-right: 8px;
-                            font-size: 20px;
-                            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                        ">
-                            ${loanCatConfig.emoji}
-                        </div>
+<ion-item-sliding class="custom-sliding-item" style="background-color: ${loanCatConfig.color};">
+    <!-- 💡 1. 注意：移除了原本的 onclick="openEditLoanModal(...)"，點擊不會再自動彈出修改 -->
+    <ion-item lines="none">
+        <div slot="start" style="
+            background-color: rgba(255, 255, 255, 0.95); 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            margin-right: 8px;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        ">
+            ${loanCatConfig.emoji}
+        </div>
 
-                        <ion-label style="margin-left: 4px; padding: 8px 0;">
-                            <h2 style="color: white; font-size: 15px; font-weight: 800; margin: 0;">${escapeHtml(item.title)}</h2>
-                            <p style="color: rgba(255,255,255,0.85); font-size: 12px; margin: 3px 0 0 0; font-weight: 600; display: flex; gap: 8px; flex-wrap: wrap;">
-                                <span>📅 到期日: ${item.dueDate || '無'}</span>
-                                <span>🔔 月供: HK$${monthly.toLocaleString()}</span>
-                            </p>
-                            <div style="margin-top: 6px;">
-                                <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 700;">
-                                    <span>已還: HK$${repaidAmt.toLocaleString()} (${percent}%)</span>
-                                    <span>剩餘: HK$${remaining.toLocaleString()}</span>
-                                </div>
-                            </div>
-                        </ion-label>
+        <ion-label style="margin-left: 4px; padding: 8px 0;">
+            <h2 style="color: white; font-size: 15px; font-weight: 800; margin: 0;">${escapeHtml(item.title)}</h2>
+            <p style="color: rgba(255,255,255,0.85); font-size: 12px; margin: 3px 0 0 0; font-weight: 600; display: flex; gap: 8px; flex-wrap: wrap;">
+                <span>📅 到期日: ${item.dueDate || '無'}</span>
+                <span>🔔 月供: HK$${monthly.toLocaleString()}</span>
+            </p>
+            <div style="margin-top: 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 700;">
+                    <span>已還: HK$${repaidAmt.toLocaleString()} (${percent}%)</span>
+                    <span>剩餘: HK$${remaining.toLocaleString()}</span>
+                </div>
+                <!-- 還款進度條 -->
+                <ion-progress-bar value="${totalAmt > 0 ? (repaidAmt / totalAmt) : 0}" 
+                    style="--background: rgba(255,255,255,0.25); --progress-background: ${remaining === 0 ? '#34d399' : '#fbbf24'}; height: 6px; border-radius: 3px; margin-top: 4px;">
+                </ion-progress-bar>
+            </div>
+        </ion-label>
 
-                        <div slot="end" style="text-align: right; min-width: 70px;">
-                            <span style="font-size: 15px; font-weight: 900; color: ${remaining === 0 ? '#34d399' : '#fbbf24'};">
-                                ${remaining === 0 ? '✅ 已清還' : 'HK$' + remaining.toLocaleString()}
-                            </span>
-                        </div>
-                    </ion-item>
+    <!-- 右邊區域：顯示金額 + 右下角半透明修改鍵 -->
+<div slot="end" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; min-height: 100px; padding-top: 4px; padding-bottom: 2px;">
+    <span style="font-size: 14px; font-weight: 900; color: ${remaining === 0 ? '#34d399' : '#fbbf24'};">
+        ${remaining === 0 ? '✅ 已清還' : 'HK$' + remaining.toLocaleString()}
+    </span>
 
-                    <ion-item-options side="end">
-                        <ion-item-option color="danger" onclick="confirmDeleteLoan(${item.id})" style="width: 70px;">
-                            <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
-                        </ion-item-option>
-                    </ion-item-options>
-                </ion-item-sliding>
+    <!-- 💡 右下角的半透明修改按鈕 -->
+    <button type="button" class="semi-edit-btn" onclick="openEditLoanModal(${item.id})">
+        <ion-icon name="create-outline"></ion-icon> 修改
+    </button>
+</div>
+
+    </ion-item>
+
+<!-- 滑動選單：向左滑動只出現刪除按鈕 (最順暢) -->
+<ion-item-options side="end">
+    <ion-item-option color="danger" onclick="confirmDeleteLoan(${item.id})" style="border-radius: 0 16px 16px 0;">
+        <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
+    </ion-item-option>
+</ion-item-options>
+</ion-item-sliding>
+
                 `;
             }).join('');
         }
