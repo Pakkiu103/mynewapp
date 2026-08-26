@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>個人財務與借貸記錄</title>
+    <title>個人理財記錄</title>
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -614,6 +614,15 @@
             border-color: #38bdf8;
             box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
         }
+/* 修正日期與下拉選單在雙欄佈局下的溢出走位問題 */
+.modal-dark-input[type="date"],
+select.modal-dark-input {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none; /* 移除 iOS 預設樣式影響 */
+}
+
 
         .modal-dark-group {
             position: relative;
@@ -786,7 +795,7 @@
                                 style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
                             <span class="card-brand">LOAN & CREDIT FACILITY</span>
                         </div>
-                        <button class="budget-badge-btn" onclick="openAddLoanModal()">
+                        <button class="budget-badge-btn" style="white-space:nowrap;"onclick="openAddLoanModal()">
                             ➕ 新增借貸項目
                         </button>
                     </div>
@@ -932,8 +941,9 @@
                     <div id="manualInputSection">
                         <div class="row-grid-2">
                             <div class="modal-dark-group">
-                                <input type="date" id="finalDateInput" class="modal-dark-input"
-                                    style="font-size: 14px; padding: 16px 8px; text-align: center; font-weight: 700; height: 56px;">
+<input type="date" id="finalDateInput" class="modal-dark-input"
+    style="font-size: 13px; padding: 12px 4px; text-align: center; font-weight: 700; height: 56px; width: 100%; min-width: 0;">
+
                                 <label for="finalDateInput">📅 消費日期</label>
                             </div>
 
@@ -1358,6 +1368,19 @@
             '銀行私貸': { name: '🏦 銀行私人貸款', emoji: '🏦', color: '#0d9488' },
             '其他借貸': { name: '🪙 其他借貸', emoji: '🪙', color: '#475569' }
         };
+const PAYMENT_MAP = {
+    '現金': '💵 現金',
+    '八達通': '🚇 八達通',
+    '信用卡': '💳 信用卡',
+    '支付寶': '💙 支付寶',
+    '微信支付': '💚 微信支付',
+    'PayMe': '💛 PayMe',
+    'BOCPAY': '❤️ BOC Pay',
+    'FPS轉數快': '⚡ 轉數快',
+    'ApplePay': '🍎 Apple Pay',
+    '其他支付': '🪙 其他支付'
+};
+
 
         function escapeHtml(str) {
             if (!str) return '';
@@ -1525,8 +1548,8 @@
             const toast = document.createElement('ion-toast');
             toast.message = msg;
             toast.duration = 1800;
-            toast.position = 'bottom';
-            toast.style.paddingBottom = '60px';
+            toast.position = 'top';
+            toast.style.paddingTop = '20px';
             document.body.appendChild(toast);
             toast.present();
         }
@@ -2071,9 +2094,10 @@
                         <ion-label style="margin-left: 4px; padding: 8px 0;">
                             <h2 style="color: white; font-size: 15px; font-weight: 800; margin: 0;">${escapeHtml(item.title)}</h2>
                             <p style="color: rgba(255,255,255,0.85); font-size: 12px; margin: 3px 0 0 0; font-weight: 600; display: flex; gap: 8px;">
-                                <span>📅 ${item.date || ''}</span>
-                                <span>💳 ${escapeHtml(item.payment || '現金')}</span>
-                            </p>
+    <span>📅 ${item.date || ''}</span>
+    <span>${escapeHtml(PAYMENT_MAP[item.payment] || ('💳 ' + item.payment))}</span>
+</p>
+                     
                         </ion-label>
 
                         <div slot="end" style="text-align: right;">
