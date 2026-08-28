@@ -636,25 +636,41 @@
             border: none;
         }
 
-        /* 💡 將清單項目 (Box) 固定為高級深藍黑底色，不受開燈/熄燈影響 */
+/* 💡 清單卡片 Box：還原經典圓潤光滑邊角與清爽陰影 */
 .custom-sliding-item {
-    border-radius: 18px !important;
-    margin-bottom: 14px;
-    overflow: hidden;
-    background: #1e293b !important; /* 固定深色底 Box */
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+    border-radius: 20px !important;
+    margin-bottom: 14px !important;
+    overflow: hidden !important; /* 確保四角 100% 保持光滑圓弧，絕不起角 */
+    background: #1e293b !important; /* 高級深藍黑底色 */
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* 🌙 熄燈模式 (Dark Theme) */
+ion-app.dark-theme .custom-sliding-item {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 內部 ion-item 設定 */
 .custom-sliding-item ion-item {
-    --background: #1e293b !important; /* 固定內部背景色 */
+    --background: #1e293b !important;
     --color: #ffffff !important;
     --padding-start: 14px;
     --padding-end: 16px;
+    --border-style: none !important;
+    --inner-padding-end: 0px !important;
+    border-radius: 20px !important;
 }
 
-/* 💡 固定文字顏色：標題保持亮白，附註保持清析淺灰 */
+/* 側滑刪除選單圓角相符 */
+.custom-sliding-item ion-item-options {
+    border-top-right-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+}
+
+/* 文字顏色 */
 .custom-sliding-item ion-label h2 {
     color: #ffffff !important;
     font-weight: 800 !important;
@@ -1235,6 +1251,94 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
     background: #1e293b;
     border-color: #fbbf24;
 }
+/* 💡 自訂高質感圓形 Checkbox 樣式 */
+.custom-circle-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #ef4444;
+    border-radius: 50%; /* 💡 變成完美圓形 */
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* 勾選時的亮紅背景與中央白勾號 */
+.custom-circle-checkbox:checked {
+    background: #ef4444;
+    border-color: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.custom-circle-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+/* 💡 ionic ion-alert 全局風格美化 (極致深藍黑金屬風) */
+ion-alert.custom-danger-alert {
+    --background: #0f172a !important;
+    --color: #ffffff !important;
+    --max-width: 320px;
+}
+
+ion-alert.custom-danger-alert .alert-wrapper {
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+    overflow: hidden;
+}
+
+ion-alert.custom-danger-alert .alert-head {
+    padding-bottom: 8px;
+}
+
+ion-alert.custom-danger-alert .alert-title {
+    color: #ffffff !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px;
+}
+
+ion-alert.custom-danger-alert .alert-message {
+    color: #cbd5e1 !important;
+    font-size: 13px !important;
+    line-height: 1.5;
+}
+
+ion-alert.custom-danger-alert .alert-button-group {
+    padding: 10px 12px 14px 12px;
+    gap: 8px;
+}
+
+ion-alert.custom-danger-alert .alert-button-role-cancel {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #94a3b8 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+ion-alert.custom-danger-alert .alert-button-role-destructive {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+    font-size: 13px !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+}
 
     </style>
 </head>
@@ -1337,23 +1441,26 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
                 </div>
 
                 <div id="multiSelectBar"
-                    style="display: none; background: #fee2e2; border: 1px solid #fca5a5; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <ion-checkbox id="selectAllCheckbox" class="red-checkbox" ionChange="toggleSelectAll(this.checked)"></ion-checkbox>
-                        <span style="font-size: 13px; font-weight: 800; color: #991b1b;">全選 (<span
-                                id="selectedCountDisplay">0</span>)</span>
-                    </div>
-                    <div style="display: flex; gap: 6px;">
-                        <ion-button id="deleteSelectedBtn" size="small" color="danger"
-                            style="--border-radius: 8px; font-weight: 800;" disabled onclick="deleteSelectedRecords()">
-                            🗑️ 刪除已選
-                        </ion-button>
-                        <ion-button size="small" fill="outline" color="dark"
-                            style="--border-radius: 8px; font-weight: 700;" onclick="exitMultiSelectMode()">
-                            完成
-                        </ion-button>
-                    </div>
-                </div>
+    style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <!-- 💡 換上圓形 Checkbox class -->
+        <input type="checkbox" id="selectAllCheckbox" class="custom-circle-checkbox" onchange="toggleSelectAll(this.checked)">
+        <span style="font-size: 13px; font-weight: 800; color: #f87171;">全選 (<span
+                id="selectedCountDisplay">0</span>)</span>
+    </div>
+    <div style="display: flex; gap: 6px;">
+        <button id="deleteSelectedBtn" type="button" disabled onclick="deleteSelectedRecords()"
+            style="background: #ef4444; color: white; border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 800; cursor: pointer; opacity: 0.5;">
+            🗑️ 刪除已選
+        </button>
+        <button type="button" onclick="exitMultiSelectMode()"
+            style="background: rgba(255,255,255,0.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            完成
+        </button>
+    </div>
+</div>
+
+
 
                 <ion-list id="recordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
@@ -1448,7 +1555,7 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
                             </div>
                             <div
                                 style="background: rgba(0,0,0,0.25); padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
-                                <p style="margin: 0; font-size: 10px; color: #6ee7b7; font-weight: 700;">💚 累積已還總額</p>
+                                <p style="margin: 0; font-size: 10px; color: #6ee7b7; font-weight: 700;">💰 累積已還總額</p>
                                 <p style="margin: 1px 0 0 0; font-size: 14px; font-weight: 900; color: #34d399;"
                                     id="loanTotalRepaidDisplay">HK$0</p>
                             </div>
@@ -1734,7 +1841,7 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
     <option value="銀行私貸">PERSONAL LOAN · 銀行私人貸款</option>
     <option value="其他借貸">OTHER LOAN · 其他借貸</option>
 </select>
-                        <label for="loanCategorySelect">📌 貸款類別</label>
+                        <label for="loanCategorySelect">📂 貸款類別</label>
                     </div>
 
                     <div class="modal-dark-group">
@@ -1819,7 +1926,7 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
 
         <div class="modal-header-box" style="background: var(--loan-card-gradient);">
             <h2 class="modal-header-title">
-                💳 紀錄還款 / 修改貸款設定
+                ⚙️ 紀錄還款 / 修改貸款設定
             </h2>
         </div>
 
@@ -1829,7 +1936,7 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
                     <div
                         style="background: #020617; border-radius: 14px; padding: 14px; border: 1.5px solid #818cf8; margin-bottom: 16px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 12px; color: #a5b4fc; font-weight: 700;">🤖 系統實時算得剩餘金額
+                            <span style="font-size: 12px; color: #a5b4fc; font-weight: 700;">⚖️ 系統實時算得剩餘金額
                                 (Remaining)</span>
                             <span
                                 style="font-size: 10px; background: rgba(52, 211, 153, 0.2); color: #34d399; padding: 2px 8px; border-radius: 6px; font-weight: 800;">自動計算</span>
@@ -1879,7 +1986,7 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
                             <input type="number" id="editLoanRepaidAmountInput" class="modal-dark-input"
                                 oninput="calculateEditRemaining()"
                                 style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
-                            <label for="editLoanRepaidAmountInput">💚 累積已還金額 (HKD)</label>
+                            <label for="editLoanRepaidAmountInput">💰 累積已還金額 (HKD)</label>
                         </div>
                     </div>
 
@@ -1962,7 +2069,7 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
                     </div>
 
                     <ion-button expand="block" color="warning" onclick="confirmSaveBudget()"
-                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; --color: #0f172a;">確認修改預算</ion-button>
+                        style="--background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); --border-radius: 12px; font-weight: 900; font-size: 16px; --color: #0f172a; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);">確認修改預算</ion-button>
                     <ion-button expand="block" color="danger" onclick="document.getElementById('budgetModal').dismiss()"
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
                 </ion-content>
@@ -2005,8 +2112,11 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
                         </div>
                     </div>
 
-                    <ion-button expand="block" onclick="confirmSaveSavingsGoal()"
-                        style="--background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%); --border-radius: 14px; font-weight: 900; font-size: 16px; --color: #fbbf24;">確認修改目標</ion-button>
+<ion-button expand="block" onclick="confirmSaveSavingsGoal()"
+    style="--background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); --border-radius: 12px; font-weight: 900; font-size: 16px; --color: #0f172a; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);">
+    確認修改目標
+</ion-button>
+
                     <ion-button expand="block" color="danger"
                         onclick="document.getElementById('savingsGoalModal').dismiss()"
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
@@ -2178,7 +2288,7 @@ const CATEGORY_MAP = {
 const LOAN_CATEGORY_MAP = {
     '信用卡': { name: '💳 信用卡分期', icon: 'card-sharp', color: '#4f46e5' },
     '樓宇按揭': { name: '🏠 樓宇按揭貸款', icon: 'business-sharp', color: '#0284c7' },
-    '銀行私貸': { name: '🏦 銀行私人貸款', icon: 'account-balance-sharp', color: '#0d9488' },
+    '銀行私貸': { name: '🏦 銀行私人貸款', icon: 'business-sharp', color: '#0d9488' },
     '其他借貸': { name: '🪙 其他借貸', icon: 'cash-sharp', color: '#475569' }
 };
 
@@ -2420,7 +2530,7 @@ const LOAN_CATEGORY_MAP = {
                 budgetLimit = Number(input.value) || 10000;
                 saveData();
                 renderUI();
-                addLog('SYSTEM', '預算上限已更新為 HK$' + budgetLimit.toLocaleString());
+                addLog('開銷預算上限', '預算上限已更新為 HK$' + budgetLimit.toLocaleString());
             }
             document.getElementById('budgetModal').dismiss();
         }
@@ -2438,7 +2548,7 @@ const LOAN_CATEGORY_MAP = {
                 savingsGoal = Number(input.value) || 20000;
                 saveData();
                 renderUI();
-                addLog('SYSTEM', '儲蓄目標已更新為 HK$' + savingsGoal.toLocaleString());
+                addLog('儲蓄目標', '儲蓄目標已更新為 HK$' + savingsGoal.toLocaleString());
             }
             document.getElementById('savingsGoalModal').dismiss();
         }
@@ -2594,7 +2704,7 @@ function setupAllModalsDragToClose() {
             renderUI();
             closeExpenseModal();
             closeExpenseModal();
-			addLog('EXPENSE', '新增「' + title + '」HK$' + amount.toLocaleString());
+			addLog('消費項目', '新增「' + title + '」HK$' + amount.toLocaleString());
 
 
             // Clear inputs
@@ -2634,7 +2744,7 @@ function setupAllModalsDragToClose() {
             saveData();
             renderUI();
             document.getElementById('addLoanModal').dismiss();
-            addLog('LOAN', '新增「' + title + '」總額 HK$' + amount.toLocaleString());
+            addLog('貸款項目', '新增「' + title + '」總額 HK$' + amount.toLocaleString());
             document.getElementById('loanTitleInput').value = '';
         }
 
@@ -2694,7 +2804,7 @@ function setupAllModalsDragToClose() {
             saveData();
             renderUI();
             document.getElementById('editLoanModal').dismiss();
-            addLog('💳 更新借貸', `已更新「${loanRecords[idx].title}」資料`);
+            addLog('更新貸款資料', `已更新「${loanRecords[idx].title}」資料`);
         }
 
         function addSavingsRecord() {
@@ -2715,54 +2825,121 @@ function setupAllModalsDragToClose() {
 
             saveData();
             renderUI();
-            addLog('SAVINGS', '存入「' + title + '」HK$' + amount.toLocaleString());
+            addLog('儲蓄存款', '存入「' + title + '」HK$' + amount.toLocaleString());
 
             titleInput.value = '';
         }
 
-        // 💡 修正後的單筆與批次刪除函數（加入動態消息通知）
-
-function deleteRecord(id) {
+// 1. 刪除單筆開銷（帶暗黑風 Alert）
+async function deleteRecord(id) {
     const target = records.find(r => r.id === id);
-    records = records.filter(r => r.id !== id);
-    saveData();
-    renderUI();
-    if (target) {
-        addLog('🗑️ 刪除開銷', `已刪除「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
-    }
+    if (!target) return;
+
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'custom-danger-alert';
+    alert.header = '🗑️ 確認刪除開銷紀錄';
+    alert.message = `確定要刪除「${escapeHtml(target.title)}」HK$${Number(target.amount).toLocaleString()} 嗎？`;
+    alert.buttons = [
+        { text: '取消', role: 'cancel' },
+        {
+            text: '確認刪除',
+            role: 'destructive',
+            handler: () => {
+                records = records.filter(r => r.id !== id);
+                saveData();
+                renderUI();
+                addLog('刪除開銷', `已刪除「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
+            }
+        }
+    ];
+
+    document.body.appendChild(alert);
+    await alert.present();
 }
 
-function deleteLoanRecord(id) {
+// 2. 刪除單筆貸款（帶暗黑風 Alert）
+async function deleteLoanRecord(id) {
     const target = loanRecords.find(l => l.id === id);
-    loanRecords = loanRecords.filter(l => l.id !== id);
-    saveData();
-    renderUI();
-    if (target) {
-        addLog('🗑️ 刪除貸款', `已刪除貸款項目「${target.title}」`);
-    }
+    if (!target) return;
+
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'custom-danger-alert';
+    alert.header = '🗑️ 確認刪除貸款項目';
+    alert.message = `確定要刪除「${escapeHtml(target.title)}」嗎？刪除後無法復原。`;
+    alert.buttons = [
+        { text: '取消', role: 'cancel' },
+        {
+            text: '確認刪除',
+            role: 'destructive',
+            handler: () => {
+                loanRecords = loanRecords.filter(l => l.id !== id);
+                saveData();
+                renderUI();
+                addLog('刪除貸款', `已刪除貸款項目「${target.title}」`);
+            }
+        }
+    ];
+
+    document.body.appendChild(alert);
+    await alert.present();
 }
 
-function deleteSavingsRecord(id) {
+// 3. 刪除單筆儲蓄（帶暗黑風 Alert）
+async function deleteSavingsRecord(id) {
     const target = savingsRecords.find(s => s.id === id);
-    savingsRecords = savingsRecords.filter(s => s.id !== id);
-    saveData();
-    renderUI();
-    if (target) {
-        addLog('🗑️ 刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
-    }
+    if (!target) return;
+
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'custom-danger-alert';
+    alert.header = '🗑️ 確認刪除儲蓄紀錄';
+    alert.message = `確定要刪除「${escapeHtml(target.title)}」HK$${Number(target.amount).toLocaleString()} 嗎？`;
+    alert.buttons = [
+        { text: '取消', role: 'cancel' },
+        {
+            text: '確認刪除',
+            role: 'destructive',
+            handler: () => {
+                savingsRecords = savingsRecords.filter(s => s.id !== id);
+                saveData();
+                renderUI();
+                addLog('刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
+            }
+        }
+    ];
+
+    document.body.appendChild(alert);
+    await alert.present();
 }
 
-function deleteSelectedRecords() {
+// 4. 批次刪除已選項目（帶暗黑風 Alert）
+async function deleteSelectedRecords() {
     if (selectedRecordIds.size === 0) return;
-    
-    const deleteCount = selectedRecordIds.size;
-    records = records.filter(r => !selectedRecordIds.has(r.id));
-    exitMultiSelectMode();
-    saveData();
-    renderUI();
-    
-    addLog('🗑️ 批次刪除', `已成功批次刪除 ${deleteCount} 筆消費紀錄`);
+
+    const count = selectedRecordIds.size;
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'custom-danger-alert';
+    alert.header = '⚠️ 確認批次刪除';
+    alert.message = `確定要一次過刪除已選擇的 ${count} 筆消費記錄嗎？刪除後無法復原。`;
+    alert.buttons = [
+        { text: '取消', role: 'cancel' },
+        {
+            text: '確認刪除',
+            role: 'destructive',
+            handler: () => {
+                records = records.filter(r => !selectedRecordIds.has(r.id));
+                exitMultiSelectMode();
+                saveData();
+                renderUI();
+                addLog('批次刪除', `已成功批次刪除 ${count} 筆消費記錄`);
+            }
+        }
+    ];
+
+    document.body.appendChild(alert);
+    await alert.present();
 }
+
+
 
 
         // Multi Select Logic
@@ -2783,31 +2960,46 @@ function deleteSelectedRecords() {
         }
 
         function toggleSelectRecord(id, checked) {
-            if (checked) selectedRecordIds.add(id);
-            else selectedRecordIds.delete(id);
+    if (checked) {
+        selectedRecordIds.add(id);
+    } else {
+        selectedRecordIds.delete(id);
+    }
 
-            document.getElementById('selectedCountDisplay').textContent = selectedRecordIds.size;
-            document.getElementById('deleteSelectedBtn').disabled = selectedRecordIds.size === 0;
-        }
+    updateMultiSelectUI();
+}
 
-        function toggleSelectAll(checked) {
-            if (checked) {
-                records.forEach(r => selectedRecordIds.add(r.id));
-            } else {
-                selectedRecordIds.clear();
-            }
-            document.getElementById('selectedCountDisplay').textContent = selectedRecordIds.size;
-            document.getElementById('deleteSelectedBtn').disabled = selectedRecordIds.size === 0;
-            renderRecords();
-        }
+function toggleSelectAll(checked) {
+    selectedRecordIds.clear();
+    if (checked) {
+        records.forEach(r => selectedRecordIds.add(r.id));
+    }
 
-        function deleteSelectedRecords() {
-            if (selectedRecordIds.size === 0) return;
-            records = records.filter(r => !selectedRecordIds.has(r.id));
-            exitMultiSelectMode();
-            saveData();
-            renderUI();
+    updateMultiSelectUI();
+    renderRecords(); // 重新繪製列表讓勾選框狀態更新
+}
+
+function updateMultiSelectUI() {
+    const countDisplay = document.getElementById('selectedCountDisplay');
+    const deleteBtn = document.getElementById('deleteSelectedBtn');
+    const selectAllBox = document.getElementById('selectAllCheckbox');
+
+    if (countDisplay) countDisplay.textContent = selectedRecordIds.size;
+    
+    if (deleteBtn) {
+        if (selectedRecordIds.size > 0) {
+            deleteBtn.disabled = false;
+            deleteBtn.style.opacity = '1';
+        } else {
+            deleteBtn.disabled = true;
+            deleteBtn.style.opacity = '0.5';
         }
+    }
+
+    if (selectAllBox) {
+        selectAllBox.checked = (records.length > 0 && selectedRecordIds.size === records.length);
+    }
+}
 
         function seedDemoData() {
             records = [
@@ -2866,12 +3058,13 @@ function deleteSelectedRecords() {
         return `
             <ion-item-sliding class="custom-sliding-item">
                 <ion-item>
-                    ${isMultiSelectMode ? 
-                        `<ion-checkbox slot="start" class="red-checkbox" ${isSelected ? 'checked' : ''} ionChange="toggleSelectRecord(${r.id}, this.checked)"></ion-checkbox>` :
-                        `<div class="item-badge-3d" slot="start" style="background: ${cat.color}; color: white;">
-                            <ion-icon name="${cat.icon || 'receipt-sharp'}" style="font-size: 20px;"></ion-icon>
-                        </div>`
-                    }
+                  
+${isMultiSelectMode ? 
+    `<input type="checkbox" class="custom-circle-checkbox" style="margin-right: 12px;" ${isSelected ? 'checked' : ''} onchange="toggleSelectRecord(${r.id}, this.checked)">` :
+    `<div class="item-badge-3d" slot="start" style="background: ${cat.color}; color: white;">
+        <ion-icon name="${cat.icon || 'receipt-sharp'}" style="font-size: 20px;"></ion-icon>
+    </div>`
+}
 
                     <ion-label>
                         <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px;">${escapeHtml(r.title)}</h2>
@@ -2941,7 +3134,7 @@ function renderLoans() {
                                 </div>
                             </div>
                             <button class="semi-edit-btn" type="button" onclick="openEditLoanModal(${l.id})">
-                                ✏️ 還款/修改
+                                還款 / 修改
                             </button>
                         </div>
 
