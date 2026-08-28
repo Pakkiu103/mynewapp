@@ -15,95 +15,49 @@
 
     <style>
         :root {
-        /* 💡 熄燈模式 / 深色主題 (Dark Mode) */
-       /* 1. 熄燈模式背景顏色 */
-ion-app.dark-theme ion-content {
-    --background: #090d16 !important;
-}
+            /* 金屬銀光澤漸變色 */
+            --silver-metallic: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, #e2e8f0 20%, #ffffff 50%, #cbd5e1 80%, rgba(255, 255, 255, 0.1) 100%);
 
-/* 2. 頂部 Header 標題列：固定藍黑色 (#0f172a)，文字固定為白色 */
-ion-toolbar {
-    --background: #0f172a !important;
-    --color: #ffffff !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-ion-toolbar ion-title {
-    color: #ffffff !important;
-    font-weight: 800;
-}
-
-/* 3. 頂部右上角的熄燈模式切換按鈕 */
-.theme-toggle-btn {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.theme-toggle-btn:active {
-    transform: scale(0.85);
-}
-
-/* 4. 分區標題（開燈時深灰藍，熄燈時自動變白） */
-.section-title {
-    font-size: 14px;
-    font-weight: 800;
-    color: #334155;
-    margin: 16px 0 8px 4px;
-    transition: color 0.3s ease;
-}
-
-ion-app.dark-theme .section-title {
-    color: #ffffff !important;
-}
-
-
-
-        ion-content {
-            --color: var(--app-text, #111827);
-            --background: var(--app-bg, #f8fafc);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        ion-toolbar {
-            --background: var(--toolbar-bg, #ffffff);
-            --color: var(--toolbar-text, #0f172a);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
+            /* 卡片內部漸變底色 */
             --card-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%);
             --savings-card-gradient: linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%);
             --loan-card-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+
+            /* 其他配色 */
             --accent-gold: #fbbf24;
             --accent-green: #34d399;
             --accent-indigo: #818cf8;
             --primary-blue: #2563eb;
+            --app-bg: #f8fafc;
+            --app-text: #111827;
         }
 
+        /* 💡 1. 開燈模式預設背景 (預設淺灰白底) */
         ion-content {
-            --color: #111827;
-            --background: #f8fafc;
+            --background: #f8fafc !important;
+            --color: #111827 !important;
+            transition: background 0.3s ease;
         }
 
+        /* 💡 2. 熄燈模式背景 (黑暗深藍黑底) */
+        ion-app.dark-theme ion-content {
+            --background: #090d16 !important;
+            --color: #ffffff !important;
+        }
+
+        /* 💡 3. 頂部 Header 標題列：固定藍黑色 (#0f172a) */
         ion-toolbar {
-            --background: #0f172a;
-            --color: #f8fafc;
+            --background: #0f172a !important;
+            --color: #ffffff !important;
             min-height: 65px;
             display: flex;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        ion-title {
+        ion-toolbar ion-title {
+            color: #ffffff !important;
             font-size: 19px;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -113,75 +67,260 @@ ion-app.dark-theme .section-title {
             font-family: system-ui, -apple-system, sans-serif;
         }
 
-        .debit-card {
-            background: var(--card-gradient);
-            color: white;
-            border-radius: 22px;
-            padding: 22px 22px 20px 22px;
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                0 20px 35px -10px rgba(15, 23, 42, 0.65),
-                0 10px 15px -5px rgba(0, 0, 0, 0.4),
-                inset 0 1px 1px rgba(255, 255, 255, 0.3);
-            border-right: 2px solid #ef4444;  /* 右邊紅色幼邊 */ 
-border-bottom: 2px solid #ef4444; /* 下邊紅色幼邊 */
+        .theme-toggle-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(148, 163, 184, 0.08) 100%);
+            border: 1px solid rgba(226, 232, 240, 0.35);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
 
+        .theme-toggle-btn:active {
+            transform: scale(0.9);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+
+        .unread-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 900;
+            min-width: 16px;
+            height: 16px;
+            line-height: 16px;
+            border-radius: 10px;
+            text-align: center;
+            padding: 0 4px;
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.5);
+            border: 1.5px solid #0f172a;
+            box-sizing: border-box;
+        }
+
+        /* 💎 1. 頂部 Header 標題：鉑金金屬光澤 (Platinum Silver / Cool Chrome) */
+        ion-toolbar ion-title {
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 40%, #94a3b8 70%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 18px !important;
+            font-weight: 800 !important;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            width: 100%;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 💎 2. 內容小標題：奢華極簡鈦金邊飾 */
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #334155;
+            margin: 0;
+            padding-left: 12px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        /* 左側高雅金屬銀細線裝飾 */
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 14px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 50%, #64748b 100%);
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+        }
+
+        /* 深色模式下的貴金屬高光 */
+        ion-app.dark-theme .section-title {
+            color: #f1f5f9 !important;
+        }
+
+        ion-app.dark-theme .section-title::before {
+            background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+            /* 暗黑模式下為精緻香檳金細條 */
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+        }
+
+        /* ========================================================= */
+        /* ✨ 跑馬燈光澤邊框動畫 (360-degree Marquee Light Border) ✨ */
+        /* ========================================================= */
+        @keyframes marqueeSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .debit-card {
+            position: relative;
+            border-radius: 24px;
+            padding: 2.5px;
+            /* 走馬燈霓虹邊框的厚度 */
             margin-bottom: 22px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .debit-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.5);
         }
 
         .debit-card:active {
             transform: scale(0.99);
         }
 
+        /* 走馬燈動態旋轉漸變背景層 */
         .debit-card::before {
             content: '';
+            position: absolute;
+            top: -75%;
+            left: -75%;
+            width: 250%;
+            height: 250%;
+            background: conic-gradient(from 0deg,
+                    #3b82f6 0%,
+                    #8b5cf6 20%,
+                    #ec4899 40%,
+                    #f59e0b 60%,
+                    #10b981 80%,
+                    #3b82f6 100%);
+            animation: marqueeSpin 5s linear infinite;
+            z-index: 1;
+        }
+
+        /* 儲蓄卡專屬走馬燈色彩 (綠金寶石系) */
+        .debit-card.savings-card::before {
+            background: conic-gradient(from 0deg,
+                    #34d399 0%,
+                    #059669 25%,
+                    #fbbf24 50%,
+                    #10b981 75%,
+                    #34d399 100%);
+            animation-duration: 4.5s;
+        }
+
+        /* 借貸卡專屬走馬燈色彩 (紫紅焰光系) */
+        .debit-card.loan-card::before {
+            background: conic-gradient(from 0deg,
+                    #818cf8 0%,
+                    #c084fc 25%,
+                    #f43f5e 50%,
+                    #fbbf24 75%,
+                    #818cf8 100%);
+            animation-duration: 4s;
+        }
+
+        /* 💡 卡片頂部炫彩粗邊裝飾條 */
+        .card-top-bar {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(90deg, #f59e0b, #ec4899, #3b82f6, #10b981);
-            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
+            /* 邊條厚度 (可自行調整 5px - 8px) */
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
+            /* 首頁彩色漸變 */
+            z-index: 5;
+            border-top-left-radius: 21.5px;
+            border-top-right-radius: 21.5px;
         }
 
-        .debit-card.savings-card {
+        /* 💳 借貸卡專屬頂部邊條 (紫粉金漸變) */
+        .debit-card.loan-card .card-top-bar {
+            background: linear-gradient(90deg, #818cf8 0%, #c084fc 50%, #f43f5e 100%);
+        }
+
+        /* 🐷 儲蓄卡專屬頂部邊條 (翡翠金綠漸變) */
+        .debit-card.savings-card .card-top-bar {
+            background: linear-gradient(90deg, #34d399 0%, #059669 50%, #fbbf24 100%);
+        }
+
+        /* 讓 Canvas 鋪滿卡片背景並放置在最底層 */
+        .particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* 確保不會阻礙按鈕點擊 */
+            z-index: 1;
+            opacity: 0.75;
+        }
+
+        .card-inner-content {
+            position: relative;
+            z-index: 2;
+            border-radius: 21.5px;
+            background: var(--card-gradient, linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%));
+            padding: 18px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 236px;
+            overflow: hidden;
+        }
+
+        .debit-card.savings-card .card-inner-content {
             background: var(--savings-card-gradient);
-            box-shadow:
-                0 20px 35px -10px rgba(4, 120, 87, 0.65),
-                0 10px 15px -5px rgba(0, 0, 0, 0.4),
-                inset 0 1px 1px rgba(255, 255, 255, 0.3);
-            border-right: 2px solid #34d399;  /* 右邊綠色幼邊 */
-border-bottom: 2px solid #34d399; /* 下邊綠色幼邊 */
-
         }
 
-        .debit-card.savings-card::before {
-            background: linear-gradient(90deg, #34d399, #10b981, #059669, #a7f3d0);
-            box-shadow: 0 2px 10px rgba(52, 211, 153, 0.6);
-        }
-
-        .debit-card.loan-card {
+        .debit-card.loan-card .card-inner-content {
             background: var(--loan-card-gradient);
-            box-shadow:
-                0 20px 35px -10px rgba(49, 46, 129, 0.65),
-                0 10px 15px -5px rgba(0, 0, 0, 0.4),
-                inset 0 1px 1px rgba(255, 255, 255, 0.3);
-            border-right: 2px solid #fbbf24;  /* 右邊金黃色幼邊 */
-border-bottom: 2px solid #fbbf24; /* 下邊金黃色幼邊 */
-
         }
 
-        .debit-card.loan-card::before {
-            background: linear-gradient(90deg, #818cf8, #c084fc, #f43f5e, #fbbf24);
-            box-shadow: 0 2px 10px rgba(129, 140, 248, 0.6);
+        /* 💡 頂部金屬銀細線裝飾 */
+        .card-inner-content::after {
+            content: '';
+            position: absolute;
+            top: 14px;
+            bottom: 14px;
+            left: 8px;
+            right: 8px;
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, #cbd5e1 20%, #ffffff 50%, #cbd5e1 80%, rgba(255, 255, 255, 0.05) 100%) top / 100% 1px no-repeat,
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, #cbd5e1 20%, #ffffff 50%, #cbd5e1 80%, rgba(255, 255, 255, 0.05) 100%) bottom / 100% 1px no-repeat;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .card-top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 3;
         }
 
         .card-chip {
@@ -208,13 +347,13 @@ border-bottom: 2px solid #fbbf24; /* 下邊金黃色幼邊 */
             font-weight: 800;
             font-size: 11px;
             letter-spacing: 1.5px;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.9);
             text-transform: uppercase;
         }
 
         .budget-badge-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             color: #ffffff;
             font-size: 11px;
             font-weight: 700;
@@ -228,98 +367,38 @@ border-bottom: 2px solid #fbbf24; /* 下邊金黃色幼邊 */
 
         .budget-badge-btn:active {
             transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.35);
         }
-/* 右下角的半透明修改按鈕樣式 */
-.semi-edit-btn {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #fde047; /* 淡黃色文字 */
-    border-radius: 10px;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    cursor: pointer;
-    transition: transform 0.1s ease, background 0.15s ease;
-}
-
-/* 按下時的 3D 按壓手感反饋 */
-.semi-edit-btn:active {
-    transform: scale(0.9) translateY(2px) !important;
-    background: rgba(255, 255, 255, 0.3);
-    opacity: 0.9;
-}
-
-/* 只針對彈出視窗內的確認、取消、儲存按鈕加上 3D 按壓效果 */
-ion-modal ion-button:active {
-    transform: scale(0.96) translateY(2px) !important;
-    opacity: 0.9;
-    transition: transform 0.1s ease;
-}
-/* /* =========================================================
-   ✨ 柔和阻尼感滑動選單 (解決彈得太快、太突兀問題)
-   ========================================================= */
-
-/* 1. 限制選項容器，讓拉動過程順暢平滑 */
-ion-item-options {
-    background: transparent !important;
-    border: none !important;
-    padding: 3px 6px;
-    gap: 8px;
-}
-
-/* 2. 為滑動按鈕加入柔和的 CSS 緩和時間與阻尼曲線 */
-ion-item-option {
-    border-radius: 14px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    /* 💡 使用更平緩的 cubic-bezier 曲線，讓滑出過程不突兀 */
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-                opacity 0.3s ease !important;
-}
-
-/* 3. 當選單拉開時，圖示帶有極微小的漸顯效果，增加質感 */
-ion-item-option ion-icon {
-    font-size: 22px !important;
-    transition: transform 0.2s ease;
-}
-
-/* 4. 手指點按時的平滑下壓感 */
-ion-item-option:active {
-    transform: scale(0.92) !important;
-    opacity: 0.85;
-}
 
         .card-number-sim {
             font-family: 'Courier New', Courier, monospace;
             font-size: 13px;
             letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.75);
             margin-top: 6px;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 3;
         }
 
         .gold-amount-display {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 900;
             color: var(--accent-gold);
             letter-spacing: -0.5px;
             line-height: 1.1;
             margin-top: 2px;
-            text-shadow: 0 2px 10px rgba(251, 191, 36, 0.3);
+            text-shadow: 0 2px 10px rgba(251, 191, 36, 0.35);
         }
 
         .green-amount-display {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 900;
             color: var(--accent-green);
             letter-spacing: -0.5px;
             line-height: 1.1;
             margin-top: 2px;
-            text-shadow: 0 2px 10px rgba(52, 211, 153, 0.3);
+            text-shadow: 0 2px 10px rgba(52, 211, 153, 0.35);
         }
 
         .stepper-container {
@@ -438,10 +517,6 @@ ion-item-option:active {
             transition: transform 0.1s ease;
         }
 
-        .custom-range-slider::-webkit-slider-thumb:active {
-            transform: scale(1.2);
-        }
-
         .custom-range-slider.emerald::-webkit-slider-thumb {
             background: #34d399;
             box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
@@ -453,15 +528,6 @@ ion-item-option:active {
             margin-top: 10px;
             overflow-x: auto;
             padding-bottom: 4px;
-        }
-
-        .quick-chip-row::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .quick-chip-row::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
         }
 
         .quick-chip {
@@ -560,77 +626,85 @@ ion-item-option:active {
             color: #ffffff;
             box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
             border: none;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-/* 【升級】3D 立體卡片清單項目 */
+        /* 💡 將清單項目 (Box) 固定為高級深藍黑底色，不受開燈/熄燈影響 */
 .custom-sliding-item {
     border-radius: 18px !important;
     margin-bottom: 14px;
     overflow: hidden;
-    /* 1. 多層次立體陰影：外部懸浮深陰影 + 內部高光 */
-    box-shadow: 
-        0 10px 20px -5px rgba(0, 0, 0, 0.25),
-        0 4px 6px -2px rgba(0, 0, 0, 0.15),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
-    /* 2. 微光白邊框，增加精緻層次感 */
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #1e293b !important; /* 固定深色底 Box */
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* 點擊時的 3D 按壓沉降效果 */
-.custom-sliding-item:active {
-    transform: scale(0.98) translateY(2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
-}
-
 .custom-sliding-item ion-item {
-    --background: transparent;
+    --background: #1e293b !important; /* 固定內部背景色 */
+    --color: #ffffff !important;
     --padding-start: 14px;
     --padding-end: 16px;
-    --inner-padding-end: 0;
 }
 
-/* 3D 立體徽章圓圈 (Icon 容器) */
-.item-badge-3d {
-    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    font-size: 22px;
-    /* 圓圈內陰影與立體凸起感 */
-    box-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.25),
-        inset 0 2px 3px rgba(255, 255, 255, 0.9),
-        inset 0 -2px 3px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    flex-shrink: 0;
+/* 💡 固定文字顏色：標題保持亮白，附註保持清析淺灰 */
+.custom-sliding-item ion-label h2 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 15px !important;
+    margin-bottom: 3px !important;
+}
+
+.custom-sliding-item ion-label p {
+    color: #cbd5e1 !important;
+    font-size: 11px !important;
 }
 
 
-        .circle-nav-container {
-            position: fixed;
-            bottom: 22px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 900;
+        .item-badge-3d {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 8px 14px;
-            background: rgba(15, 23, 42, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
-            max-width: 95vw;
+            margin-right: 10px;
+            font-size: 22px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            flex-shrink: 0;
         }
+
+        /* 💡 1. 調整底部圓形導航列的 z-index，降低其層級（由原本 999999 改為 1000） */
+.circle-nav-container {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000 !important; /* 降低層級，避免蓋過 Modal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    max-width: 95vw;
+    pointer-events: auto;
+}
+
+/* 💡 2. 強制提升 Ionic 全局所有 modal 與 overlay 的 z-index 至最高層 */
+ion-modal, 
+ion-modal-wrapper,
+.modal-wrapper,
+ion-action-sheet,
+ion-alert {
+    z-index: 20000 !important;
+}
 
         .circle-nav-btn {
             position: relative;
@@ -668,7 +742,7 @@ ion-item-option:active {
             color: #ffffff;
             border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-4px) scale(1.06);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5), 0 0 12px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
         }
 
         .circle-nav-btn.primary-add-btn {
@@ -705,33 +779,6 @@ ion-item-option:active {
         ion-modal ion-content {
             --background: #0f172a;
             --color: #f8fafc;
-        }
-
-        ion-alert {
-            --background: #1e293b;
-            --color: #f8fafc;
-            --max-width: 90vw;
-            --border-radius: 18px;
-        }
-
-        ion-alert .alert-wrapper {
-            background: #1e293b !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5) !important;
-            border-radius: 20px !important;
-        }
-
-        ion-alert .alert-title {
-            color: #fbbf24 !important;
-            font-size: 18px !important;
-            font-weight: 800 !important;
-        }
-
-        ion-alert .alert-message {
-            color: #cbd5e1 !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            white-space: pre-line !important;
         }
 
         .modal-header-box {
@@ -774,7 +821,6 @@ ion-item-option:active {
             outline: none;
             background: #1e293b;
             color: #ffffff;
-            transition: border-color 0.2s;
             box-sizing: border-box;
         }
 
@@ -782,15 +828,6 @@ ion-item-option:active {
             border-color: #38bdf8;
             box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
         }
-/* 修正日期與下拉選單在雙欄佈局下的溢出走位問題 */
-.modal-dark-input[type="date"],
-select.modal-dark-input {
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-    -webkit-appearance: none; /* 移除 iOS 預設樣式影響 */
-}
-
 
         .modal-dark-group {
             position: relative;
@@ -823,6 +860,322 @@ select.modal-dark-input {
             margin: 0;
             flex: 1;
         }
+
+        input[type="date"].modal-dark-input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            color-scheme: dark;
+            /* 確保 iOS / Android 彈出月曆符合深色模式 */
+            box-sizing: border-box !important;
+            height: 54px !important;
+            /* 統一固定高度 */
+            padding: 10px 12px !important;
+            font-size: 14px !important;
+            font-weight: 700;
+            text-align: center;
+            width: 100% !important;
+            min-width: 0 !important;
+            display: block;
+        }
+
+        /* 修正 WebKit (iOS / Safari / Chrome) 日期輸入框內部文字置中與高度 */
+        input[type="date"]::-webkit-date-and-time-value {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            min-height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 調整月曆小圖示樣式 */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.8);
+            /* 將圖示轉為淺色以配合深色背景 */
+            cursor: pointer;
+            margin-left: 4px;
+        }
+
+        /* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
+        .semi-edit-btn {
+            background: rgba(129, 140, 248, 0.18);
+            /* 半透明紫藍色底 */
+            border: 1px solid rgba(129, 140, 248, 0.45);
+            /* 微亮半透明邊框 */
+            color: #c7d2fe;
+            /* 柔和粉藍字體 */
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 13px;
+            border-radius: 20px;
+            /* 圓角膠囊造型 */
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .semi-edit-btn:active {
+            transform: scale(0.92);
+            background: rgba(129, 140, 248, 0.4);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+        }
+
+        /* 💡 支付方式 Chip 樣式大集合 */
+        .pay-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.3;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .pay-visa {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+        }
+
+        .pay-mastercard {
+            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
+            color: #ffffff;
+        }
+
+        .pay-credit {
+            background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+            color: #ffffff;
+        }
+
+        .pay-octopus {
+            background: linear-gradient(90deg, #ea580c 0%, #0284c7 100%);
+            color: #ffffff;
+        }
+
+        .pay-fps {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .pay-payme {
+            background: #cc0000;
+            color: #ffffff;
+        }
+
+        .pay-boc {
+            background: #b91c1c;
+            color: #ffffff;
+        }
+
+        .pay-alipay {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .pay-wechat {
+            background: #16a34a;
+            color: #ffffff;
+        }
+
+        .pay-apple {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .pay-cash {
+            background: #059669;
+            color: #ffffff;
+        }
+
+        .pay-default {
+            background: rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+        }
+
+        /* 💡 自訂型格下拉選單觸發按鈕 */
+        .custom-select-trigger {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: 54px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .custom-select-trigger:active {
+            transform: scale(0.98);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .selected-value-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* 💡 彈出官方 Logo 選擇介面 */
+        .payment-picker-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            /* 預設完全隱藏，不干擾點擊 */
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 999999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .payment-picker-modal.active {
+            display: flex;
+            /* 啟動時才顯示 */
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .picker-content {
+            background: #111827;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px 24px 0 0;
+            padding: 20px 20px 36px 20px;
+            width: 100%;
+            max-width: 480px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .payment-picker-modal.active .picker-content {
+            transform: translateY(0);
+        }
+
+        .picker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .picker-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .close-picker-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #94a3b8;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 官方 Logo 選項網格 */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .payment-option-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #f1f5f9;
+            font-weight: 700;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .payment-option-btn:active,
+        .payment-option-btn.selected {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .logo-box {
+            width: 34px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+/* 💡 通用 Modal 頂部拖拽提示條 */
+.drag-handle-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* 💡 將 padding 改細（上 2px，下 6px），條線就會向上拉近頂部邊緣 */
+    padding: 2px 0 6px 0; 
+    margin-top: -6px; /* 💡 可以令條線再向上貼近頂邊 */
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+}
+
+
+.drag-handle-bar .handle-pill {
+    width: 42px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+}
+
+.drag-handle-bar .handle-text {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 4px;
+    font-weight: 600;
+}
+
     </style>
 </head>
 
@@ -831,68 +1184,95 @@ select.modal-dark-input {
         <!-- Header 工具列 -->
         <ion-header class="ion-no-border">
             <ion-toolbar>
-    <ion-title id="pageHeaderTitle">個人開銷記錄</ion-title>
+                <!-- 💡 1. 頂部左上角的消息通知按鈕 -->
+                <div slot="start" style="padding-left: 12px;">
+                    <button id="logsToggleBtn" type="button" class="theme-toggle-btn" onclick="openLogsModal()"
+                        style="position: relative;">
+                        <ion-icon name="notifications-outline"
+                            style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                        <span id="logBadge" class="unread-badge" style="display: none;">0</span>
+                    </button>
+                </div>
 
-    <!-- 💡 頂部右上角的熄燈模式按鈕 -->
-    <div slot="end" style="padding-right: 12px;">
-        <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()">
-            🌙
-        </button>
-    </div>
-</ion-toolbar>
+                <ion-title id="pageHeaderTitle">個人開銷記錄</ion-title>
 
+                <!-- 💡 2. 頂部右上角的熄燈模式按鈕 -->
+                <div slot="end" style="padding-right: 12px;">
+                    <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()">
+                        <ion-icon id="themeIcon" name="moon-outline"
+                            style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                    </button>
+                </div>
+            </ion-toolbar>
         </ion-header>
 
         <ion-content class="ion-padding">
 
-            <!-- 頁面 1：首頁 (開銷清單與提款卡卡號總覽) -->
+            <!-- 頁面 1：首頁 (開銷清單與提款卡走馬燈卡片) -->
             <div id="pageHome" class="view-page active-page">
-                <!-- 3D 信用卡風格卡片 -->
+                <!-- 走馬燈霓虹卡片 -->
                 <div class="debit-card">
-                    <div class="card-top-row">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div class="card-chip"></div>
-                            <ion-icon name="wifi-outline"
-                                style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
-                            <span class="card-brand">PERSONAL WALLET</span>
-                        </div>
+                    <div class="card-inner-content">
+                        <div class="card-top-bar"></div>
+                        <canvas class="particle-canvas"></canvas>
+                        <div class="card-top-row">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="card-chip"></div>
+                                <ion-icon name="wifi-outline"
+                                    style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
+                                <span class="card-brand">PERSONAL WALLET</span>
+                            </div>
 
-                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
-                            <button id="changeBudgetBtn" class="budget-badge-btn" type="button">
+                            <button id="changeBudgetBtn" class="budget-badge-btn" type="button"
+                                onclick="openBudgetModal()">
                                 ⚙️ 設定預算上限
                             </button>
-                            <span style="font-size: 12px; font-weight: 700; color: #cbd5e1; text-align: right;">
-                                每月預算：<span style="font-size: 16px; font-weight: 900; color: #ffffff;">HK$<span
-                                        id="budgetLimitDisplay">5,000</span></span>
-                            </span>
+                        </div>
+
+                        <div class="card-number-sim" id="cardDateDisplay">•••• •••• WALLET 2026/08</div>
+
+
+                        <!-- 💡 開銷總額（左）與 每月預算 Box（右） -->
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; position: relative; z-index: 3;">
+                            <div>
+                                <p style="margin: 0 0 2px 0; font-size: 12px; color: #cbd5e1; font-weight: 600;">目前累積總開銷
+                                </p>
+                                <div class="gold-amount-display" style="margin: 0;">
+                                    HK$<span id="totalAmountDisplay">0</span>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 5px 12px; text-align: right; backdrop-filter: blur(4px);">
+                                <div style="font-size: 10px; color: #cbd5e1; font-weight: 600; margin-bottom: 1px;">每月預算
+                                </div>
+                                <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
+                                    HK$<span id="budgetLimitDisplay">10,000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="position: relative; z-index: 3;">
+                            <ion-progress-bar id="budgetProgressBar" value="0"
+                                style="--background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-top: 10px;"></ion-progress-bar>
+                            <p id="budgetTip"
+                                style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.95; color: white; font-weight: 600;">
+                            </p>
                         </div>
                     </div>
-
-                    <div class="card-number-sim" id="cardDateDisplay">•••• •••• •••• 8888</div>
-
-                    <div style="margin-top: 14px;">
-                        <p style="margin: 0; font-size: 12px; color: #cbd5e1; font-weight: 600;">目前累積總開銷</p>
-                        <div class="gold-amount-display">
-                            HK$<span id="totalAmountDisplay">0</span>
-                        </div>
-                    </div>
-
-                    <ion-progress-bar id="budgetProgressBar" value="0"
-                        style="--background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-top: 10px;"></ion-progress-bar>
-                    <p id="budgetTip"
-                        style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.95; color: white; font-weight: 600;"></p>
                 </div>
 
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
-                    <h3 class="section-title" style="margin: 0; font-size: 17px; font-weight: 800;">📋 消費記錄明細</h3>
+                    <h3 class="section-title">📋 消費記錄明細</h3>
                     <div style="display: flex; gap: 2px;">
                         <ion-button id="toggleMultiSelectBtn" fill="clear" size="small"
-                            style="--color: #ef4444; font-weight: 700;">
+                            style="--color: #ef4444; font-weight: 700;" onclick="toggleMultiSelectMode()">
                             ☑️ 批次刪除
                         </ion-button>
                         <ion-button id="seedDataBtn" fill="clear" size="small"
-                            style="--color: #2563eb; font-weight: 600;">
+                            style="--color: #2563eb; font-weight: 600;" onclick="seedDemoData()">
                             🎲 載入測試範例
                         </ion-button>
                     </div>
@@ -901,13 +1281,14 @@ select.modal-dark-input {
                 <div id="multiSelectBar"
                     style="display: none; background: #fee2e2; border: 1px solid #fca5a5; border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <ion-checkbox id="selectAllCheckbox" class="red-checkbox"></ion-checkbox>
+                        <ion-checkbox id="selectAllCheckbox" class="red-checkbox"
+                            onionChange="toggleSelectAll(this.checked)"></ion-checkbox>
                         <span style="font-size: 13px; font-weight: 800; color: #991b1b;">全選 (<span
                                 id="selectedCountDisplay">0</span>)</span>
                     </div>
                     <div style="display: flex; gap: 6px;">
                         <ion-button id="deleteSelectedBtn" size="small" color="danger"
-                            style="--border-radius: 8px; font-weight: 800;" disabled>
+                            style="--border-radius: 8px; font-weight: 800;" disabled onclick="deleteSelectedRecords()">
                             🗑️ 刪除已選
                         </ion-button>
                         <ion-button size="small" fill="outline" color="dark"
@@ -920,6 +1301,7 @@ select.modal-dark-input {
                 <ion-list id="recordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
 
+            <!-- 頁面 2：計算機 -->
             <div id="pageCalc" class="view-page">
                 <div class="calc-container-card">
                     <div class="calc-display">
@@ -955,100 +1337,118 @@ select.modal-dark-input {
 
                     <div style="padding-top: 4px;">
                         <ion-button id="applyCalcToExpenseBtn" expand="block" color="warning"
-                            style="--border-radius: 14px; font-weight: bold; --color: #0f172a;">
+                            style="--border-radius: 14px; font-weight: bold; --color: #0f172a;"
+                            onclick="applyCalcToExpense()">
                             📥 將計算結果帶入記帳金額
                         </ion-button>
                     </div>
                 </div>
             </div>
 
+            <!-- 頁面 3：借貸 -->
             <div id="pageLoans" class="view-page">
                 <div class="debit-card loan-card">
-                    <div class="card-top-row">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div class="card-chip"></div>
-                            <ion-icon name="wifi-outline"
-                                style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
-                            <span class="card-brand">LOAN & CREDIT FACILITY</span>
+                    <div class="card-inner-content">
+                        <div class="card-top-bar"></div>
+                        <canvas class="particle-canvas"></canvas>
+                        <div class="card-top-row">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="card-chip"></div>
+                                <ion-icon name="wifi-outline"
+                                    style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
+                                <span class="card-brand">LOAN & CREDIT</span>
+                            </div>
+                            <button class="budget-badge-btn" style="white-space:nowrap;" onclick="openAddLoanModal()">
+                                ➕ 新增借貸項目
+                            </button>
                         </div>
-                        <button class="budget-badge-btn" style="white-space:nowrap;"onclick="openAddLoanModal()">
-                            ➕ 新增借貸項目
-                        </button>
-                    </div>
 
-                    <div class="card-number-sim" id="loanCardNumberDisplay">•••• •••• LOAN CARD</div>
+                        <div class="card-number-sim" id="loanCardNumberDisplay">•••• •••• LOAN 2026/08</div>
 
-                    <div
-                        style="margin-top: 14px; background: rgba(0,0,0,0.35); padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(129, 140, 248, 0.3);">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <p style="margin: 0; font-size: 12px; color: #a5b4fc; font-weight: 700;">🔔 本月預計還款總額
-                                (Monthly Due)</p>
-                            <span id="loanMonthlyCountBadge"
-                                style="background: #ef4444; color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">0
-                                筆待還</span>
-                        </div>
-                        <div class="gold-amount-display" style="font-size: 34px; color: #fbbf24; margin-top: 4px;">
-                            HK$<span id="loanMonthlyDueDisplay">0</span>
-                        </div>
-                    </div>
 
-                    <div
-                        style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; text-align: left;">
                         <div
-                            style="background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                            <p style="margin: 0; font-size: 11px; color: #cbd5e1; font-weight: 700;">🏛️ 剩餘總貸款額</p>
-                            <p style="margin: 2px 0 0 0; font-size: 16px; font-weight: 900; color: #ffffff;"
-                                id="loanTotalRemainingDisplay">HK$0</p>
+                            style="margin-top: 6px; background: rgba(0,0,0,0.35); padding: 6px 12px; border-radius: 12px; border: 1px solid rgba(129, 140, 248, 0.3); position: relative; z-index: 3;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <p style="margin: 0; font-size: 11px; color: #a5b4fc; font-weight: 700;">🔔 本月預計還款總額
+                                    (Monthly Due)</p>
+                                <span id="loanMonthlyCountBadge"
+                                    style="background: #ef4444; color: white; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 10px;">0
+                                    筆待還</span>
+                            </div>
+                            <div class="gold-amount-display"
+                                style="font-size: 24px; color: #fbbf24; margin-top: 2px; line-height: 1.2;">
+                                HK$<span id="loanMonthlyDueDisplay">0</span>
+                            </div>
                         </div>
+
                         <div
-                            style="background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-                            <p style="margin: 0; font-size: 11px; color: #6ee7b7; font-weight: 700;">💚 累積已還總額</p>
-                            <p style="margin: 2px 0 0 0; font-size: 16px; font-weight: 900; color: #34d399;"
-                                id="loanTotalRepaidDisplay">HK$0</p>
+                            style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; text-align: left; position: relative; z-index: 3;">
+                            <div
+                                style="background: rgba(0,0,0,0.25); padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                                <p style="margin: 0; font-size: 10px; color: #cbd5e1; font-weight: 700;">🏛️ 剩餘總貸款額</p>
+                                <p style="margin: 1px 0 0 0; font-size: 14px; font-weight: 900; color: #ffffff;"
+                                    id="loanTotalRemainingDisplay">HK$0</p>
+                            </div>
+                            <div
+                                style="background: rgba(0,0,0,0.25); padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                                <p style="margin: 0; font-size: 10px; color: #6ee7b7; font-weight: 700;">💚 累積已還總額</p>
+                                <p style="margin: 1px 0 0 0; font-size: 14px; font-weight: 900; color: #34d399;"
+                                    id="loanTotalRepaidDisplay">HK$0</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
-                    <h3 class="section-title" style="margin: 0; font-size: 17px; font-weight: 800;">💳 每月還款計劃與到期日提醒</h3>
+                    <h3 class="section-title">💳 每月還款計劃與到期日提醒</h3>
                 </div>
 
                 <ion-list id="loanRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
 
+            <!-- 頁面 4：儲蓄 -->
             <div id="pageSavings" class="view-page">
                 <div class="debit-card savings-card">
-                    <div class="card-top-row">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div class="card-chip"></div>
-                            <ion-icon name="wifi-outline"
-                                style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
-                            <span class="card-brand">SAVINGS PASSBOOK</span>
+                    <div class="card-inner-content">
+                        <div class="card-top-bar"></div>
+                        <canvas class="particle-canvas"></canvas>
+                        <div class="card-top-row">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="card-chip"></div>
+                                <ion-icon name="wifi-outline"
+                                    style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
+                                <span class="card-brand">SAVINGS PASSBOOK</span>
+                            </div>
+                            <button id="changeSavingsGoalBtn" class="budget-badge-btn" type="button"
+                                onclick="popupChangeSavingsGoalAlert()">
+                                ⚙️ 設定儲蓄目標
+                            </button>
                         </div>
-                        <button id="changeSavingsGoalBtn" class="budget-badge-btn" type="button"
-                            onclick="popupChangeSavingsGoalAlert()">
-                            ⚙️ 設定儲蓄目標
-                        </button>
-                    </div>
 
-                    <div class="card-number-sim" id="savingsCardNumberDisplay">•••• •••• SAVINGS GOAL</div>
+                        <div class="card-number-sim" id="savingsCardNumberDisplay">•••• •••• SAVINGS 2026/08</div>
 
-                    <div style="margin-top: 14px;">
-                        <p style="margin: 0; font-size: 12px; color: #a7f3d0; font-weight: 500;">目前已累積儲蓄金額</p>
-                        <div class="green-amount-display">
-                            HK$<span id="savingsTotalDisplay">0</span>
+
+                        <div style="margin-top: 14px; position: relative; z-index: 3;">
+                            <p style="margin: 0; font-size: 12px; color: #a7f3d0; font-weight: 500;">目前已累積儲蓄金額</p>
+                            <div class="green-amount-display">
+                                HK$<span id="savingsTotalDisplay">0</span>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 10px; font-size: 13px; font-weight: 700; color: #e2e8f0; position: relative; z-index: 3;">
+                            目標進度：<span style="color: #ffffff;">HK$<span id="savingsGoalDisplay">20,000</span></span>
+                        </div>
+
+                        <div style="position: relative; z-index: 3;">
+                            <ion-progress-bar id="savingsProgressBar" value="0"
+                                style="--background: rgba(255,255,255,0.2); --progress-background: #34d399; height: 10px; border-radius: 5px; margin-top: 8px;"></ion-progress-bar>
+                            <p id="savingsTip"
+                                style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.95; color: white; font-weight: 600;">
+                            </p>
                         </div>
                     </div>
-
-                    <div style="margin-top: 10px; font-size: 13px; font-weight: 700; color: #e2e8f0;">
-                        目標進度：<span style="color: #ffffff;">HK$<span id="savingsGoalDisplay">20,000</span></span>
-                    </div>
-
-                    <ion-progress-bar id="savingsProgressBar" value="0"
-                        style="--background: rgba(255,255,255,0.2); --progress-background: #34d399; height: 10px; border-radius: 5px; margin-top: 8px;"></ion-progress-bar>
-                    <p id="savingsTip"
-                        style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.95; color: white; font-weight: 600;"></p>
                 </div>
 
                 <div class="calc-container-card"
@@ -1102,42 +1502,86 @@ select.modal-dark-input {
                     </ion-button>
                 </div>
 
-                <h3 class="section-title" style="margin: 0 0 12px 4px; font-size: 17px; font-weight: 800;">📜 儲蓄存入紀錄</h3>
+                <h3 class="section-title" style="margin: 0 0 12px 4px;">📜 儲蓄存入紀錄</h3>
                 <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
 
-            <ion-modal id="addModal" initial-breakpoint="0.88" handle="true">
-                <ion-content class="ion-padding">
-                    <div class="modal-header-box">
-                        <h2 class="modal-header-title">
-                            <span>📝</span> 新增開銷記錄
-                        </h2>
+            <!-- 💡 消息動態 Modal -->
+          <ion-modal id="logsModal" initial-breakpoint="1" handle="true">
+                <ion-header class="ion-no-border" style="background: #0f172a; touch-action: none;">
+                    <div id="dragHandleArea"
+                        style="display: flex; flex-direction: column; align-items: center; padding: 10px 0 4px 0; background: #0f172a; cursor: grab;">
+                        <div
+                            style="width: 40px; height: 5px; background: rgba(255, 255, 255, 0.4); border-radius: 10px;">
+                        </div>
+                        <span style="font-size: 10px; color: #64748b; margin-top: 3px;">向下滑動關閉</span>
                     </div>
+
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 6px 16px 12px 16px; background: #0f172a; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                        <div
+                            style="font-weight: 800; font-size: 16px; color: #ffffff; display: flex; align-items: center; gap: 6px;">
+                            🔔 操作動態消息
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 10px; z-index: 9999;">
+                            <button type="button" onclick="clearAllLogs()"
+                                style="background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                                🗑️ 清除
+                            </button>
+                            <button type="button" onclick="closeLogsModal()"
+                                style="background: rgba(255, 255, 255, 0.1); color: #cbd5e1; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                </ion-header>
+
+                <ion-content style="--background: #0f172a;" class="ion-padding">
+                    <div id="logsContainer"></div>
+                </ion-content>
+            </ion-modal>
+
+            <!-- 新增開銷 Modal -->
+            <ion-modal id="addModal" initial-breakpoint="0.9" handle="true">
+    <ion-content class="ion-padding">
+        <!-- 💡 頂部拖拽指示條 -->
+        <div class="drag-handle-bar">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
+
+        <div class="modal-header-box">
+            <h2 class="modal-header-title">
+                <span>📝</span> 新增開銷記錄
+            </h2>
+        </div>
 
                     <div id="manualInputSection">
                         <div class="row-grid-2">
-                            <div class="modal-dark-group">
-<input type="date" id="finalDateInput" class="modal-dark-input"
-    style="font-size: 13px; padding: 12px 4px; text-align: center; font-weight: 700; height: 56px; width: 100%; min-width: 0;">
-
+                            <!-- 日期輸入框 -->
+                            <div class="modal-dark-group" style="flex: 1; min-width: 0;">
+                                <input type="date" id="finalDateInput" class="modal-dark-input"
+                                    style="height: 54px; box-sizing: border-box; width: 100%;">
                                 <label for="finalDateInput">📅 消費日期</label>
                             </div>
 
-                            <div class="modal-dark-group">
-                                <select id="manualPaymentSelect" class="modal-dark-input"
-                                    style="color: #ffffff; background-color: #1e293b; cursor: pointer; appearance: auto; text-align: center; text-align-last: center; padding: 16px 8px; font-size: 14px; font-weight: 600; height: 56px;">
-                                    <option value="現金" selected>💵 現金 (Cash)</option>
-                                    <option value="八達通">🚇 八達通 (Octopus)</option>
-                                    <option value="信用卡">💳 信用卡 (Credit)</option>
-                                    <option value="支付寶">💙 支付寶 (Alipay)</option>
-                                    <option value="微信支付">💚 微信支付 (WeChat)</option>
-                                    <option value="PayMe">💛 PayMe</option>
-                                    <option value="BOCPAY">❤️ BOC Pay</option>
-                                    <option value="FPS轉數快">⚡ 轉數快 (FPS)</option>
-                                    <option value="ApplePay">🍎 Apple Pay</option>
-                                    <option value="其他支付">🪙 其他支付</option>
-                                </select>
-                                <label for="manualPaymentSelect">💳 支付方式</label>
+                            <!-- 支付方式選擇框 -->
+                            <div class="modal-dark-group" style="flex: 1; min-width: 0; position: relative;">
+                                <!-- 隱藏的 Input 負責記錄選取的數值 -->
+                                <input type="hidden" id="manualPaymentSelect" value="現金">
+
+                                <!-- 自訂觸發按鈕 -->
+                                <div class="custom-select-trigger" onclick="togglePaymentPicker(true)">
+                                    <div class="selected-value-display" id="selectedPaymentDisplay">
+                                        <span class="pay-chip pay-cash">💵 現金</span>
+                                    </div>
+                                    <ion-icon name="chevron-down-outline"
+                                        style="color: #64748b; font-size: 16px;"></ion-icon>
+                                </div>
+                                <label
+                                    style="position: absolute; top: -8px; left: 10px; background: #1e293b; padding: 0 4px; font-size: 10px; color: #94a3b8; font-weight: 700; border-radius: 4px; z-index: 2;">💳
+                                    支付方式</label>
                             </div>
                         </div>
 
@@ -1185,7 +1629,7 @@ select.modal-dark-input {
 
                         <div class="modal-dark-group">
                             <select id="manualCategorySelect" class="modal-dark-input"
-                                style="color: #ffffff; background-color: #1e293b; cursor: pointer; appearance: auto; text-align: center; text-align-last: center; padding: 16px 18px; font-size: 16px; font-weight: 600; height: 56px;">
+                                style="color: #ffffff; background-color: #1e293b; cursor: pointer; appearance: auto; text-align: center; padding: 16px 18px; font-size: 16px; font-weight: 600; height: 56px;">
                                 <option value="" disabled selected hidden>✨ 點選選擇分類 ✨</option>
                                 <option value="餐飲">🍱 餐飲食品</option>
                                 <option value="交通">🚇 交通出行</option>
@@ -1208,22 +1652,28 @@ select.modal-dark-input {
 
                     <div style="height: 10px;"></div>
 
-                    <ion-button id="confirmAddBtn" expand="block" color="success"
+                    <ion-button id="confirmAddBtn" expand="block" color="success" onclick="confirmAddExpense()"
                         style="margin-inline: 0px; --border-radius: 12px; font-weight: bold; font-size: 16px;">確認新增記錄</ion-button>
-                    <ion-button id="cancelBtn" expand="block" color="danger"
+                    <ion-button id="cancelBtn" expand="block" color="danger" onclick="closeExpenseModal()"
                         style="margin-inline: 0px; margin-top: 8px; --border-radius: 12px; font-weight: bold; font-size: 16px;">取消</ion-button>
 
                     <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
+            <!-- 借貸 Modal -->
             <ion-modal id="addLoanModal" initial-breakpoint="0.92" handle="true">
-                <ion-content class="ion-padding">
-                    <div class="modal-header-box" style="background: var(--loan-card-gradient);">
-                        <h2 class="modal-header-title">
-                            <span>🏛️</span> 新增借貸項目
-                        </h2>
-                    </div>
+    <ion-content class="ion-padding">
+        <div class="drag-handle-bar">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
+
+        <div class="modal-header-box" style="background: var(--loan-card-gradient);">
+            <h2 class="modal-header-title">
+                <span>🏛️</span> 新增借貸項目
+            </h2>
+        </div>
 
                     <div class="modal-dark-group">
                         <select id="loanCategorySelect" class="modal-dark-input"
@@ -1270,14 +1720,18 @@ select.modal-dark-input {
                     </div>
 
                     <div class="row-grid-2">
-                        <div class="modal-dark-group">
+                        <!-- 首期到期日 / 還款日 -->
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="date" id="loanDueDateInput" class="modal-dark-input"
-                                style="font-size: 13px; text-align: center;">
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="loanDueDateInput">📅 首期到期日 / 還款日</label>
                         </div>
-                        <div class="modal-dark-group">
+
+                        <!-- 總還款期數 (月) -->
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="number" id="loanPeriodsInput" class="modal-dark-input" placeholder="12" min="1"
-                                value="12">
+                                value="12"
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="loanPeriodsInput">⏳ 總還款期數 (月)</label>
                         </div>
                     </div>
@@ -1291,23 +1745,32 @@ select.modal-dark-input {
                     <div style="height: 10px;"></div>
 
                     <ion-button expand="block" color="tertiary" onclick="confirmAddLoan()"
-                        style="margin-inline: 0px; --border-radius: 12px; font-weight: bold; font-size: 16px;">💾
-                        儲存借貸記錄</ion-button>
+                        style="margin-inline: 0px; --border-radius: 12px; font-weight: bold; font-size: 16px;">
+                        💾 儲存借貸記錄
+                    </ion-button>
                     <ion-button expand="block" color="danger"
                         onclick="document.getElementById('addLoanModal').dismiss()"
-                        style="margin-inline: 0px; margin-top: 8px; --border-radius: 12px; font-weight: bold; font-size: 16px;">取消</ion-button>
+                        style="margin-inline: 0px; margin-top: 8px; --border-radius: 12px; font-weight: bold; font-size: 16px;">
+                        取消
+                    </ion-button>
 
                     <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
+            <!-- 修改貸款 Modal -->
             <ion-modal id="editLoanModal" initial-breakpoint="0.95" handle="true">
-                <ion-content class="ion-padding">
-                    <div class="modal-header-box" style="background: var(--loan-card-gradient);">
-                        <h2 class="modal-header-title">
-                            💳 紀錄還款 / 修改貸款設定
-                        </h2>
-                    </div>
+    <ion-content class="ion-padding">
+        <div class="drag-handle-bar">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
+
+        <div class="modal-header-box" style="background: var(--loan-card-gradient);">
+            <h2 class="modal-header-title">
+                💳 紀錄還款 / 修改貸款設定
+            </h2>
+        </div>
 
                     <p id="editLoanSubtitle"
                         style="font-size: 13px; color: #cbd5e1; margin: -6px 0 14px 4px; font-weight: 600;"></p>
@@ -1337,40 +1800,50 @@ select.modal-dark-input {
                     </div>
 
                     <div class="row-grid-2">
-                        <div class="modal-dark-group">
+                        <!-- 下次還款日期 / 到期日 -->
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="date" id="editLoanDueDateInput" class="modal-dark-input"
-                                style="font-size: 13px; text-align: center;">
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="editLoanDueDateInput">📅 下次還款日期 / 到期日</label>
                         </div>
-                        <div class="modal-dark-group">
+
+                        <!-- 每月還款金額 (HKD) -->
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="number" id="editLoanMonthlyInput" class="modal-dark-input"
-                                oninput="calculateEditRemaining()">
+                                oninput="calculateEditRemaining()"
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="editLoanMonthlyInput">🔔 每月還款金額 (HKD)</label>
                         </div>
                     </div>
 
+                    <!-- 總貸款金額 & 累積已還金額 -->
                     <div class="row-grid-2">
-                        <div class="modal-dark-group">
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="number" id="editLoanTotalAmountInput" class="modal-dark-input"
-                                oninput="calculateEditRemaining()">
+                                oninput="calculateEditRemaining()"
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="editLoanTotalAmountInput">🏛️ 總貸款金額 (HKD)</label>
                         </div>
-                        <div class="modal-dark-group">
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="number" id="editLoanRepaidAmountInput" class="modal-dark-input"
-                                oninput="calculateEditRemaining()">
+                                oninput="calculateEditRemaining()"
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="editLoanRepaidAmountInput">💚 累積已還金額 (HKD)</label>
                         </div>
                     </div>
 
+                    <!-- 總還款期數 & 已還期數 -->
                     <div class="row-grid-2">
-                        <div class="modal-dark-group">
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="number" id="editLoanTotalPeriodsInput" class="modal-dark-input" min="1"
-                                oninput="calculateEditRemaining()">
+                                oninput="calculateEditRemaining()"
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="editLoanTotalPeriodsInput">⏳ 總還款期數 (月)</label>
                         </div>
-                        <div class="modal-dark-group">
+                        <div class="modal-dark-group" style="flex: 1; min-width: 0;">
                             <input type="number" id="editLoanRepaidPeriodsInput" class="modal-dark-input" min="0"
-                                oninput="calculateEditRemaining()">
+                                oninput="calculateEditRemaining()"
+                                style="height: 54px; box-sizing: border-box; width: 100%; text-align: center; font-weight: 700;">
                             <label for="editLoanRepaidPeriodsInput">✅ 已還期數 (月)</label>
                         </div>
                     </div>
@@ -1387,22 +1860,30 @@ select.modal-dark-input {
                     </div>
 
                     <ion-button expand="block" color="warning" onclick="confirmSaveEditedLoan()"
-                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; --color: #0f172a;">💾
-                        儲存所有修改</ion-button>
+                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; --color: #0f172a;">
+                        💾 儲存所有修改
+                    </ion-button>
                     <ion-button expand="block" color="danger"
                         onclick="document.getElementById('editLoanModal').dismiss()"
-                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
+                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">
+                        取消
+                    </ion-button>
 
                     <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
-            <!-- 每月預算上限 Modal -->
-            <ion-modal id="budgetModal" initial-breakpoint="0.65" handle="true">
-                <ion-content class="ion-padding">
-                    <div class="modal-header-box">
-                        <h2 class="modal-header-title">⚙️ 設定每月預算上限</h2>
-                    </div>
+            <!-- 預算 Modal -->
+            <ion-modal id="budgetModal" initial-breakpoint="0.7" handle="true">
+    <ion-content class="ion-padding">
+        <div class="drag-handle-bar">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
+
+        <div class="modal-header-box">
+            <h2 class="modal-header-title">⚙️ 設定每月預算上限</h2>
+        </div>
 
                     <div class="stepper-container">
                         <div class="stepper-header">
@@ -1433,18 +1914,20 @@ select.modal-dark-input {
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; --color: #0f172a;">確認修改預算</ion-button>
                     <ion-button expand="block" color="danger" onclick="document.getElementById('budgetModal').dismiss()"
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
-
-                    <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
-            <!-- 每月儲蓄目標 Modal -->
-            <ion-modal id="savingsGoalModal" initial-breakpoint="0.65" handle="true">
-                <ion-content class="ion-padding">
-                    <div class="modal-header-box"
-                        style="background: linear-gradient(135deg, #065f46 0%, #047857 100%); border-color: rgba(52, 211, 153, 0.3);">
-                        <h2 class="modal-header-title" style="color: #34d399;">⚙️ 設定每月儲蓄目標</h2>
-                    </div>
+            <!-- 儲蓄目標 Modal -->
+            <ion-modal id="savingsGoalModal" initial-breakpoint="0.7" handle="true">
+    <ion-content class="ion-padding">
+        <div class="drag-handle-bar">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
+
+        <div class="modal-header-box" style="background: linear-gradient(135deg, #065f46 0%, #047857 100%); border-color: rgba(52, 211, 153, 0.3);">
+            <h2 class="modal-header-title" style="color: #34d399;">⚙️ 設定每月儲蓄目標</h2>
+        </div>
 
                     <div class="stepper-container">
                         <div class="stepper-header">
@@ -1476,98 +1959,162 @@ select.modal-dark-input {
                     <ion-button expand="block" color="danger"
                         onclick="document.getElementById('savingsGoalModal').dismiss()"
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
-
-                    <div style="height: 50px;"></div>
                 </ion-content>
             </ion-modal>
 
+            <!-- 圓形底欄導向列 (正確認納於 ion-content 內部作為 slot="fixed") -->
+            <div class="circle-nav-container" slot="fixed">
+                <button class="circle-nav-btn active" id="navBtnHome" onclick="switchPage('home')">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <span class="btn-label">首頁</span>
+                </button>
+
+                <button class="circle-nav-btn" id="navBtnCalc" onclick="switchPage('calc')">
+                    <ion-icon name="calculator-outline"></ion-icon>
+                    <span class="btn-label">計算</span>
+                </button>
+
+                <button class="circle-nav-btn primary-add-btn" id="openModalBtn" onclick="openExpenseModal()">
+                    <ion-icon name="add-outline"></ion-icon>
+                </button>
+
+                <button class="circle-nav-btn" id="navBtnSavings" onclick="switchPage('savings')">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                    <span class="btn-label">儲蓄</span>
+                </button>
+
+                <button class="circle-nav-btn" id="navBtnLoans" onclick="switchPage('loans')">
+                    <ion-icon name="card-outline"></ion-icon>
+                    <span class="btn-label">借貸</span>
+                </button>
+            </div>
+
         </ion-content>
 
-        <div class="circle-nav-container">
-            <button class="circle-nav-btn active" id="navBtnHome" onclick="switchPage('home')">
-                <ion-icon name="home-outline"></ion-icon>
-                <span class="btn-label">首頁</span>
-            </button>
-
-            <button class="circle-nav-btn" id="navBtnCalc" onclick="switchPage('calc')">
-                <ion-icon name="calculator-outline"></ion-icon>
-                <span class="btn-label">計算</span>
-            </button>
-
-            <button class="circle-nav-btn primary-add-btn" id="openModalBtn">
-                <ion-icon name="add-outline"></ion-icon>
-            </button>
-
-            <button class="circle-nav-btn" id="navBtnSavings" onclick="switchPage('savings')">
-                <ion-icon name="wallet-outline"></ion-icon>
-                <span class="btn-label">儲蓄</span>
-            </button>
-
-            <button class="circle-nav-btn" id="navBtnLoans" onclick="switchPage('loans')">
-                <ion-icon name="card-outline"></ion-icon>
-                <span class="btn-label">借貸</span>
-            </button>
-        </div>
     </ion-app>
+
+    <!-- 💳 官方 Logo 支付方式彈出選擇 modal (確保置於 ion-app 之外) -->
+    <div class="payment-picker-modal" id="paymentPickerModal"
+        onclick="if(event.target===this) togglePaymentPicker(false)">
+        <div class="picker-content">
+            <div class="picker-header">
+                <span class="picker-title">選擇支付方式</span>
+                <button type="button" class="close-picker-btn" onclick="togglePaymentPicker(false)">✕</button>
+            </div>
+
+            <div class="option-grid">
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Visa')">
+                    <div class="logo-box">
+                        <svg viewBox="0 0 1000 324" style="height: 11px; fill: #2563eb;">
+                            <path
+                                d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z" />
+                        </svg>
+                    </div>
+                    <span>Visa</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Mastercard')">
+                    <div class="logo-box">
+                        <svg viewBox="0 0 50 30" style="height: 15px;">
+                            <circle cx="18" cy="15" r="12" fill="#EB001B" />
+                            <circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95" />
+                        </svg>
+                    </div>
+                    <span>Mastercard</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('八達通')">
+                    <div class="logo-box" style="font-size: 14px;">💳</div>
+                    <span>八達通</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('轉數快')">
+                    <div class="logo-box" style="color: #dc2626; font-size: 14px; font-weight: 900;">⚡</div>
+                    <span>轉數快 (FPS)</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('PayMe')">
+                    <div class="logo-box" style="color: #cc0000; font-size: 14px; font-weight: 900;">🔴</div>
+                    <span>PayMe</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('AlipayHK')">
+                    <div class="logo-box">
+                        <ion-icon name="wallet-outline" style="color: #0284c7; font-size: 18px;"></ion-icon>
+                    </div>
+                    <span>AlipayHK</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('WeChat Pay')">
+                    <div class="logo-box">
+                        <ion-icon name="chatbubble-ellipses-outline"
+                            style="color: #16a34a; font-size: 18px;"></ion-icon>
+                    </div>
+                    <span>微信支付</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Apple Pay')">
+                    <div class="logo-box">
+                        <ion-icon name="logo-apple" style="color: #ffffff; font-size: 18px;"></ion-icon>
+                    </div>
+                    <span>Apple Pay</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('現金')">
+                    <div class="logo-box" style="font-size: 14px;">💵</div>
+                    <span>現金</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         let records = [];
         let savingsRecords = [];
         let loanRecords = [];
-        let budgetLimit = 5000;
+        let budgetLimit = 10000;
         let savingsGoal = 20000;
         let calcExpr = "";
         let isMultiSelectMode = false;
         let selectedRecordIds = new Set();
         let currentEditingLoanId = null;
-/* 💡 熄燈/深色模式初始化與切換邏輯 */
-function initTheme() {
-    const savedTheme = localStorage.getItem('app_theme');
-    const app = document.getElementById('appContainer');
-    const btn = document.getElementById('themeToggleBtn');
+        let activityLogs = [];
+        let unreadLogCount = 0;
 
-    if (savedTheme === 'dark') {
-        app.classList.add('dark-theme');
-        if (btn) btn.textContent = '☀️';
-    } else {
-        app.classList.remove('dark-theme');
-        if (btn) btn.textContent = '🌙';
-    }
-}
+        // 💡 官方 Logo 支付方式選單控制函數
+        function togglePaymentPicker(show) {
+            const modal = document.getElementById('paymentPickerModal');
+            if (!modal) return;
+            if (show) modal.classList.add('active');
+            else modal.classList.remove('active');
+        }
 
-function toggleTheme() {
-    const app = document.getElementById('appContainer');
-    const btn = document.getElementById('themeToggleBtn');
-    
-    // toggle() 會自動切換 Class 的存在狀態 (有變無，無變有)
-    const isDark = app.classList.toggle('dark-theme');
+        function selectPaymentOption(val) {
+            const hiddenInput = document.getElementById('manualPaymentSelect');
+            const displayEl = document.getElementById('selectedPaymentDisplay');
 
-    if (isDark) {
-        if (btn) btn.textContent = '☀️';
-        localStorage.setItem('app_theme', 'dark');
-    } else {
-        if (btn) btn.textContent = '🌙';
-        localStorage.setItem('app_theme', 'light');
-    }
-}
+            if (hiddenInput) hiddenInput.value = val;
+            if (displayEl) displayEl.innerHTML = getPaymentBadgeHtml(val);
 
-const CATEGORY_MAP = {
-    '餐飲': { name: '🍱 餐飲食品', emoji: '🍱', color: 'linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%)' },
-    '交通': { name: '🚇 交通出行', emoji: '🚇', color: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)' },
-    '購物': { name: '🛒 購物消費', emoji: '🛒', color: 'linear-gradient(135deg, #a855f7 0%, #9333ea 50%, #7e22ce 100%)' },
-    '娛樂': { name: '🎮 娛樂消遣', emoji: '🎮', color: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)' },
-    '居家': { name: '🏠 居家水電', emoji: '🏠', color: 'linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%)' },
-    '醫療': { name: '💊 醫療健康', emoji: '💊', color: 'linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be123c 100%)' },
-    '通訊': { name: '📱 數碼通訊', emoji: '📱', color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)' },
-    '美容': { name: '🛍️ 服飾美容', emoji: '🛍️', color: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%)' },
-    '旅遊': { name: '✈️ 旅遊外遊', emoji: '✈️', color: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%)' },
-    '寵物': { name: '🐾 寵物照顧', emoji: '🐾', color: 'linear-gradient(135deg, #f97316 0%, #d97706 50%, #b45309 100%)' },
-    '社交': { name: '🎁 禮物人情', emoji: '🎁', color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)' },
-    '理財': { name: '📈 投資儲蓄', emoji: '📈', color: 'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)' },
-    '教育': { name: '🎓 教育學習', emoji: '🎓', color: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%)' },
-    '其他': { name: '🪙 其他開銷', emoji: '🪙', color: 'linear-gradient(135deg, #6b7280 0%, #4b5563 50%, #374151 100%)' }
-};
+            togglePaymentPicker(false);
+        }
 
+        const CATEGORY_MAP = {
+            '餐飲': { name: '🍱 餐飲食品', emoji: '🍱', color: 'linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%)' },
+            '交通': { name: '🚇 交通出行', emoji: '🚇', color: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)' },
+            '購物': { name: '🛒 購物消費', emoji: '🛒', color: 'linear-gradient(135deg, #a855f7 0%, #9333ea 50%, #7e22ce 100%)' },
+            '娛樂': { name: '🎮 娛樂消遣', emoji: '🎮', color: 'linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)' },
+            '居家': { name: '🏠 居家水電', emoji: '🏠', color: 'linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%)' },
+            '醫療': { name: '💊 醫療健康', emoji: '💊', color: 'linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be123c 100%)' },
+            '通訊': { name: '📱 數碼通訊', emoji: '📱', color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)' },
+            '美容': { name: '🛍️ 服飾美容', emoji: '🛍️', color: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%)' },
+            '旅遊': { name: '✈️ 旅遊外遊', emoji: '✈️', color: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%)' },
+            '寵物': { name: '🐾 寵物照顧', emoji: '🐾', color: 'linear-gradient(135deg, #f97316 0%, #d97706 50%, #b45309 100%)' },
+            '社交': { name: '🎁 禮物人情', emoji: '🎁', color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%)' },
+            '理財': { name: '📈 投資儲蓄', emoji: '📈', color: 'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)' },
+            '教育': { name: '🎓 教育學習', emoji: '🎓', color: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%)' },
+            '其他': { name: '🪙 其他開銷', emoji: '🪙', color: 'linear-gradient(135deg, #6b7280 0%, #4b5563 50%, #374151 100%)' }
+        };
 
         const LOAN_CATEGORY_MAP = {
             '信用卡': { name: '💳 信用卡分期', emoji: '💳', color: '#4f46e5' },
@@ -1575,19 +2122,57 @@ const CATEGORY_MAP = {
             '銀行私貸': { name: '🏦 銀行私人貸款', emoji: '🏦', color: '#0d9488' },
             '其他借貸': { name: '🪙 其他借貸', emoji: '🪙', color: '#475569' }
         };
-const PAYMENT_MAP = {
-    '現金': '💵 現金',
-    '八達通': '🚇 八達通',
-    '信用卡': '💳 信用卡',
-    '支付寶': '💙 支付寶',
-    '微信支付': '💚 微信支付',
-    'PayMe': '💛 PayMe',
-    'BOCPAY': '❤️ BOC Pay',
-    'FPS轉數快': '⚡ 轉數快',
-    'ApplePay': '🍎 Apple Pay',
-    '其他支付': '🪙 其他支付'
-};
 
+        function initTheme() {
+            const savedTheme = localStorage.getItem('app_theme');
+            const app = document.getElementById('appContainer');
+            const icon = document.getElementById('themeIcon');
+
+            if (savedTheme === 'dark') {
+                app.classList.add('dark-theme');
+                if (icon) icon.setAttribute('name', 'sunny-outline');
+            } else {
+                app.classList.remove('dark-theme');
+                if (icon) icon.setAttribute('name', 'moon-outline');
+            }
+        }
+
+        function toggleTheme() {
+            const app = document.getElementById('appContainer');
+            const icon = document.getElementById('themeIcon');
+
+            const isDark = app.classList.toggle('dark-theme');
+
+            if (isDark) {
+                if (icon) icon.setAttribute('name', 'sunny-outline');
+                localStorage.setItem('app_theme', 'dark');
+            } else {
+                if (icon) icon.setAttribute('name', 'moon-outline');
+                localStorage.setItem('app_theme', 'light');
+            }
+        }
+
+        function loadData() {
+            try {
+                records = JSON.parse(localStorage.getItem('app_expense_records') || '[]');
+                savingsRecords = JSON.parse(localStorage.getItem('app_savings_records') || '[]');
+                loanRecords = JSON.parse(localStorage.getItem('app_loan_records') || '[]');
+                budgetLimit = Number(localStorage.getItem('app_budget_limit')) || 10000;
+                savingsGoal = Number(localStorage.getItem('app_savings_goal')) || 20000;
+                activityLogs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
+            } catch (e) {
+                console.error("Error loading localStorage data", e);
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('app_expense_records', JSON.stringify(records));
+            localStorage.setItem('app_savings_records', JSON.stringify(savingsRecords));
+            localStorage.setItem('app_loan_records', JSON.stringify(loanRecords));
+            localStorage.setItem('app_budget_limit', budgetLimit);
+            localStorage.setItem('app_savings_goal', savingsGoal);
+            localStorage.setItem('activity_logs', JSON.stringify(activityLogs));
+        }
 
         function escapeHtml(str) {
             if (!str) return '';
@@ -1599,272 +2184,549 @@ const PAYMENT_MAP = {
                 .replace(/'/g, "&#039;");
         }
 
-        function getTodayDateString() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+        // 💳 官方支付方式 Icon 映射函數
+        function getPaymentBadgeHtml(method) {
+            const m = (method || '').toLowerCase().trim();
+
+            if (m.includes('visa')) {
+                return `<span class="pay-chip pay-visa"><svg viewBox="0 0 1000 324" style="height: 10px; width: auto; vertical-align: middle;"><path d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z" fill="#ffffff"/></svg> Visa</span>`;
+            }
+            if (m.includes('master')) {
+                return `<span class="pay-chip pay-mastercard"><svg viewBox="0 0 50 30" style="height: 12px; width: auto; vertical-align: middle;"><circle cx="18" cy="15" r="12" fill="#EB001B"/><circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95"/></svg> Mastercard</span>`;
+            }
+            if (m.includes('八達通')) {
+                return `<span class="pay-chip pay-octopus">💳 八達通</span>`;
+            }
+            if (m.includes('fps') || m.includes('轉數快')) {
+                return `<span class="pay-chip pay-fps">⚡ 轉數快</span>`;
+            }
+            if (m.includes('payme')) {
+                return `<span class="pay-chip pay-payme">🔴 PayMe</span>`;
+            }
+            if (m.includes('alipay')) {
+                return `<span class="pay-chip pay-alipay">🔷 AlipayHK</span>`;
+            }
+            if (m.includes('wechat') || m.includes('微信')) {
+                return `<span class="pay-chip pay-wechat">💬 微信支付</span>`;
+            }
+            if (m.includes('apple')) {
+                return `<span class="pay-chip pay-apple">🍎 Apple Pay</span>`;
+            }
+            if (m.includes('現金')) {
+                return `<span class="pay-chip pay-cash">💵 現金</span>`;
+            }
+            return `<span class="pay-chip pay-default">💳 ${escapeHtml(method || '現金')}</span>`;
         }
 
-        function syncRangeToInput(rangeId, inputId) {
-            const range = document.getElementById(rangeId);
+        // 頁面切換 logic
+        function switchPage(pageKey) {
+    const pageMap = {
+        'home': 'pageHome',
+        'calc': 'pageCalc',
+        'savings': 'pageSavings',
+        'loans': 'pageLoans'
+    };
+
+    const titleMap = {
+        'home': '個人開銷記錄',
+        'calc': '簡約計算機',
+        'savings': '個人儲蓄記錄',
+        'loans': '貸款與信用卡分期'
+    };
+
+    document.querySelectorAll('.view-page').forEach(el => el.classList.remove('active-page'));
+    document.querySelectorAll('.circle-nav-btn').forEach(btn => {
+        if (btn.id !== 'openModalBtn') btn.classList.remove('active');
+    });
+
+    const targetPage = document.getElementById(pageMap[pageKey]);
+    if (targetPage) targetPage.classList.add('active-page');
+
+    const targetBtn = document.getElementById('navBtn' + pageKey.charAt(0).toUpperCase() + pageKey.slice(1));
+    if (targetBtn) targetBtn.classList.add('active');
+
+    const headerTitle = document.getElementById('pageHeaderTitle');
+    if (headerTitle) headerTitle.textContent = titleMap[pageKey] || '個人理財記錄';
+
+    // 💡 切換頁面時觸發粒子效果重繪
+    setTimeout(initParticleCanvas, 50);
+}
+
+
+        // Stepper & Range Helpers
+        function stepAmount(inputId, delta, rangeId) {
             const input = document.getElementById(inputId);
-            if (range && input) {
-                input.value = range.value;
+            if (!input) return;
+            let val = (Number(input.value) || 0) + delta;
+            if (val < 0) val = 0;
+            input.value = val;
+            if (rangeId) {
+                const range = document.getElementById(rangeId);
+                if (range) range.value = val;
             }
+            if (inputId === 'editLoanTotalAmountInput' || inputId === 'editLoanRepaidAmountInput' || inputId === 'editLoanMonthlyInput') {
+                calculateEditRemaining();
+            }
+        }
+
+        function addAmount(inputId, addVal, rangeId) {
+            stepAmount(inputId, addVal, rangeId);
         }
 
         function syncInputToRange(inputId, rangeId) {
             const input = document.getElementById(inputId);
             const range = document.getElementById(rangeId);
-            if (input && range) {
-                let val = Number(input.value) || 0;
-                range.value = Math.min(Number(range.max), Math.max(Number(range.min), val));
-            }
+            if (input && range) range.value = input.value;
         }
 
-        function stepAmount(inputId, delta, rangeId) {
-            const el = document.getElementById(inputId);
-            if (!el) return;
-            let val = Number(el.value) || 0;
-            val = Math.max(0, val + delta);
-            el.value = val;
-            if (rangeId) syncInputToRange(inputId, rangeId);
+        function syncRangeToInput(rangeId, inputId) {
+            const range = document.getElementById(rangeId);
+            const input = document.getElementById(inputId);
+            if (range && input) input.value = range.value;
         }
 
-        function addAmount(inputId, addValue, rangeId) {
-            const el = document.getElementById(inputId);
-            if (!el) return;
-            let val = Number(el.value) || 0;
-            el.value = val + addValue;
-            if (rangeId) syncInputToRange(inputId, rangeId);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-          	initTheme();
-            loadData();
-            const dateInput = document.getElementById('finalDateInput');
-            if (dateInput && !dateInput.value) dateInput.value = getTodayDateString();
-
-            const loanDateInput = document.getElementById('loanDueDateInput');
-            if (loanDateInput && !loanDateInput.value) loanDateInput.value = getTodayDateString();
-
-            renderList();
-            renderSavingsList();
-            renderLoansList();
-            setupEventListeners();
-        });
-
-        function switchPage(pageKey) {
-            document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active-page'));
-
-            document.getElementById('navBtnHome')?.classList.remove('active');
-            document.getElementById('navBtnCalc')?.classList.remove('active');
-            document.getElementById('navBtnSavings')?.classList.remove('active');
-            document.getElementById('navBtnLoans')?.classList.remove('active');
-
-            const titleEl = document.getElementById('pageHeaderTitle');
-
-            if (pageKey === 'home') {
-                document.getElementById('pageHome').classList.add('active-page');
-                document.getElementById('navBtnHome')?.classList.add('active');
-                if (titleEl) titleEl.textContent = "個人開銷記錄";
-            } else if (pageKey === 'calc') {
-                document.getElementById('pageCalc').classList.add('active-page');
-                document.getElementById('navBtnCalc')?.classList.add('active');
-                if (titleEl) titleEl.textContent = "開銷計算機";
-            } else if (pageKey === 'savings') {
-                document.getElementById('pageSavings').classList.add('active-page');
-                document.getElementById('navBtnSavings')?.classList.add('active');
-                if (titleEl) titleEl.textContent = "儲蓄目標與紀錄";
-            } else if (pageKey === 'loans') {
-                document.getElementById('pageLoans').classList.add('active-page');
-                document.getElementById('navBtnLoans')?.classList.add('active');
-                if (titleEl) titleEl.textContent = "借貸與還款計劃";
-            }
-        }
-
+        // 計算機 logic
         function calcInput(val) {
             const screen = document.getElementById('calcScreen');
             const subscreen = document.getElementById('calcSubscreen');
+            if (!screen) return;
 
             if (val === 'C') {
                 calcExpr = "";
                 screen.textContent = "0";
-                subscreen.textContent = "";
-            } else if (val === 'DEL') {
+                if (subscreen) subscreen.textContent = "";
+                return;
+            }
+            if (val === 'DEL') {
                 calcExpr = calcExpr.slice(0, -1);
                 screen.textContent = calcExpr || "0";
-            } else if (val === '=') {
+                return;
+            }
+            if (val === '=') {
                 try {
                     const result = Function('"use strict";return (' + calcExpr + ')')();
-                    subscreen.textContent = calcExpr + " =";
+                    if (subscreen) subscreen.textContent = calcExpr + " =";
                     calcExpr = String(result);
                     screen.textContent = calcExpr;
                 } catch (e) {
                     screen.textContent = "Error";
                     calcExpr = "";
                 }
-            } else {
-                calcExpr += val;
-                screen.textContent = calcExpr;
-            }
-        }
-
-        function setupEventListeners() {
-            document.getElementById('changeBudgetBtn')?.addEventListener('click', popupChangeBudgetAlert);
-            document.getElementById('cancelBtn')?.addEventListener('click', () => {
-                document.getElementById('addModal').dismiss();
-                clearForm();
-            });
-
-            document.getElementById('openModalBtn')?.addEventListener('click', () => {
-                document.getElementById('addModal').present();
-                syncInputToRange('finalAmountInput', 'finalAmountRange');
-            });
-
-            document.getElementById('confirmAddBtn')?.addEventListener('click', handleConfirmAdd);
-            document.getElementById('seedDataBtn')?.addEventListener('click', loadSeedData);
-            document.getElementById('toggleMultiSelectBtn')?.addEventListener('click', toggleMultiSelectMode);
-            document.getElementById('deleteSelectedBtn')?.addEventListener('click', deleteSelectedRecords);
-
-            const selectAllCb = document.getElementById('selectAllCheckbox');
-            if (selectAllCb) {
-                selectAllCb.addEventListener('ionChange', (e) => {
-                    toggleSelectAll(e.detail.checked);
-                });
-            }
-
-            document.getElementById('applyCalcToExpenseBtn')?.addEventListener('click', () => {
-                const screenVal = parseFloat(document.getElementById('calcScreen').textContent);
-                if (!isNaN(screenVal) && screenVal > 0) {
-                    const directInput = document.getElementById('finalAmountInput');
-                    if (directInput) {
-                        directInput.value = screenVal;
-                        syncInputToRange('finalAmountInput', 'finalAmountRange');
-                    }
-                    document.getElementById('addModal').present();
-                    showToast(`已帶入計算金額 HK$${screenVal.toLocaleString()}`);
-                } else {
-                    showToast('請先進行有效計算');
-                }
-            });
-        }
-
-        function showToast(msg) {
-            const toast = document.createElement('ion-toast');
-            toast.message = msg;
-            toast.duration = 1800;
-            toast.position = 'top';
-            toast.style.paddingTop = '20px';
-            document.body.appendChild(toast);
-            toast.present();
-        }
-
-        function saveData() {
-            localStorage.setItem('records', JSON.stringify(records));
-            localStorage.setItem('savings_records', JSON.stringify(savingsRecords));
-            localStorage.setItem('loan_records', JSON.stringify(loanRecords));
-            localStorage.setItem('user_budget_limit', budgetLimit);
-            localStorage.setItem('user_savings_goal', savingsGoal);
-        }
-
-        function loadData() {
-            const savedText = localStorage.getItem('records');
-            if (savedText) {
-                records = JSON.parse(savedText);
-                records.forEach(r => { if (!r.payment) r.payment = '現金'; });
-            }
-
-            const savedSavings = localStorage.getItem('savings_records');
-            if (savedSavings) savingsRecords = JSON.parse(savedSavings);
-
-            const savedLoans = localStorage.getItem('loan_records');
-            if (savedLoans) {
-                loanRecords = JSON.parse(savedLoans);
-            } else {
-                // 已刪走預設借貸例子，預設為空陣列
-                loanRecords = [];
-            }
-
-            const savedBudget = localStorage.getItem('user_budget_limit');
-            if (savedBudget) budgetLimit = Number(savedBudget);
-
-            const savedGoal = localStorage.getItem('user_savings_goal');
-            if (savedGoal) savingsGoal = Number(savedGoal);
-        }
-
-        function loadSeedData() {
-            const today = getTodayDateString();
-            records = [
-                { id: Date.now() - 5000, title: '🍱 茶餐廳常餐午膳', amount: 65, category: '餐飲', payment: '八達通', date: today },
-                { id: Date.now() - 4000, title: '🚇 八達通自動增值', amount: 500, category: '交通', payment: '信用卡', date: today },
-                { id: Date.now() - 3000, title: '🛒 惠康/百佳買餸', amount: 320, category: '購物', payment: '支付寶', date: today },
-                { id: Date.now() - 2000, title: '🎬 戲院睇戲加爆谷', amount: 160, category: '娛樂', payment: 'PayMe', date: today },
-                { id: Date.now() - 1000, title: '🏠 中電電費單', amount: 850, category: '居家', payment: 'FPS轉數快', date: today }
-            ];
-            isMultiSelectMode = false;
-            selectedRecordIds.clear();
-            updateMultiSelectUI();
-            saveData();
-            renderList();
-            showToast('已成功載入測試開銷資料！');
-        }
-
-        function toggleMultiSelectMode() {
-            if (records.length === 0) {
-                showToast('現時沒有記錄可供刪除');
                 return;
             }
+            calcExpr += val;
+            screen.textContent = calcExpr;
+        }
+
+        function applyCalcToExpense() {
+            const screen = document.getElementById('calcScreen');
+            if (!screen) return;
+            const val = parseFloat(screen.textContent);
+            if (!isNaN(val) && val > 0) {
+                const finalAmountInput = document.getElementById('finalAmountInput');
+                const finalAmountRange = document.getElementById('finalAmountRange');
+                if (finalAmountInput) finalAmountInput.value = Math.round(val);
+                if (finalAmountRange) finalAmountRange.value = Math.round(val);
+                openExpenseModal();
+            }
+        }
+
+        // Modal Controls
+        function openExpenseModal() {
+            const modal = document.getElementById('addModal');
+            if (modal) {
+                const today = new Date().toISOString().split('T')[0];
+                const dateInput = document.getElementById('finalDateInput');
+                if (dateInput && !dateInput.value) dateInput.value = today;
+                modal.present();
+            }
+        }
+
+        function closeExpenseModal() {
+            const modal = document.getElementById('addModal');
+            if (modal) modal.dismiss();
+        }
+
+        function openBudgetModal() {
+            const modal = document.getElementById('budgetModal');
+            const input = document.getElementById('budgetInput');
+            if (input) input.value = budgetLimit;
+            if (modal) modal.present();
+        }
+
+        function confirmSaveBudget() {
+            const input = document.getElementById('budgetInput');
+            if (input) {
+                budgetLimit = Number(input.value) || 10000;
+                saveData();
+                renderUI();
+                addLog('⚙️ 系統提示', `預算上限已更新為 HK$${budgetLimit.toLocaleString()}`);
+            }
+            document.getElementById('budgetModal').dismiss();
+        }
+
+        function popupChangeSavingsGoalAlert() {
+            const modal = document.getElementById('savingsGoalModal');
+            const input = document.getElementById('savingsGoalInput');
+            if (input) input.value = savingsGoal;
+            if (modal) modal.present();
+        }
+
+        function confirmSaveSavingsGoal() {
+            const input = document.getElementById('savingsGoalInput');
+            if (input) {
+                savingsGoal = Number(input.value) || 20000;
+                saveData();
+                renderUI();
+                addLog('⚙️ 系統提示', `儲蓄目標已更新為 HK$${savingsGoal.toLocaleString()}`);
+            }
+            document.getElementById('savingsGoalModal').dismiss();
+        }
+
+        function openAddLoanModal() {
+            const modal = document.getElementById('addLoanModal');
+            const dueDate = document.getElementById('loanDueDateInput');
+            if (dueDate && !dueDate.value) dueDate.value = new Date().toISOString().split('T')[0];
+            if (modal) modal.present();
+        }
+
+        function openLogsModal() {
+            const modal = document.getElementById('logsModal');
+            unreadLogCount = 0;
+            updateLogBadge();
+            renderLogs();
+            if (modal) modal.present();
+        }
+
+        function closeLogsModal() {
+    const modal = document.getElementById('logsModal');
+    if (modal) {
+        modal.style.transform = '';
+        modal.dismiss();
+    }
+}
+
+// 💡 通用：為所有 Modal 的頂部 HandleBar 綁定下拉關閉手勢
+function setupAllModalsDragToClose() {
+    const modalIds = ['addModal', 'addLoanModal', 'editLoanModal', 'budgetModal', 'savingsGoalModal', 'logsModal'];
+
+    modalIds.forEach(id => {
+        const modal = document.getElementById(id);
+        if (!modal) return;
+
+        const handle = modal.querySelector('.drag-handle-bar') || modal.querySelector('#dragHandleArea');
+        if (!handle) return;
+
+        let startY = 0;
+        let currentY = 0;
+
+        handle.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        handle.addEventListener('touchmove', (e) => {
+            currentY = e.touches[0].clientY;
+            const diffY = currentY - startY;
+            // 向下滑動時跟隨移動
+            if (diffY > 0) {
+                modal.style.transform = `translateY(${diffY}px)`;
+                modal.style.transition = 'none';
+            }
+        }, { passive: true });
+
+        handle.addEventListener('touchend', () => {
+            const diffY = currentY - startY;
+            modal.style.transition = 'transform 0.22s ease-out';
+
+            // 向下滑動超過 65px 自動關閉
+            if (diffY > 65) {
+                modal.style.transform = 'translateY(100%)';
+                setTimeout(() => {
+                    modal.dismiss();
+                    modal.style.transform = '';
+                }, 220);
+            } else {
+                modal.style.transform = '';
+            }
+            startY = 0;
+            currentY = 0;
+        });
+    });
+}
+
+        function addLog(title, desc) {
+            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            activityLogs.unshift({ id: Date.now(), title, desc, time: timeStr });
+            if (activityLogs.length > 30) activityLogs.pop();
+            unreadLogCount++;
+            updateLogBadge();
+            saveData();
+        }
+
+        function updateLogBadge() {
+            const badge = document.getElementById('logBadge');
+            if (!badge) return;
+            if (unreadLogCount > 0) {
+                badge.textContent = unreadLogCount;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function clearAllLogs() {
+            activityLogs = [];
+            unreadLogCount = 0;
+            updateLogBadge();
+            saveData();
+            renderLogs();
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('logsContainer');
+            if (!container) return;
+            if (activityLogs.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:#64748b; padding: 40px 0;">目前無任何操作記錄</div>`;
+                return;
+            }
+            container.innerHTML = activityLogs.map(log => `
+                <div style="background:#1e293b; border-radius:12px; padding:12px 14px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:800; color:#38bdf8; font-size:13px;">${escapeHtml(log.title)}</span>
+                        <span style="font-size:10px; color:#64748b;">${escapeHtml(log.time)}</span>
+                    </div>
+                    <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">${escapeHtml(log.desc)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Confirm Actions
+        function confirmAddExpense() {
+            const titleInput = document.getElementById('finalTitleInput');
+            const amountInput = document.getElementById('finalAmountInput');
+            const categorySelect = document.getElementById('manualCategorySelect');
+            const paymentInput = document.getElementById('manualPaymentSelect');
+            const dateInput = document.getElementById('finalDateInput');
+
+            const title = titleInput.value.trim();
+            const amount = Number(amountInput.value) || 0;
+            const category = categorySelect.value || '其他';
+            const payment = paymentInput.value || '現金';
+            const date = dateInput.value || new Date().toISOString().split('T')[0];
+
+            if (!title) {
+                document.getElementById('expTitleError').textContent = '⚠️ 請輸入項目名稱';
+                return;
+            }
+            document.getElementById('expTitleError').textContent = '';
+
+            const newRecord = {
+                id: Date.now(),
+                title,
+                amount,
+                category,
+                payment,
+                date
+            };
+
+            records.unshift(newRecord);
+            saveData();
+            renderUI();
+            closeExpenseModal();
+            addLog('📝 新增消費', `新增「${title}」HK$${amount.toLocaleString()}`);
+
+            // Clear inputs
+            titleInput.value = '';
+            amountInput.value = 65;
+        }
+
+        function confirmAddLoan() {
+            const cat = document.getElementById('loanCategorySelect').value;
+            const title = document.getElementById('loanTitleInput').value.trim();
+            const amount = Number(document.getElementById('loanAmountInput').value) || 0;
+            const dueDate = document.getElementById('loanDueDateInput').value;
+            const periods = Number(document.getElementById('loanPeriodsInput').value) || 12;
+            let monthly = Number(document.getElementById('loanMonthlyInput').value) || 0;
+
+            if (!title) {
+                alert('請輸入貸款項目名稱');
+                return;
+            }
+            if (!monthly) {
+                monthly = Math.round(amount / periods);
+            }
+
+            const newLoan = {
+                id: Date.now(),
+                category: cat,
+                title,
+                totalAmount: amount,
+                repaidAmount: 0,
+                totalPeriods: periods,
+                repaidPeriods: 0,
+                monthlyAmount: monthly,
+                dueDate: dueDate || new Date().toISOString().split('T')[0]
+            };
+
+            loanRecords.unshift(newLoan);
+            saveData();
+            renderUI();
+            document.getElementById('addLoanModal').dismiss();
+            addLog('🏛️ 新增貸款', `新增「${title}」總額 HK$${amount.toLocaleString()}`);
+
+            document.getElementById('loanTitleInput').value = '';
+        }
+
+        function openEditLoanModal(loanId) {
+            currentEditingLoanId = loanId;
+            const loan = loanRecords.find(l => l.id === loanId);
+            if (!loan) return;
+
+            document.getElementById('editLoanSubtitle').textContent = `修改「${loan.title}」的詳細資料或紀錄本期還款`;
+            document.getElementById('editLoanTitleInput').value = loan.title;
+            document.getElementById('editLoanDueDateInput').value = loan.dueDate;
+            document.getElementById('editLoanMonthlyInput').value = loan.monthlyAmount;
+            document.getElementById('editLoanTotalAmountInput').value = loan.totalAmount;
+            document.getElementById('editLoanRepaidAmountInput').value = loan.repaidAmount;
+            document.getElementById('editLoanTotalPeriodsInput').value = loan.totalPeriods;
+            document.getElementById('editLoanRepaidPeriodsInput').value = loan.repaidPeriods;
+
+            calculateEditRemaining();
+            document.getElementById('editLoanModal').present();
+        }
+
+        function calculateEditRemaining() {
+            const total = Number(document.getElementById('editLoanTotalAmountInput').value) || 0;
+            const repaid = Number(document.getElementById('editLoanRepaidAmountInput').value) || 0;
+            const remaining = Math.max(0, total - repaid);
+            const percent = total > 0 ? Math.min(100, Math.round((repaid / total) * 100)) : 0;
+
+            document.getElementById('editCalcRemainingDisplay').textContent = `HK$${remaining.toLocaleString()}`;
+            document.getElementById('editCalcRepaidDisplay').textContent = repaid.toLocaleString();
+            document.getElementById('editCalcPercentDisplay').textContent = `${percent}%`;
+        }
+
+        function quickPayOnePeriod() {
+            const monthly = Number(document.getElementById('editLoanMonthlyInput').value) || 0;
+            const repaidInput = document.getElementById('editLoanRepaidAmountInput');
+            const repaidPeriodsInput = document.getElementById('editLoanRepaidPeriodsInput');
+
+            repaidInput.value = (Number(repaidInput.value) || 0) + monthly;
+            repaidPeriodsInput.value = (Number(repaidPeriodsInput.value) || 0) + 1;
+
+            calculateEditRemaining();
+        }
+
+        function confirmSaveEditedLoan() {
+            if (!currentEditingLoanId) return;
+            const idx = loanRecords.findIndex(l => l.id === currentEditingLoanId);
+            if (idx === -1) return;
+
+            loanRecords[idx].title = document.getElementById('editLoanTitleInput').value.trim();
+            loanRecords[idx].dueDate = document.getElementById('editLoanDueDateInput').value;
+            loanRecords[idx].monthlyAmount = Number(document.getElementById('editLoanMonthlyInput').value) || 0;
+            loanRecords[idx].totalAmount = Number(document.getElementById('editLoanTotalAmountInput').value) || 0;
+            loanRecords[idx].repaidAmount = Number(document.getElementById('editLoanRepaidAmountInput').value) || 0;
+            loanRecords[idx].totalPeriods = Number(document.getElementById('editLoanTotalPeriodsInput').value) || 1;
+            loanRecords[idx].repaidPeriods = Number(document.getElementById('editLoanRepaidPeriodsInput').value) || 0;
+
+            saveData();
+            renderUI();
+            document.getElementById('editLoanModal').dismiss();
+            addLog('💳 更新借貸', `已更新「${loanRecords[idx].title}」資料`);
+        }
+
+        function addSavingsRecord() {
+            const titleInput = document.getElementById('savingsTitleInput');
+            const amountInput = document.getElementById('savingsAmountInput');
+
+            const title = titleInput.value.trim() || '日常儲蓄';
+            const amount = Number(amountInput.value) || 0;
+
+            if (amount <= 0) return;
+
+            savingsRecords.unshift({
+                id: Date.now(),
+                title,
+                amount,
+                date: new Date().toISOString().split('T')[0]
+            });
+
+            saveData();
+            renderUI();
+            addLog('🐷 新增儲蓄', `存入「${title}」HK$${amount.toLocaleString()}`);
+
+            titleInput.value = '';
+        }
+
+        // 💡 修正後的單筆與批次刪除函數（加入動態消息通知）
+
+function deleteRecord(id) {
+    const target = records.find(r => r.id === id);
+    records = records.filter(r => r.id !== id);
+    saveData();
+    renderUI();
+    if (target) {
+        addLog('🗑️ 刪除開銷', `已刪除「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
+    }
+}
+
+function deleteLoanRecord(id) {
+    const target = loanRecords.find(l => l.id === id);
+    loanRecords = loanRecords.filter(l => l.id !== id);
+    saveData();
+    renderUI();
+    if (target) {
+        addLog('🗑️ 刪除貸款', `已刪除貸款項目「${target.title}」`);
+    }
+}
+
+function deleteSavingsRecord(id) {
+    const target = savingsRecords.find(s => s.id === id);
+    savingsRecords = savingsRecords.filter(s => s.id !== id);
+    saveData();
+    renderUI();
+    if (target) {
+        addLog('🗑️ 刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
+    }
+}
+
+function deleteSelectedRecords() {
+    if (selectedRecordIds.size === 0) return;
+    
+    const deleteCount = selectedRecordIds.size;
+    records = records.filter(r => !selectedRecordIds.has(r.id));
+    exitMultiSelectMode();
+    saveData();
+    renderUI();
+    
+    addLog('🗑️ 批次刪除', `已成功批次刪除 ${deleteCount} 筆消費紀錄`);
+}
+
+
+        // Multi Select Logic
+        function toggleMultiSelectMode() {
             isMultiSelectMode = !isMultiSelectMode;
             selectedRecordIds.clear();
-            updateMultiSelectUI();
-            renderList();
+            const bar = document.getElementById('multiSelectBar');
+            if (bar) bar.style.display = isMultiSelectMode ? 'flex' : 'none';
+            renderRecords();
         }
 
         function exitMultiSelectMode() {
             isMultiSelectMode = false;
             selectedRecordIds.clear();
-            updateMultiSelectUI();
-            renderList();
-        }
-
-        function updateMultiSelectUI() {
             const bar = document.getElementById('multiSelectBar');
-            const toggleBtn = document.getElementById('toggleMultiSelectBtn');
-            const countDisplay = document.getElementById('selectedCountDisplay');
-            const deleteBtn = document.getElementById('deleteSelectedBtn');
-
-            if (bar) bar.style.display = isMultiSelectMode ? 'flex' : 'none';
-            if (toggleBtn) toggleBtn.style.display = isMultiSelectMode ? 'none' : 'inline-block';
-            if (countDisplay) countDisplay.textContent = selectedRecordIds.size;
-
-            if (deleteBtn) {
-                if (selectedRecordIds.size === 0) {
-                    deleteBtn.setAttribute('disabled', 'true');
-                    deleteBtn.disabled = true;
-                } else {
-                    deleteBtn.removeAttribute('disabled');
-                    deleteBtn.disabled = false;
-                }
-            }
+            if (bar) bar.style.display = 'none';
+            renderRecords();
         }
 
-        function toggleSelectRecord(id) {
-            if (selectedRecordIds.has(id)) {
-                selectedRecordIds.delete(id);
-            } else {
-                selectedRecordIds.add(id);
-            }
+        function toggleSelectRecord(id, checked) {
+            if (checked) selectedRecordIds.add(id);
+            else selectedRecordIds.delete(id);
 
-            const selectAllCb = document.getElementById('selectAllCheckbox');
-            if (selectAllCb) {
-                selectAllCb.checked = (records.length > 0 && selectedRecordIds.size === records.length);
-            }
-
-            updateMultiSelectUI();
-            renderList();
+            document.getElementById('selectedCountDisplay').textContent = selectedRecordIds.size;
+            document.getElementById('deleteSelectedBtn').disabled = selectedRecordIds.size === 0;
         }
 
         function toggleSelectAll(checked) {
@@ -1873,658 +2735,318 @@ const PAYMENT_MAP = {
             } else {
                 selectedRecordIds.clear();
             }
-            updateMultiSelectUI();
-            renderList();
+            document.getElementById('selectedCountDisplay').textContent = selectedRecordIds.size;
+            document.getElementById('deleteSelectedBtn').disabled = selectedRecordIds.size === 0;
+            renderRecords();
         }
 
-        async function deleteSelectedRecords() {
+        function deleteSelectedRecords() {
             if (selectedRecordIds.size === 0) return;
-
-            const count = selectedRecordIds.size;
-            const alert = document.createElement('ion-alert');
-            alert.header = '確認批次刪除';
-            alert.message = `確定要刪除已選取的 ${count} 筆記錄嗎？`;
-            alert.buttons = [
-                { text: '取消', role: 'cancel' },
-                {
-                    text: '確認刪除',
-                    role: 'destructive',
-                    handler: () => {
-                        records = records.filter(item => !selectedRecordIds.has(item.id));
-                        selectedRecordIds.clear();
-                        if (records.length === 0) isMultiSelectMode = false;
-                        saveData();
-                        updateMultiSelectUI();
-                        renderList();
-                        showToast(`已成功刪除 ${count} 筆記錄`);
-                    }
-                }
-            ];
-            document.body.appendChild(alert);
-            await alert.present();
-        }
-
-        function popupChangeBudgetAlert() {
-            const modal = document.getElementById('budgetModal');
-            const inputEl = document.getElementById('budgetInput');
-            if (inputEl) inputEl.value = budgetLimit;
-            modal.present();
-        }
-
-        function confirmSaveBudget() {
-            const inputEl = document.getElementById('budgetInput');
-            const inputNum = Number(inputEl.value);
-            if (inputNum > 0 && !isNaN(inputNum)) {
-                budgetLimit = inputNum;
-                saveData();
-                renderList();
-                document.getElementById('budgetModal').dismiss();
-                showToast('已成功更新每月預算上限！');
-            }
-        }
-
-        function popupChangeSavingsGoalAlert() {
-            const modal = document.getElementById('savingsGoalModal');
-            const inputEl = document.getElementById('savingsGoalInput');
-            if (inputEl) inputEl.value = savingsGoal;
-            modal.present();
-        }
-
-        function confirmSaveSavingsGoal() {
-            const inputEl = document.getElementById('savingsGoalInput');
-            const inputNum = Number(inputEl.value);
-            if (inputNum > 0 && !isNaN(inputNum)) {
-                savingsGoal = inputNum;
-                saveData();
-                renderSavingsList();
-                document.getElementById('savingsGoalModal').dismiss();
-                showToast('已成功更新每月儲蓄目標！');
-            }
-        }
-
-        function handleConfirmAdd() {
-            const titleValue = document.getElementById('finalTitleInput').value.trim();
-            if (!titleValue) {
-                document.getElementById('expTitleError').textContent = '請填寫項目名稱';
-                return;
-            }
-
-            const inputEl = document.getElementById('finalAmountInput');
-            const selectEl = document.getElementById('manualCategorySelect');
-            const paymentSelect = document.getElementById('manualPaymentSelect');
-            const dateValue = document.getElementById('finalDateInput').value || getTodayDateString();
-
-            const newRecord = {
-                id: Date.now(),
-                title: titleValue,
-                amount: inputEl ? Number(inputEl.value) : 0,
-                category: selectEl.value || '其他',
-                payment: paymentSelect ? paymentSelect.value : '現金',
-                date: dateValue,
-                createdAt: new Date().toISOString()
-            };
-
-            records.unshift(newRecord);
+            records = records.filter(r => !selectedRecordIds.has(r.id));
+            exitMultiSelectMode();
             saveData();
-            renderList();
-            document.getElementById('addModal').dismiss();
-            clearForm();
-            switchPage('home');
-            showToast('已新增開銷項目！');
+            renderUI();
         }
 
-        function clearForm() {
-            const titleInput = document.getElementById('finalTitleInput');
-            const amountInput = document.getElementById('finalAmountInput');
-            const categorySelect = document.getElementById('manualCategorySelect');
-            const paymentSelect = document.getElementById('manualPaymentSelect');
-            const errEl = document.getElementById('expTitleError');
-
-            if (titleInput) titleInput.value = '';
-            if (amountInput) {
-                amountInput.value = '65';
-                syncInputToRange('finalAmountInput', 'finalAmountRange');
-            }
-            if (categorySelect) categorySelect.value = '';
-            if (paymentSelect) paymentSelect.value = '現金';
-            if (errEl) errEl.textContent = '';
-        }
-
-        async function confirmDelete(id) {
-            const record = records.find(item => item.id === id);
-            const titleText = record ? record.title : '此項目';
-
-            const alert = document.createElement('ion-alert');
-            alert.header = '⚠️ 確認刪除開銷';
-            alert.message = `確定要刪除「${escapeHtml(titleText)}」這筆記錄嗎？此操作無法復原。`;
-            alert.buttons = [
-                { text: '取消', role: 'cancel' },
-                {
-                    text: '確認刪除',
-                    role: 'destructive',
-                    handler: () => {
-                        records = records.filter(item => item.id !== id);
-                        saveData();
-                        renderList();
-                        showToast('已成功刪除開銷記錄');
-                    }
-                }
+        function seedDemoData() {
+            records = [
+                { id: 1, title: '爭鮮迴轉壽司', amount: 148, category: '餐飲', payment: 'Visa', date: '2026-08-28' },
+                { id: 2, title: '港鐵車費加值', amount: 200, category: '交通', payment: '八達通', date: '2026-08-27' },
+                { id: 3, title: 'Uniqlo 秋冬保暖外套', amount: 499, category: '購物', payment: 'Mastercard', date: '2026-08-25' }
             ];
-            document.body.appendChild(alert);
-            await alert.present();
-        }
-
-        function openAddLoanModal() {
-            document.getElementById('loanTitleInput').value = '';
-            document.getElementById('loanAmountInput').value = '12000';
-            document.getElementById('loanPeriodsInput').value = '12';
-            document.getElementById('loanMonthlyInput').value = '';
-            document.getElementById('loanDueDateInput').value = getTodayDateString();
-            document.getElementById('addLoanModal').present();
-        }
-
-        function confirmAddLoan() {
-            const category = document.getElementById('loanCategorySelect').value;
-            const title = document.getElementById('loanTitleInput').value.trim();
-            const totalAmount = Number(document.getElementById('loanAmountInput').value);
-            const totalPeriods = Number(document.getElementById('loanPeriodsInput').value) || 12;
-            const customMonthly = Number(document.getElementById('loanMonthlyInput').value);
-            const dueDate = document.getElementById('loanDueDateInput').value || getTodayDateString();
-
-            if (!title) {
-                showToast('請填寫借貸項目名稱！');
-                return;
-            }
-            if (!totalAmount || totalAmount <= 0) {
-                showToast('請填寫有效的借款總金額！');
-                return;
-            }
-
-            const calculatedMonthly = customMonthly > 0 ? customMonthly : Math.ceil(totalAmount / totalPeriods);
-
-            const newLoan = {
-                id: Date.now(),
-                category: category,
-                title: title,
-                totalAmount: totalAmount,
-                repaidAmount: 0,
-                monthlyPayment: calculatedMonthly,
-                totalPeriods: totalPeriods,
-                repaidPeriods: 0,
-                dueDate: dueDate,
-                createdAt: getTodayDateString()
-            };
-
-            loanRecords.unshift(newLoan);
             saveData();
-            renderLoansList();
-            document.getElementById('addLoanModal').dismiss();
-            showToast('已成功新增借貸記錄！');
+            renderUI();
+            addLog('🎲 載入測試範例', '成功載入 3 筆測試消費記錄');
         }
 
-        function openEditLoanModal(id) {
-            const loan = loanRecords.find(l => l.id === id);
-            if (!loan) return;
-
-            currentEditingLoanId = id;
-
-            document.getElementById('editLoanSubtitle').textContent = `項目：${loan.title}`;
-            document.getElementById('editLoanTitleInput').value = loan.title;
-            document.getElementById('editLoanDueDateInput').value = loan.dueDate || getTodayDateString();
-            document.getElementById('editLoanMonthlyInput').value = loan.monthlyPayment || Math.ceil(loan.totalAmount / (loan.totalPeriods || 12));
-            document.getElementById('editLoanTotalAmountInput').value = loan.totalAmount;
-            document.getElementById('editLoanRepaidAmountInput').value = loan.repaidAmount || 0;
-            document.getElementById('editLoanTotalPeriodsInput').value = loan.totalPeriods || 12;
-            document.getElementById('editLoanRepaidPeriodsInput').value = loan.repaidPeriods || 0;
-
-            calculateEditRemaining();
-            document.getElementById('editLoanModal').present();
+        // Render Functions
+        function renderUI() {
+            renderRecords();
+            renderLoans();
+            renderSavings();
+            updateLogBadge();
         }
 
-        function calculateEditRemaining() {
-            const totalAmt = Number(document.getElementById('editLoanTotalAmountInput').value) || 0;
-            const repaidAmt = Number(document.getElementById('editLoanRepaidAmountInput').value) || 0;
-
-            const remaining = Math.max(0, totalAmt - repaidAmt);
-            const percent = totalAmt > 0 ? Math.floor((repaidAmt / totalAmt) * 100) : 0;
-
-            document.getElementById('editCalcRemainingDisplay').textContent = `HK$${remaining.toLocaleString()}`;
-            document.getElementById('editCalcRepaidDisplay').textContent = repaidAmt.toLocaleString();
-            document.getElementById('editCalcPercentDisplay').textContent = `${percent}%`;
-        }
-
-        function quickPayOnePeriod() {
-            const monthlyAmt = Number(document.getElementById('editLoanMonthlyInput').value) || 0;
-            const totalAmt = Number(document.getElementById('editLoanTotalAmountInput').value) || 0;
-            let currentRepaid = Number(document.getElementById('editLoanRepaidAmountInput').value) || 0;
-            let currentRepaidPeriods = Number(document.getElementById('editLoanRepaidPeriodsInput').value) || 0;
-
-            if (monthlyAmt <= 0) {
-                showToast('請先填寫每月還款金額！');
-                return;
-            }
-
-            currentRepaid = Math.min(totalAmt, currentRepaid + monthlyAmt);
-            currentRepaidPeriods += 1;
-
-            document.getElementById('editLoanRepaidAmountInput').value = currentRepaid;
-            document.getElementById('editLoanRepaidPeriodsInput').value = currentRepaidPeriods;
-
-            calculateEditRemaining();
-            showToast(`已一鍵累計一期還款 +HK$${monthlyAmt.toLocaleString()}`);
-        }
-
-        function confirmSaveEditedLoan() {
-            if (!currentEditingLoanId) return;
-            const loan = loanRecords.find(l => l.id === currentEditingLoanId);
-            if (!loan) return;
-
-            const title = document.getElementById('editLoanTitleInput').value.trim();
-            const dueDate = document.getElementById('editLoanDueDateInput').value;
-            const monthlyAmt = Number(document.getElementById('editLoanMonthlyInput').value) || 0;
-            const totalAmt = Number(document.getElementById('editLoanTotalAmountInput').value) || 0;
-            const repaidAmt = Number(document.getElementById('editLoanRepaidAmountInput').value) || 0;
-            const totalPeriods = Number(document.getElementById('editLoanTotalPeriodsInput').value) || 12;
-            const repaidPeriods = Number(document.getElementById('editLoanRepaidPeriodsInput').value) || 0;
-
-            if (!title) {
-                showToast('貸款名稱不能為空！');
-                return;
-            }
-
-            loan.title = title;
-            loan.dueDate = dueDate;
-            loan.monthlyPayment = monthlyAmt;
-            loan.totalAmount = totalAmt;
-            loan.repaidAmount = Math.min(totalAmt, repaidAmt);
-            loan.totalPeriods = totalPeriods;
-            loan.repaidPeriods = repaidPeriods;
-
-            saveData();
-            renderLoansList();
-            document.getElementById('editLoanModal').dismiss();
-            showToast('已更新貸款與還款設定！');
-        }
-
-        async function confirmDeleteLoan(id) {
-            const loan = loanRecords.find(l => l.id === id);
-            const titleText = loan ? loan.title : '這筆貸款';
-
-            const alert = document.createElement('ion-alert');
-            alert.header = '⚠️ 刪除借貸項目';
-            alert.message = `確定要刪除「${escapeHtml(titleText)}」的記錄嗎？此操作不可復原。`;
-            alert.buttons = [
-                { text: '取消', role: 'cancel' },
-                {
-                    text: '確認刪除',
-                    role: 'destructive',
-                    handler: () => {
-                        loanRecords = loanRecords.filter(l => l.id !== id);
-                        saveData();
-                        renderLoansList();
-                        showToast('已刪除該筆借貸記錄');
-                    }
-                }
-            ];
-            document.body.appendChild(alert);
-            await alert.present();
-        }
-
-        function addSavingsRecord() {
-            const titleInput = document.getElementById('savingsTitleInput');
-            const inputEl = document.getElementById('savingsAmountInput');
-
-            const title = titleInput.value.trim() || '日常儲蓄存款';
-            const amount = inputEl ? Number(inputEl.value) : 0;
-
-            if (!amount || amount <= 0 || isNaN(amount)) {
-                showToast('請輸入有效的存入金額！');
-                return;
-            }
-
-            const newSavings = {
-                id: Date.now(),
-                title: title,
-                amount: amount,
-                date: getTodayDateString()
-            };
-
-            savingsRecords.unshift(newSavings);
-            saveData();
-            renderSavingsList();
-
-            titleInput.value = '';
-            showToast(`🎉 成功存入 HK$${amount.toLocaleString()}！`);
-        }
-
-        async function confirmDeleteSavings(id) {
-            const item = savingsRecords.find(s => s.id === id);
-            const titleText = item ? item.title : '這筆儲蓄';
-
-            const alert = document.createElement('ion-alert');
-            alert.header = '🐷 確認刪除儲蓄紀錄';
-            alert.message = `確定要刪除「${escapeHtml(titleText)}」這筆儲蓄紀錄嗎？`;
-            alert.buttons = [
-                { text: '取消', role: 'cancel' },
-                {
-                    text: '確認刪除',
-                    role: 'destructive',
-                    handler: () => {
-                        savingsRecords = savingsRecords.filter(s => s.id !== id);
-                        saveData();
-                        renderSavingsList();
-                        showToast('已刪除該筆儲蓄紀錄');
-                    }
-                }
-            ];
-            document.body.appendChild(alert);
-            await alert.present();
-        }
-
-        function renderList() {
+        function renderRecords() {
             const container = document.getElementById('recordContainer');
-            const totalDisplay = document.getElementById('totalAmountDisplay');
-            const budgetDisplay = document.getElementById('budgetLimitDisplay');
+            if (!container) return;
+
+            let total = 0;
+            records.forEach(r => total += (Number(r.amount) || 0));
+
+            document.getElementById('totalAmountDisplay').textContent = total.toLocaleString();
+            document.getElementById('budgetLimitDisplay').textContent = budgetLimit.toLocaleString();
+
+            const progress = budgetLimit > 0 ? Math.min(1, total / budgetLimit) : 0;
             const progressBar = document.getElementById('budgetProgressBar');
-            const budgetTip = document.getElementById('budgetTip');
-            const cardDateDisplay = document.getElementById('cardDateDisplay');
+            if (progressBar) progressBar.value = progress;
 
-            if (cardDateDisplay) {
-                const now = new Date();
-                cardDateDisplay.textContent = `•••• •••• WALLET ${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
-            }
-
-            const totalExpense = records.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-            if (totalDisplay) totalDisplay.textContent = totalExpense.toLocaleString();
-            if (budgetDisplay) budgetDisplay.textContent = budgetLimit.toLocaleString();
-
-            const ratio = budgetLimit > 0 ? Math.min(totalExpense / budgetLimit, 1) : 0;
-            if (progressBar) progressBar.value = ratio;
-
-            if (budgetTip) {
-                const remaining = budgetLimit - totalExpense;
-                if (remaining < 0) {
-                    budgetTip.textContent = `⚠️ 注意：已超出預算 HK$${Math.abs(remaining).toLocaleString()} !`;
-                    budgetTip.style.color = '#f87171';
+            const tip = document.getElementById('budgetTip');
+            if (tip) {
+                const remain = budgetLimit - total;
+                if (remain < 0) {
+                    tip.textContent = `🚨 已超支 HK$${Math.abs(remain).toLocaleString()}！請注意控制消費！`;
+                    tip.style.color = '#f87171';
                 } else {
-                    const percent = Math.floor(ratio * 100);
-                    budgetTip.textContent = `💡 本月剩餘預算：HK$${remaining.toLocaleString()} (已用 ${percent}%)`;
-                    budgetTip.style.color = '#ffffff';
+                    tip.textContent = `💡 本月剩餘可用預算：HK$${remain.toLocaleString()}`;
+                    tip.style.color = '#34d399';
                 }
             }
-
-            if (!container) return;
 
             if (records.length === 0) {
-                container.innerHTML = `
-                <ion-item lines="none" style="--background: transparent;">
-                    <ion-label class="ion-text-center" style="color: #6B7280; padding: 30px 0; font-size: 14px;">
-                        現時沒有消費記錄<br>點擊下方「➕」或「🎲 載入測試範例」新增第一筆開銷！
-                    </ion-label>
-                </ion-item>
-                `;
+                container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:30px 0; font-size:14px;">尚無任何消費記錄，點擊下方 ➕ 開始記帳</div>`;
                 return;
             }
 
-container.innerHTML = records.map(item => {
-    const catConfig = CATEGORY_MAP[item.category] || CATEGORY_MAP['其他'];
-    const isSelected = selectedRecordIds.has(item.id);
-
-    let selectCheckboxHtml = '';
-    if (isMultiSelectMode) {
-        selectCheckboxHtml = `
-        <div slot="start" style="display: flex; align-items: center; margin-right: 10px;" onclick="event.stopPropagation(); toggleSelectRecord(${item.id});">
-            <ion-checkbox class="red-checkbox" checked="${isSelected}"></ion-checkbox>
-        </div>
-        `;
-    }
-
-    return `
-    <!-- background 使用漸變色 background: ${catConfig.color} -->
-    <ion-item-sliding class="custom-sliding-item" style="background: ${catConfig.color};">
-        <ion-item lines="none" onclick="${isMultiSelectMode ? `toggleSelectRecord(${item.id})` : ''}">
-            ${selectCheckboxHtml}
-            
-            <!-- 套用 3D 立體圓圈徽章 class="item-badge-3d" -->
-            <div slot="start" class="item-badge-3d">
-                ${catConfig.emoji}
-            </div>
-
-            <ion-label style="margin-left: 4px; padding: 10px 0;">
-                <h2 style="color: white; font-size: 16px; font-weight: 800; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">${escapeHtml(item.title)}</h2>
-                <p style="color: rgba(255,255,255,0.9); font-size: 12px; margin: 4px 0 0 0; font-weight: 600; display: flex; gap: 8px;">
-                    <span>📅 ${item.date || ''}</span>
-                    <span>${escapeHtml(PAYMENT_MAP[item.payment] || ('💳 ' + item.payment))}</span>
-                </p>
-            </ion-label>
-
-            <div slot="end" style="text-align: right;">
-                <span style="font-size: 18px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">-HK$${Number(item.amount).toLocaleString()}</span>
-            </div>
-        </ion-item>
-
-        <ion-item-options side="end">
-            <ion-item-option color="danger" onclick="confirmDelete(${item.id})" style="width: 70px;">
-                <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
-            </ion-item-option>
-        </ion-item-options>
-    </ion-item-sliding>
-    `;
-}).join('');
-
-        }
-
-        function renderLoansList() {
-            const container = document.getElementById('loanRecordContainer');
-            const totalMonthlyDueEl = document.getElementById('loanMonthlyDueDisplay');
-            const monthlyBadgeEl = document.getElementById('loanMonthlyCountBadge');
-            const totalRepaidEl = document.getElementById('loanTotalRepaidDisplay');
-            const totalRemainingEl = document.getElementById('loanTotalRemainingDisplay');
-            const cardNumDisplay = document.getElementById('loanCardNumberDisplay');
-
-            if (cardNumDisplay) {
-                const now = new Date();
-                cardNumDisplay.textContent = `•••• •••• LOAN ${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
-            }
-
-            let sumMonthlyDue = 0;
-            let sumBorrowed = 0;
-            let sumRepaid = 0;
-            let pendingItemsCount = 0;
-
-            loanRecords.forEach(l => {
-                const totalAmt = Number(l.totalAmount || 0);
-                const repaidAmt = Number(l.repaidAmount || 0);
-                const remaining = Math.max(0, totalAmt - repaidAmt);
-                const monthly = Number(l.monthlyPayment) || Math.ceil(totalAmt / (l.totalPeriods || 12));
-
-                sumBorrowed += totalAmt;
-                sumRepaid += repaidAmt;
-
-                if (remaining > 0) {
-                    sumMonthlyDue += Math.min(monthly, remaining);
-                    pendingItemsCount += 1;
-                }
-            });
-
-            const sumRemaining = Math.max(0, sumBorrowed - sumRepaid);
-
-            if (totalMonthlyDueEl) totalMonthlyDueEl.textContent = sumMonthlyDue.toLocaleString();
-            if (monthlyBadgeEl) monthlyBadgeEl.textContent = `${pendingItemsCount} 筆待還`;
-            if (totalRepaidEl) totalRepaidEl.textContent = `HK$${sumRepaid.toLocaleString()}`;
-            if (totalRemainingEl) totalRemainingEl.textContent = `HK$${sumRemaining.toLocaleString()}`;
-
-            if (!container) return;
-
-            if (loanRecords.length === 0) {
-                container.innerHTML = `
-                <ion-item lines="none" style="--background: transparent;">
-                    <ion-label class="ion-text-center" style="color: #6B7280; padding: 25px 0; font-size: 14px;">
-                        現時沒有借貸記錄<br>點擊上方「➕ 新增借貸項目」開始記錄！
-                    </ion-label>
-                </ion-item>
-                `;
-                return;
-            }
-
-            container.innerHTML = loanRecords.map(item => {
-                const loanCatConfig = LOAN_CATEGORY_MAP[item.category] || LOAN_CATEGORY_MAP['其他借貸'];
-                const totalAmt = Number(item.totalAmount || 0);
-                const repaidAmt = Number(item.repaidAmount || 0);
-                const remaining = Math.max(0, totalAmt - repaidAmt);
-                const percent = totalAmt > 0 ? Math.floor((repaidAmt / totalAmt) * 100) : 0;
-                const monthly = Number(item.monthlyPayment) || Math.ceil(totalAmt / (item.totalPeriods || 12));
+            container.innerHTML = records.map(r => {
+                const cat = CATEGORY_MAP[r.category] || CATEGORY_MAP['其他'];
+                const isSelected = selectedRecordIds.has(r.id);
 
                 return `
-<ion-item-sliding class="custom-sliding-item" style="background-color: ${loanCatConfig.color};">
-    <!-- 💡 1. 注意：移除了原本的 onclick="openEditLoanModal(...)"，點擊不會再自動彈出修改 -->
-    <ion-item lines="none">
-        <div slot="start" style="
-            background-color: rgba(255, 255, 255, 0.95); 
-            width: 42px; 
-            height: 42px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            margin-right: 8px;
-            font-size: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        ">
-            ${loanCatConfig.emoji}
-        </div>
-
-        <ion-label style="margin-left: 4px; padding: 8px 0;">
-            <h2 style="color: white; font-size: 15px; font-weight: 800; margin: 0;">${escapeHtml(item.title)}</h2>
-            <p style="color: rgba(255,255,255,0.85); font-size: 12px; margin: 3px 0 0 0; font-weight: 600; display: flex; gap: 8px; flex-wrap: wrap;">
-                <span>📅 到期日: ${item.dueDate || '無'}</span>
-                <span>🔔 月供: HK$${monthly.toLocaleString()}</span>
-            </p>
-            <div style="margin-top: 6px;">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 700;">
-                    <span>已還: HK$${repaidAmt.toLocaleString()} (${percent}%)</span>
-                    <span>剩餘: HK$${remaining.toLocaleString()}</span>
-                </div>
-                <!-- 還款進度條 -->
-                <ion-progress-bar value="${totalAmt > 0 ? (repaidAmt / totalAmt) : 0}" 
-                    style="--background: rgba(255,255,255,0.25); --progress-background: ${remaining === 0 ? '#34d399' : '#fbbf24'}; height: 6px; border-radius: 3px; margin-top: 4px;">
-                </ion-progress-bar>
-            </div>
-        </ion-label>
-
-    <!-- 右邊區域：顯示金額 + 右下角半透明修改鍵 -->
-<div slot="end" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; min-height: 100px; padding-top: 4px; padding-bottom: 2px;">
-    <span style="font-size: 14px; font-weight: 900; color: ${remaining === 0 ? '#34d399' : '#fbbf24'};">
-        ${remaining === 0 ? '✅ 已清還' : 'HK$' + remaining.toLocaleString()}
-    </span>
-
-    <!-- 💡 右下角的半透明修改按鈕 -->
-    <button type="button" class="semi-edit-btn" onclick="openEditLoanModal(${item.id})">
-        <ion-icon name="create-outline"></ion-icon> 修改
-    </button>
-</div>
-
-    </ion-item>
-
-<!-- 滑動選單：向左滑動只出現刪除按鈕 (最順暢) -->
-<ion-item-options side="end">
-    <ion-item-option color="danger" onclick="confirmDeleteLoan(${item.id})" style="border-radius: 0 16px 16px 0;">
-        <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
-    </ion-item-option>
-</ion-item-options>
-</ion-item-sliding>
-
+                    <ion-item-sliding class="custom-sliding-item">
+                        <ion-item>
+                            ${isMultiSelectMode ? `<ion-checkbox slot="start" class="red-checkbox" ${isSelected ? 'checked' : ''} onionChange="toggleSelectRecord(${r.id}, this.checked)"></ion-checkbox>` : ''}
+                            <div class="item-badge-3d" slot="start" style="background: ${cat.color}; color: white;">
+                                ${cat.emoji}
+                            </div>
+                            <ion-label>
+                                <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px;">${escapeHtml(r.title)}</h2>
+                                <p style="font-size: 11px; color: #94a3b8; display:flex; align-items:center; gap:6px;">
+                                    <span>📅 ${r.date}</span>
+                                    ${getPaymentBadgeHtml(r.payment)}
+                                </p>
+                            </ion-label>
+                            <div slot="end" style="text-align: right;">
+                                <div style="font-size: 17px; font-weight: 900; color: #ef4444;">-HK$${Number(r.amount).toLocaleString()}</div>
+                            </div>
+                        </ion-item>
+                        <ion-item-options side="end">
+                            <ion-item-option color="danger" onclick="deleteRecord(${r.id})">
+                                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                            </ion-item-option>
+                        </ion-item-options>
+                    </ion-item-sliding>
                 `;
             }).join('');
         }
 
-        function renderSavingsList() {
+       // 💡 修改後的 renderLoans 函數（加入了 ion-item-sliding 側滑刪除）
+function renderLoans() {
+    const container = document.getElementById('loanRecordContainer');
+    if (!container) return;
+
+    let totalDue = 0;
+    let totalRemaining = 0;
+    let totalRepaid = 0;
+    let pendingCount = 0;
+
+    loanRecords.forEach(l => {
+        const rem = Math.max(0, l.totalAmount - l.repaidAmount);
+        totalRemaining += rem;
+        totalRepaid += l.repaidAmount;
+
+        if (rem > 0) {
+            totalDue += l.monthlyAmount;
+            pendingCount++;
+        }
+    });
+
+    document.getElementById('loanMonthlyDueDisplay').textContent = totalDue.toLocaleString();
+    document.getElementById('loanMonthlyCountBadge').textContent = `${pendingCount} 筆待還`;
+    document.getElementById('loanTotalRemainingDisplay').textContent = `HK$${totalRemaining.toLocaleString()}`;
+    document.getElementById('loanTotalRepaidDisplay').textContent = `HK$${totalRepaid.toLocaleString()}`;
+
+    if (loanRecords.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:30px 0; font-size:14px;">無貸款或分期項目</div>`;
+        return;
+    }
+
+    container.innerHTML = loanRecords.map(l => {
+        const cat = LOAN_CATEGORY_MAP[l.category] || LOAN_CATEGORY_MAP['其他借貸'];
+        const rem = Math.max(0, l.totalAmount - l.repaidAmount);
+        const percent = l.totalAmount > 0 ? Math.min(100, Math.round((l.repaidAmount / l.totalAmount) * 100)) : 0;
+
+        return `
+            <ion-item-sliding class="custom-sliding-item">
+                <ion-item lines="none" style="--padding-start: 14px; --padding-end: 14px; --padding-top: 12px; --padding-bottom: 12px;">
+                    <div style="width: 100%;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:20px;">${cat.emoji}</span>
+                                <div>
+                                    <h4 style="margin:0; font-size:15px; font-weight:800; color:#ffffff;">${escapeHtml(l.title)}</h4>
+                                    <span style="font-size:11px; color:#cbd5e1;">到期日: ${l.dueDate}</span>
+                                </div>
+                            </div>
+                            <button class="semi-edit-btn" type="button" onclick="openEditLoanModal(${l.id})">
+                                ✏️ 還款/修改
+                            </button>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:#cbd5e1;">
+                            <span>每月固定還款: <strong style="color:#fbbf24;">HK$${l.monthlyAmount.toLocaleString()}</strong></span>
+                            <span>剩餘: <strong style="color:#ffffff;">HK$${rem.toLocaleString()}</strong></span>
+                        </div>
+
+                        <div style="margin-top:8px;">
+                            <ion-progress-bar value="${percent / 100}" style="--progress-background: #818cf8; height: 6px; border-radius: 3px;"></ion-progress-bar>
+                            <div style="display:flex; justify-content:space-between; font-size:10px; color:#94a3b8; margin-top:4px;">
+                                <span>進度 ${percent}%</span>
+                                <span>已還 ${l.repaidPeriods}/${l.totalPeriods} 期</span>
+                            </div>
+                        </div>
+                    </div>
+                </ion-item>
+                
+                <!-- 💡 側滑出來的紅色垃圾桶刪除按鈕 -->
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" onclick="deleteLoanRecord(${l.id})">
+                        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        `;
+    }).join('');
+}
+
+
+        function renderSavings() {
             const container = document.getElementById('savingsRecordContainer');
-            const totalDisplay = document.getElementById('savingsTotalDisplay');
-            const goalDisplay = document.getElementById('savingsGoalDisplay');
+            if (!container) return;
+
+            let totalSavings = 0;
+            savingsRecords.forEach(s => totalSavings += (Number(s.amount) || 0));
+
+            document.getElementById('savingsTotalDisplay').textContent = totalSavings.toLocaleString();
+            document.getElementById('savingsGoalDisplay').textContent = savingsGoal.toLocaleString();
+
+            const progress = savingsGoal > 0 ? Math.min(1, totalSavings / savingsGoal) : 0;
             const progressBar = document.getElementById('savingsProgressBar');
-            const savingsTip = document.getElementById('savingsTip');
-            const cardNumDisplay = document.getElementById('savingsCardNumberDisplay');
+            if (progressBar) progressBar.value = progress;
 
-            if (cardNumDisplay) {
-                const now = new Date();
-                cardNumDisplay.textContent = `•••• •••• SAVINGS ${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
-            }
-
-            const totalSavings = savingsRecords.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-            if (totalDisplay) totalDisplay.textContent = totalSavings.toLocaleString();
-            if (goalDisplay) goalDisplay.textContent = savingsGoal.toLocaleString();
-
-            const ratio = savingsGoal > 0 ? Math.min(totalSavings / savingsGoal, 1) : 0;
-            if (progressBar) progressBar.value = ratio;
-
-            if (savingsTip) {
-                const remaining = savingsGoal - totalSavings;
-                if (remaining <= 0) {
-                    savingsTip.textContent = `🎉 恭喜！你已達標（累積 HK$${totalSavings.toLocaleString()}）！`;
-                    savingsTip.style.color = '#34d399';
+            const tip = document.getElementById('savingsTip');
+            if (tip) {
+                const diff = savingsGoal - totalSavings;
+                if (diff <= 0) {
+                    tip.textContent = `🎉 太棒了！已達成目標儲蓄額！`;
+                    tip.style.color = '#34d399';
                 } else {
-                    const percent = Math.floor(ratio * 100);
-                    savingsTip.textContent = `💪 還差 HK$${remaining.toLocaleString()} 即可達標 (進度 ${percent}%)`;
-                    savingsTip.style.color = '#ffffff';
+                    tip.textContent = `💪 還差 HK$${diff.toLocaleString()} 即可達成儲蓄目標！`;
+                    tip.style.color = '#fbbf24';
                 }
             }
 
-            if (!container) return;
-
             if (savingsRecords.length === 0) {
-                container.innerHTML = `
-                <ion-item lines="none" style="--background: transparent;">
-                    <ion-label class="ion-text-center" style="color: #6B7280; padding: 25px 0; font-size: 14px;">
-                        現時沒有儲蓄紀錄<br>在上方填寫金額並點擊「👑 確認存入儲蓄」開始存錢！
-                    </ion-label>
-                </ion-item>
-                `;
+                container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:30px 0; font-size:14px;">尚無儲蓄記錄</div>`;
                 return;
             }
 
-            container.innerHTML = savingsRecords.map(item => {
-                return `
-                <ion-item-sliding class="custom-sliding-item" style="background-color: #047857;">
-                    <ion-item lines="none">
-                        <div slot="start" style="
-                            background-color: rgba(255, 255, 255, 0.95); 
-                            width: 42px; 
-                            height: 42px; 
-                            border-radius: 50%; 
-                            display: flex; 
-                            align-items: center; 
-                            justify-content: center;
-                            margin-right: 8px;
-                            font-size: 20px;
-                            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                        ">
+            container.innerHTML = savingsRecords.map(s => `
+                <ion-item-sliding class="custom-sliding-item">
+                    <ion-item>
+                        <div class="item-badge-3d" slot="start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
                             🐷
                         </div>
-
-                        <ion-label style="margin-left: 4px; padding: 8px 0;">
-                            <h2 style="color: white; font-size: 15px; font-weight: 800; margin: 0;">${escapeHtml(item.title)}</h2>
-                            <p style="color: rgba(255,255,255,0.85); font-size: 12px; margin: 3px 0 0 0; font-weight: 600;">
-                                <span>📅 ${item.date || ''}</span>
-                            </p>
+                        <ion-label>
+                            <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px;">${escapeHtml(s.title)}</h2>
+                            <p style="font-size: 11px; color: #94a3b8;">📅 ${s.date}</p>
                         </ion-label>
-
                         <div slot="end" style="text-align: right;">
-                            <span style="font-size: 17px; font-weight: 900; color: #34d399;">+HK$${Number(item.amount).toLocaleString()}</span>
+                            <div style="font-size: 17px; font-weight: 900; color: #34d399;">+HK$${Number(s.amount).toLocaleString()}</div>
                         </div>
                     </ion-item>
-
                     <ion-item-options side="end">
-                        <ion-item-option color="danger" onclick="confirmDeleteSavings(${item.id})" style="width: 70px;">
-                            <ion-icon name="trash-outline" slot="icon-only" style="font-size: 22px;"></ion-icon>
+                        <ion-item-option color="danger" onclick="deleteSavingsRecord(${s.id})">
+                            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
-                `;
-            }).join('');
+            `).join('');
         }
+
+        // Particle Canvas Effect
+     // ✨ 升級版：超夢幻高密度閃爍粒子效果
+let particleAnimFrames = [];
+
+function initParticleCanvas() {
+    // 先取消舊的動畫，避免重複執行導致卡頓
+    particleAnimFrames.forEach(id => cancelAnimationFrame(id));
+    particleAnimFrames = [];
+
+    document.querySelectorAll('.particle-canvas').forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        const parent = canvas.parentElement;
+        
+        // 確保取得到真實父容器尺寸
+        let width = canvas.width = parent.clientWidth || canvas.offsetWidth || 300;
+        let height = canvas.height = parent.clientHeight || canvas.offsetHeight || 200;
+
+        // 如果尺寸為 0 (頁面隱藏中)，暫不初始化
+        if (width === 0 || height === 0) return;
+
+        // 💡 將數量增加到 65 顆 (可自行調整：40~100)
+        const particleCount = 65;
+
+        const particles = Array.from({ length: particleCount }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            r: Math.random() * 2.2 + 0.6, // 粒子大小 (0.6px - 2.8px)
+            dx: (Math.random() - 0.5) * 0.5, // X 軸漂移速度
+            dy: (Math.random() - 0.5) * 0.5, // Y 軸漂移速度
+            alpha: Math.random() * 0.7 + 0.2, // 當前透明度
+            pulseSpeed: Math.random() * 0.02 + 0.008, // 呼吸閃爍速度
+            pulseDirection: Math.random() > 0.5 ? 1 : -1
+        }));
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                // 💡 粒子呼吸閃爍邏輯 (透明度漸變)
+                p.alpha += p.pulseSpeed * p.pulseDirection;
+                if (p.alpha >= 0.85) {
+                    p.alpha = 0.85;
+                    p.pulseDirection = -1;
+                } else if (p.alpha <= 0.15) {
+                    p.alpha = 0.15;
+                    p.pulseDirection = 1;
+                }
+
+                // 畫出粒子與外圍發光光暈
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+                ctx.shadowBlur = p.r > 1.8 ? 6 : 2; // 較大的粒子帶有微微柔光效果
+                ctx.fill();
+
+                // 位置更新 (飄移)
+                p.x += p.dx;
+                p.y += p.dy;
+
+                // 碰壁反彈
+                if (p.x < 0 || p.x > width) p.dx *= -1;
+                if (p.y < 0 || p.y > height) p.dy *= -1;
+            });
+
+            // 清除 shadow 防止影響其他繪製
+            ctx.shadowBlur = 0;
+
+            const animId = requestAnimationFrame(draw);
+            particleAnimFrames.push(animId);
+        }
+        draw();
+    });
+}
+
+        window.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    loadData();
+    renderUI();
+    setupAllModalsDragToClose(); // 💡 升級：為所有 Modal 初始化下拉關閉手勢
+    setTimeout(initParticleCanvas, 300);
+});
+
     </script>
 </body>
 
