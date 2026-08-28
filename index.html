@@ -566,85 +566,126 @@
     box-sizing: border-box !important;
 }
 
-        .calc-display {
-            background: #020617;
-            color: white;
-            border-radius: 16px;
-            padding: 16px 20px;
-            text-align: right;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.6);
-        }
+        /* 💎 1. 型格高檔計算機主容器 (微光金屬邊框 + 暗黑黑洞卡片) */
+.calc-container-card {
+    background: linear-gradient(145deg, #0f172a 0%, #1e293b 60%, #0b1329 100%);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    position: relative;
+    overflow: hidden;
+}
 
-        .calc-subscreen {
-            font-size: 13px;
-            color: #94a3b8;
-            min-height: 18px;
-            word-break: break-all;
-            font-family: monospace;
-        }
+/* 💎 2. 螢幕顯示區：深邃黑洞 + 奢華霓虹發光數字 */
+.calc-display {
+    background: #020617;
+    color: white;
+    border-radius: 18px;
+    padding: 16px 20px;
+    text-align: right;
+    margin-bottom: 18px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.08);
+}
 
-        .calc-screen {
-            font-size: 34px;
-            font-weight: 800;
-            color: var(--accent-gold);
-            word-break: break-all;
-            font-family: monospace;
-            text-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
-        }
+.calc-subscreen {
+    font-size: 13px;
+    color: #64748b;
+    min-height: 20px;
+    word-break: break-all;
+    font-family: "SF Mono", "Courier New", monospace;
+    letter-spacing: 0.5px;
+}
 
-        .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 0 0 16px 0;
-        }
+.calc-screen {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fbbf24; /* 香檳亮金 */
+    word-break: break-all;
+    font-family: "SF Mono", "Courier New", monospace;
+    text-shadow: 0 0 16px rgba(251, 191, 36, 0.45); /* 核心霓虹發光 */
+    letter-spacing: -0.5px;
+    margin-top: 2px;
+}
 
-        .calc-btn {
-            background: #1e293b;
-            color: #f8fafc;
-            border-radius: 14px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-        }
+/* 💎 3. 按鈕網格與一般數字按鈕 */
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 0 0 14px 0;
+}
 
-        .calc-btn:active {
-            transform: scale(0.94);
-            background: #334155;
-        }
+.calc-btn {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #f1f5f9;
+    border-radius: 16px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    font-family: system-ui, -apple-system, sans-serif;
+}
 
-        .calc-btn.op {
-            background: #0f2042;
-            color: #38bdf8;
-            border-color: rgba(56, 189, 248, 0.25);
-        }
+/* 按下效果 (下沉觸感) */
+.calc-btn:active {
+    transform: scale(0.92);
+    background: #334155;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-        .calc-btn.action {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
-            border: none;
-        }
+/* 💎 4. 清除鍵 (C / DEL)：珊瑚紅暗光 */
+.calc-btn.clear-btn {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.35);
+}
 
-/* 💡 清單卡片 Box：還原經典圓潤光滑邊角與清爽陰影 */
+/* 💎 5. 運算符號按鈕 (+ − × ÷)：電光湛藍 */
+.calc-btn.op {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.35);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+/* 💎 6. 等於號按鈕 (=)：奢華日落金漸變 */
+.calc-btn.action {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    color: #0f172a;
+    font-weight: 900;
+    font-size: 26px;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+
+/* 💡 清單卡片 Box：加上點擊按壓彈簧動態 (:active) */
 .custom-sliding-item {
     border-radius: 20px !important;
     margin-bottom: 14px !important;
-    overflow: hidden !important; /* 確保四角 100% 保持光滑圓弧，絕不起角 */
+    overflow: hidden !important; /* 確保四角 100% 光滑圓潤 */
     background: #1e293b !important; /* 高級深藍黑底色 */
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15) !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* 👑 加入高質感 cubic-bezier 彈簧過渡動畫 */
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    will-change: transform;
+}
+
+/* ⚡ 當手指按落去清單 Box 時（按下微縮下沉效果） */
+.custom-sliding-item:active {
+    transform: scale(0.975); /* 微縮 97.5% */
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1) !important; /* 陰影縮小，模擬貼近地面 */
 }
 
 /* 🌙 熄燈模式 (Dark Theme) */
@@ -670,7 +711,7 @@ ion-app.dark-theme .custom-sliding-item {
     border-bottom-right-radius: 20px !important;
 }
 
-/* 文字顏色 */
+/* 固定文字顏色 */
 .custom-sliding-item ion-label h2 {
     color: #ffffff !important;
     font-weight: 800 !important;
@@ -682,6 +723,7 @@ ion-app.dark-theme .custom-sliding-item {
     color: #cbd5e1 !important;
     font-size: 11px !important;
 }
+
 
 
         .item-badge-3d {
@@ -967,79 +1009,32 @@ ion-app.dark-theme ion-modal ion-content {
             box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
         }
 
-        /* 💡 支付方式 Chip 樣式大集合 */
-        .pay-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 7px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            line-height: 1.3;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
+/* 💡 官方高清 Logo 徽章樣式 */
+.pay-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(4px);
+    vertical-align: middle;
+}
 
-        .pay-visa {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-            color: #ffffff;
-        }
+.pay-visa { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; }
+.pay-mastercard { background: linear-gradient(135deg, #2a0808 0%, #5c1d1d 100%); color: #ffffff; }
+.pay-octopus { background: linear-gradient(135deg, #26201e 0%, #171d28 100%); border-color: rgba(234, 88, 12, 0.5); color: #ffffff; }
+.pay-fps { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: #ffffff; }
+.pay-payme { background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%); color: #ffffff; }
+.pay-alipay { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; }
+.pay-wechat { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; }
+.pay-apple { background: #000000; color: #ffffff; border-color: rgba(255, 255, 255, 0.3); }
+.pay-cash { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #ffffff; }
+.pay-default { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
 
-        .pay-mastercard {
-            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
-            color: #ffffff;
-        }
-
-        .pay-credit {
-            background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
-            color: #ffffff;
-        }
-
-        .pay-octopus {
-            background: linear-gradient(90deg, #ea580c 0%, #0284c7 100%);
-            color: #ffffff;
-        }
-
-        .pay-fps {
-            background: #dc2626;
-            color: #ffffff;
-        }
-
-        .pay-payme {
-            background: #cc0000;
-            color: #ffffff;
-        }
-
-        .pay-boc {
-            background: #b91c1c;
-            color: #ffffff;
-        }
-
-        .pay-alipay {
-            background: #0284c7;
-            color: #ffffff;
-        }
-
-        .pay-wechat {
-            background: #16a34a;
-            color: #ffffff;
-        }
-
-        .pay-apple {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .pay-cash {
-            background: #059669;
-            color: #ffffff;
-        }
-
-        .pay-default {
-            background: rgba(255, 255, 255, 0.12);
-            color: #cbd5e1;
-        }
 
         /* 💡 自訂型格下拉選單觸發按鈕 */
         .custom-select-trigger {
@@ -1339,6 +1334,31 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     font-size: 13px !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
 }
+/* 💡 存入資金按鈕：大粒翡翠金屬樣式 + 按下光芒回饋 */
+.savings-glow-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    outline: none;
+    transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+/* ⚡ 按下瞬間 (Touch / Mouse Down) 的強烈光芒回饋 */
+.savings-glow-btn:active {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.95), 0 0 8px rgba(255, 255, 255, 0.8) !important;
+}
 
     </style>
 </head>
@@ -1466,6 +1486,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
             </div>
 
             <!-- 頁面 2：計算機 -->
+                        <!-- 頁面 2：計算機 -->
             <div id="pageCalc" class="view-page">
                 <div class="calc-container-card">
                     <div class="calc-display">
@@ -1474,8 +1495,8 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                     </div>
 
                     <div class="calc-grid">
-                        <div class="calc-btn op" onclick="calcInput('C')">C</div>
-                        <div class="calc-btn op" onclick="calcInput('DEL')">⌫</div>
+                        <div class="calc-btn clear-btn" onclick="calcInput('C')">C</div>
+                        <div class="calc-btn clear-btn" onclick="calcInput('DEL')">⌫</div>
                         <div class="calc-btn op" onclick="calcInput('/')">÷</div>
                         <div class="calc-btn op" onclick="calcInput('*')">×</div>
 
@@ -1492,22 +1513,20 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                         <div class="calc-btn" onclick="calcInput('1')">1</div>
                         <div class="calc-btn" onclick="calcInput('2')">2</div>
                         <div class="calc-btn" onclick="calcInput('3')">3</div>
-                        <div class="calc-btn action" style="grid-row: span 2; height: 122px;" onclick="calcInput('=')">=
-                        </div>
+                        <div class="calc-btn action" style="grid-row: span 2; height: 128px;" onclick="calcInput('=')">=</div>
 
                         <div class="calc-btn" style="grid-column: span 2;" onclick="calcInput('0')">0</div>
                         <div class="calc-btn" onclick="calcInput('.')">.</div>
                     </div>
 
                     <div style="padding-top: 4px;">
-                        <ion-button id="applyCalcToExpenseBtn" expand="block" color="warning"
-                            style="--border-radius: 14px; font-weight: bold; --color: #0f172a;"
-                            onclick="applyCalcToExpense()">
+                        <button type="button" class="custom-save-btn" onclick="applyCalcToExpense()" style="height: 50px; font-size: 15px;">
                             📥 將計算結果帶入記帳金額
-                        </ion-button>
+                        </button>
                     </div>
                 </div>
             </div>
+
 
             <!-- 頁面 3：借貸 -->
             <div id="pageLoans" class="view-page">
@@ -1565,18 +1584,26 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
-<h3 class="section-title">還款計劃與到期提醒</h3>
-                </div>
-
+<!-- 💡 借貸頁標題與載入測試按鈕 -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px; width: 100%;">
+    <h3 class="section-title">還款計劃與到期提醒</h3>
+    <ion-button fill="clear" size="small" style="--color: #818cf8; font-weight: 600; margin-left: auto;" onclick="seedLoanDemoData()">
+        🎲 載入測試範例
+    </ion-button>
+</div>
+</div>
                 <ion-list id="loanRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
 
             <!-- 頁面 4：儲蓄 -->
+                        <!-- 頁面 4：儲蓄 -->
             <div id="pageSavings" class="view-page">
                 <div class="debit-card savings-card">
                     <div class="card-inner-content">
                         <div class="card-top-bar"></div>
                         <canvas class="particle-canvas"></canvas>
+                        
+                        <!-- 💡 1. 頂部：標題與右上角「設定目標」按鈕 -->
                         <div class="card-top-row">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div class="card-chip"></div>
@@ -1584,23 +1611,30 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                                     style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
                                 <span class="card-brand">SAVINGS PASSBOOK</span>
                             </div>
-                           <button id="changeSavingsGoalBtn" class="budget-badge-btn" type="button" onclick="popupChangeSavingsGoalAlert()">
-    <ion-icon name="trophy-sharp" style="vertical-align: middle; margin-right: 4px;"></ion-icon>設定目標
-</button>
+                            <button id="changeSavingsGoalBtn" class="budget-badge-btn" type="button" onclick="popupChangeSavingsGoalAlert()">
+                                <ion-icon name="trophy-sharp" style="vertical-align: middle; margin-right: 4px;"></ion-icon>設定目標
+                            </button>
                         </div>
 
                         <div class="card-number-sim" id="savingsCardNumberDisplay">•••• •••• SAVINGS 2026/08</div>
 
-
-                        <div style="margin-top: 14px; position: relative; z-index: 3;">
-                            <p style="margin: 0; font-size: 12px; color: #a7f3d0; font-weight: 500;">目前已累積儲蓄金額</p>
-                            <div class="green-amount-display">
-                                HK$<span id="savingsTotalDisplay">0</span>
+                        <!-- 💡 2. 中間：左邊「目前累積金額」，右邊「存入資金」按鈕 (設定目標正下方) -->
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; position: relative; z-index: 3;">
+                            <div>
+                                <p style="margin: 0; font-size: 12px; color: #a7f3d0; font-weight: 500;">目前已累積儲蓄金額</p>
+                                <div class="green-amount-display" style="margin: 0;">
+                                    HK$<span id="savingsTotalDisplay">0</span>
+                                </div>
                             </div>
+
+                        <!-- 💡 加大版「存入資金」按鈕（帶按下耀眼光彩回饋） -->
+                        <button type="button" class="savings-glow-btn" onclick="openAddSavingsModal()">
+                            <ion-icon name="add-circle-sharp" style="font-size: 30px; color: #ffffff;"></ion-icon>
+                            <span>存入資金</span>
+                        </button>
                         </div>
 
-                        <div
-                            style="margin-top: 10px; font-size: 13px; font-weight: 700; color: #e2e8f0; position: relative; z-index: 3;">
+                        <div style="margin-top: 10px; font-size: 13px; font-weight: 700; color: #e2e8f0; position: relative; z-index: 3;">
                             目標進度：<span style="color: #ffffff;">HK$<span id="savingsGoalDisplay">20,000</span></span>
                         </div>
 
@@ -1614,52 +1648,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                     </div>
                 </div>
 
-                <div class="calc-container-card" style="margin-bottom: 20px; border: 1px solid rgba(52, 211, 153, 0.3); padding: 16px; box-sizing: border-box;">
-    <h3 style="margin: 0 0 14px 0; font-size: 15px; font-weight: 800; color: #34d399;">存入儲蓄資金</h3>
-
-    <div class="modal-dark-group" style="margin: 14px 0;">
-        <input type="text" id="savingsTitleInput" class="modal-dark-input" placeholder="例如：旅行基金 / 緊急儲蓄"
-            autocomplete="off" style="height: 48px; padding: 12px; font-size: 13px; background: #0f172a;">
-        <label for="savingsTitleInput">📝 儲蓄備註或目的</label>
-    </div>
-
-    <div class="stepper-container" style="padding: 12px; margin-bottom: 12px;">
-        <div class="stepper-header" style="margin-bottom: 6px;">
-            <span class="stepper-label" style="font-size: 11px;">💵 存入金額 (HKD)</span>
-        </div>
-        <div class="stepper-main-row">
-            <button type="button" class="stepper-btn" style="width: 40px; height: 40px; font-size: 18px;"
-                onclick="stepAmount('savingsAmountInput', -100, 'savingsAmountRange')">−</button>
-            <div class="stepper-input-wrapper" style="height: 40px;">
-                <span class="stepper-currency" style="font-size: 13px;">HK$</span>
-                <input type="number" id="savingsAmountInput" class="stepper-input emerald" value="1000" min="1" step="100"
-                    style="font-size: 18px; padding: 4px 0;"
-                    oninput="syncInputToRange('savingsAmountInput', 'savingsAmountRange')">
-            </div>
-            <button type="button" class="stepper-btn" style="width: 40px; height: 40px; font-size: 18px;"
-                onclick="stepAmount('savingsAmountInput', 100, 'savingsAmountRange')">+</button>
-        </div>
-
-        <input type="range" id="savingsAmountRange" class="custom-range-slider emerald" min="0" max="50000" step="100"
-            value="1000" style="margin: 10px 0 6px 0;"
-            oninput="syncRangeToInput('savingsAmountRange', 'savingsAmountInput')">
-
-        <div class="quick-chip-row" style="margin-top: 6px;">
-            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 100, 'savingsAmountRange')">+$100</button>
-            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 500, 'savingsAmountRange')">+$500</button>
-            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 1000, 'savingsAmountRange')">+$1,000</button>
-            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 5000, 'savingsAmountRange')">+$5,000</button>
-            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 10000, 'savingsAmountRange')">+$10,000</button>
-        </div>
-    </div>
-
-    <!-- 💡 換成原生 HTML button：100% 唔會出界遮邊框線 -->
-    <button type="button" class="custom-save-btn" onclick="addSavingsRecord()">
-        👑 確認存入儲蓄
-    </button>
-</div>
-
-<h3 class="section-title" style="margin: 0 0 12px 4px;">儲蓄存入紀錄</h3>
+                <h3 class="section-title" style="margin: 12px 0 12px 4px;">儲蓄存入紀錄</h3>
                 <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
 
@@ -2122,6 +2111,68 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                         style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
                 </ion-content>
             </ion-modal>
+            <!-- 💡 存入儲蓄資金 Modal -->
+            <ion-modal id="addSavingsModal" initial-breakpoint="0.85" handle="true">
+                <ion-content class="ion-padding">
+                    <div class="drag-handle-bar">
+                        <div class="handle-pill"></div>
+                        <span class="handle-text">向下滑動關閉</span>
+                    </div>
+
+                    <div class="modal-header-box" style="background: linear-gradient(135deg, #065f46 0%, #047857 100%); border-color: rgba(52, 211, 153, 0.3);">
+                        <h2 class="modal-header-title" style="color: #34d399;">
+                            <span>🐷</span> 存入儲蓄資金
+                        </h2>
+                    </div>
+
+                    <div class="modal-dark-group" style="margin: 14px 0;">
+                        <input type="text" id="savingsTitleInput" class="modal-dark-input" placeholder="例如：旅行基金 / 緊急儲蓄"
+                            autocomplete="off" style="height: 48px; padding: 12px; font-size: 13px; background: #1e293b;">
+                        <label for="savingsTitleInput">📝 儲蓄備註或目的</label>
+                    </div>
+
+                    <div class="stepper-container" style="padding: 12px; margin-bottom: 12px;">
+                        <div class="stepper-header" style="margin-bottom: 6px;">
+                            <span class="stepper-label" style="font-size: 11px;">💵 存入金額 (HKD)</span>
+                        </div>
+                        <div class="stepper-main-row">
+                            <button type="button" class="stepper-btn" style="width: 40px; height: 40px; font-size: 18px;"
+                                onclick="stepAmount('savingsAmountInput', -100, 'savingsAmountRange')">−</button>
+                            <div class="stepper-input-wrapper" style="height: 40px;">
+                                <span class="stepper-currency" style="font-size: 13px;">HK$</span>
+                                <input type="number" id="savingsAmountInput" class="stepper-input emerald" value="1000" min="1" step="100"
+                                    style="font-size: 18px; padding: 4px 0;"
+                                    oninput="syncInputToRange('savingsAmountInput', 'savingsAmountRange')">
+                            </div>
+                            <button type="button" class="stepper-btn" style="width: 40px; height: 40px; font-size: 18px;"
+                                onclick="stepAmount('savingsAmountInput', 100, 'savingsAmountRange')">+</button>
+                        </div>
+
+                        <input type="range" id="savingsAmountRange" class="custom-range-slider emerald" min="0" max="50000" step="100"
+                            value="1000" style="margin: 10px 0 6px 0;"
+                            oninput="syncRangeToInput('savingsAmountRange', 'savingsAmountInput')">
+
+                        <div class="quick-chip-row" style="margin-top: 6px;">
+                            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 100, 'savingsAmountRange')">+$100</button>
+                            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 500, 'savingsAmountRange')">+$500</button>
+                            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 1000, 'savingsAmountRange')">+$1,000</button>
+                            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 5000, 'savingsAmountRange')">+$5,000</button>
+                            <button type="button" class="quick-chip" onclick="addAmount('savingsAmountInput', 10000, 'savingsAmountRange')">+$10,000</button>
+                        </div>
+                    </div>
+
+                    <ion-button expand="block" onclick="confirmAddSavingsFromModal()"
+                        style="--background: linear-gradient(135deg, #10b981 0%, #059669 100%); --border-radius: 12px; font-weight: 900; font-size: 16px; color: #ffffff; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                        👑 確認存入儲蓄
+                    </ion-button>
+
+                    <ion-button expand="block" color="danger"
+                        onclick="document.getElementById('addSavingsModal').dismiss()"
+                        style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">
+                        取消
+                    </ion-button>
+                </ion-content>
+            </ion-modal>
 
             <!-- 圓形底欄導向列 (正確認納於 ion-content 內部作為 slot="fixed") -->
             <div class="circle-nav-container" slot="fixed">
@@ -2163,74 +2214,90 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                 <button type="button" class="close-picker-btn" onclick="togglePaymentPicker(false)">✕</button>
             </div>
 
-            <div class="option-grid">
+                        <div class="option-grid">
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Visa')">
                     <div class="logo-box">
-                        <svg viewBox="0 0 1000 324" style="height: 11px; fill: #2563eb;">
-                            <path
-                                d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z" />
-                        </svg>
+                        <svg viewBox="0 0 1000 324" style="height: 11px; fill: #2563eb;"><path d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z"/></svg>
                     </div>
                     <span>Visa</span>
                 </button>
 
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Mastercard')">
                     <div class="logo-box">
-                        <svg viewBox="0 0 50 30" style="height: 15px;">
-                            <circle cx="18" cy="15" r="12" fill="#EB001B" />
-                            <circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95" />
-                        </svg>
+                        <svg viewBox="0 0 50 30" style="height: 14px;"><circle cx="18" cy="15" r="12" fill="#EB001B"/><circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95"/></svg>
                     </div>
                     <span>Mastercard</span>
                 </button>
 
-               <!-- 八達通 -->
-<button type="button" class="payment-option-btn" onclick="selectPaymentOption('八達通')">
-    <div class="logo-box">
-        <ion-icon name="card-sharp" style="color: #ea580c; font-size: 18px;"></ion-icon>
-    </div>
-    <span>八達通</span>
-</button>
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('八達通')">
+                    <div class="logo-box">
+                        <svg viewBox="0 0 120 70" style="height: 12px; width: auto;"><path d="M 25,35 C 10,15 45,10 60,35 C 75,60 110,55 95,35 C 80,15 45,60 25,35 Z" fill="none" stroke="#ea580c" stroke-width="12" stroke-linecap="round"/><path d="M 25,35 C 10,15 45,10 60,35 C 75,60 110,55 95,35 C 80,15 45,60 25,35 Z" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/></svg>
+                    </div>
+                    <span>八達通</span>
+                </button>
 
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('轉數快')">
-                    <div class="logo-box" style="color: #dc2626; font-size: 14px; font-weight: 900;">⚡</div>
+                    <div class="logo-box" style="background:#dc2626;">
+                        <svg viewBox="0 0 100 100" style="height: 12px; width: auto; fill:#ffffff;"><path d="M 10,30 L 70,30 L 90,10 L 50,10 Z M 90,70 L 30,70 L 10,90 L 50,90 Z"/></svg>
+                    </div>
                     <span>轉數快 (FPS)</span>
                 </button>
 
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('PayMe')">
-                    <div class="logo-box" style="color: #cc0000; font-size: 14px; font-weight: 900;">🔴</div>
+                    <div class="logo-box" style="background:#e11d48;">
+                        <svg viewBox="0 0 100 100" style="height: 12px; width: auto; fill:#ffffff;"><path d="M20,10 H55 C75,10 85,25 85,42.5 C85,60 75,75 55,75 H40 V90 H20 Z M40,30 V55 H52 C62,55 67,48 67,42.5 C67,37 62,30 52,30 Z"/></svg>
+                    </div>
                     <span>PayMe</span>
                 </button>
 
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('AlipayHK')">
-                    <div class="logo-box">
-                        <ion-icon name="wallet-outline" style="color: #0284c7; font-size: 18px;"></ion-icon>
+                    <div class="logo-box" style="background:#0284c7;">
+                        <svg viewBox="0 0 100 100" style="height: 12px; width: auto; fill:#ffffff;"><path d="M15,20 H85 V32 H60 C55,50 40,70 15,85 L23,72 C40,60 50,45 52,32 H15 Z M45,45 L70,85 H88 L60,45 Z"/></svg>
                     </div>
                     <span>AlipayHK</span>
                 </button>
 
-                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('WeChat Pay')">
-                    <div class="logo-box">
-                        <ion-icon name="chatbubble-ellipses-outline"
-                            style="color: #16a34a; font-size: 18px;"></ion-icon>
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('微信支付')">
+                    <div class="logo-box" style="background:#16a34a;">
+                        <ion-icon name="chatbubble-ellipses-sharp" style="color: #ffffff; font-size: 16px;"></ion-icon>
                     </div>
                     <span>微信支付</span>
                 </button>
 
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Apple Pay')">
-                    <div class="logo-box">
-                        <ion-icon name="logo-apple" style="color: #ffffff; font-size: 18px;"></ion-icon>
+                    <div class="logo-box" style="background:#000000;">
+                        <ion-icon name="logo-apple" style="color: #ffffff; font-size: 16px;"></ion-icon>
                     </div>
                     <span>Apple Pay</span>
                 </button>
 
-                <!-- 現金 -->
-<button type="button" class="payment-option-btn" onclick="selectPaymentOption('現金')">
-    <div class="logo-box">
-        <ion-icon name="cash-sharp" style="color: #10b981; font-size: 18px;"></ion-icon>
-    </div>
-    <span>現金</span>
-</button>
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('AMEX')">
+                    <div class="logo-box" style="background:#0284c7; color:white; font-weight:900; font-size:10px;">
+                        AMEX
+                    </div>
+                    <span>American Express</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('銀聯')">
+                    <div class="logo-box" style="background:linear-gradient(90deg, #dc2626 33%, #0284c7 66%, #059669 100%); color:white; font-weight:900; font-size:9px;">
+                        Union
+                    </div>
+                    <span>銀聯 UnionPay</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('BOC Pay')">
+                    <div class="logo-box" style="background:#b91c1c; color:white; font-weight:900; font-size:10px;">
+                        BOC
+                    </div>
+                    <span>BOC Pay</span>
+                </button>
+
+                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('現金')">
+                    <div class="logo-box" style="background:#059669;">
+                        <ion-icon name="cash-sharp" style="color: #ffffff; font-size: 16px;"></ion-icon>
+                    </div>
+                    <span>現金</span>
+                </button>
             </div>
         </div>
     </div>
@@ -2354,39 +2421,73 @@ const LOAN_CATEGORY_MAP = {
                 .replace(/'/g, "&#039;");
         }
 
-        // 💳 官方支付方式 Icon 映射函數
-        function getPaymentBadgeHtml(method) {
-            const m = (method || '').toLowerCase().trim();
+// 💳 100% 官方真實規格 Logo 向量渲染函數
+function getPaymentBadgeHtml(method) {
+    const m = (method || '').toLowerCase().trim();
 
-            if (m.includes('visa')) {
-                return `<span class="pay-chip pay-visa"><svg viewBox="0 0 1000 324" style="height: 10px; width: auto; vertical-align: middle;"><path d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z" fill="#ffffff"/></svg> Visa</span>`;
-            }
-            if (m.includes('master')) {
-                return `<span class="pay-chip pay-mastercard"><svg viewBox="0 0 50 30" style="height: 12px; width: auto; vertical-align: middle;"><circle cx="18" cy="15" r="12" fill="#EB001B"/><circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95"/></svg> Mastercard</span>`;
-            }
-            if (m.includes('八達通')) {
-                return `<span class="pay-chip pay-octopus">💳 八達通</span>`;
-            }
-            if (m.includes('fps') || m.includes('轉數快')) {
-                return `<span class="pay-chip pay-fps">⚡ 轉數快</span>`;
-            }
-            if (m.includes('payme')) {
-                return `<span class="pay-chip pay-payme">🔴 PayMe</span>`;
-            }
-            if (m.includes('alipay')) {
-                return `<span class="pay-chip pay-alipay">🔷 AlipayHK</span>`;
-            }
-            if (m.includes('wechat') || m.includes('微信')) {
-                return `<span class="pay-chip pay-wechat">💬 微信支付</span>`;
-            }
-            if (m.includes('apple')) {
-                return `<span class="pay-chip pay-apple">🍎 Apple Pay</span>`;
-            }
-            if (m.includes('現金')) {
-                return `<span class="pay-chip pay-cash">💵 現金</span>`;
-            }
-            return `<span class="pay-chip pay-default">💳 ${escapeHtml(method || '現金')}</span>`;
-        }
+    // 1. Visa
+    if (m.includes('visa')) {
+        return `<span class="pay-chip pay-visa"><svg viewBox="0 0 1000 324" style="height:10px; width:auto; fill:#ffffff;"><path d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z"/></svg> Visa</span>`;
+    }
+
+    // 2. Mastercard
+    if (m.includes('master')) {
+        return `<span class="pay-chip pay-mastercard"><svg viewBox="0 0 50 30" style="height:12px; width:auto;"><circle cx="18" cy="15" r="12" fill="#EB001B"/><circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95"/></svg> Mastercard</span>`;
+    }
+
+    // 3. 八達通 (Octopus 經典雙向無限流線 Logo)
+    if (m.includes('八達通') || m.includes('octopus')) {
+        return `<span class="pay-chip pay-octopus"><svg viewBox="0 0 120 70" style="height:12px; width:auto;"><path d="M 25,35 C 10,15 45,10 60,35 C 75,60 110,55 95,35 C 80,15 45,60 25,35 Z" fill="none" stroke="#ea580c" stroke-width="12" stroke-linecap="round"/><path d="M 25,35 C 10,15 45,10 60,35 C 75,60 110,55 95,35 C 80,15 45,60 25,35 Z" fill="none" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/></svg> 八達通</span>`;
+    }
+
+    // 4. 轉數快 (FPS 官方標誌)
+    if (m.includes('fps') || m.includes('轉數快')) {
+        return `<span class="pay-chip pay-fps"><svg viewBox="0 0 100 100" style="height:12px; width:auto; fill:#ffffff;"><path d="M 10,30 L 70,30 L 90,10 L 50,10 Z M 90,70 L 30,70 L 10,90 L 50,90 Z"/></svg> 轉數快</span>`;
+    }
+
+    // 5. PayMe (HSBC 官方 P 字 Logo)
+    if (m.includes('payme')) {
+        return `<span class="pay-chip pay-payme"><svg viewBox="0 0 100 100" style="height:12px; width:auto; fill:#ffffff;"><path d="M20,10 H55 C75,10 85,25 85,42.5 C85,60 75,75 55,75 H40 V90 H20 Z M40,30 V55 H52 C62,55 67,48 67,42.5 C67,37 62,30 52,30 Z"/></svg> PayMe</span>`;
+    }
+
+    // 6. AlipayHK (藍底支字 Logo)
+    if (m.includes('alipay') || m.includes('支付寶')) {
+        return `<span class="pay-chip pay-alipay"><svg viewBox="0 0 100 100" style="height:12px; width:auto; fill:#ffffff;"><path d="M15,20 H85 V32 H60 C55,50 40,70 15,85 L23,72 C40,60 50,45 52,32 H15 Z M45,45 L70,85 H88 L60,45 Z"/></svg> AlipayHK</span>`;
+    }
+
+    // 7. 微信支付
+    if (m.includes('wechat') || m.includes('微信')) {
+        return `<span class="pay-chip pay-wechat"><ion-icon name="chatbubble-ellipses-sharp" style="font-size:13px; color:#ffffff;"></ion-icon> 微信支付</span>`;
+    }
+
+    // 8. Apple Pay
+    if (m.includes('apple')) {
+        return `<span class="pay-chip pay-apple"><ion-icon name="logo-apple" style="font-size:13px; color:#ffffff;"></ion-icon> Pay</span>`;
+    }
+
+    // 9. AMEX (American Express)
+    if (m.includes('amex') || m.includes('express')) {
+        return `<span class="pay-chip" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff;"><ion-icon name="card-sharp" style="font-size:12px; color:#ffffff;"></ion-icon> AMEX</span>`;
+    }
+
+    // 10. 銀聯 (UnionPay 三色標誌)
+    if (m.includes('union') || m.includes('銀聯')) {
+        return `<span class="pay-chip" style="background: linear-gradient(90deg, #dc2626 33%, #0284c7 66%, #059669 100%); color: #ffffff;">銀聯 UnionPay</span>`;
+    }
+
+    // 11. BOC Pay (中銀)
+    if (m.includes('boc')) {
+        return `<span class="pay-chip" style="background: #b91c1c; color: #ffffff;"><ion-icon name="flash-sharp" style="font-size:12px; color:#ffffff;"></ion-icon> BOC Pay</span>`;
+    }
+
+    // 12. 現金
+    if (m.includes('現金')) {
+        return `<span class="pay-chip pay-cash"><ion-icon name="cash-sharp" style="font-size:13px; color:#ffffff;"></ion-icon> 現金</span>`;
+    }
+
+    return `<span class="pay-chip pay-default">💳 ${escapeHtml(method || '現金')}</span>`;
+}
+
 
         // 頁面切換 logic
         function switchPage(pageKey) {
@@ -2398,9 +2499,9 @@ const LOAN_CATEGORY_MAP = {
     };
 
     const titleMap = {
-        'home': '個人開銷記錄',
-        'calc': '簡約計算機',
-        'savings': '個人儲蓄記錄',
+        'home': '開銷記錄',
+        'calc': '計算機',
+        'savings': '儲蓄記錄',
         'loans': '貸款與信用卡分期'
     };
 
@@ -2578,7 +2679,7 @@ const LOAN_CATEGORY_MAP = {
 
 // 💡 通用：為所有 Modal 的頂部 HandleBar 綁定下拉關閉手勢
 function setupAllModalsDragToClose() {
-    const modalIds = ['addModal', 'addLoanModal', 'editLoanModal', 'budgetModal', 'savingsGoalModal', 'logsModal'];
+    const modalIds = ['addModal', 'addLoanModal', 'editLoanModal', 'budgetModal', 'savingsGoalModal', 'logsModal', 'addSavingsModal'];
 
     modalIds.forEach(id => {
         const modal = document.getElementById(id);
@@ -2829,6 +2930,18 @@ function setupAllModalsDragToClose() {
 
             titleInput.value = '';
         }
+// 💡 開啟存入儲蓄 Modal
+function openAddSavingsModal() {
+    const modal = document.getElementById('addSavingsModal');
+    if (modal) modal.present();
+}
+
+// 💡 Modal 中點擊確認存入
+function confirmAddSavingsFromModal() {
+    addSavingsRecord();
+    const modal = document.getElementById('addSavingsModal');
+    if (modal) modal.dismiss();
+}
 
 // 1. 刪除單筆開銷（帶暗黑風 Alert）
 async function deleteRecord(id) {
@@ -3009,8 +3122,40 @@ function updateMultiSelectUI() {
             ];
             saveData();
             renderUI();
-            addLog('🎲 載入測試範例', '成功載入 3 筆測試消費記錄');
+            addLog('載入測試範例', '成功載入 3 筆測試消費記錄');
         }
+// 💡 借貸頁面載入測試範例資料
+function seedLoanDemoData() {
+    loanRecords = [
+        {
+            id: Date.now() + 1,
+            category: '信用卡',
+            title: '匯豐信用卡 iPhone 分期',
+            totalAmount: 10800,
+            repaidAmount: 3600,
+            totalPeriods: 12,
+            repaidPeriods: 4,
+            monthlyAmount: 900,
+            dueDate: '2026-09-05'
+        },
+        {
+            id: Date.now() + 2,
+            category: '銀行私貸',
+            title: '渣打銀行私人貸款',
+            totalAmount: 50000,
+            repaidAmount: 12500,
+            totalPeriods: 24,
+            repaidPeriods: 6,
+            monthlyAmount: 2150,
+            dueDate: '2026-09-15'
+        }
+    ];
+
+    saveData();
+    renderUI();
+    addLog('載入測試範例', '成功載入 2 筆借貸測試範例資料');
+}
+
 
         // Render Functions
         function renderUI() {
@@ -3051,28 +3196,49 @@ function updateMultiSelectUI() {
         return;
     }
 
-    container.innerHTML = records.map(r => {
+        container.innerHTML = records.map(r => {
         const cat = CATEGORY_MAP[r.category] || CATEGORY_MAP['其他'];
         const isSelected = selectedRecordIds.has(r.id);
 
         return `
             <ion-item-sliding class="custom-sliding-item">
-                <ion-item>
-                  
-${isMultiSelectMode ? 
-    `<input type="checkbox" class="custom-circle-checkbox" style="margin-right: 12px;" ${isSelected ? 'checked' : ''} onchange="toggleSelectRecord(${r.id}, this.checked)">` :
-    `<div class="item-badge-3d" slot="start" style="background: ${cat.color}; color: white;">
-        <ion-icon name="${cat.icon || 'receipt-sharp'}" style="font-size: 20px;"></ion-icon>
-    </div>`
-}
+                <ion-item lines="none">
+                    ${isMultiSelectMode ? 
+                        `<input type="checkbox" class="custom-circle-checkbox" style="margin-right: 12px;" ${isSelected ? 'checked' : ''} onchange="toggleSelectRecord(${r.id}, this.checked)">` :
+                        `<div class="item-badge-3d" slot="start" style="background: ${cat.color}; color: white;">
+                            <ion-icon name="${cat.icon || 'receipt-sharp'}" style="font-size: 20px;"></ion-icon>
+                        </div>`
+                    }
 
+                    <!-- 💡 左邊專區：標題、日期、消費類型開新一行 -->
                     <ion-label>
-                        <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px;">${escapeHtml(r.title)}</h2>
-                        <p style="font-size: 11px; color: #cbd5e1; display:flex; align-items:center; gap:6px;">
-                            <span>📅 ${r.date}</span>
-                            ${getPaymentBadgeHtml(r.payment)}                         </p>                     </ion-label>                     <div slot="end" style="text-align: right;">                         <div style="font-size: 17px; font-weight: 900; color: #ef4444;">-HK$${Number(r.amount).toLocaleString()}</div>
+                        <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px; color: #ffffff !important;">${escapeHtml(r.title)}</h2>
+                        
+                        <!-- 第一行：日期 -->
+                        <p style="font-size: 11px; color: #cbd5e1 !important; margin-bottom: 3px;">
+                            📅 ${r.date}
+                        </p>
+
+                        <!-- 第二行：消費類型 (獨立新一行) -->
+                        <div>
+                            <span style="display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px 7px; font-size: 10px; color: #94a3b8; font-weight: 700;">
+                                ${escapeHtml(cat.name || r.category)}
+                            </span>
+                        </div>
+                    </ion-label>
+
+                    <!-- 💡 右邊專區：放大字體的金額 + 靠右支付方式 Badge -->
+                    <div slot="end" style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 5px;">
+                        <!-- 消費金額 (加大字體至 18px, 特粗 900) -->
+                        <div style="font-size: 20px; font-weight: 900; color: #ef4444; letter-spacing: -0.3px;">-HK$${Number(r.amount).toLocaleString()}</div>
+                        
+                        <!-- 支付方式 Badge -->
+                        <div>
+                            ${getPaymentBadgeHtml(r.payment)}
+                        </div>
                     </div>
                 </ion-item>
+
                 <ion-item-options side="end">
                     <ion-item-option color="danger" onclick="deleteRecord(${r.id})">
                         <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
