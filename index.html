@@ -1247,6 +1247,34 @@ ion-app.dark-theme ion-modal ion-content {
     touch-action: none;
     user-select: none;
 }
+/* 💡 強制將支付方式選擇器的 z-index 提升至最高，蓋過所有 Modal */
+.payment-picker-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 9999999 !important; /* 👈 超高層級 */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.payment-picker-modal.active {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.payment-picker-modal .picker-content {
+    z-index: 10000000 !important;
+}
 
 
 /* 💡 1. 開燈模式（預設）：深灰色滑塊與提示文字 */
@@ -2469,23 +2497,20 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
         let activityLogs = [];
         let unreadLogCount = 0;
 
-        // 💡 官方 Logo 支付方式選單控制函數
-        function togglePaymentPicker(show) {
-            const modal = document.getElementById('paymentPickerModal');
-            if (!modal) return;
-            if (show) modal.classList.add('active');
-            else modal.classList.remove('active');
-        }
+        // 💡 官方 Logo 支付方式選單控制函數 (修復被 Modal 遮擋問題)
+function togglePaymentPicker(show) {
+    const modal = document.getElementById('paymentPickerModal');
+    if (!modal) return;
+    
+    if (show) {
+        // 確保將選單元素移動到 document.body 的最後面，超越所有 modal 層級
+        document.body.appendChild(modal);
+        modal.classList.add('active');
+    } else {
+        modal.classList.remove('active');
+    }
+}
 
-        function selectPaymentOption(val) {
-            const hiddenInput = document.getElementById('manualPaymentSelect');
-            const displayEl = document.getElementById('selectedPaymentDisplay');
-
-            if (hiddenInput) hiddenInput.value = val;
-            if (displayEl) displayEl.innerHTML = getPaymentBadgeHtml(val);
-
-            togglePaymentPicker(false);
-        }
 
         // 💡 1. 消費分類 Map（加上型格 Ionicon 名稱）
 const CATEGORY_MAP = {
