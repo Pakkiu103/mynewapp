@@ -15,6 +15,7 @@
 
     <style>
         :root {
+
 /* ⚡ 款式 D：純黑液體金屬 (Obsidian) */
 #pageHome .card-inner-content {
     background: 
@@ -1480,81 +1481,108 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
             <!-- 頁面 1：綜合理財首頁 (Page Home) -->
 <div id="pageHome" class="view-page active-page">
     <!-- 總資產霓虹走馬燈卡片 -->
-    <div class="debit-card">
-        <div class="card-inner-content">
-            <div class="card-top-bar"></div>
-            <canvas class="particle-canvas"></canvas>
-            
-            <div class="card-top-row">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="card-chip"></div>
-                    <ion-icon name="wifi-outline" style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
-                    <span class="card-brand">FINANCIAL OVERVIEW</span>
-                </div>
-                <span style="font-size: 11px; font-weight: 800; color: #a855f7; background: rgba(168, 85, 247, 0.2); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(168, 85, 247, 0.4);">
-                    綜合資產戶口
-                </span>
+    <!-- 總資產霓虹走馬燈卡片 (本月現金流邏輯) -->
+<div class="debit-card">
+    <div class="card-inner-content">
+        <div class="card-top-bar"></div>
+        <canvas class="particle-canvas"></canvas>
+        
+        <div class="card-top-row">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="card-chip"></div>
+                <ion-icon name="wifi-outline" style="font-size: 18px; color: rgba(255,255,255,0.7); transform: rotate(90deg);"></ion-icon>
+                <span class="card-brand">FINANCIAL OVERVIEW</span>
             </div>
 
-            <div class="card-number-sim">•••• •••• OVERVIEW 2026</div>
+            <!-- 設定每月收入按鈕 -->
+            <button id="changeIncomeBtn" class="budget-badge-btn" type="button" onclick="openIncomeModal()">
+                <ion-icon name="cash-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>設定收入
+            </button>
+        </div>
 
-            <!-- 淨資產總額 ( Net Worth ) -->
-            <div style="margin-top: 10px; position: relative; z-index: 3;">
-                <p style="margin: 0 0 2px 0; font-size: 12px; color: #cbd5e1; font-weight: 600;">💎 個人預估總淨資產 (Net Assets)</p>
-                <div class="gold-amount-display" style="margin: 0; font-size: 32px;">
-                    HK$<span id="overviewNetWorthDisplay">0</span>
+        <div class="card-number-sim">•••• •••• CASHFLOW 2026</div>
+
+        <!-- 本月預估結餘 ( Net Surplus ) -->
+        <div style="margin-top: 10px; position: relative; z-index: 3;">
+            <p style="margin: 0 0 2px 0; font-size: 12px; color: #cbd5e1; font-weight: 600;">💵 本月預計可用淨剩餘 (Net Surplus)</p>
+            <div class="gold-amount-display" style="margin: 0; font-size: 32px;">
+                HK$<span id="overviewNetSurplusDisplay">0</span>
+            </div>
+        </div>
+
+        <!-- 底部 3 大數據小格 (本月收入 / 本月供款 / 本月開銷) -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; position: relative; z-index: 3;">
+            <!-- 格子 1：本月收入 (綠色) -->
+            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(52, 211, 153, 0.3); padding: 8px 6px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 10px; color: #a7f3d0; font-weight: 700;">💰 本月收入</div>
+                <div style="font-size: 13px; font-weight: 900; color: #34d399; margin-top: 2px;">
+                    $<span id="overviewIncomeDisplay">0</span>
                 </div>
             </div>
 
-            <!-- 底部 3 大數據小格 (儲蓄 / 開銷 / 借貸) -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; position: relative; z-index: 3;">
-                <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(52, 211, 153, 0.3); padding: 8px 6px; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: #a7f3d0; font-weight: 700;">🐷 累積儲蓄</div>
-                    <div style="font-size: 13px; font-weight: 900; color: #34d399; margin-top: 2px;">
-                        $<span id="overviewSavingsDisplay">0</span>
-                    </div>
+            <!-- 格子 2：本月供款 (紫藍色) -->
+            <div style="background: rgba(129, 140, 248, 0.15); border: 1px solid rgba(129, 140, 248, 0.3); padding: 8px 6px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 10px; color: #c7d2fe; font-weight: 700;">🏛️ 本月供款</div>
+                <div style="font-size: 13px; font-weight: 900; color: #818cf8; margin-top: 2px;">
+                    $<span id="overviewLoanDueDisplay">0</span>
                 </div>
+            </div>
 
-                <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(248, 113, 113, 0.3); padding: 8px 6px; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: #fca5a5; font-weight: 700;">💸 本期開銷</div>
-                    <div style="font-size: 13px; font-weight: 900; color: #f87171; margin-top: 2px;">
-                        $<span id="overviewExpenseDisplay">0</span>
-                    </div>
-                </div>
-
-                <div style="background: rgba(129, 140, 248, 0.15); border: 1px solid rgba(129, 140, 248, 0.3); padding: 8px 6px; border-radius: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: #c7d2fe; font-weight: 700;">🏛️ 剩餘貸款</div>
-                    <div style="font-size: 13px; font-weight: 900; color: #818cf8; margin-top: 2px;">
-                        $<span id="overviewLoanDisplay">0</span>
-                    </div>
+            <!-- 格子 3：本月開銷 (紅色) -->
+            <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(248, 113, 113, 0.3); padding: 8px 6px; border-radius: 12px; text-align: center;">
+                <div style="font-size: 10px; color: #fca5a5; font-weight: 700;">💸 本月開銷</div>
+                <div style="font-size: 13px; font-weight: 900; color: #f87171; margin-top: 2px;">
+                    $<span id="overviewExpenseDisplay">0</span>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 快捷入口卡片 -->
-    <h3 class="section-title" style="margin-bottom: 12px;">快捷理財模組</h3>
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px;">
-        <div onclick="switchPage('expense')" style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
-            <div style="background: rgba(239,68,68,0.2); color: #f87171; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
-                <ion-icon name="receipt-sharp"></ion-icon>
-            </div>
-            <div>
-                <div style="font-size: 14px; font-weight: 800; color: #fff;">消費記錄</div>
-                <div style="font-size: 10px; color: #cbd5e1;">查看與管理開銷</div>
-            </div>
+
+<!-- 快捷入口卡片 (3 欄版：消費 / 儲蓄 / 借貸) -->
+<h3 class="section-title" style="margin-bottom: 12px;">快捷理財模組</h3>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
+    <!-- Box 1: 消費記錄 -->
+    <div onclick="switchPage('expense')" 
+        style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; transition: transform 0.15s ease;"
+        onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+        <div style="background: rgba(239, 68, 68, 0.2); color: #f87171; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            <ion-icon name="receipt-sharp"></ion-icon>
         </div>
-
-        <div onclick="switchPage('savings')" style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;">
-            <div style="background: rgba(16,185,129,0.2); color: #34d399; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
-                <ion-icon name="wallet-sharp"></ion-icon>
-            </div>
-            <div>
-                <div style="font-size: 14px; font-weight: 800; color: #fff;">儲蓄存簿</div>
-                <div style="font-size: 10px; color: #cbd5e1;">目標與存款進度</div>
-            </div>
+        <div>
+            <div style="font-size: 13px; font-weight: 800; color: #fff;">消費記錄</div>
+            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px;">查看與管理開銷</div>
         </div>
     </div>
+
+    <!-- Box 2: 儲蓄存簿 -->
+    <div onclick="switchPage('savings')" 
+        style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; transition: transform 0.15s ease;"
+        onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+        <div style="background: rgba(16, 185, 129, 0.2); color: #34d399; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            <ion-icon name="wallet-sharp"></ion-icon>
+        </div>
+        <div>
+            <div style="font-size: 13px; font-weight: 800; color: #fff;">儲蓄存簿</div>
+            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px;">目標與存款進度</div>
+        </div>
+    </div>
+
+    <!-- Box 3: 借貸項目 -->
+    <div onclick="switchPage('loans')" 
+        style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; transition: transform 0.15s ease;"
+        onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+        <div style="background: rgba(129, 140, 248, 0.2); color: #818cf8; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            <ion-icon name="card-sharp"></ion-icon>
+        </div>
+        <div>
+            <div style="font-size: 13px; font-weight: 800; color: #fff;">借貸項目</div>
+            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px;">還款與分期管理</div>
+        </div>
+    </div>
+</div>
+
 
     <!-- 最近 3 筆消費動態 -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -2359,6 +2387,46 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     </ion-content>
 </ion-modal>
 
+<!-- 💡 設定本月收入 Modal -->
+<ion-modal id="incomeModal" initial-breakpoint="0.7" handle="true">
+    <ion-content class="ion-padding">
+        <div class="drag-handle-bar">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
+
+        <div class="modal-header-box" style="background: linear-gradient(135deg, #065f46 0%, #047857 100%); border-color: rgba(52, 211, 153, 0.3);">
+            <h2 class="modal-header-title" style="color: #34d399;">💰 設定本月人工 / 總收入</h2>
+        </div>
+
+        <div class="stepper-container">
+            <div class="stepper-header">
+                <span class="stepper-label">💵 每月收入金額 (HKD)</span>
+            </div>
+            <div class="stepper-main-row">
+                <button type="button" class="stepper-btn" onclick="stepAmount('incomeInput', -1000)">−</button>
+                <div class="stepper-input-wrapper">
+                    <span class="stepper-currency">HK$</span>
+                    <input type="number" id="incomeInput" class="stepper-input emerald" value="25000" min="0" step="1000">
+                </div>
+                <button type="button" class="stepper-btn" onclick="stepAmount('incomeInput', 1000)">+</button>
+            </div>
+            <div class="quick-chip-row">
+                <button type="button" class="quick-chip" onclick="addAmount('incomeInput', 5000)">+$5,000</button>
+                <button type="button" class="quick-chip" onclick="addAmount('incomeInput', 10000)">+$10,000</button>
+                <button type="button" class="quick-chip" onclick="addAmount('incomeInput', 20000)">+$20,000</button>
+            </div>
+        </div>
+
+        <ion-button expand="block" onclick="confirmSaveIncome()"
+            style="--background: linear-gradient(135deg, #10b981 0%, #059669 100%); --border-radius: 12px; font-weight: 900; font-size: 16px; color: #ffffff; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+            確認修改收入
+        </ion-button>
+
+        <ion-button expand="block" color="danger" onclick="document.getElementById('incomeModal').dismiss()"
+            style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 8px;">取消</ion-button>
+    </ion-content>
+</ion-modal>
 
             <!-- 圓形底欄導向列 (正確認納於 ion-content 內部作為 slot="fixed") -->
 <div class="circle-nav-container" slot="fixed">
@@ -2496,6 +2564,8 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
         let currentEditingLoanId = null;
         let activityLogs = [];
         let unreadLogCount = 0;
+		let monthlyIncome = 25000; // 預設每月收入
+
 
         // 💡 官方 Logo 支付方式選單控制函數 (修復被 Modal 遮擋問題)
 function togglePaymentPicker(show) {
@@ -2576,6 +2646,7 @@ const LOAN_CATEGORY_MAP = {
                 budgetLimit = Number(localStorage.getItem('app_budget_limit')) || 10000;
                 savingsGoal = Number(localStorage.getItem('app_savings_goal')) || 20000;
                 activityLogs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
+monthlyIncome = Number(localStorage.getItem('app_monthly_income')) || 25000;
             } catch (e) {
                 console.error("Error loading localStorage data", e);
             }
@@ -2588,6 +2659,7 @@ const LOAN_CATEGORY_MAP = {
             localStorage.setItem('app_budget_limit', budgetLimit);
             localStorage.setItem('app_savings_goal', savingsGoal);
             localStorage.setItem('activity_logs', JSON.stringify(activityLogs));
+localStorage.setItem('app_monthly_income', monthlyIncome);
         }
 
         function escapeHtml(str) {
@@ -3377,28 +3449,37 @@ function seedLoanDemoData() {
             renderSavings();
             updateLogBadge();
         }
-// 💡 更新綜合理財首頁 (Overview) 數據
+// 💡 更新首頁本月現金流數據 (收入 - 供款 - 開銷)
 function renderOverview() {
+    // 1. 本月總開銷
     let totalExp = 0;
     records.forEach(r => totalExp += (Number(r.amount) || 0));
 
-    let totalSav = 0;
-    savingsRecords.forEach(s => totalSav += (Number(s.amount) || 0));
+    // 2. 本月總供款 (借貸項目中本月預計還款總額)
+    let totalLoanDue = 0;
+    loanRecords.forEach(l => {
+        const rem = Math.max(0, l.totalAmount - l.repaidAmount);
+        if (rem > 0) {
+            totalLoanDue += (Number(l.monthlyAmount) || 0);
+        }
+    });
 
-    let totalLoanRem = 0;
-    loanRecords.forEach(l => totalLoanRem += Math.max(0, l.totalAmount - l.repaidAmount));
+    // 3. 本月淨剩餘 = 人工收入 - 供款 - 開銷
+    const netSurplus = monthlyIncome - totalLoanDue - totalExp;
 
-    const netWorth = totalSav - totalLoanRem;
-
-    const netDisplay = document.getElementById('overviewNetWorthDisplay');
-    const savDisplay = document.getElementById('overviewSavingsDisplay');
+    const surplusDisplay = document.getElementById('overviewNetSurplusDisplay');
+    const incomeDisplay = document.getElementById('overviewIncomeDisplay');
+    const loanDueDisplay = document.getElementById('overviewLoanDueDisplay');
     const expDisplay = document.getElementById('overviewExpenseDisplay');
-    const loanDisplay = document.getElementById('overviewLoanDisplay');
 
-    if (netDisplay) netDisplay.textContent = netWorth.toLocaleString();
-    if (savDisplay) savDisplay.textContent = totalSav.toLocaleString();
+    if (surplusDisplay) {
+        surplusDisplay.textContent = netSurplus.toLocaleString();
+        // 如果結餘小於 0 顯示紅色警示，否則保持金色
+        surplusDisplay.style.color = netSurplus < 0 ? '#f87171' : '#fbbf24';
+    }
+    if (incomeDisplay) incomeDisplay.textContent = monthlyIncome.toLocaleString();
+    if (loanDueDisplay) loanDueDisplay.textContent = totalLoanDue.toLocaleString();
     if (expDisplay) expDisplay.textContent = totalExp.toLocaleString();
-    if (loanDisplay) loanDisplay.textContent = totalLoanRem.toLocaleString();
 
     // 顯示最近 3 筆消費紀錄
     const recentContainer = document.getElementById('overviewRecentRecordsContainer');
@@ -3418,6 +3499,25 @@ function renderOverview() {
             `).join('');
         }
     }
+}
+
+// 💡 收入 Modal 控制函數
+function openIncomeModal() {
+    const modal = document.getElementById('incomeModal');
+    const input = document.getElementById('incomeInput');
+    if (input) input.value = monthlyIncome;
+    if (modal) modal.present();
+}
+
+function confirmSaveIncome() {
+    const input = document.getElementById('incomeInput');
+    if (input) {
+        monthlyIncome = Number(input.value) || 0;
+        saveData();
+        renderUI();
+        addLog('收入設定', '本月人工收入已更新為 HK$' + monthlyIncome.toLocaleString());
+    }
+    document.getElementById('incomeModal').dismiss();
 }
 
         function renderRecords() {
