@@ -3444,12 +3444,15 @@ function updateMultiSelectUI() {
         function seedDemoData() {
             records = [
                 { id: 1, title: '爭鮮迴轉壽司', amount: 148, category: '餐飲', payment: 'Visa', date: '2026-08-28' },
-                { id: 2, title: '港鐵車費加值', amount: 200, category: '交通', payment: '八達通', date: '2026-08-27' },
-                { id: 3, title: 'Uniqlo 秋冬保暖外套', amount: 499, category: '購物', payment: 'Mastercard', date: '2026-08-25' }
+                { id: 2, title: '港鐵車費', amount: 200, category: '交通', payment: '八達通', date: '2026-08-27' },
+                { id: 3, title: 'Uniqlo 秋冬保暖外套', amount: 499, category: '購物', payment: 'Mastercard', date: '2026-08-25' },
+				{ id: 4, title: '手遊課金', amount: 788, category: '娛樂', payment: 'apple', date: '2026-08-25' },
+				{ id: 5, title: '交電費', amount: 786, category: '居家', payment: 'alipay', date: '2026-08-28' },
+				{ id: 6, title: '返大陸食野', amount: 638, category: '旅遊', payment: 'wechat', date: '2026-08-29' }
             ];
             saveData();
             renderUI();
-            addLog('載入測試範例', '成功載入 3 筆測試消費記錄');
+            addLog('載入測試範例', '成功載入 6 筆測試消費記錄');
         }
 // 💡 借貸頁面載入測試範例資料
 function seedLoanDemoData() {
@@ -3475,12 +3478,23 @@ function seedLoanDemoData() {
             repaidPeriods: 6,
             monthlyAmount: 2150,
             dueDate: '2026-09-15'
+        },
+		{
+            id: Date.now() + 3,
+            category: '樓宇按揭貸款',
+            title: '供樓銀行貸款',
+            totalAmount: 2400000,
+            repaidAmount: 240000,
+            totalPeriods: 120,
+            repaidPeriods: 10,
+            monthlyAmount: 20000,
+            dueDate: '2026-09-20'
         }
     ];
 
     saveData();
     renderUI();
-    addLog('載入測試範例', '成功載入 2 筆借貸測試範例資料');
+    addLog('載入測試範例', '成功載入 3 筆借貸測試範例資料');
 }
 
         // Render Functions
