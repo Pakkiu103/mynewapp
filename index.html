@@ -402,7 +402,16 @@
     box-shadow: 0 0 20px rgba(52, 211, 153, 0.95), 0 0 8px rgba(255, 255, 255, 0.8) !important;
 }
 
-			:root {
+			        /* ✨ 跑馬燈光澤邊框動畫 (360-degree Marquee Light Border) ✨ */
+        @keyframes marqueeSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
 /* 💡 方案 7：動態呼吸流光線 */
 @keyframes topBarGlow {
@@ -411,7 +420,7 @@
     100% { background-position: 0% 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
 }
 
-
+:root {
             /* 金屬銀光澤漸變色 */
             --silver-metallic: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, #e2e8f0 20%, #ffffff 50%, #cbd5e1 80%, rgba(255, 255, 255, 0.1) 100%);
 
@@ -562,17 +571,6 @@
             box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
         }
 
-
-        /* ✨ 跑馬燈光澤邊框動畫 (360-degree Marquee Light Border) ✨ */
-        @keyframes marqueeSpin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
 
         .debit-card {
             position: relative;
@@ -1443,8 +1441,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     font-size: 13px !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
 }
-
-
+}
     </style>
 </head>
 
@@ -2780,6 +2777,25 @@ function getPaymentBadgeHtml(method) {
     }
 
     return `<span class="pay-chip pay-default">💳 ${escapeHtml(method || '現金')}</span>`;
+}
+
+// 💡 點擊支付方式選項時的連動函數
+function selectPaymentOption(methodName) {
+    // 1. 將選取的名稱賦值給隱藏的 input，以便送出表單時讀取
+    const hiddenInput = document.getElementById('manualPaymentSelect');
+    if (hiddenInput) {
+        hiddenInput.value = methodName;
+    }
+
+    // 2. 即時更新新增開銷按鈕上面的圖標與文字顯示
+    const displayContainer = document.getElementById('selectedPaymentDisplay');
+    if (displayContainer) {
+        // 利用你本來就已經寫好的 getPaymentBadgeHtml 來渲染對應的官方 Logo 徽章
+        displayContainer.innerHTML = getPaymentBadgeHtml(methodName);
+    }
+
+    // 3. 點擊後自動關閉這個彈出選擇視窗
+    togglePaymentPicker(false);
 }
 
 
