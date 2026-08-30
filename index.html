@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>個人理財記錄</title>
+    <title>個人理財總覽</title>
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -14,8 +14,7 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
     <style>
-        :root {
-
+        
 /* ⚡ 款式 D：純黑液體金屬 (Obsidian) */
 #pageHome .card-inner-content {
     background: 
@@ -33,13 +32,6 @@
             #171717 75%,
             #ffffff 100%) !important;
 }
-/* 💡 方案 7：動態呼吸流光線 */
-@keyframes topBarGlow {
-    0% { background-position: 0% 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
-    50% { background-position: 100% 50%; box-shadow: 0 0 16px rgba(56, 189, 248, 0.8); }
-    100% { background-position: 0% 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
-}
-
 #pageHome .card-top-bar {
     background: linear-gradient(90deg, #ffffff, #38bdf8, #fbbf24, #ffffff) !important;
     background-size: 200% 200% !important;
@@ -71,6 +63,355 @@
 }
 
 
+        /* 儲蓄卡專屬走馬燈色彩 (綠金寶石系) */
+        .debit-card.savings-card::before {
+            background: conic-gradient(from 0deg,
+                    #34d399 0%,
+                    #059669 25%,
+                    #fbbf24 50%,
+                    #10b981 75%,
+                    #34d399 100%);
+            animation-duration: 4.5s;
+        }
+
+        /* 借貸卡專屬走馬燈色彩 (紫紅焰光系) */
+        .debit-card.loan-card::before {
+            background: conic-gradient(from 0deg,
+                    #818cf8 0%,
+                    #c084fc 25%,
+                    #f43f5e 50%,
+                    #fbbf24 75%,
+                    #818cf8 100%);
+            animation-duration: 4s;
+        }
+
+        /* 💡 卡片頂部炫彩粗邊裝飾條 */
+        .card-top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            /* 邊條厚度 (可自行調整 5px - 8px) */
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
+            /* 首頁彩色漸變 */
+            z-index: 5;
+            border-top-left-radius: 21.5px;
+            border-top-right-radius: 21.5px;
+        }
+
+        /* 💳 借貸卡專屬頂部邊條 (紫粉金漸變) */
+        .debit-card.loan-card .card-top-bar {
+            background: linear-gradient(90deg, #818cf8 0%, #c084fc 50%, #f43f5e 100%);
+        }
+
+        /* 🐷 儲蓄卡專屬頂部邊條 (翡翠金綠漸變) */
+        .debit-card.savings-card .card-top-bar {
+            background: linear-gradient(90deg, #34d399 0%, #059669 50%, #fbbf24 100%);
+        }
+        .calc-container-card {
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+/* 💡 強制讓卡片內部的 ion-button 不會超出邊框，保留邊框邊距 */
+.calc-container-card ion-button {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+        /* 💎 1. 型格高檔計算機主容器 (微光金屬邊框 + 暗黑黑洞卡片) */
+.calc-container-card {
+    background: linear-gradient(145deg, #0f172a 0%, #1e293b 60%, #0b1329 100%);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 💎 2. 螢幕顯示區：深邃黑洞 + 奢華霓虹發光數字 */
+.calc-display {
+    background: #020617;
+    color: white;
+    border-radius: 18px;
+    padding: 16px 20px;
+    text-align: right;
+    margin-bottom: 18px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.08);
+}
+
+.calc-subscreen {
+    font-size: 13px;
+    color: #64748b;
+    min-height: 20px;
+    word-break: break-all;
+    font-family: "SF Mono", "Courier New", monospace;
+    letter-spacing: 0.5px;
+}
+
+
+.calc-screen {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fbbf24; /* 香檳亮金 */
+    word-break: break-all;
+    font-family: "SF Mono", "Courier New", monospace;
+    text-shadow: 0 0 16px rgba(251, 191, 36, 0.45); /* 核心霓虹發光 */
+    letter-spacing: -0.5px;
+    margin-top: 2px;
+}
+
+/* 💎 3. 按鈕網格與一般數字按鈕 */
+.calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 0 0 14px 0;
+}
+
+.calc-btn {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #f1f5f9;
+    border-radius: 16px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* 按下效果 (下沉觸感) */
+.calc-btn:active {
+    transform: scale(0.92);
+    background: #334155;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 💎 4. 清除鍵 (C / DEL)：珊瑚紅暗光 */
+.calc-btn.clear-btn {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* 💎 5. 運算符號按鈕 (+ − × ÷)：電光湛藍 */
+.calc-btn.op {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.35);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+/* 💎 6. 等於號按鈕 (=)：奢華日落金漸變 */
+.calc-btn.action {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    color: #0f172a;
+    font-weight: 900;
+    font-size: 26px;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+        /* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
+        .semi-edit-btn {
+            background: rgba(129, 140, 248, 0.18);
+            /* 半透明紫藍色底 */
+            border: 1px solid rgba(129, 140, 248, 0.45);
+            /* 微亮半透明邊框 */
+            color: #c7d2fe;
+            /* 柔和粉藍字體 */
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 13px;
+            border-radius: 20px;
+            /* 圓角膠囊造型 */
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .semi-edit-btn:active {
+            transform: scale(0.92);
+            background: rgba(129, 140, 248, 0.4);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+        }
+
+/* 💡 官方高清 Logo 徽章樣式 */
+.pay-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(4px);
+    vertical-align: middle;
+}
+
+.pay-visa { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; }
+.pay-mastercard { background: linear-gradient(135deg, #2a0808 0%, #5c1d1d 100%); color: #ffffff; }
+.pay-octopus { background: linear-gradient(135deg, #26201e 0%, #171d28 100%); border-color: rgba(234, 88, 12, 0.5); color: #ffffff; }
+.pay-fps { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: #ffffff; }
+.pay-payme { background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%); color: #ffffff; }
+.pay-alipay { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; }
+.pay-wechat { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; }
+.pay-apple { background: #000000; color: #ffffff; border-color: rgba(255, 255, 255, 0.3); }
+.pay-cash { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #ffffff; }
+.pay-default { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
+
+
+/* 💡 強制將支付方式選擇器的 z-index 提升至最高，蓋過所有 Modal */
+.payment-picker-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 9999999 !important; /* 👈 超高層級 */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.payment-picker-modal.active {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.payment-picker-modal .picker-content {
+    z-index: 10000000 !important;
+}
+
+/* 💡 專屬原生高級金色按鈕（100% 貼合卡片內部，絕不出界遮線） */
+.custom-save-btn {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    height: 46px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    border-radius: 12px;
+    color: #fbbf24;
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.custom-save-btn:active {
+    transform: scale(0.98);
+    background: #1e293b;
+    border-color: #fbbf24;
+}
+/* 💡 自訂高質感圓形 Checkbox 樣式 */
+.custom-circle-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #ef4444;
+    border-radius: 50%; /* 💡 變成完美圓形 */
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* 勾選時的亮紅背景與中央白勾號 */
+.custom-circle-checkbox:checked {
+    background: #ef4444;
+    border-color: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.custom-circle-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* 💡 存入資金按鈕：大粒翡翠金屬樣式 + 按下光芒回饋 */
+.savings-glow-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    outline: none;
+    transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+/* ⚡ 按下瞬間 (Touch / Mouse Down) 的強烈光芒回饋 */
+.savings-glow-btn:active {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.95), 0 0 8px rgba(255, 255, 255, 0.8) !important;
+}
+
+			:root {
+
+/* 💡 方案 7：動態呼吸流光線 */
+@keyframes topBarGlow {
+    0% { background-position: 0% 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
+    50% { background-position: 100% 50%; box-shadow: 0 0 16px rgba(56, 189, 248, 0.8); }
+    100% { background-position: 0% 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
+}
+
+
             /* 金屬銀光澤漸變色 */
             --silver-metallic: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, #e2e8f0 20%, #ffffff 50%, #cbd5e1 80%, rgba(255, 255, 255, 0.1) 100%);
 
@@ -87,7 +428,6 @@
             --app-bg: #f8fafc;
             --app-text: #111827;
         }
-
         /* 💡 1. 開燈模式預設背景 (預設淺灰白底) */
         ion-content {
             --background: #f8fafc !important;
@@ -222,9 +562,8 @@
             box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
         }
 
-        /* ========================================================= */
+
         /* ✨ 跑馬燈光澤邊框動畫 (360-degree Marquee Light Border) ✨ */
-        /* ========================================================= */
         @keyframes marqueeSpin {
             0% {
                 transform: rotate(0deg);
@@ -272,53 +611,6 @@
                     #3b82f6 100%);
             animation: marqueeSpin 5s linear infinite;
             z-index: 1;
-        }
-
-        /* 儲蓄卡專屬走馬燈色彩 (綠金寶石系) */
-        .debit-card.savings-card::before {
-            background: conic-gradient(from 0deg,
-                    #34d399 0%,
-                    #059669 25%,
-                    #fbbf24 50%,
-                    #10b981 75%,
-                    #34d399 100%);
-            animation-duration: 4.5s;
-        }
-
-        /* 借貸卡專屬走馬燈色彩 (紫紅焰光系) */
-        .debit-card.loan-card::before {
-            background: conic-gradient(from 0deg,
-                    #818cf8 0%,
-                    #c084fc 25%,
-                    #f43f5e 50%,
-                    #fbbf24 75%,
-                    #818cf8 100%);
-            animation-duration: 4s;
-        }
-
-        /* 💡 卡片頂部炫彩粗邊裝飾條 */
-        .card-top-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            /* 邊條厚度 (可自行調整 5px - 8px) */
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
-            /* 首頁彩色漸變 */
-            z-index: 5;
-            border-top-left-radius: 21.5px;
-            border-top-right-radius: 21.5px;
-        }
-
-        /* 💳 借貸卡專屬頂部邊條 (紫粉金漸變) */
-        .debit-card.loan-card .card-top-bar {
-            background: linear-gradient(90deg, #818cf8 0%, #c084fc 50%, #f43f5e 100%);
-        }
-
-        /* 🐷 儲蓄卡專屬頂部邊條 (翡翠金綠漸變) */
-        .debit-card.savings-card .card-top-bar {
-            background: linear-gradient(90deg, #34d399 0%, #059669 50%, #fbbf24 100%);
         }
 
         /* 讓 Canvas 鋪滿卡片背景並放置在最底層 */
@@ -606,125 +898,6 @@
             border-color: #38bdf8;
         }
 
-        .calc-container-card {
-            background: var(--card-gradient);
-            border-radius: 20px;
-            padding: 18px;
-            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-/* 💡 強制讓卡片內部的 ion-button 不會超出邊框，保留邊框邊距 */
-.calc-container-card ion-button {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-        /* 💎 1. 型格高檔計算機主容器 (微光金屬邊框 + 暗黑黑洞卡片) */
-.calc-container-card {
-    background: linear-gradient(145deg, #0f172a 0%, #1e293b 60%, #0b1329 100%);
-    border-radius: 24px;
-    padding: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    position: relative;
-    overflow: hidden;
-}
-
-/* 💎 2. 螢幕顯示區：深邃黑洞 + 奢華霓虹發光數字 */
-.calc-display {
-    background: #020617;
-    color: white;
-    border-radius: 18px;
-    padding: 16px 20px;
-    text-align: right;
-    margin-bottom: 18px;
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.08);
-}
-
-.calc-subscreen {
-    font-size: 13px;
-    color: #64748b;
-    min-height: 20px;
-    word-break: break-all;
-    font-family: "SF Mono", "Courier New", monospace;
-    letter-spacing: 0.5px;
-}
-
-.calc-screen {
-    font-size: 36px;
-    font-weight: 800;
-    color: #fbbf24; /* 香檳亮金 */
-    word-break: break-all;
-    font-family: "SF Mono", "Courier New", monospace;
-    text-shadow: 0 0 16px rgba(251, 191, 36, 0.45); /* 核心霓虹發光 */
-    letter-spacing: -0.5px;
-    margin-top: 2px;
-}
-
-/* 💎 3. 按鈕網格與一般數字按鈕 */
-.calc-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 0 0 14px 0;
-}
-
-.calc-btn {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    color: #f1f5f9;
-    border-radius: 16px;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-    font-weight: 700;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    font-family: system-ui, -apple-system, sans-serif;
-}
-
-/* 按下效果 (下沉觸感) */
-.calc-btn:active {
-    transform: scale(0.92);
-    background: #334155;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* 💎 4. 清除鍵 (C / DEL)：珊瑚紅暗光 */
-.calc-btn.clear-btn {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.35);
-}
-
-/* 💎 5. 運算符號按鈕 (+ − × ÷)：電光湛藍 */
-.calc-btn.op {
-    background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
-    color: #38bdf8;
-    border-color: rgba(56, 189, 248, 0.35);
-    font-size: 23px;
-    font-weight: 800;
-}
-
-/* 💎 6. 等於號按鈕 (=)：奢華日落金漸變 */
-.calc-btn.action {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-    color: #0f172a;
-    font-weight: 900;
-    font-size: 26px;
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-
 /* 💡 清單卡片 Box：加上點擊按壓彈簧動態 (:active) */
 .custom-sliding-item {
     border-radius: 20px !important;
@@ -982,8 +1155,6 @@ ion-app.dark-theme ion-modal ion-content {
     pointer-events: none;
 }
 
-
-
         .row-grid-2 {
             display: flex;
             gap: 12px;
@@ -1033,64 +1204,6 @@ ion-app.dark-theme ion-modal ion-content {
             cursor: pointer;
             margin-left: 4px;
         }
-
-        /* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
-        .semi-edit-btn {
-            background: rgba(129, 140, 248, 0.18);
-            /* 半透明紫藍色底 */
-            border: 1px solid rgba(129, 140, 248, 0.45);
-            /* 微亮半透明邊框 */
-            color: #c7d2fe;
-            /* 柔和粉藍字體 */
-            font-size: 11px;
-            font-weight: 700;
-            padding: 6px 13px;
-            border-radius: 20px;
-            /* 圓角膠囊造型 */
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-            outline: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .semi-edit-btn:active {
-            transform: scale(0.92);
-            background: rgba(129, 140, 248, 0.4);
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
-        }
-
-/* 💡 官方高清 Logo 徽章樣式 */
-.pay-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 800;
-    line-height: 1;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(4px);
-    vertical-align: middle;
-}
-
-.pay-visa { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #ffffff; }
-.pay-mastercard { background: linear-gradient(135deg, #2a0808 0%, #5c1d1d 100%); color: #ffffff; }
-.pay-octopus { background: linear-gradient(135deg, #26201e 0%, #171d28 100%); border-color: rgba(234, 88, 12, 0.5); color: #ffffff; }
-.pay-fps { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: #ffffff; }
-.pay-payme { background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%); color: #ffffff; }
-.pay-alipay { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; }
-.pay-wechat { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; }
-.pay-apple { background: #000000; color: #ffffff; border-color: rgba(255, 255, 255, 0.3); }
-.pay-cash { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #ffffff; }
-.pay-default { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
-
 
         /* 💡 自訂型格下拉選單觸發按鈕 */
         .custom-select-trigger {
@@ -1248,35 +1361,6 @@ ion-app.dark-theme ion-modal ion-content {
     touch-action: none;
     user-select: none;
 }
-/* 💡 強制將支付方式選擇器的 z-index 提升至最高，蓋過所有 Modal */
-.payment-picker-modal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    background: rgba(0, 0, 0, 0.8) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-    z-index: 9999999 !important; /* 👈 超高層級 */
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-}
-
-.payment-picker-modal.active {
-    display: flex !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-.payment-picker-modal .picker-content {
-    z-index: 10000000 !important;
-}
-
 
 /* 💡 1. 開燈模式（預設）：深灰色滑塊與提示文字 */
 .drag-handle-bar .handle-pill {
@@ -1304,66 +1388,7 @@ ion-app.dark-theme .drag-handle-bar .handle-pill {
 ion-app.dark-theme .drag-handle-bar .handle-text {
     color: #94a3b8; /* 清晰淺灰色 */
 }
-/* 💡 專屬原生高級金色按鈕（100% 貼合卡片內部，絕不出界遮線） */
-.custom-save-btn {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    height: 46px;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%);
-    border: 1px solid rgba(251, 191, 36, 0.4);
-    border-radius: 12px;
-    color: #fbbf24;
-    font-size: 15px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.15s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
 
-.custom-save-btn:active {
-    transform: scale(0.98);
-    background: #1e293b;
-    border-color: #fbbf24;
-}
-/* 💡 自訂高質感圓形 Checkbox 樣式 */
-.custom-circle-checkbox {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 22px;
-    height: 22px;
-    border: 2px solid #ef4444;
-    border-radius: 50%; /* 💡 變成完美圓形 */
-    outline: none;
-    cursor: pointer;
-    position: relative;
-    background: transparent;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-/* 勾選時的亮紅背景與中央白勾號 */
-.custom-circle-checkbox:checked {
-    background: #ef4444;
-    border-color: #ef4444;
-    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
-}
-
-.custom-circle-checkbox:checked::after {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: 7px;
-    width: 5px;
-    height: 10px;
-    border: solid #ffffff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
 /* 💡 ionic ion-alert 全局風格美化 (極致深藍黑金屬風) */
 ion-alert.custom-danger-alert {
     --background: #0f172a !important;
@@ -1418,31 +1443,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     font-size: 13px !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
 }
-/* 💡 存入資金按鈕：大粒翡翠金屬樣式 + 按下光芒回饋 */
-.savings-glow-btn {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 800;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    outline: none;
-    transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-}
 
-/* ⚡ 按下瞬間 (Touch / Mouse Down) 的強烈光芒回饋 */
-.savings-glow-btn:active {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
-    border-color: #ffffff !important;
-    box-shadow: 0 0 20px rgba(52, 211, 153, 0.95), 0 0 8px rgba(255, 255, 255, 0.8) !important;
-}
 
     </style>
 </head>
@@ -1462,7 +1463,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                     </button>
                 </div>
 
-                <ion-title id="pageHeaderTitle">個人開銷記錄</ion-title>
+                <ion-title id="pageHeaderTitle">理財總覽</ion-title>
 
                 <!-- 💡 頂部右上角：計算機 + 熄燈模式按鈕 -->
 <div slot="end" style="padding-right: 12px; display: flex; gap: 8px; align-items: center;">
@@ -1495,7 +1496,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
             </div>
 
             <!-- 設定每月收入按鈕 -->
-            <button id="changeIncomeBtn" class="budget-badge-btn" type="button" onclick="openIncomeModal()">
+            <button id="changeIncomeBtn" class="budget-badge-btn" type="button" style="white-space:nowrap"onclick="openIncomeModal()">
                 <ion-icon name="cash-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>設定收入
             </button>
         </div>
@@ -2566,7 +2567,6 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
         let unreadLogCount = 0;
 		let monthlyIncome = 25000; // 預設每月收入
 
-
         // 💡 官方 Logo 支付方式選單控制函數 (修復被 Modal 遮擋問題)
 function togglePaymentPicker(show) {
     const modal = document.getElementById('paymentPickerModal');
@@ -2638,19 +2638,62 @@ const LOAN_CATEGORY_MAP = {
             }
         }
 
-        function loadData() {
-            try {
-                records = JSON.parse(localStorage.getItem('app_expense_records') || '[]');
-                savingsRecords = JSON.parse(localStorage.getItem('app_savings_records') || '[]');
-                loanRecords = JSON.parse(localStorage.getItem('app_loan_records') || '[]');
-                budgetLimit = Number(localStorage.getItem('app_budget_limit')) || 10000;
-                savingsGoal = Number(localStorage.getItem('app_savings_goal')) || 20000;
-                activityLogs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
-monthlyIncome = Number(localStorage.getItem('app_monthly_income')) || 25000;
-            } catch (e) {
-                console.error("Error loading localStorage data", e);
+        // 💡 1. 取得當前真實年月字串 (格式: "YYYY-MM")
+function getCurrentYearMonth() {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+// 💡 2. 跨月自動結算：檢查是否進入新月份，自動推進貸款還款期數
+function checkLoanMonthlyRollover() {
+    const currentYM = getCurrentYearMonth(); // 例如 "2026-08" 或 "2026-09"
+    
+    // 讀取上次記錄嘅月份，如果冇就預設為當前月份
+    const lastCheckYM = localStorage.getItem('app_last_rollover_ym') || currentYM;
+
+    // 如果發現當前系統月份大於上次記錄嘅月份（代表 1 號過咗，進入左新一個月！）
+    if (currentYM > lastCheckYM) {
+        let updatedCount = 0;
+
+        loanRecords.forEach(l => {
+            const rem = Math.max(0, l.totalAmount - l.repaidAmount);
+            // 如果這筆貸款還沒還清，且已還期數小於總期數
+            if (rem > 0 && l.repaidPeriods < l.totalPeriods) {
+                l.repaidPeriods += 1; // 已還期數自動 +1
+                l.repaidAmount = Math.min(l.totalAmount, l.repaidAmount + (l.monthlyAmount || 0)); // 已還金額自動加上每月供款
+                updatedCount++;
             }
+        });
+
+        if (updatedCount > 0) {
+            saveData(); // 儲存更新後嘅貸款數據
+            addLog('跨月自動結算', `系統已自動為 ${updatedCount} 個未還清貸款項目推進 1 個月的還款期數！`);
         }
+
+        // 更新最後檢查月份為當前月，避免喺同一個月內重複執行
+        localStorage.setItem('app_last_rollover_ym', currentYM);
+    }
+}
+
+// 💡 3. 核心資料載入函數 (啟動時自動調用)
+function loadData() {
+    try {
+        // 從瀏覽器記憶體讀取各項數據
+        records = JSON.parse(localStorage.getItem('app_expense_records') || '[]');
+        savingsRecords = JSON.parse(localStorage.getItem('app_savings_records') || '[]');
+        loanRecords = JSON.parse(localStorage.getItem('app_loan_records') || '[]');
+        budgetLimit = Number(localStorage.getItem('app_budget_limit')) || 10000;
+        savingsGoal = Number(localStorage.getItem('app_savings_goal')) || 20000;
+        activityLogs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
+        monthlyIncome = Number(localStorage.getItem('app_monthly_income')) || 25000;
+        
+        // 🚀 每次開 App 讀取完資料後，立刻進行跨月檢查
+        checkLoanMonthlyRollover();
+        
+    } catch (e) {
+        console.error("Error loading localStorage data", e);
+    }
+}
 
         function saveData() {
             localStorage.setItem('app_expense_records', JSON.stringify(records));
@@ -3440,20 +3483,50 @@ function seedLoanDemoData() {
     addLog('載入測試範例', '成功載入 2 筆借貸測試範例資料');
 }
 
-
         // Render Functions
         function renderUI() {
 			renderOverview();
             renderRecords();
             renderLoans();
             renderSavings();
+			renderCardNumbers();
             updateLogBadge();
         }
+// 💡 動態更新所有卡片的模擬年份與月份
+function renderCardNumbers() {
+    const now = new Date();
+    const yearMonthStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
+    
+    // 首頁現金流卡片
+    const homeSim = document.querySelector('#pageHome .card-number-sim');
+    if (homeSim) homeSim.textContent = `•••• •••• CASHFLOW ${yearMonthStr}`;
+
+    // 開銷頁卡片
+    const expDateDisplay = document.getElementById('cardDateDisplay');
+    if (expDateDisplay) expDateDisplay.textContent = `•••• •••• WALLET ${yearMonthStr}`;
+
+    // 儲蓄頁卡片
+    const savingsCard = document.getElementById('savingsCardNumberDisplay');
+    if (savingsCard) savingsCard.textContent = `•••• •••• SAVINGS ${yearMonthStr}`;
+
+    // 借貸頁卡片
+    const loanCard = document.getElementById('loanCardNumberDisplay');
+    if (loanCard) loanCard.textContent = `•••• •••• LOAN ${yearMonthStr}`;
+}
+
+
 // 💡 更新首頁本月現金流數據 (收入 - 供款 - 開銷)
 function renderOverview() {
-    // 1. 本月總開銷
+        // 1. 本月總開銷 (只計算當月 YYYY-MM 的記錄)
     let totalExp = 0;
-    records.forEach(r => totalExp += (Number(r.amount) || 0));
+    const currentYM = getCurrentYearMonth(); // 例如 "2026-08"
+    
+    records.forEach(r => {
+        // r.date 的格式通常是 "YYYY-MM-DD"
+        if (r.date && r.date.startsWith(currentYM)) {
+            totalExp += (Number(r.amount) || 0);
+        }
+    });
 
     // 2. 本月總供款 (借貸項目中本月預計還款總額)
     let totalLoanDue = 0;
@@ -3524,8 +3597,14 @@ function confirmSaveIncome() {
     const container = document.getElementById('recordContainer');
     if (!container) return;
 
-    let total = 0;
-    records.forEach(r => total += (Number(r.amount) || 0));
+        let total = 0;
+    const currentYM = getCurrentYearMonth();
+    
+    records.forEach(r => {
+        if (r.date && r.date.startsWith(currentYM)) {
+            total += (Number(r.amount) || 0);
+        }
+    });
 
     document.getElementById('totalAmountDisplay').textContent = total.toLocaleString();
     document.getElementById('budgetLimitDisplay').textContent = budgetLimit.toLocaleString();
