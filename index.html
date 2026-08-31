@@ -14,7 +14,7 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
     <style>
-        
+
 /* ⚡ 款式 D：純黑液體金屬 (Obsidian) */
 #pageHome .card-inner-content {
     background: 
@@ -85,27 +85,31 @@
             animation-duration: 4s;
         }
 
-/* 💳 卡片橫向滾動卡住效果容器 */
+/* 💡 2. 卡片左右滾動容器 */
 .cards-scroll-container {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    gap: 16px;
-    padding: 0 4px 10px 4px;
-    scrollbar-width: none; /* 隱藏捲軸 */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    scrollbar-width: none;
 }
+
 .cards-scroll-container::-webkit-scrollbar {
     display: none;
 }
 
-/* 每張卡片佔滿容器寬度，並且自動對齊 */
 .cards-scroll-container .debit-card {
     flex: 0 0 100%;
+    width: 100%;
     scroll-snap-align: center;
-    margin-bottom: 0;
+    box-sizing: border-box;
+    margin-bottom: 0 !important;
 }
+
 
         /* 💡 卡片頂部炫彩粗邊裝飾條 */
         .card-top-bar {
@@ -442,48 +446,61 @@
     100% { background-position: 0% 50%; box-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
 }
 
-/* 💡 極精緻微型 Toggle 開關樣式 */
+/* 💡 1. 完美外框（Container）：保證邊框、底色、圓角全部健在 */
 .mini-switch-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(52, 211, 153, 0.12);
-    padding: 2px 6px;
-    border-radius: 6px;
-    border: 1px solid rgba(52, 211, 153, 0.3);
-    cursor: pointer;
-    user-select: none;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: rgba(52, 211, 153, 0.12) !important;
+    padding: 3px 8px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(52, 211, 153, 0.3) !important;
+    cursor: pointer !important;
+    user-select: none !important;
 }
+
+/* 💡 2. 開關軌道（Input）：OFF暗灰，ON閃耀翡翠綠光 */
 .mini-switch-input {
     appearance: none;
     -webkit-appearance: none;
-    width: 26px;
-    height: 14px;
-    background: rgba(255, 255, 255, 0.2);
+    width: 28px;
+    height: 16px;
+    background: rgba(0, 0, 0, 0.45) !important;
     border-radius: 10px;
     position: relative;
     outline: none;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
     margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* 💡 3. 白色推掣：絕對垂直置中 */
 .mini-switch-input::before {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top: 50% !important;
+    left: 2px !important;
+    transform: translateY(-50%) !important;
     width: 10px;
     height: 10px;
     background: #ffffff;
     border-radius: 50%;
     transition: transform 0.2s ease;
 }
+
+/* 🟢 開啟時（ON）：高亮翡翠綠色背景 + 光暈 */
 .mini-switch-input:checked {
-    background: #34d399;
+    background: #10b981 !important; 
+    border-color: #34d399 !important;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
 }
+
+/* 🟢 開啟時：向右滑動同時保持垂直置中 */
 .mini-switch-input:checked::before {
-    transform: translateX(12px);
+    transform: translateX(12px) translateY(-50%) !important;
 }
+
 
 /* 🔄 重新整理按鈕點擊旋轉動畫 */
 @keyframes spinRefresh {
@@ -659,7 +676,7 @@
             border-radius: 24px;
             padding: 2.5px;
             /* 走馬燈霓虹邊框的厚度 */
-            margin-bottom: 22px;
+            margin-bottom: 0px;
             overflow: hidden;
             box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1523,6 +1540,72 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     font-size: 13px !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
 }
+/* 💡 終極完美釘死 (Fixed) 方案：不變形、不放大、完全釘死在頂部唔郁 */
+.fixed-top-card-area {
+    position: fixed !important;
+    top: 80px !important;       /* 緊貼在頂部 Header 下方 (Header 高度 65px) */
+    left: 16px !important;      /* 左右留返 16px 邊距，保證卡片大小跟之前一模一樣，絕不放大變闊 */
+    right: 16px !important;
+    width: auto !important;     /* 自動適應左右邊距，保持最完美比例 */
+    z-index: 100 !important;
+    background: #f8fafc !important; /* 開燈模式實色底色，徹底遮光 */
+    
+    /* 保留你最鍾意嘅向上平移 */
+    transform: translateY(-16px) !important;
+    padding: 10px 0px 0px 0px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    
+    /* 下方兩角切 20px 圓角 */
+    border-bottom-left-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 熄燈模式下的實色底色與圓角 */
+ion-app.dark-theme .fixed-top-card-area {
+    background: #090d16 !important; 
+}
+
+/* 下方頁面容器：空出頂部空間，確保清單在卡片下方順暢滾動 */
+.view-page {
+    display: none;
+    padding-top: 245px !important; /* 確保清單從卡片下方順暢展開 */
+    padding-bottom: 110px !important;
+}
+
+.view-page.active-page {
+    display: block !important;
+}
+
+
+/* 💳 卡片固定頂部容器：內部只准左右滾動，絕不上下亂走 */
+.cards-scroll-container {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    scrollbar-width: none !important;
+}
+
+.cards-scroll-container::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* 確保每一張卡片強制佔滿 100% 闊度，並且精準吸附左右滾動 (Snap) */
+.cards-scroll-container .debit-card {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    scroll-snap-align: center !important;
+    box-sizing: border-box !important;
+}
+
 
     </style>
 </head>
@@ -1563,6 +1646,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 <div id="pageHome" class="view-page active-page">
     <!-- 總資產霓虹走馬燈卡片 -->
     <!-- 總資產霓虹走馬燈卡片 (本月現金流邏輯) -->
+<div class="fixed-top-card-area">
 <div class="debit-card">
     <div class="card-inner-content">
         <div class="card-top-bar"></div>
@@ -1625,7 +1709,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
         </div>
     </div>
 </div>
-
+</div>
 
 <!-- 快捷入口卡片 (3 欄版：消費 / 儲蓄 / 借貸) -->
 <h3 class="section-title" style="margin-bottom: 12px;">快捷理財模組</h3>
@@ -1685,6 +1769,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 <div id="swipePagesContainer">
             <div id="pageExpense" class="view-page">
                 <!-- 走馬燈霓虹卡片 -->
+<div class="fixed-top-card-area">
                 <div class="debit-card">
                     <div class="card-inner-content">
                         <div class="card-top-bar"></div>
@@ -1735,7 +1820,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                         </div>
                     </div>
                 </div>
-
+</div>
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
 <h3 class="section-title">消費記錄明細</h3>
@@ -1778,6 +1863,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
             <!-- 頁面 3：借貸 -->
 <div id="swipePagesContainer">
             <div id="pageLoans" class="view-page">
+<div class="fixed-top-card-area">
                 <div class="debit-card loan-card">
                     <div class="card-inner-content">
                         <div class="card-top-bar"></div>
@@ -1829,7 +1915,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                         </div>
                     </div>
                 </div>
-
+</div>
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
 <!-- 💡 借貸頁標題與載入測試按鈕 -->
@@ -1847,6 +1933,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                         <!-- 頁面 4：儲蓄 -->
 <div id="swipePagesContainer">
             <div id="pageSavings" class="view-page">
+<div class="fixed-top-card-area">
                 <div class="debit-card savings-card">
                     <div class="card-inner-content">
                         <div class="card-top-bar"></div>
@@ -1916,7 +2003,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                         </div>
                     </div>
                 </div>
-
+</div>
 <!-- 📊 金管局官方市場利率數據總覽卡片 -->
 <div class="card-inner-content" style="margin-top: 16px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 16px; border: 1px solid rgba(251, 191, 36, 0.2);">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -4208,21 +4295,28 @@ function renderLoans() {
 }
 
 
-// 💡 金管局官方 API 數據緩存
-let hkmaRatesCache = [];
-
 async function fetchTimeDepositRates() {
     const container = document.getElementById('timeDepositRatesContainer');
     const refreshIcon = document.getElementById('refreshIcon');
     
     if (refreshIcon) refreshIcon.classList.add('refreshing-spin');
-    if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #fbbf24;">⏳ 正在連線金管局 API 檢查最新大市...</div>`;
+    if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #fbbf24;">⏳ 正在連線金管局 API 檢查最新利率...</div>`;
 
     let ratesList = [];
     let dataSourceText = "";
 
+    // 💡 1. 建立一個控制器用黎控制超時中斷
+    const controller = new AbortController();
+    
+    // 💡 2. 設定限時：例如 4000 毫秒 (即 4 秒)。如果 4 秒內 API 冇回應，就自動取消請求！
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
     try {
-        const response = await fetch('https://api.hkma.gov.hk/public/market-data-and-statistics/monthly-statistical-bulletin/er-ir/hkd-ir-effdates?offset=0&limit=1');
+        const response = await fetch('https://api.hkma.gov.hk/public/market-data-and-statistics/monthly-statistical-bulletin/er-ir/hkd-ir-effdates?offset=0&limit=1', {
+            signal: controller.signal // 💡 3. 將訊號綁定入 fetch 裡面
+        });
+        
+        clearTimeout(timeoutId); // 💡 4. 如果成功收到回應，立刻清除計時器
         const data = await response.json();
 
         if (data && data.result && data.result.records && data.result.records.length > 0) {
@@ -4236,13 +4330,16 @@ async function fetchTimeDepositRates() {
                 { title: "6個月定期利率 (6M)", val: (r.dr_6m || "3.35") + "%" },
                 { title: "12個月定期利率 (12M)", val: (r.dr_12m || "3.15") + "%" }
             ];
-            dataSourceText = "* 數據實時取自香港金管局官方 API";
+            dataSourceText = "* 數據實時取自香港金管局官方API";
         } else {
             throw new Error('格式不符');
         }
     } catch (err) {
+        // 💡 如果夠鐘（例如 4 秒）未覆或者網絡斷咗，就會跳落呢度行 fallback
+        const todayStr = new Date().toISOString().split('T')[0];
+
         ratesList = [
-            { title: "生效日期 (Date)", val: "2026最新大市" },
+            { title: "生效日期 (Date)", val: todayStr },
             { title: "儲蓄存款利率 (Savings)", val: "0.13%" },
             { title: "1星期定期利率 (1W)", val: "3.30%" },
             { title: "1個月定期利率 (1M)", val: "3.45%" },
@@ -4250,9 +4347,8 @@ async function fetchTimeDepositRates() {
             { title: "6個月定期利率 (6M)", val: "3.35%" },
             { title: "12個月定期利率 (12M)", val: "3.15%" }
         ];
-        dataSourceText = "* 網絡連線異常，已切換至大市參考標準";
+        dataSourceText = "* 網絡逾時或異常，已切換至大市參考標準";
     } finally {
-        // 確保無論成功定失敗，轉圈動畫一定會停止
         if (refreshIcon) refreshIcon.classList.remove('refreshing-spin');
     }
 
@@ -4265,6 +4361,7 @@ async function fetchTimeDepositRates() {
         `).join('') + `<div style="text-align: right; font-size: 10px; color: #64748b; margin-top: 6px;">${dataSourceText}</div>`;
     }
 }
+
 
 
 // 💡 全局變數：儲存年利率 (p.a.) 與計息開關狀態
