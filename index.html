@@ -85,6 +85,28 @@
             animation-duration: 4s;
         }
 
+/* 💳 卡片橫向滾動卡住效果容器 */
+.cards-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding: 0 4px 10px 4px;
+    scrollbar-width: none; /* 隱藏捲軸 */
+}
+.cards-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* 每張卡片佔滿容器寬度，並且自動對齊 */
+.cards-scroll-container .debit-card {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    margin-bottom: 0;
+}
+
         /* 💡 卡片頂部炫彩粗邊裝飾條 */
         .card-top-bar {
             position: absolute;
@@ -1537,6 +1559,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
         <ion-content class="ion-padding">
 
             <!-- 頁面 1：綜合理財首頁 (Page Home) -->
+<div id="swipePagesContainer">
 <div id="pageHome" class="view-page active-page">
     <!-- 總資產霓虹走馬燈卡片 -->
     <!-- 總資產霓虹走馬燈卡片 (本月現金流邏輯) -->
@@ -1657,8 +1680,9 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     </div>
     <div id="overviewRecentRecordsContainer"></div>
 </div>
-
+</div>
 <!-- 頁面 2：開銷明細頁 (Page Expense) -->
+<div id="swipePagesContainer">
             <div id="pageExpense" class="view-page">
                 <!-- 走馬燈霓虹卡片 -->
                 <div class="debit-card">
@@ -1748,10 +1772,11 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 
                 <ion-list id="recordContainer" lines="none" style="background: transparent;"></ion-list>
 </div>
-
+</div>
 
 
             <!-- 頁面 3：借貸 -->
+<div id="swipePagesContainer">
             <div id="pageLoans" class="view-page">
                 <div class="debit-card loan-card">
                     <div class="card-inner-content">
@@ -1817,9 +1842,10 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 </div>
                 <ion-list id="loanRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
-
+</div>
             <!-- 頁面 4：儲蓄 -->
                         <!-- 頁面 4：儲蓄 -->
+<div id="swipePagesContainer">
             <div id="pageSavings" class="view-page">
                 <div class="debit-card savings-card">
                     <div class="card-inner-content">
@@ -1912,7 +1938,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
                 <h3 class="section-title" style="margin: 12px 0 12px 4px;">儲蓄存入紀錄</h3>
                 <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
             </div>
-
+</div>
             <!-- 💡 消息動態 Modal -->
           <ion-modal id="logsModal" initial-breakpoint="1" handle="true">
                 <ion-header class="ion-no-border" style="background: #0f172a; touch-action: none;">
@@ -3867,6 +3893,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.debit-card');
+    const pageKeys = ['home', 'expense', 'savings', 'loans'];
+
+    cards.forEach(card => {
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        card.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            card.style.transition = 'none';
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX;
+            let diff = currentX - startX;
+
+            // 讓卡片只跟隨手指做左右輕微滑動（阻尼效果，最多拉動 ±100px）
+            let translateVal = Math.max(-100, Math.min(100, diff * 0.6));
+            card.style.transform = `translateX(${translateVal}px)`;
+        }, { passive: true });
+
+        card.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            let endX = e.changedTouches[0].clientX;
+            let diff = endX - startX;
+
+            // 放手後卡片先彈回原位
+            card.style.transition = 'transform 0.25s cubic-bezier(0.25, 1, 0.5, 1)';
+            card.style.transform = 'translateX(0)';
+
+            // 如果左右拉動距離超過 60 像素，就觸發切換頁面
+            if (Math.abs(diff) < 60) return;
+
+            // 找出當前頁面
+            const activePageEl = document.querySelector('.view-page.active-page');
+            if (!activePageEl) return;
+
+            let currentKey = 'home';
+            if (activePageEl.id === 'pageExpense') currentKey = 'expense';
+            if (activePageEl.id === 'pageSavings') currentKey = 'savings';
+            if (activePageEl.id === 'pageLoans') currentKey = 'loans';
+
+            let currentIndex = pageKeys.indexOf(currentKey);
+
+            if (diff < 0) {
+                // 👉 向左拉卡片：去下一頁
+                let nextIndex = (currentIndex + 1) % pageKeys.length;
+                switchPage(pageKeys[nextIndex]);
+            } else {
+                // 👈 向右拉卡片：去上一頁
+                let prevIndex = (currentIndex - 1 + pageKeys.length) % pageKeys.length;
+                switchPage(pageKeys[prevIndex]);
+            }
+        }, { passive: true });
+    });
+});
+
 // 1. 開啟 Modal 時自動帶入當天日期
 function openExtraIncomeModal() {
     const modal = document.getElementById('extraIncomeModal');
@@ -4122,14 +4211,15 @@ function renderLoans() {
 // 💡 金管局官方 API 數據緩存
 let hkmaRatesCache = [];
 
-// 💡 完美對接香港金管局 (HKMA) 官方 API 結構
 async function fetchTimeDepositRates() {
     const container = document.getElementById('timeDepositRatesContainer');
     const refreshIcon = document.getElementById('refreshIcon');
     
-    // 啟動旋轉動態
     if (refreshIcon) refreshIcon.classList.add('refreshing-spin');
-    if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #fbbf24;">⏳ 正在向金管局官方 API 查詢利率...</div>`;
+    if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #fbbf24;">⏳ 正在連線金管局 API 檢查最新大市...</div>`;
+
+    let ratesList = [];
+    let dataSourceText = "";
 
     try {
         const response = await fetch('https://api.hkma.gov.hk/public/market-data-and-statistics/monthly-statistical-bulletin/er-ir/hkd-ir-effdates?offset=0&limit=1');
@@ -4137,9 +4227,7 @@ async function fetchTimeDepositRates() {
 
         if (data && data.result && data.result.records && data.result.records.length > 0) {
             const r = data.result.records[0];
-            
-            // 嚴格對照官方 API 教學文件入面嘅欄位名稱
-            let ratesList = [
+            ratesList = [
                 { title: "生效日期 (Date)", val: r.effect_date || "最新" },
                 { title: "儲蓄存款利率 (Savings)", val: (r.savings_deposit_rate || "0.13") + "%" },
                 { title: "1星期定期利率 (1W)", val: (r.dr_1w || "3.30") + "%" },
@@ -4148,32 +4236,35 @@ async function fetchTimeDepositRates() {
                 { title: "6個月定期利率 (6M)", val: (r.dr_6m || "3.35") + "%" },
                 { title: "12個月定期利率 (12M)", val: (r.dr_12m || "3.15") + "%" }
             ];
-
-            container.innerHTML = ratesList.map(item => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                    <div><span style="font-weight: 700; color: #fff; font-size: 12px;">${escapeHtml(item.title)}</span></div>
-                    <div><span style="font-weight: 900; color: #34d399; font-size: 13px;">${escapeHtml(item.val)}</span></div>
-                </div>
-            `).join('') + `<div style="text-align: right; font-size: 10px; color: #64748b; margin-top: 6px;">* 數據實時取自金管局官方 API</div>`;
-
+            dataSourceText = "* 數據實時取自香港金管局官方 API";
         } else {
-            throw new Error('API 數據格式不符');
+            throw new Error('格式不符');
         }
-
     } catch (err) {
-        container.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                <div><span style="font-weight: 700; color: #fff; font-size: 13px;">3個月定期利率 (參考)</span></div>
-                <div><span style="font-weight: 900; color: #34d399; font-size: 14px;">3.55% p.a.</span></div>
-            </div>
-            <div style="text-align: right; font-size: 10px; color: #64748b; margin-top: 8px;">* 網絡連線異常，已切換至標準參考</div>
-        `;
+        ratesList = [
+            { title: "生效日期 (Date)", val: "2026最新大市" },
+            { title: "儲蓄存款利率 (Savings)", val: "0.13%" },
+            { title: "1星期定期利率 (1W)", val: "3.30%" },
+            { title: "1個月定期利率 (1M)", val: "3.45%" },
+            { title: "3個月定期利率 (3M)", val: "3.55%" },
+            { title: "6個月定期利率 (6M)", val: "3.35%" },
+            { title: "12個月定期利率 (12M)", val: "3.15%" }
+        ];
+        dataSourceText = "* 網絡連線異常，已切換至大市參考標準";
     } finally {
-        // 結束旋轉動態
+        // 確保無論成功定失敗，轉圈動畫一定會停止
         if (refreshIcon) refreshIcon.classList.remove('refreshing-spin');
     }
-}
 
+    if (container) {
+        container.innerHTML = ratesList.map(item => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div><span style="font-weight: 700; color: #fff; font-size: 12px;">${escapeHtml(item.title)}</span></div>
+                <div><span style="font-weight: 900; color: #34d399; font-size: 13px;">${escapeHtml(item.val)}</span></div>
+            </div>
+        `).join('') + `<div style="text-align: right; font-size: 10px; color: #64748b; margin-top: 6px;">${dataSourceText}</div>`;
+    }
+}
 
 
 // 💡 全局變數：儲存年利率 (p.a.) 與計息開關狀態
