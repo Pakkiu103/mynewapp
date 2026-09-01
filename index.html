@@ -254,32 +254,15 @@
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-        /* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
-        .semi-edit-btn {
-    background: rgba(129, 140, 248, 0.18);
-    border: 1px solid rgba(129, 140, 248, 0.45);
-    color: #c7d2fe;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 6px 13px;
-    border-radius: 20px;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-    outline: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+/* 支援深色模式切換 */
+.dark-theme .semi-edit-btn,
+.dark .semi-edit-btn,
+html.dark-theme .semi-edit-btn {
+    background: rgba(129, 140, 248, 0.2);
+    border: 1px solid rgba(129, 140, 248, 0.5);
+    color: #c7d2fe; /* 深色模式：柔和粉藍字，清晰好看 */
 }
 
-.semi-edit-btn:active {
-    transform: scale(0.92);
-    background: rgba(129, 140, 248, 0.4);
-    color: #ffffff;
-    box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
-}
 
 
 /* 💡 官方高清 Logo 徽章樣式 */
@@ -676,6 +659,34 @@ ion-app.dark-theme {
             border: 1.5px solid #0f172a;
             box-sizing: border-box;
         }
+
+/* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
+/* 💳 固定實色柔和淺紫色按鈕（邊框加粗版本） */
+.semi-edit-btn {
+    background: #f3e8ff !important; /* 實色柔和淺紫底色 */
+    border: 2px solid #c084fc !important; /* 邊框加粗為 2px，顏色稍微加深更明顯 */
+    color: #7e22ce !important; /* 實色深紫文字，對比清晰 */
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px; /* 稍微微調內距，讓加粗邊框後的大小維持完美 */
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.semi-edit-btn:active {
+    transform: scale(0.92);
+    background: #e9d5ff !important; /* 按下去時稍微深一點點 */
+}
+
+
 
         /* 💎 1. 頂部 Header 標題：鉑金金屬光澤 (Platinum Silver / Cool Chrome) */
         ion-toolbar ion-title {
@@ -3011,34 +3022,41 @@ const LOAN_CATEGORY_MAP = {
 };
 
 
-        function initTheme() {
-            const savedTheme = localStorage.getItem('app_theme');
-            const app = document.getElementById('appContainer');
-            const icon = document.getElementById('themeIcon');
+function initTheme() {
+    const savedTheme = localStorage.getItem('app_theme');
+    const app = document.getElementById('appContainer');
+    const icon = document.getElementById('themeIcon');
+    
+    const isDark = (savedTheme === 'dark');
 
-            if (savedTheme === 'dark') {
-                app.classList.add('dark-theme');
-                if (icon) icon.setAttribute('name', 'sunny-outline');
-            } else {
-                app.classList.remove('dark-theme');
-                if (icon) icon.setAttribute('name', 'moon-outline');
-            }
+    if (app) {
+        if (isDark) {
+            app.classList.add('dark-theme');
+            if (icon) icon.setAttribute('name', 'sunny-outline');
+        } else {
+            app.classList.remove('dark-theme');
+            if (icon) icon.setAttribute('name', 'moon-outline');
         }
+    }
+}
 
-        function toggleTheme() {
-            const app = document.getElementById('appContainer');
-            const icon = document.getElementById('themeIcon');
 
-            const isDark = app.classList.toggle('dark-theme');
+function toggleTheme() {
+    const app = document.getElementById('appContainer');
+    const icon = document.getElementById('themeIcon');
 
-            if (isDark) {
-                if (icon) icon.setAttribute('name', 'sunny-outline');
-                localStorage.setItem('app_theme', 'dark');
-            } else {
-                if (icon) icon.setAttribute('name', 'moon-outline');
-                localStorage.setItem('app_theme', 'light');
-            }
-        }
+    const isDark = app.classList.toggle('dark-theme');
+
+    if (isDark) {
+        if (icon) icon.setAttribute('name', 'sunny-outline');
+        localStorage.setItem('app_theme', 'dark');
+    } else {
+        if (icon) icon.setAttribute('name', 'moon-outline');
+        localStorage.setItem('app_theme', 'light');
+    }
+}
+
+
 
         // 💡 1. 取得當前真實年月字串 (格式: "YYYY-MM")
 function getCurrentYearMonth() {
@@ -4296,7 +4314,7 @@ function renderExtraIncomeList() {
     }).join('');
 }
 
-       // 💡 修改後的 renderLoans 函數（加入了 ion-item-sliding 側滑刪除）
+       // 💡 修改後的 renderLoans 函數（加入了 ion-item-sliding 側滑刪除與按鈕主題同步）
 function renderLoans() {
     const container = document.getElementById('loanRecordContainer');
     if (!container) return;
@@ -4347,8 +4365,9 @@ function renderLoans() {
                                 </div>
                             </div>
                             <button class="semi-edit-btn" type="button" onclick="openEditLoanModal(${l.id})">
-                                還款 / 修改
-                            </button>
+    還款 / 修改
+</button>
+
                         </div>
 
                         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--box-text-title);">
@@ -4376,6 +4395,8 @@ function renderLoans() {
         `;
     }).join('');
 }
+
+
 
 
 async function fetchTimeDepositRates() {
