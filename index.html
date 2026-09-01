@@ -256,34 +256,31 @@
 
         /* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
         .semi-edit-btn {
-            background: rgba(129, 140, 248, 0.18);
-            /* 半透明紫藍色底 */
-            border: 1px solid rgba(129, 140, 248, 0.45);
-            /* 微亮半透明邊框 */
-            color: #c7d2fe;
-            /* 柔和粉藍字體 */
-            font-size: 11px;
-            font-weight: 700;
-            padding: 6px 13px;
-            border-radius: 20px;
-            /* 圓角膠囊造型 */
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-            outline: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
+    background: rgba(129, 140, 248, 0.18);
+    border: 1px solid rgba(129, 140, 248, 0.45);
+    color: #c7d2fe;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
 
-        .semi-edit-btn:active {
-            transform: scale(0.92);
-            background: rgba(129, 140, 248, 0.4);
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
-        }
+.semi-edit-btn:active {
+    transform: scale(0.92);
+    background: rgba(129, 140, 248, 0.4);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+}
+
 
 /* 💡 官方高清 Logo 徽章樣式 */
 .pay-chip {
@@ -518,8 +515,54 @@
     opacity: 0.85;
 }
 
+/* 👑 金管局 Box 直接對齊 .custom-sliding-item 的高質感灰綠漸層主題 */
+#marketRateCard {
+    position: relative !important;
+    margin-top: 16px !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+    
+    /* ☀️ 開燈模式：完美跟足 sliding item 嘅灰綠金屬流光漸變 */
+    background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.45) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    color: #070d1b !important; /* 烏木深藍黑字體，清晰易睇 */
+}
+
+/* 開燈模式下的上下幼線細節 */
+#marketRateCard::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 8px;
+    right: 8px;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.2) 100%) top / 100% 1px no-repeat,
+        linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.2) 100%) bottom / 100% 1px no-repeat;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* 🌙 熄燈模式（Dark Theme）：完美對應 sliding item 的深藍灰質感 */
+ion-app.dark-theme #marketRateCard,
+.dark-theme #marketRateCard {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid rgba(245, 158, 11, 0.25) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+    color: #ffffff !important;
+}
+
+ion-app.dark-theme #marketRateCard::after,
+.dark-theme #marketRateCard::after {
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, #334155 50%, rgba(255, 255, 255, 0.05) 100%) top / 100% 1px no-repeat,
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, #334155 50%, rgba(255, 255, 255, 0.05) 100%) bottom / 100% 1px no-repeat;
+}
+
 
 :root {
+
             /* 金屬銀光澤漸變色 */
             --silver-metallic: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, #e2e8f0 20%, #ffffff 50%, #cbd5e1 80%, rgba(255, 255, 255, 0.1) 100%);
 
@@ -536,6 +579,26 @@
             --app-bg: #f8fafc;
             --app-text: #111827;
         }
+/* ☀️ 1. 開燈模式 (Light Mode) 全局變數 */
+:root {
+    --box-text-main: #0f172a;               
+    --box-text-sub: #334155 !important;       
+    
+    /* 🏷️ 主標題專用：再藍多啲（型格嘅冰晶藍灰 Steel Frost Blue） */
+    --box-text-title: #4d648d !important;     
+}
+
+/* 🌙 2. 熄燈模式 (Dark Mode) 全局變數 */
+ion-app.dark-theme {
+    --box-text-main: #ffffff !important;      
+    --box-text-sub: #94a3b8 !important;       
+    
+    /* 熄燈模式下對應嘅亮藍灰（柔和發光感） */
+    --box-text-title: #9bb7d4 !important;     
+}
+
+
+
         /* 💡 1. 開燈模式預設背景 (預設淺灰白底) */
         ion-content {
             --background: #f8fafc !important;
@@ -670,6 +733,14 @@
             box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
         }
 
+/* ☀️ 1. 開燈模式 (Light Mode) 嘅全局變數設定 */
+    --apple-box-bg: #f5f5f7; /* 呢隻就係蘋果風格嘅高級淺灰白色 (Apple Light Gray/White) */
+}
+
+/* 🌙 2. 熄燈模式 (Dark Mode) 嘅全局變數設定 */
+ion-app.dark-theme {
+    --apple-box-bg: #1c1c1e !important; /* 蘋果風格嘅深色模式暗灰黑 */
+}
 
         .debit-card {
             position: relative;
@@ -995,35 +1066,23 @@
             border-color: #38bdf8;
         }
 
-/* 💡 清單卡片 Box：加上點擊按壓彈簧動態 (:active) */
+/* 💡 終極唯一版：清單卡片 Box（包含彈簧動態、圓角、雙模式背景與文字） */
+/* ☀️ 1. 開燈模式（Light Mode）：高對比金屬流光漸變 + 淺金黃幼邊框 */
 .custom-sliding-item {
+    background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important; 
     border-radius: 20px !important;
     margin-bottom: 14px !important;
-    overflow: hidden !important; /* 確保四角 100% 光滑圓潤 */
-    background: #1e293b !important; /* 高級深藍黑底色 */
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15) !important;
-    /* 👑 加入高質感 cubic-bezier 彈簧過渡動畫 */
+    overflow: hidden !important;
+    /* 👑 加上一條精緻嘅淺金黃幼邊框（Champagne Gold Border），帶有微微嘅金屬微光 */
+    border: 1px solid rgba(212, 175, 55, 0.45) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
     transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
-    will-change: transform;
 }
 
-/* ⚡ 當手指按落去清單 Box 時（按下微縮下沉效果） */
-.custom-sliding-item:active {
-    transform: scale(0.975); /* 微縮 97.5% */
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1) !important; /* 陰影縮小，模擬貼近地面 */
-}
-
-/* 🌙 熄燈模式 (Dark Theme) */
-ion-app.dark-theme .custom-sliding-item {
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* 內部 ion-item 設定 */
+/* 開燈模式下嘅內部文字保持極深色，確保在強對比金屬底色上清晰銳利 */
 .custom-sliding-item ion-item {
-    --background: #1e293b !important;
-    --color: #ffffff !important;
+    --background: transparent !important;
+    --color: #070d1b !important; /* 烏木深藍黑字體，極度清晰 */
     --padding-start: 14px;
     --padding-end: 16px;
     --border-style: none !important;
@@ -1031,25 +1090,33 @@ ion-app.dark-theme .custom-sliding-item {
     border-radius: 20px !important;
 }
 
+/* 🌙 2. 熄燈模式（Dark Theme）：保持型格深藍灰，亦可搭配微微金邊 */
+ion-app.dark-theme .custom-sliding-item {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid rgba(245, 158, 11, 0.25) !important; /* 熄燈時配一條低調型格嘅金邊 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+ion-app.dark-theme .custom-sliding-item ion-item {
+    --background: transparent !important;
+    --color: #ffffff !important;
+}
+
+
+
+/* 按壓微縮效果 */
+.custom-sliding-item:active {
+    transform: scale(0.975);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1) !important;
+}
+
+
+
 /* 側滑刪除選單圓角相符 */
 .custom-sliding-item ion-item-options {
     border-top-right-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
 }
-
-/* 固定文字顏色 */
-.custom-sliding-item ion-label h2 {
-    color: #ffffff !important;
-    font-weight: 800 !important;
-    font-size: 15px !important;
-    margin-bottom: 3px !important;
-}
-
-.custom-sliding-item ion-label p {
-    color: #cbd5e1 !important;
-    font-size: 11px !important;
-}
-
 
 
         .item-badge-3d {
@@ -1237,20 +1304,28 @@ ion-app.dark-theme ion-modal ion-content {
     box-sizing: border-box;
 }
 
+/* ☀️ 1. 開燈模式下嘅標籤背景（配合淺色底） */
 .modal-dark-group label {
     position: absolute;
     left: 12px;
-    top: -9px !important; /* 💡 強制鎖定在邊框線上，防止向下偏移 */
-    background: #1e293b !important; /* 與輸入框/Modal的深色底融為一體 */
+    top: -9px !important;
+    background: #f8fafc !important; /* 開燈時同 Modal 淺色底融為一體 */
     padding: 0 6px;
     font-size: 11px;
-    color: #94a3b8;
+    color: #475569;                 /* 開燈時較深嘅字體顏色 */
     font-weight: 700;
     border-radius: 4px;
     z-index: 5;
     line-height: 1;
     pointer-events: none;
 }
+
+/* 🌙 2. 熄燈模式下嘅標籤背景（配合深色底） */
+ion-app.dark-theme .modal-dark-group label {
+    background: #1e293b !important; /* 熄燈時同深色邊框/背景融為一體 */
+    color: #94a3b8 !important;      /* 熄燈時嘅灰藍色字體 */
+}
+
 
         .row-grid-2 {
             display: flex;
@@ -1548,7 +1623,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
     right: 16px !important;
     width: auto !important;     /* 自動適應左右邊距，保持最完美比例 */
     z-index: 100 !important;
-    background: #f8fafc !important; /* 開燈模式實色底色，徹底遮光 */
+    background: #edf2f4 !important; /* 開燈模式實色底色，徹底遮光 */
     
     /* 保留你最鍾意嘅向上平移 */
     transform: translateY(-16px) !important;
@@ -1565,6 +1640,9 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 
 /* 熄燈模式下的實色底色與圓角 */
 ion-app.dark-theme .fixed-top-card-area {
+/* 唔會移位嘅頂部微光邊框（熄燈模式） */
+border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+
     background: #090d16 !important; 
 }
 
@@ -1716,40 +1794,40 @@ ion-app.dark-theme .fixed-top-card-area {
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
     <!-- Box 1: 消費記錄 -->
     <div onclick="switchPage('expense')" 
-        style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; transition: transform 0.15s ease;"
-        onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+        class="custom-sliding-item" 
+    style="padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <div style="background: rgba(239, 68, 68, 0.2); color: #f87171; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
             <ion-icon name="receipt-sharp"></ion-icon>
         </div>
         <div>
-            <div style="font-size: 13px; font-weight: 800; color: #fff;">消費記錄</div>
-            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px;">查看與管理開銷</div>
+            <div style="font-size: 13px; font-weight: 800; color: var(--box-text-main);">消費記錄</div>
+            <div style="font-size: 9px; color: var(--box-text-title); margin-top: 1px;">查看與管理開銷</div>
         </div>
     </div>
 
     <!-- Box 2: 儲蓄存簿 -->
     <div onclick="switchPage('savings')" 
-        style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; transition: transform 0.15s ease;"
-        onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+        class="custom-sliding-item" 
+    style="padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <div style="background: rgba(16, 185, 129, 0.2); color: #34d399; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
             <ion-icon name="wallet-sharp"></ion-icon>
         </div>
         <div>
-            <div style="font-size: 13px; font-weight: 800; color: #fff;">儲蓄存簿</div>
-            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px;">目標與存款進度</div>
+            <div style="font-size: 13px; font-weight: 800; color: var(--box-text-main);">儲蓄存簿</div>
+            <div style="font-size: 9px; color: var(--box-text-title); margin-top: 1px;">目標與存款進度</div>
         </div>
     </div>
 
     <!-- Box 3: 借貸項目 -->
     <div onclick="switchPage('loans')" 
-        style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; transition: transform 0.15s ease;"
-        onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+        class="custom-sliding-item" 
+    style="padding: 12px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <div style="background: rgba(129, 140, 248, 0.2); color: #818cf8; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
             <ion-icon name="card-sharp"></ion-icon>
         </div>
         <div>
-            <div style="font-size: 13px; font-weight: 800; color: #fff;">借貸項目</div>
-            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px;">還款與分期管理</div>
+            <div style="font-size: 13px; font-weight: 800; color: var(--box-text-main);">借貸項目</div>
+            <div style="font-size: 9px; color: var(--box-text-title); margin-top: 1px;">還款與分期管理</div>
         </div>
     </div>
 </div>
@@ -2005,21 +2083,26 @@ ion-app.dark-theme .fixed-top-card-area {
                 </div>
 </div>
 <!-- 📊 金管局官方市場利率數據總覽卡片 -->
-<div class="card-inner-content" style="margin-top: 16px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 16px; border: 1px solid rgba(251, 191, 36, 0.2);">
+<div id="marketRateCard">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-size: 14px; font-weight: 800; color: #fbbf24; margin: 0; display: flex; align-items: center; gap: 6px;">
+        <!-- 💡 標題改用更深嘅純深黃色 (#ca8a04)，濃郁、實淨、清晰 -->
+        <h3 style="font-size: 14px; font-weight: 800; color: #ca8a04; margin: 0; display: flex; align-items: center; gap: 6px;">
             <ion-icon name="trending-up-outline"></ion-icon> 金管局官方市場利率總覽
         </h3>
-        <button type="button" id="refreshRatesBtn" onclick="fetchTimeDepositRates()" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.15s ease;" onmousedown="this.style.transform='scale(0.92)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
-    <ion-icon id="refreshIcon" name="reload-outline"></ion-icon> 重新整理
-</button>
+        
+        <!-- 💡 重新整理按鈕：配合更深黃色，沉穩好睇 -->
+        <button type="button" id="refreshRatesBtn" onclick="fetchTimeDepositRates()" style="background: rgba(202, 138, 4, 0.15); color: #ca8a04; border: 1px solid rgba(202, 138, 4, 0.4); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.15s ease;" onmousedown="this.style.transform='scale(0.92)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+            <ion-icon id="refreshIcon" name="reload-outline"></ion-icon> 重新整理
+        </button>
     </div>
     
     <!-- 資料顯示區 -->
-    <div id="timeDepositRatesContainer" style="font-size: 12px; color: #94a3b8;">
-        <div style="text-align: center; padding: 12px 0;">正在連接金管局 API 載入數據...</div>
+    <div id="timeDepositRatesContainer" style="font-size: 12px;">
+        <div style="text-align: center; padding: 12px 0; color: #334155;">正在連接金管局 API 載入數據...</div>
     </div>
 </div>
+
+
 
 
                 <h3 class="section-title" style="margin: 12px 0 12px 4px;">儲蓄存入紀錄</h3>
@@ -3408,12 +3491,12 @@ function setupAllModalsDragToClose() {
                 return;
             }
             container.innerHTML = activityLogs.map(log => `
-                <div style="background:#1e293b; border-radius:12px; padding:12px 14px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.08);">
+                <div style="background:var(--apple-box-bg); border-radius:12px; padding:12px 14px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.08);">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-weight:800; color:#38bdf8; font-size:13px;">${escapeHtml(log.title)}</span>
                         <span style="font-size:10px; color:#64748b;">${escapeHtml(log.time)}</span>
                     </div>
-                    <div style="font-size:12px; color:#cbd5e1; margin-top:4px;">${escapeHtml(log.desc)}</div>
+                    <div style="font-size:12px; color:var(--box-text-sub); margin-top:4px;">${escapeHtml(log.desc)}</div>
                 </div>
             `).join('');
         }
@@ -3933,13 +4016,13 @@ function renderOverview() {
     if (recentContainer) {
         const recent = records.slice(0, 3);
         if (recent.length === 0) {
-            recentContainer.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:20px 0; font-size:13px;">尚無消費紀錄</div>`;
+            recentContainer.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:20px 0; font-size:13px;">尚無消費紀錄</div>`;
         } else {
             recentContainer.innerHTML = recent.map(r => `
-                <div style="background:#1e293b; border-radius:14px; padding:12px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.08);">
+                <div class="custom-sliding-item" style="padding: 12px 14px; margin-bottom: 8px;  display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.08);">
                     <div>
-                        <div style="font-weight:800; color:#fff; font-size:14px;">${escapeHtml(r.title)}</div>
-                        <div style="font-size:11px; color:#cbd5e1; margin-top:2px;">📅 ${r.date} · ${escapeHtml(r.category)}</div>
+                        <div style="font-weight:800; color:var(--box-text-main); font-size:14px;">${escapeHtml(r.title)}</div>
+                        <div style="font-size:11px; color:var(--box-text-sub); margin-top:2px;">📅 ${r.date} · ${escapeHtml(r.category)}</div>
                     </div>
                     <div style="font-weight:900; color:#ef4444; font-size:16px;">-HK$${Number(r.amount).toLocaleString()}</div>
                 </div>
@@ -4111,10 +4194,10 @@ function renderExtraIncomeList() {
     }
 
     container.innerHTML = monthItems.map(item => `
-        <div style="background: #1e293b; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.08);">
+        <div style="background: var(--apple-box-bg); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.08);">
             <div>
-                <div style="font-weight: 800; color: #fff; font-size: 13px;">${escapeHtml(item.title)}</div>
-                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">📅 ${item.date}</div>
+                <div style="font-weight: 800; color: var(--box-text-main); font-size: 13px;">${escapeHtml(item.title)}</div>
+                <div style="font-size: 10px; color: var(--box-text-sub); margin-top: 2px;">📅 ${item.date}</div>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="font-weight: 900; color: #38bdf8; font-size: 15px;">+HK$${Number(item.amount).toLocaleString()}</div>
@@ -4156,7 +4239,7 @@ function renderExtraIncomeList() {
     }
 
     if (records.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:30px 0; font-size:14px;">尚無任何消費記錄，點擊下方 ➕ 開始記帳</div>`;
+        container.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:30px 0; font-size:14px;">尚無任何消費記錄，點擊下方 ➕ 開始記帳</div>`;
         return;
     }
 
@@ -4176,16 +4259,16 @@ function renderExtraIncomeList() {
 
                     <!-- 💡 左邊專區：標題、日期、消費類型開新一行 -->
                     <ion-label>
-                        <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px; color: #ffffff !important;">${escapeHtml(r.title)}</h2>
+                        <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px; color: var(--box-text-main) !important;">${escapeHtml(r.title)}</h2>
                         
                         <!-- 第一行：日期 -->
-                        <p style="font-size: 11px; color: #cbd5e1 !important; margin-bottom: 3px;">
+                        <p style="font-size: 11px; color: var(--box-text-sub) !important; margin-bottom: 3px;">
                             📅 ${r.date}
                         </p>
 
                         <!-- 第二行：消費類型 (獨立新一行) -->
                         <div>
-                            <span style="display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px 7px; font-size: 10px; color: #94a3b8; font-weight: 700;">
+                            <span style="display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px 7px; font-size: 10px; color: var(--box-text-title); font-weight: 700;">
                                 ${escapeHtml(cat.name || r.category)}
                             </span>
                         </div>
@@ -4240,7 +4323,7 @@ function renderLoans() {
     document.getElementById('loanTotalRepaidDisplay').textContent = `HK$${totalRepaid.toLocaleString()}`;
 
     if (loanRecords.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:30px 0; font-size:14px;">無貸款或分期項目</div>`;
+        container.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:30px 0; font-size:14px;">無貸款或分期項目</div>`;
         return;
     }
 
@@ -4259,8 +4342,8 @@ function renderLoans() {
 <ion-icon name="${cat.icon || 'card-sharp'}" style="font-size: 22px; color: #818cf8;"></ion-icon>
 
                                 <div>
-                                    <h4 style="margin:0; font-size:15px; font-weight:800; color:#ffffff;">${escapeHtml(l.title)}</h4>
-                                    <span style="font-size:11px; color:#cbd5e1;">到期日: ${l.dueDate}</span>
+                                    <h4 style="margin:0; font-size:15px; font-weight:800; color:var(--box-text-main);">${escapeHtml(l.title)}</h4>
+                                    <span style="font-size:11px; color:var(--box-text-sub);">到期日: ${l.dueDate}</span>
                                 </div>
                             </div>
                             <button class="semi-edit-btn" type="button" onclick="openEditLoanModal(${l.id})">
@@ -4268,14 +4351,14 @@ function renderLoans() {
                             </button>
                         </div>
 
-                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:#cbd5e1;">
-                            <span>每月固定還款: <strong style="color:#fbbf24;">HK$${l.monthlyAmount.toLocaleString()}</strong></span>
-                            <span>剩餘: <strong style="color:#ffffff;">HK$${rem.toLocaleString()}</strong></span>
+                        <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--box-text-title);">
+                            <span>每月固定還款: <strong style="color:#ca8a04;">HK$${l.monthlyAmount.toLocaleString()}</strong></span>
+                            <span>剩餘: <strong style="color:#047857;">HK$${rem.toLocaleString()}</strong></span>
                         </div>
 
                         <div style="margin-top:8px;">
                             <ion-progress-bar value="${percent / 100}" style="--progress-background: #818cf8; height: 6px; border-radius: 3px;"></ion-progress-bar>
-                            <div style="display:flex; justify-content:space-between; font-size:10px; color:#94a3b8; margin-top:4px;">
+                            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--box-text-title); margin-top:4px;">
                                 <span>進度 ${percent}%</span>
                                 <span>已還 ${l.repaidPeriods}/${l.totalPeriods} 期</span>
                             </div>
@@ -4300,7 +4383,7 @@ async function fetchTimeDepositRates() {
     const refreshIcon = document.getElementById('refreshIcon');
     
     if (refreshIcon) refreshIcon.classList.add('refreshing-spin');
-    if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #fbbf24;">⏳ 正在連線金管局 API 檢查最新利率...</div>`;
+    if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #ca8a04;">⏳ 正在連線金管局 API 檢查最新利率...</div>`;
 
     let ratesList = [];
     let dataSourceText = "";
@@ -4355,8 +4438,8 @@ async function fetchTimeDepositRates() {
     if (container) {
         container.innerHTML = ratesList.map(item => `
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                <div><span style="font-weight: 700; color: #fff; font-size: 12px;">${escapeHtml(item.title)}</span></div>
-                <div><span style="font-weight: 900; color: #34d399; font-size: 13px;">${escapeHtml(item.val)}</span></div>
+                <div><span style="font-weight: 700; color: var(--box-text-main); font-size: 12px;">${escapeHtml(item.title)}</span></div>
+                <div><span style="font-weight: 900; color: #ca8a04; font-size: 13px;">${escapeHtml(item.val)}</span></div>
             </div>
         `).join('') + `<div style="text-align: right; font-size: 10px; color: #64748b; margin-top: 6px;">${dataSourceText}</div>`;
     }
@@ -4452,7 +4535,7 @@ function renderSavings() {
     }
 
     if (savingsRecords.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:30px 0; font-size:14px;">尚無儲蓄記錄</div>`;
+        container.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:30px 0; font-size:14px;">尚無儲蓄記錄</div>`;
         return;
     }
 
@@ -4464,10 +4547,10 @@ function renderSavings() {
                 </div>
                 <ion-label>
                     <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px;">${escapeHtml(s.title)}</h2>
-                    <p style="font-size: 11px; color: #94a3b8;">📅 ${s.date}</p>
+                    <p style="font-size: 11px; color: var(--box-text-sub);">📅 ${s.date}</p>
                 </ion-label>
                 <div slot="end" style="text-align: right;">
-                    <div style="font-size: 17px; font-weight: 900; color: #34d399;">+HK$${Number(s.amount).toLocaleString()}</div>
+                    <div style="font-size: 17px; font-weight: 900; color: #ca8a04;">+HK$${Number(s.amount).toLocaleString()}</div>
                 </div>
             </ion-item>
             <ion-item-options side="end">
