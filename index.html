@@ -1109,228 +1109,288 @@ ion-app.dark-theme .custom-sliding-item ion-item {
             flex-shrink: 0;
         }
 
-        /* 💡 1. 調整底部圓形導航列的 z-index，降低其層級（由原本 999999 改為 1000） */
-.circle-nav-container {
-    position: fixed;
-    bottom: 22px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000 !important; /* 降低層級，避免蓋過 Modal */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 8px 14px;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-    max-width: 95vw;
-    pointer-events: auto;
-}
+        /* 💡 1. 調整底部圓形導航列的 z-index，降低其層級 */
+    .circle-nav-container {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 8px 14px;
+        
+        /* ☀️ 預設開燈模式：珍珠銀白底 + 金色高光亮邊 */
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 243, 199, 0.4) 50%, rgba(241, 245, 249, 0.95) 100%) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 40px;
+        border: 1px solid rgba(217, 119, 6, 0.45) !important;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 215, 0, 0.85) !important;
+        
+        max-width: 95vw;
+        pointer-events: auto;
+    }
 
-/* 💡 2. 強制提升 Ionic 全局所有 modal 與 overlay 的 z-index 至最高層 */
-ion-modal, 
-ion-modal-wrapper,
-.modal-wrapper,
-ion-action-sheet,
-ion-alert {
-    z-index: 20000 !important;
-}
+    /* 🌙 熄燈模式：深色金屬風 */
+    ion-app.dark-theme .circle-nav-container,
+    .dark-theme .circle-nav-container {
+        background: linear-gradient(135deg, rgba(22, 31, 44, 0.95) 0%, rgba(34, 46, 62, 0.95) 50%, rgba(13, 19, 26, 0.95) 100%) !important;
+        border: 1px solid rgba(245, 158, 11, 0.4) !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    }
 
-        .circle-nav-btn {
-            position: relative;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #94a3b8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-            outline: none;
-            padding: 0;
-            user-select: none;
-        }
+    /* 💡 2. 強制提升 Ionic 全局所有 modal 與 overlay 的 z-index 至最高層 */
+    ion-modal, 
+    ion-modal-wrapper,
+    .modal-wrapper,
+    ion-action-sheet,
+    ion-alert {
+        z-index: 20000 !important;
+    }
 
-        .circle-nav-btn ion-icon {
-            font-size: 20px;
-            transition: transform 0.25s ease;
-        }
+    .circle-nav-btn {
+        position: relative;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #94a3b8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+        outline: none;
+        padding: 0;
+        user-select: none;
+    }
 
-        .circle-nav-btn .btn-label {
-            font-size: 8px;
-            font-weight: 700;
-            margin-top: 1px;
-            white-space: nowrap;
-        }
+    .circle-nav-btn ion-icon {
+        font-size: 20px;
+        transition: transform 0.25s ease;
+    }
 
-        .circle-nav-btn.active {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-4px) scale(1.06);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
-        }
+    .circle-nav-btn .btn-label {
+        font-size: 8px;
+        font-weight: 700;
+        margin-top: 1px;
+        white-space: nowrap;
+    }
 
-        .circle-nav-btn.primary-add-btn {
-            width: 54px;
-            height: 54px;
-            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #ec4899 100%);
-            color: #ffffff;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45);
-            transform: translateY(-3px);
-        }
+    /* ☀️ 淺色主題下：按下選中的按鈕變為金色 */
+    .circle-nav-btn.active {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.8) !important;
+        transform: translateY(-4px) scale(1.06);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.45) !important;
+    }
 
-        .circle-nav-btn.primary-add-btn ion-icon {
-            font-size: 30px;
-        }
+    /* 🌙 熄燈模式下：按下選中的按鈕維持原本嘅藍色 */
+    ion-app.dark-theme .circle-nav-btn.active,
+    .dark-theme .circle-nav-btn.active {
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5) !important;
+    }
 
-        .view-page {
-            display: none;
-            padding-bottom: 110px;
-        }
+    .circle-nav-btn.primary-add-btn {
+        width: 54px;
+        height: 54px;
+        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #ec4899 100%);
+        color: #ffffff;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45);
+        transform: translateY(-3px);
+    }
 
-        .view-page.active-page {
-            display: block;
-        }
+    .circle-nav-btn.primary-add-btn ion-icon {
+        font-size: 30px;
+    }
 
-        ion-checkbox.red-checkbox {
-            --checkbox-background-checked: #dc2626;
-            --border-color-checked: #dc2626;
-            --border-color: #ef4444;
-            --color-checked: #ffffff;
-            --size: 22px;
-        }
+    .view-page {
+        display: none;
+        padding-bottom: 110px;
+    }
 
-        /* 開燈模式 Modal 背景 */
-ion-modal ion-content {
-    --background: #f8fafc;
-    --color: #0f172a;
-}
+    .view-page.active-page {
+        display: block;
+    }
 
-/* 🌙 熄燈模式 Modal 背景 */
-ion-app.dark-theme ion-modal ion-content {
-    --background: #0f172a;
-    --color: #f8fafc;
-}
-
-
-        .modal-header-box {
-            background: var(--card-gradient);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-header-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #38bdf8, #818cf8, #fbbf24);
-        }
-
-        .modal-header-title {
-            margin: 0;
-            font-size: 19px;
-            font-weight: 800;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .modal-dark-input {
-            width: 100%;
-            padding: 14px 12px;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            font-size: 14px;
-            outline: none;
-            background: #1e293b;
-            color: #ffffff;
-            box-sizing: border-box;
-        }
-
-        .modal-dark-input:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-        }
-
-/* 💡 精準修復：復原所有 Modal 的標籤位置（置於框線上方中間，絕不偏下走位） */
-.modal-dark-group {
-    position: relative;
-    margin: 16px 0 14px 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* ☀️ 1. 開燈模式下嘅標籤背景（配合淺色底） */
-.modal-dark-group label {
-    position: absolute;
-    left: 12px;
-    top: -9px !important;
-    background: #f8fafc !important; /* 開燈時同 Modal 淺色底融為一體 */
-    padding: 0 6px;
-    font-size: 11px;
-    color: #475569;                 /* 開燈時較深嘅字體顏色 */
-    font-weight: 700;
-    border-radius: 4px;
-    z-index: 5;
-    line-height: 1;
-    pointer-events: none;
-}
-
-/* 🌙 2. 熄燈模式下嘅標籤背景（配合深色底） */
-ion-app.dark-theme .modal-dark-group label {
-    background: #1e293b !important; /* 熄燈時同深色邊框/背景融為一體 */
-    color: #94a3b8 !important;      /* 熄燈時嘅灰藍色字體 */
-}
+    ion-checkbox.red-checkbox {
+        --checkbox-background-checked: #dc2626;
+        --border-color-checked: #dc2626;
+        --border-color: #ef4444;
+        --color-checked: #ffffff;
+        --size: 22px;
+    }
 
 
-        .row-grid-2 {
-            display: flex;
-            gap: 12px;
-            margin: 14px 0;
-            width: 100%;
-        }
 
-        .row-grid-2 .modal-dark-group {
-            margin: 0;
-            flex: 1;
-        }
+            /* ========================================================== */
+    /* 💎 Modal 彈窗與表單元件雙主題完美適配版（全景淺綠金屬風） */
+    /* ========================================================== */
 
-        input[type="date"].modal-dark-input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            color-scheme: dark;
-            /* 確保 iOS / Android 彈出月曆符合深色模式 */
-            box-sizing: border-box !important;
-            height: 54px !important;
-            /* 統一固定高度 */
-            padding: 10px 12px !important;
-            font-size: 14px !important;
-            font-weight: 700;
-            text-align: center;
-            width: 100% !important;
-            min-width: 0 !important;
-            display: block;
-        }
+    /* ☀️ 開燈模式 Modal 背景：全面轉為淺綠金屬漸變 */
+    ion-modal ion-content {
+        --background: transparent !important;
+        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+        --color: #070d1b;
+    }
+
+    /* 🌙 熄燈模式 Modal 背景：深色金屬風 */
+    ion-app.dark-theme ion-modal ion-content,
+    .dark-theme ion-modal ion-content {
+        --background: transparent !important;
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        --color: #f8fafc;
+    }
+
+    /* ☀️ 1. 開燈模式：Modal 頂部標題卡片（淺綠金屬漸變 + 精緻金邊） */
+    .modal-header-box {
+        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 🌙 2. 熄燈模式：Modal 頂部標題卡片（深色金屬風 + 低調金邊） */
+    ion-app.dark-theme .modal-header-box,
+    .dark-theme .modal-header-box {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .modal-header-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #38bdf8, #818cf8, #fbbf24);
+    }
+
+    /* ☀️ 1. 開燈模式：標題文字 */
+    .modal-header-title {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 800;
+        color: #070d1b !important;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* 🌙 2. 熄燈模式：標題文字 */
+    ion-app.dark-theme .modal-header-title,
+    .dark-theme .modal-header-title {
+        color: #ffffff !important;
+    }
+
+    /* ☀️ 1. 開燈模式：輸入框 */
+    .modal-dark-input {
+        width: 100%;
+        padding: 14px 12px;
+        border: 1.5px solid rgba(212, 175, 55, 0.4);
+        border-radius: 12px;
+        font-size: 14px;
+        outline: none;
+        background: rgba(255, 255, 255, 0.85);
+        color: #070d1b;
+        box-sizing: border-box;
+    }
+
+    /* 🌙 2. 熄燈模式：輸入框 */
+    ion-app.dark-theme .modal-dark-input,
+    .dark-theme .modal-dark-input {
+        background: #1e293b !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+    }
+
+    .modal-dark-input:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    /* 💡 精準修復：復原所有 Modal 的標籤位置 */
+    .modal-dark-group {
+        position: relative;
+        margin: 16px 0 14px 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* ☀️ 1. 開燈模式下嘅標籤背景 */
+    .modal-dark-group label {
+        position: absolute;
+        left: 12px;
+        top: -9px !important;
+        background: #eaf3f0 !important;
+        padding: 0 6px;
+        font-size: 11px;
+        color: #334155;
+        font-weight: 700;
+        border-radius: 4px;
+        z-index: 5;
+        line-height: 1;
+        pointer-events: none;
+    }
+
+    /* 🌙 2. 熄燈模式下嘅標籤背景 */
+    ion-app.dark-theme .modal-dark-group label,
+    .dark-theme .modal-dark-group label {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+    }
+
+    .row-grid-2 {
+        display: flex;
+        gap: 12px;
+        margin: 14px 0;
+        width: 100%;
+    }
+
+    .row-grid-2 .modal-dark-group {
+        margin: 0;
+        flex: 1;
+    }
+
+    /* ☀️ 1. 開燈模式：日期輸入框 */
+    input[type="date"].modal-dark-input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        color-scheme: light;
+        box-sizing: border-box !important;
+        height: 54px !important;
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        font-weight: 700;
+        text-align: center;
+        width: 100% !important;
+        min-width: 0 !important;
+        display: block;
+    }
+
+    /* 🌙 2. 熄燈模式：日期輸入框 */
+    ion-app.dark-theme input[type="date"].modal-dark-input,
+    .dark-theme input[type="date"].modal-dark-input {
+        color-scheme: dark !important;
+    }
+
 
         /* 修正 WebKit (iOS / Safari / Chrome) 日期輸入框內部文字置中與高度 */
         input[type="date"]::-webkit-date-and-time-value {
@@ -1381,120 +1441,189 @@ ion-app.dark-theme .modal-dark-group label {
             font-size: 14px;
         }
 
-        /* 💡 彈出官方 Logo 選擇介面 */
-        .payment-picker-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: none;
-            /* 預設完全隱藏，不干擾點擊 */
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 999999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
+            /* ========================================================== */
+    /* 💡 彈出官方 Logo 選擇介面（雙主題適配版） */
+    /* ========================================================== */
 
-        .payment-picker-modal.active {
-            display: flex;
-            /* 啟動時才顯示 */
-            opacity: 1;
-            pointer-events: auto;
-        }
+    .payment-picker-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 999999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
 
-        .picker-content {
-            background: #111827;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px 24px 0 0;
-            padding: 20px 20px 36px 20px;
-            width: 100%;
-            max-width: 480px;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 75vh;
-            overflow-y: auto;
-        }
+    .payment-picker-modal.active {
+        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+    }
 
-        .payment-picker-modal.active .picker-content {
-            transform: translateY(0);
-        }
+    /* ☀️ 預設開燈模式 */
+    .picker-content {
+        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%);
+        border-top: 1px solid rgba(212, 175, 55, 0.45);
+        border-radius: 24px 24px 0 0;
+        padding: 20px 20px 36px 20px;
+        width: 100%;
+        max-width: 480px;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        max-height: 75vh;
+        overflow-y: auto;
+        box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
 
-        .picker-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    /* 🌙 熄燈模式（深色主題） */
+    body.dark-theme .picker-content,
+    ion-app.dark-theme .picker-content,
+    .dark-theme .picker-content {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border-top: 1px solid rgba(245, 158, 11, 0.3) !important;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
 
-        .picker-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
+    .payment-picker-modal.active .picker-content {
+        transform: translateY(0);
+    }
 
-        .close-picker-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #94a3b8;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    /* 標題列：開燈模式 */
+    .picker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
 
-        /* 官方 Logo 選項網格 */
-        .option-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
+    /* 標題列：熄燈模式 */
+    body.dark-theme .picker-header,
+    ion-app.dark-theme .picker-header,
+    .dark-theme .picker-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
 
-        .payment-option-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #f1f5f9;
-            font-weight: 700;
-            font-size: 13px;
-            text-align: left;
-        }
+    /* 標題文字：開燈模式 */
+    .picker-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: #070d1b;
+        letter-spacing: 0.5px;
+    }
 
-        .payment-option-btn:active,
-        .payment-option-btn.selected {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-        }
+    /* 標題文字：熄燈模式 */
+    body.dark-theme .picker-title,
+    ion-app.dark-theme .picker-title,
+    .dark-theme .picker-title {
+        color: #ffffff !important;
+    }
 
-        .logo-box {
-            width: 34px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 6px;
-            flex-shrink: 0;
-        }
+    /* 關閉按鈕：開燈模式 */
+    .close-picker-btn {
+        background: rgba(0, 0, 0, 0.08);
+        border: none;
+        color: #334155;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 關閉按鈕：熄燈模式 */
+    body.dark-theme .close-picker-btn,
+    ion-app.dark-theme .close-picker-btn,
+    .dark-theme .close-picker-btn {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #94a3b8 !important;
+    }
+
+    /* 官方 Logo 選項網格 */
+    .option-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* 選項按鈕：開燈模式 */
+    .payment-option-btn {
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 13px;
+        text-align: left;
+    }
+
+    /* 選項按鈕：熄燈模式 */
+    body.dark-theme .payment-option-btn,
+    ion-app.dark-theme .payment-option-btn,
+    .dark-theme .payment-option-btn {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #f1f5f9 !important;
+    }
+
+    /* 選中狀態：開燈模式 */
+    .payment-option-btn:active,
+    .payment-option-btn.selected {
+        background: rgba(245, 158, 11, 0.25);
+        border-color: #d97706;
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+
+    /* 選中狀態：熄燈模式 */
+    body.dark-theme .payment-option-btn:active,
+    body.dark-theme .payment-option-btn.selected,
+    ion-app.dark-theme .payment-option-btn:active,
+    ion-app.dark-theme .payment-option-btn.selected,
+    .dark-theme .payment-option-btn:active,
+    .dark-theme .payment-option-btn.selected {
+        background: rgba(59, 130, 246, 0.2) !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
+    }
+
+    /* Logo 框：開燈模式 */
+    .logo-box {
+        width: 34px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    /* Logo 框：熄燈模式 */
+    body.dark-theme .logo-box,
+    ion-app.dark-theme .logo-box,
+    .dark-theme .logo-box {
+        background: rgba(255, 255, 255, 0.08) !important;
+    }
+
 /* 💡 通用 Modal 頂部拖拽提示條 */
 .drag-handle-bar {
     display: flex;
@@ -1536,60 +1665,104 @@ ion-app.dark-theme .drag-handle-bar .handle-text {
     color: #94a3b8; /* 清晰淺灰色 */
 }
 
-/* 💡 ionic ion-alert 全局風格美化 (極致深藍黑金屬風) */
-ion-alert.custom-danger-alert {
-    --background: #0f172a !important;
-    --color: #ffffff !important;
-    --max-width: 320px;
-}
+    /* ========================================================== */
+    /* 💎 離譜/危險警告 Alert 雙主題完美適配版（開燈淺綠金屬、熄燈深色金屬） */
+    /* ========================================================== */
 
-ion-alert.custom-danger-alert .alert-wrapper {
-    background: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
-    overflow: hidden;
-}
+    ion-alert.custom-danger-alert {
+        --max-width: 320px;
+    }
 
-ion-alert.custom-danger-alert .alert-head {
-    padding-bottom: 8px;
-}
+    /* ☀️ 1. 開燈模式：參考淺綠金屬漸變主題 */
+    ion-alert.custom-danger-alert {
+        --background: #eaf3f0 !important;
+        --color: #070d1b !important;
+    }
 
-ion-alert.custom-danger-alert .alert-title {
-    color: #ffffff !important;
-    font-size: 17px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.5px;
-}
+    ion-alert.custom-danger-alert .alert-wrapper {
+        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        overflow: hidden;
+    }
 
-ion-alert.custom-danger-alert .alert-message {
-    color: #cbd5e1 !important;
-    font-size: 13px !important;
-    line-height: 1.5;
-}
+    ion-alert.custom-danger-alert .alert-head {
+        padding-bottom: 8px;
+    }
 
-ion-alert.custom-danger-alert .alert-button-group {
-    padding: 10px 12px 14px 12px;
-    gap: 8px;
-}
+    ion-alert.custom-danger-alert .alert-title {
+        color: #070d1b !important;
+        font-size: 17px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.5px;
+    }
 
-ion-alert.custom-danger-alert .alert-button-role-cancel {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #94a3b8 !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 12px !important;
-    font-weight: 700 !important;
-    font-size: 13px !important;
-}
+    ion-alert.custom-danger-alert .alert-message {
+        color: #1e293b !important;
+        font-size: 13px !important;
+        line-height: 1.5;
+    }
 
-ion-alert.custom-danger-alert .alert-button-role-destructive {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
-    color: #ffffff !important;
-    border-radius: 12px !important;
-    font-weight: 800 !important;
-    font-size: 13px !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
-}
+    ion-alert.custom-danger-alert .alert-button-group {
+        padding: 10px 12px 14px 12px;
+        gap: 8px;
+    }
+
+    ion-alert.custom-danger-alert .alert-button-role-cancel {
+        background: rgba(0, 0, 0, 0.08) !important;
+        color: #334155 !important;
+        border: 1px solid rgba(0, 0, 0, 0.15) !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+    }
+
+    ion-alert.custom-danger-alert .alert-button-role-destructive {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        color: #ffffff !important;
+        border-radius: 12px !important;
+        font-weight: 800 !important;
+        font-size: 13px !important;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+    }
+
+    /* 🌙 2. 熄燈模式（Dark Theme）：參考你畀嘅深色金屬漸變主題 */
+    ion-app.dark-theme ion-alert.custom-danger-alert,
+    .dark-theme ion-alert.custom-danger-alert {
+        --background: #161f2c !important;
+        --color: #ffffff !important;
+    }
+
+    ion-app.dark-theme ion-alert.custom-danger-alert .alert-wrapper,
+    .dark-theme ion-alert.custom-danger-alert .alert-wrapper {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        overflow: hidden;
+    }
+
+    ion-app.dark-theme ion-alert.custom-danger-alert .alert-title,
+    .dark-theme ion-alert.custom-danger-alert .alert-title {
+        color: #ffffff !important;
+    }
+
+    ion-app.dark-theme ion-alert.custom-danger-alert .alert-message,
+    .dark-theme ion-alert.custom-danger-alert .alert-message {
+        color: #cbd5e1 !important;
+    }
+
+    ion-app.dark-theme ion-alert.custom-danger-alert .alert-button-role-cancel,
+    .dark-theme ion-alert.custom-danger-alert .alert-button-role-cancel {
+        background: rgba(255, 255, 255, 0.08) !important;
+        color: #94a3b8 !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+    }
+
 /* 💡 終極完美釘死 (Fixed) 方案：不變形、不放大、完全釘死在頂部唔郁 */
 .fixed-top-card-area {
     position: fixed !important;
@@ -1756,6 +1929,17 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         z-index: 2;
     }
 
+    /* ☀️ 1. 開燈模式：圖標預設淺金色 */
+    .theme-icon-color {
+        color: #f59e0b !important;
+        transition: color 0.3s ease;
+    }
+
+    /* 🌙 2. 熄燈模式：圖標自動轉為柔和銀灰色 */
+    ion-app.dark-theme .theme-icon-color,
+    .dark-theme .theme-icon-color {
+        color: #e2e8f0 !important;
+    }
 
 
     </style>
@@ -1768,7 +1952,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             <!-- 左上角通知按鈕 -->
             <div>
                 <button id="logsToggleBtn" type="button" class="theme-toggle-btn" onclick="openLogsModal()" style="position: relative;">
-                    <ion-icon name="notifications-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                    <ion-icon name="notifications-outline" class="theme-icon-color" style="font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
                     <span id="logBadge" class="unread-badge" style="display: none;">0</span>
                 </button>
             </div>
@@ -1779,10 +1963,10 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             <!-- 右上角計算機與主題切換按鈕 -->
             <div style="display: flex; gap: 8px; align-items: center;">
                 <button id="calcToggleBtn" type="button" class="theme-toggle-btn" onclick="openCalcModal()">
-                    <ion-icon name="calculator-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                    <ion-icon name="calculator-outline" class="theme-icon-color" style="font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
                 </button>
                 <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()">
-                    <ion-icon id="themeIcon" name="moon-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                    <ion-icon id="themeIcon" name="moon-outline" class="theme-icon-color" style="font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
                 </button>
             </div>
         </div>
@@ -1998,7 +2182,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             🗑️ 刪除已選
         </button>
         <button type="button" onclick="exitMultiSelectMode()"
-            style="background: rgba(255,255,255,0.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            style="background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
             完成
         </button>
     </div>
@@ -2448,7 +2632,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         </div>
 
                     <p id="editLoanSubtitle"
-                        style="font-size: 13px; color: #cbd5e1; margin: -6px 0 14px 4px; font-weight: 600;"></p>
+                        style="font-size: 13px; color: #818cf8; margin: -6px 0 14px 4px; font-weight: 600;"></p>
 
                     <div
                         style="background: #020617; border-radius: 14px; padding: 14px; border: 1.5px solid #818cf8; margin-bottom: 16px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);">
