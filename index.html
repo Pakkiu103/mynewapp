@@ -254,17 +254,6 @@
     border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-/* 支援深色模式切換 */
-.dark-theme .semi-edit-btn,
-.dark .semi-edit-btn,
-html.dark-theme .semi-edit-btn {
-    background: rgba(129, 140, 248, 0.2);
-    border: 1px solid rgba(129, 140, 248, 0.5);
-    color: #c7d2fe; /* 深色模式：柔和粉藍字，清晰好看 */
-}
-
-
-
 /* 💡 官方高清 Logo 徽章樣式 */
 .pay-chip {
     display: inline-flex;
@@ -580,8 +569,6 @@ ion-app.dark-theme {
     --box-text-title: #9bb7d4 !important;     
 }
 
-
-
         /* 💡 1. 開燈模式預設背景 (預設淺灰白底) */
         ion-content {
             --background: #f8fafc !important;
@@ -595,27 +582,6 @@ ion-app.dark-theme {
             --color: #ffffff !important;
         }
 
-        /* 💡 3. 頂部 Header 標題列：固定藍黑色 (#0f172a) */
-        ion-toolbar {
-            --background: #0f172a !important;
-            --color: #ffffff !important;
-            min-height: 65px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        ion-toolbar ion-title {
-            color: #ffffff !important;
-            font-size: 19px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-align: center;
-            width: 100%;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
 
         .theme-toggle-btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(148, 163, 184, 0.08) 100%);
@@ -661,88 +627,85 @@ ion-app.dark-theme {
         }
 
 /* 💳 借貸卡片半透明「修改 / 還款」按鈕樣式 */
-/* 💳 固定實色柔和淺紫色按鈕（邊框加粗版本） */
+/* 💳 完美修復版：半透明毛玻璃「修改 / 還款」按鈕樣式（深色主題字色加深版） */
 .semi-edit-btn {
-    background: #f3e8ff !important; /* 實色柔和淺紫底色 */
-    border: 2px solid #c084fc !important; /* 邊框加粗為 2px，顏色稍微加深更明顯 */
-    color: #7e22ce !important; /* 實色深紫文字，對比清晰 */
+    background: rgba(129, 140, 248, 0.12) !important;
+    border: 2px solid rgba(129, 140, 248, 0.4) !important;
+    color: #4c1d95 !important;
     font-size: 11px;
     font-weight: 700;
-    padding: 5px 12px; /* 稍微微調內距，讓加粗邊框後的大小維持完美 */
+    padding: 5px 12px;
     border-radius: 20px;
     cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    isolation: isolate;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     outline: none;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .semi-edit-btn:active {
     transform: scale(0.92);
-    background: #e9d5ff !important; /* 按下去時稍微深一點點 */
+    background: rgba(129, 140, 248, 0.25) !important;
+}
+
+/* 💳 深色模式：底色維持半透明紫，邊框加粗，字色稍微加深沈穩一點 */
+#appContainer.dark-theme .semi-edit-btn,
+.dark-theme .semi-edit-btn {
+    background: rgba(139, 92, 246, 0.3) !important;
+    border: 2px solid rgba(167, 139, 250, 0.75) !important;
+    color: #ddd6fe !important; /* 字色稍微加深為柔和的薰衣草紫白，比之前純白更有質感 */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 
 
-        /* 💎 1. 頂部 Header 標題：鉑金金屬光澤 (Platinum Silver / Cool Chrome) */
-        ion-toolbar ion-title {
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 40%, #94a3b8 70%, #ffffff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 18px !important;
-            font-weight: 800 !important;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-align: center;
-            width: 100%;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
 
-        /* 💎 2. 內容小標題：奢華極簡鈦金邊飾 */
+               /* 💎 2. 內容小標題：奢華極簡鈦金邊飾（已加強防覆蓋鎖死） */
         .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 15px !important;     /* 👈 加上 !important 鎖死大小，唔俾出面任何 code 放大 */
+            font-weight: 700 !important;    /* 👈 鎖死粗度 */
+            letter-spacing: 1px !important;
             color: #334155;
-            margin: 0;
-            padding-left: 12px;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            text-transform: uppercase;
+            margin: 0 !important;
+            padding-left: 12px !important;
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            text-transform: uppercase !important;
             transition: color 0.3s ease;
         }
 
         /* 左側高雅金屬銀細線裝飾 */
         .section-title::before {
             content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 14px;
-            border-radius: 2px;
-            background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 50%, #64748b 100%);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+            position: absolute !important;
+            left: 0 !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: 3px !important;
+            height: 14px !important;
+            border-radius: 2px !important;
+            background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 50%, #64748b 100%) !important;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.3) !important;
         }
 
         /* 深色模式下的貴金屬高光 */
-        ion-app.dark-theme .section-title {
+        ion-app.dark-theme .section-title,
+        .dark-theme .section-title {
             color: #f1f5f9 !important;
         }
 
-        ion-app.dark-theme .section-title::before {
-            background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
-            /* 暗黑模式下為精緻香檳金細條 */
-            box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+        ion-app.dark-theme .section-title::before,
+        .dark-theme .section-title::before {
+            background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%) !important;
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.4) !important;
         }
+
 
 /* ☀️ 1. 開燈模式 (Light Mode) 嘅全局變數設定 */
     --apple-box-bg: #f5f5f7; /* 呢隻就係蘋果風格嘅高級淺灰白色 (Apple Light Gray/White) */
@@ -1077,8 +1040,8 @@ ion-app.dark-theme {
             border-color: #38bdf8;
         }
 
-/* 💡 終極唯一版：清單卡片 Box（包含彈簧動態、圓角、雙模式背景與文字） */
-/* ☀️ 1. 開燈模式（Light Mode）：高對比金屬流光漸變 + 淺金黃幼邊框 */
+/* 💡 終極唯一版：清單卡片 Box（開燈原裝漸變 + 熄燈微調暗沉深色金屬漸變） */
+/* ☀️ 1. 開燈模式（Light Mode）：流光位在中間的金屬漸變 + 淺金黃幼邊框 */
 .custom-sliding-item {
     background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important; 
     border-radius: 20px !important;
@@ -1101,17 +1064,18 @@ ion-app.dark-theme {
     border-radius: 20px !important;
 }
 
-/* 🌙 2. 熄燈模式（Dark Theme）：保持型格深藍灰，亦可搭配微微金邊 */
+/* 🌙 2. 熄燈模式（Dark Theme）：壓暗少少嘅深色金屬漸變 + 置中流光 + 金邊 */
 ion-app.dark-theme .custom-sliding-item {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-    border: 1px solid rgba(245, 158, 11, 0.25) !important; /* 熄燈時配一條低調型格嘅金邊 */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+    background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+    border: 1px solid rgba(245, 158, 11, 0.3) !important; /* 熄燈時配低調金邊 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
 }
 
 ion-app.dark-theme .custom-sliding-item ion-item {
     --background: transparent !important;
     --color: #ffffff !important;
 }
+
 
 
 
@@ -1629,7 +1593,7 @@ ion-alert.custom-danger-alert .alert-button-role-destructive {
 /* 💡 終極完美釘死 (Fixed) 方案：不變形、不放大、完全釘死在頂部唔郁 */
 .fixed-top-card-area {
     position: fixed !important;
-    top: 80px !important;       /* 緊貼在頂部 Header 下方 (Header 高度 65px) */
+    top: 75px !important;       /* 緊貼在頂部 Header 下方 (Header 高度 65px) */
     left: 16px !important;      /* 左右留返 16px 邊距，保證卡片大小跟之前一模一樣，絕不放大變闊 */
     right: 16px !important;
     width: auto !important;     /* 自動適應左右邊距，保持最完美比例 */
@@ -1660,7 +1624,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 /* 下方頁面容器：空出頂部空間，確保清單在卡片下方順暢滾動 */
 .view-page {
     display: none;
-    padding-top: 245px !important; /* 確保清單從卡片下方順暢展開 */
+    padding-top: 305px !important; /* 確保清單從卡片下方順暢展開 */
     padding-bottom: 110px !important;
 }
 
@@ -1695,38 +1659,133 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-sizing: border-box !important;
 }
 
+    /* 👑 自訂 Header 最終完美版：擴大不銹鋼暈眩光 + 3px 漸隱金光束 */
+    .my-custom-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        z-index: 9999;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    /* ☀️ 開燈模式：擴大範圍的不銹鋼中央發散暈眩光 */
+    #appContainer:not(.dark-theme) .my-custom-header {
+        background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.35) 45%, transparent 75%),
+                    linear-gradient(135deg, #9bb0a7 0%, #d2e2db 50%, #839d93 100%) !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12) !important;
+    }
+
+        /* 🌙 熄燈模式：擴大範圍的深色不銹鋼中央發散暈眩光（已調暗） */
+    #appContainer.dark-theme .my-custom-header {
+        background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 75%),
+                    linear-gradient(135deg, #151d28 0%, #0a0f17 100%) !important;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5) !important;
+    }
+
+
+    /* 💡 基礎偽元素容器 */
+    .my-custom-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    /* ☀️ 開燈模式：3px 漸隱金光束（上下皆離邊 3px） */
+    #appContainer:not(.dark-theme) .my-custom-header::after {
+        background: 
+            linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.95) 50%, transparent) 0 3px / 100% 3px no-repeat,
+            linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.95) 50%, transparent) 0 calc(100% - 3px) / 100% 3px no-repeat;
+    }
+
+    /* 🌙 熄燈模式：3px 漸隱亮金光束（上下皆離邊 3px） */
+    #appContainer.dark-theme .my-custom-header::after {
+        background: 
+            linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.9) 50%, transparent) 0 3px / 100% 3px no-repeat,
+            linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.9) 50%, transparent) 0 calc(100% - 3px) / 100% 3px no-repeat;
+    }
+
+
+
+
+    /* 💎 標題置中與金屬漸層特效 */
+    .my-custom-header-title {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        pointer-events: none; /* 確保點擊可以穿透標題去到下層 */
+        font-size: 20px !important;
+        font-weight: 800 !important;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin: 0;
+        z-index: 1;
+    }
+
+    /* 開燈模式標題金屬黃 */
+    #appContainer:not(.dark-theme) .my-custom-header-title {
+        background: linear-gradient(135deg, #fef08a 0%, #facc15 30%, #ca8a04 70%, #a16207 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+        /* 🌙 熄燈模式標題（純銀金屬光澤：零黃光，通透耀眼嘅銀白鏡面） */
+    #appContainer.dark-theme .my-custom-header-title {
+        background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 35%, #94a3b8 70%, #ffffff 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        text-shadow: 0 0 14px rgba(255, 255, 255, 0.45), 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+
+    /* 確保 Header 左右按鈕容器置於最上層，唔會被標題絕對定位遮住 */
+    .my-custom-header > div {
+        z-index: 2;
+    }
+
+
 
     </style>
 </head>
 
 <body>
     <ion-app id="appContainer">
-        <!-- Header 工具列 -->
-        <ion-header class="ion-no-border">
-            <ion-toolbar>
-                <!-- 💡 1. 頂部左上角的消息通知按鈕 -->
-                <div slot="start" style="padding-left: 12px;">
-                    <button id="logsToggleBtn" type="button" class="theme-toggle-btn" onclick="openLogsModal()"
-                        style="position: relative;">
-                        <ion-icon name="notifications-outline"
-                            style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
-                        <span id="logBadge" class="unread-badge" style="display: none;">0</span>
-                    </button>
-                </div>
+                       <!-- 👑 全新自訂 Header（完美解決置中、按鈕風格與底色問題） -->
+        <div class="my-custom-header">
+            <!-- 左上角通知按鈕 -->
+            <div>
+                <button id="logsToggleBtn" type="button" class="theme-toggle-btn" onclick="openLogsModal()" style="position: relative;">
+                    <ion-icon name="notifications-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                    <span id="logBadge" class="unread-badge" style="display: none;">0</span>
+                </button>
+            </div>
 
-                <ion-title id="pageHeaderTitle">理財總覽</ion-title>
+            <!-- 中間完美置中標題 -->
+            <h1 id="pageHeaderTitle" class="my-custom-header-title">理財總覽</h1>
 
-                <!-- 💡 頂部右上角：計算機 + 熄燈模式按鈕 -->
-<div slot="end" style="padding-right: 12px; display: flex; gap: 8px; align-items: center;">
-    <button id="calcToggleBtn" type="button" class="theme-toggle-btn" onclick="openCalcModal()">
-        <ion-icon name="calculator-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
-    </button>
-    <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()">
-        <ion-icon id="themeIcon" name="moon-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
-    </button>
-</div>
-            </ion-toolbar>
-        </ion-header>
+            <!-- 右上角計算機與主題切換按鈕 -->
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button id="calcToggleBtn" type="button" class="theme-toggle-btn" onclick="openCalcModal()">
+                    <ion-icon name="calculator-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                </button>
+                <button id="themeToggleBtn" type="button" class="theme-toggle-btn" onclick="toggleTheme()">
+                    <ion-icon id="themeIcon" name="moon-outline" style="color: #e2e8f0; font-size: 19px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));"></ion-icon>
+                </button>
+            </div>
+        </div>
 
         <ion-content class="ion-padding">
 
@@ -1800,8 +1859,9 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 </div>
 </div>
 
+
 <!-- 快捷入口卡片 (3 欄版：消費 / 儲蓄 / 借貸) -->
-<h3 class="section-title" style="margin-bottom: 12px;">快捷理財模組</h3>
+<h8 class="section-title" style="margin-bottom: 12px;">快捷理財模組</h8>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
     <!-- Box 1: 消費記錄 -->
     <div onclick="switchPage('expense')" 
@@ -2962,6 +3022,9 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         </div>
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script>
+
     <script>
         let records = [];
         let savingsRecords = [];
@@ -3022,6 +3085,7 @@ const LOAN_CATEGORY_MAP = {
 };
 
 
+// 💡 乾淨俐落嘅主題切換函數（已移除無謂嘅 toolbar 函數）
 function initTheme() {
     const savedTheme = localStorage.getItem('app_theme');
     const app = document.getElementById('appContainer');
@@ -3040,7 +3104,6 @@ function initTheme() {
     }
 }
 
-
 function toggleTheme() {
     const app = document.getElementById('appContainer');
     const icon = document.getElementById('themeIcon');
@@ -3055,6 +3118,8 @@ function toggleTheme() {
         localStorage.setItem('app_theme', 'light');
     }
 }
+
+
 
 
 
