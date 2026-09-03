@@ -281,8 +281,8 @@
 .pay-default { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
 
 
-    /*     /*     /*     /*     /*     /*     /* ========================================================== */
-    /* 💡 支付方式選擇器：最終純淨完美版（極致頂層 + 雙主題 + Logo 完美顯示） */
+    /* ========================================================== */
+    /* 💡 支付方式選擇器：極致頂層覆蓋 + 雙主題 + 完美保護所有 Logo 顯示 */
     /* ========================================================== */
 
     /* 1. 預設開燈模式：遮罩背景 */
@@ -304,7 +304,7 @@
         transition: opacity 0.25s ease;
     }
 
-    /* 2. 熄燈模式：遮罩背景（透過 JS 自動帶入 .dark-theme） */
+    /* 2. 熄燈模式：遮罩背景 */
     .payment-picker-modal.dark-theme {
         background: rgba(0, 0, 0, 0.85) !important;
     }
@@ -315,7 +315,7 @@
         pointer-events: auto !important;
     }
 
-    /* 3. 彈出面板內容（預設開燈：淺綠金屬風） */
+    /* 3. 彈出面板內容 */
     .payment-picker-modal .picker-content {
         z-index: 10000000 !important;
         background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
@@ -331,7 +331,6 @@
         box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
     }
 
-    /* 4. 彈出面板內容（深色模式：深色金屬風） */
     .payment-picker-modal.dark-theme .picker-content {
         background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
         border-top: 1px solid rgba(245, 158, 11, 0.3) !important;
@@ -342,7 +341,7 @@
         transform: translateY(0) !important;
     }
 
-    /* 5. 標題與按鈕文字適配 */
+    /* 4. 標題與按鈕文字適配 */
     .picker-header {
         display: flex !important;
         justify-content: space-between !important;
@@ -386,7 +385,7 @@
         color: #94a3b8 !important;
     }
 
-    /* 6. 選項按鈕與網格適配 */
+    /* 5. 選項網格與按鈕 */
     .option-grid {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
@@ -429,33 +428,53 @@
         box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
     }
 
-    /* 7. Logo 框專屬安全保護區塊（確保圖片、SVG 完美呈現、絕不消失） */
+    /* 6. Logo 框基礎設置（只對預設無背景嘅 logo-box 補上預設底色，不干擾帶有 inline style 嘅 Logo） */
     .logo-box {
-        width: 36px !important;
+        width: 38px !important;
         height: 26px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        background: rgba(255, 255, 255, 0.9) !important;
         border-radius: 6px !important;
         flex-shrink: 0 !important;
         padding: 2px !important;
         box-sizing: border-box !important;
-        overflow: hidden !important;
     }
 
-    .logo-box img,
-    .logo-box svg,
-    .logo-box ion-icon {
-        max-width: 100% !important;
-        max-height: 100% !important;
+    /* 針對沒有自定背景的 logo-box（如 Visa, Mastercard, 八達通）給予預設白底 */
+    .logo-box:not([style*="background"]) {
+        background: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    .logo-box svg {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 32px !important;
+        max-height: 20px !important;
         object-fit: contain !important;
-        display: inline-block !important;
+        display: block !important;
     }
 
-    .payment-picker-modal.dark-theme .logo-box {
-        background: rgba(255, 255, 255, 0.12) !important;
+    .logo-box ion-icon {
+        font-size: 18px !important;
+        display: block !important;
     }
+
+    .logo-box span, 
+    .logo-box div {
+        font-size: 9px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        text-align: center !important;
+        display: block !important;
+    }
+
+    /* 深色模式下針對無自定背景嘅 logo-box 微調 */
+    .payment-picker-modal.dark-theme .logo-box:not([style*="background"]) {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+}
 
 
 
