@@ -142,117 +142,213 @@
             box-shadow: 0 16px 32px rgba(15, 23, 42, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.12);
         }
-/* 💡 強制讓卡片內部的 ion-button 不會超出邊框，保留邊框邊距 */
-.calc-container-card ion-button {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-}
+    /* ========================================================== */
+    /* 💡 計算機底層排版與網格結構（不可或缺）                   */
+    /* ========================================================== */
+    .calc-container-card ion-button {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
 
-        /* 💎 1. 型格高檔計算機主容器 (微光金屬邊框 + 暗黑黑洞卡片) */
-.calc-container-card {
-    background: linear-gradient(145deg, #0f172a 0%, #1e293b 60%, #0b1329 100%);
-    border-radius: 24px;
-    padding: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    position: relative;
-    overflow: hidden;
-}
+    .calc-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        padding: 0 0 14px 0;
+    }
 
-/* 💎 2. 螢幕顯示區：深邃黑洞 + 奢華霓虹發光數字 */
-.calc-display {
-    background: #020617;
-    color: white;
-    border-radius: 18px;
-    padding: 16px 20px;
-    text-align: right;
-    margin-bottom: 18px;
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.08);
-}
+    .calc-btn {
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: system-ui, -apple-system, sans-serif;
+    }
 
-.calc-subscreen {
-    font-size: 13px;
-    color: #64748b;
-    min-height: 20px;
-    word-break: break-all;
-    font-family: "SF Mono", "Courier New", monospace;
-    letter-spacing: 0.5px;
-}
+    .calc-btn:active {
+        transform: scale(0.94) !important;
+    }
 
 
-.calc-screen {
-    font-size: 36px;
-    font-weight: 800;
-    color: #fbbf24; /* 香檳亮金 */
-    word-break: break-all;
-    font-family: "SF Mono", "Courier New", monospace;
-    text-shadow: 0 0 16px rgba(251, 191, 36, 0.45); /* 核心霓虹發光 */
-    letter-spacing: -0.5px;
-    margin-top: 2px;
-}
+    /* ========================================================== */
+    /* 💡 1. 【開燈模式】淺綠金屬風計算機專屬款式                 */
+    /* ========================================================== */
+    .calc-header-box {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        border-radius: 14px !important;
+    }
+    .calc-title {
+        color: #0f172a !important;
+        font-weight: 800 !important;
+    }
 
-/* 💎 3. 按鈕網格與一般數字按鈕 */
-.calc-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 0 0 14px 0;
-}
+    .calc-container-card {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        border-radius: 24px !important;
+        padding: 16px !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+        border: 1px solid rgba(212, 175, 55, 0.5) !important;
+        position: relative;
+        overflow: hidden;
+    }
 
-.calc-btn {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    color: #f1f5f9;
-    border-radius: 16px;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-    font-weight: 700;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    font-family: system-ui, -apple-system, sans-serif;
-}
+    .calc-display {
+        background: rgba(255, 255, 255, 0.85) !important;
+        color: #0f172a !important;
+        border-radius: 16px !important;
+        padding: 14px 18px !important;
+        text-align: right;
+        margin-bottom: 16px !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    }
 
-/* 按下效果 (下沉觸感) */
-.calc-btn:active {
-    transform: scale(0.92);
-    background: #334155;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
+    .calc-subscreen {
+        font-size: 13px;
+        color: #475569;
+        min-height: 20px;
+        word-break: break-all;
+        font-family: "SF Mono", "Courier New", monospace;
+    }
 
-/* 💎 4. 清除鍵 (C / DEL)：珊瑚紅暗光 */
-.calc-btn.clear-btn {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.35);
-}
+    .calc-screen {
+        font-size: 34px;
+        font-weight: 800;
+        color: #b45309 !important;
+        word-break: break-all;
+        font-family: "SF Mono", "Courier New", monospace;
+        letter-spacing: -0.5px;
+        margin-top: 2px;
+    }
 
-/* 💎 5. 運算符號按鈕 (+ − × ÷)：電光湛藍 */
-.calc-btn.op {
-    background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
-    color: #38bdf8;
-    border-color: rgba(56, 189, 248, 0.35);
-    font-size: 23px;
-    font-weight: 800;
-}
+    /* 開燈模式：一般數字鍵 */
+    .calc-key {
+        background: linear-gradient(135deg, #ffffff 0%, #d8e5e0 100%) !important;
+        color: #0f172a !important;
+        border-radius: 16px !important;
+        font-size: 21px !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+    }
 
-/* 💎 6. 等於號按鈕 (=)：奢華日落金漸變 */
-.calc-btn.action {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-    color: #0f172a;
-    font-weight: 900;
-    font-size: 26px;
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
+    /* 開燈模式：清除鍵 (C / DEL) */
+    .calc-key.clear-btn {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
+        color: #991b1b !important;
+        border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    }
+
+    /* 開燈模式：運算符號 (+ - × ÷) */
+    .calc-key.op {
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+        color: #0369a1 !important;
+        border: 1px solid rgba(2, 132, 199, 0.35) !important;
+        font-size: 23px !important;
+        font-weight: 800 !important;
+    }
+
+    /* 開燈模式：等於號 (=) */
+    .calc-key.action {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
+        color: #ffffff !important;
+        font-weight: 900 !important;
+        font-size: 26px !important;
+        box-shadow: 0 6px 15px rgba(245, 158, 11, 0.35) !important;
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    }
+
+
+    /* ========================================================== */
+    /* 💡 2. 【熄燈/深色模式】深色金屬風計算機專屬款式             */
+    /* ========================================================== */
+    #appContainer.dark-theme .calc-header-box,
+    .dark-theme .calc-header-box,
+    body.dark-theme .calc-header-box,
+    ion-app.dark-theme .calc-header-box {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+    }
+    #appContainer.dark-theme .calc-title,
+    .dark-theme .calc-title,
+    body.dark-theme .calc-title {
+        color: #ffffff !important;
+    }
+
+    #appContainer.dark-theme .calc-container-card,
+    .dark-theme .calc-container-card,
+    body.dark-theme .calc-container-card,
+    ion-app.dark-theme .calc-container-card {
+        background: linear-gradient(145deg, #0f172a 0%, #1e293b 60%, #0b1329 100%) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+
+    #appContainer.dark-theme .calc-display,
+    .dark-theme .calc-display,
+    body.dark-theme .calc-display {
+        background: #020617 !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(56, 189, 248, 0.25) !important;
+        box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.08) !important;
+    }
+
+    #appContainer.dark-theme .calc-subscreen,
+    .dark-theme .calc-subscreen {
+        color: #64748b !important;
+    }
+
+    #appContainer.dark-theme .calc-screen,
+    .dark-theme .calc-screen {
+        color: #fbbf24 !important;
+        text-shadow: 0 0 16px rgba(251, 191, 36, 0.45) !important;
+    }
+
+    /* 深色模式：一般數字鍵 */
+    #appContainer.dark-theme .calc-key,
+    .dark-theme .calc-key,
+    body.dark-theme .calc-key {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+        color: #f1f5f9 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 深色模式：清除鍵 (C / DEL) */
+    #appContainer.dark-theme .calc-key.clear-btn,
+    .dark-theme .calc-key.clear-btn,
+    body.dark-theme .calc-key.clear-btn {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.25) 100%) !important;
+        color: #f87171 !important;
+        border-color: rgba(239, 68, 68, 0.35) !important;
+    }
+
+    /* 深色模式：運算符號 (+ - × ÷) */
+    #appContainer.dark-theme .calc-key.op,
+    .dark-theme .calc-key.op,
+    body.dark-theme .calc-key.op {
+        background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
+        color: #38bdf8 !important;
+        border-color: rgba(56, 189, 248, 0.35) !important;
+    }
+
+    /* 深色模式：等於號 (=) */
+    #appContainer.dark-theme .calc-key.action,
+    .dark-theme .calc-key.action,
+    body.dark-theme .calc-key.action {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
+        color: #0f172a !important;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    }
+
 
 /* 💡 官方高清 Logo 徽章樣式 */
 .pay-chip {
@@ -478,32 +574,167 @@
 
 
 
-/* 💡 專屬原生高級金色按鈕（100% 貼合卡片內部，絕不出界遮線） */
-.custom-save-btn {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    height: 46px;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f2042 100%);
-    border: 1px solid rgba(251, 191, 36, 0.4);
-    border-radius: 12px;
-    color: #fbbf24;
-    font-size: 15px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.15s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
+    /* ========================================================== */
+    /* 💡 全頁計算機雙主題獨立款式設定（按鍵分類金屬風）           */
+    /* ========================================================== */
 
-.custom-save-btn:active {
-    transform: scale(0.98);
-    background: #1e293b;
-    border-color: #fbbf24;
-}
+    /* 1. 【開燈模式】淺綠金屬風整體外框與標題 */
+    .calc-header-box {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        border-radius: 14px !important;
+    }
+    .calc-title {
+        color: #0f172a !important;
+    }
+    .calc-card-box {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.15) !important;
+        border-radius: 20px !important;
+        padding: 14px !important;
+        margin-bottom: 10px !important;
+    }
+    .calc-screen-box {
+        background: rgba(255, 255, 255, 0.75) !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        border-radius: 12px !important;
+        color: #0f172a !important;
+    }
+
+    /* 【開燈模式】按鍵分類色彩設計（金屬漸層質感） */
+    /* 數字鍵 / 小數點 */
+    .calc-key {
+        background: linear-gradient(135deg, #ffffff 0%, #d8e5e0 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.35) !important;
+        color: #0f172a !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+    }
+    /* 清除鍵 (C / DEL) - 柔和玫瑰金/紅漸層 */
+    .calc-key.clear-btn {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
+        border: 1px solid rgba(239, 68, 68, 0.3) !important;
+        color: #991b1b !important;
+    }
+    /* 運算符號鍵 (+ - × ÷) - 柔和天藍金屬漸層 */
+    .calc-key.op {
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+        border: 1px solid rgba(2, 132, 199, 0.3) !important;
+        color: #0369a1 !important;
+    }
+    /* 等于鍵 (=) - 搶眼精緻嘅金橙漸層 */
+    .calc-key.action {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+        border: 1px solid rgba(217, 119, 6, 0.4) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35) !important;
+    }
+
+    /* 開燈模式下嘅大儲存按鈕 */
+    .calc-full-save-btn {
+        width: 100% !important;
+        height: 52px !important;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        border-radius: 14px !important;
+        font-size: 15px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.5px !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+        transition: all 0.2s ease !important;
+        box-sizing: border-box !important;
+    }
+
+
+    /* 2. 【熄燈/深色模式】深色金屬風整體外框 */
+    #appContainer.dark-theme .calc-header-box,
+    .dark-theme .calc-header-box,
+    body.dark-theme .calc-header-box,
+    ion-app.dark-theme .calc-header-box {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+    }
+    #appContainer.dark-theme .calc-title,
+    .dark-theme .calc-title,
+    body.dark-theme .calc-title {
+        color: #ffffff !important;
+    }
+    #appContainer.dark-theme .calc-card-box,
+    .dark-theme .calc-card-box,
+    body.dark-theme .calc-card-box,
+    ion-app.dark-theme .calc-card-box {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border: 1px solid rgba(245, 158, 11, 0.3) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+    }
+    #appContainer.dark-theme .calc-screen-box,
+    .dark-theme .calc-screen-box,
+    body.dark-theme .calc-screen-box {
+        background: rgba(15, 23, 42, 0.9) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+    }
+
+    /* 【熄燈模式】按鍵分類色彩設計（深色金屬漸層質感） */
+    /* 數字鍵 / 小數點 */
+    #appContainer.dark-theme .calc-key,
+    .dark-theme .calc-key,
+    body.dark-theme .calc-key {
+        background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #f1f5f9 !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+    }
+    /* 清除鍵 (C / DEL) - 深色紅金屬漸層 */
+    #appContainer.dark-theme .calc-key.clear-btn,
+    .dark-theme .calc-key.clear-btn,
+    body.dark-theme .calc-key.clear-btn {
+        background: linear-gradient(135deg, #451a03 0%, #7f1d1d 100%) !important;
+        border: 1px solid rgba(248, 113, 113, 0.3) !important;
+        color: #fca5a5 !important;
+    }
+    /* 運算符號鍵 (+ - × ÷) - 深色藍金屬漸層 */
+    #appContainer.dark-theme .calc-key.op,
+    .dark-theme .calc-key.op,
+    body.dark-theme .calc-key.op {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%) !important;
+        border: 1px solid rgba(96, 165, 250, 0.3) !important;
+        color: #93c5fd !important;
+    }
+    /* 等于鍵 (=) - 螢光金橙金屬漸層 */
+    #appContainer.dark-theme .calc-key.action,
+    .dark-theme .calc-key.action,
+    body.dark-theme .calc-key.action {
+        background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%) !important;
+        border: 1px solid rgba(251, 191, 36, 0.4) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4) !important;
+    }
+
+    /* 深色模式下嘅大儲存按鈕 */
+    #appContainer.dark-theme .calc-full-save-btn,
+    .dark-theme .calc-full-save-btn,
+    body.dark-theme .calc-full-save-btn {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5) !important;
+        color: #ffffff !important;
+    }
+
+    .calc-full-save-btn:active,
+    .calc-key:active {
+        transform: scale(0.96) !important;
+    }
+
+
 /* 💡 自訂高質感圓形 Checkbox 樣式 */
 .custom-circle-checkbox {
     -webkit-appearance: none;
@@ -699,6 +930,102 @@ ion-app.dark-theme #marketRateCard::after,
         linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, #334155 50%, rgba(255, 255, 255, 0.05) 100%) top / 100% 1px no-repeat,
         linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, #334155 50%, rgba(255, 255, 255, 0.05) 100%) bottom / 100% 1px no-repeat;
 }
+
+    /* ========================================================== */
+    /* 💡 修正消息頁面：下拉把手位置微調與 ✕ 按鈕加深               */
+    /* ========================================================== */
+
+    /* 1. 調整消息頁面專屬嘅頂部拖拽條間距，令佢唔會太高 */
+    ion-modal#logsModal .drag-handle-bar {
+        margin-top: 2px !important;
+        padding: 4px 0 8px 0 !important;
+    }
+
+    /* 2. 【開燈模式】強制設定 Modal 內容區域背景（淺綠金屬風） */
+    ion-modal#logsModal ion-content,
+    ion-modal#logsModal .logs-page-content {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        --background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+    }
+
+    /* 頂部標題列（開燈模式） */
+    ion-modal#logsModal .logs-page-header,
+    ion-modal#logsModal .logs-page-titlebar {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        border-bottom: 1.5px solid rgba(212, 175, 55, 0.45) !important;
+    }
+    ion-modal#logsModal .logs-page-title-text {
+        color: #0f172a !important;
+    }
+
+    /* 💡 【開燈模式】將 ✕ 按鈕改為明顯嘅深色/金屬風，不再過分淺色 */
+    ion-modal#logsModal button[onclick="closeLogsModal()"] {
+        background: rgba(15, 23, 42, 0.15) !important;
+        color: #0f172a !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        font-weight: 900 !important;
+    }
+
+    /* 動態消息清單卡片（開燈模式） */
+    ion-modal#logsModal #logsContainer > div,
+    ion-modal#logsModal ion-content .log-item {
+        background: linear-gradient(135deg, #ffffff 0%, #d8e5e0 100%) !important;
+        border: 1.5px solid rgba(212, 175, 55, 0.6) !important;
+        border-radius: 14px !important;
+        padding: 12px 14px !important;
+        margin-bottom: 10px !important;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+        color: #0f172a !important;
+    }
+
+
+    /* 3. 【熄燈/深色模式】強制設定背景（深色金屬風） */
+    #appContainer.dark-theme ion-modal#logsModal ion-content,
+    #appContainer.dark-theme ion-modal#logsModal .logs-page-content,
+    .dark-theme ion-modal#logsModal ion-content {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        --background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+    }
+
+    #appContainer.dark-theme ion-modal#logsModal .logs-page-header,
+    #appContainer.dark-theme ion-modal#logsModal .logs-page-titlebar,
+    .dark-theme ion-modal#logsModal .logs-page-header {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border-bottom: 1.5px solid rgba(245, 158, 11, 0.3) !important;
+    }
+    #appContainer.dark-theme ion-modal#logsModal .logs-page-title-text,
+    .dark-theme ion-modal#logsModal .logs-page-title-text {
+        color: #ffffff !important;
+    }
+
+    /* 深色模式下嘅 ✕ 按鈕保持清晰 */
+    #appContainer.dark-theme ion-modal#logsModal button[onclick="closeLogsModal()"],
+    .dark-theme ion-modal#logsModal button[onclick="closeLogsModal()"] {
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+        border: none !important;
+    }
+
+    /* 深色模式下嘅動態消息清單卡片 */
+    #appContainer.dark-theme ion-modal#logsModal #logsContainer > div,
+    #appContainer.dark-theme ion-modal#logsModal ion-content .log-item,
+    .dark-theme ion-modal#logsModal #logsContainer > div {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+        border: 1.5px solid rgba(245, 158, 11, 0.4) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        color: #f1f5f9 !important;
+    }
+
+    /* 支援通用拖拽條嘅深色模式切換 */
+    #appContainer.dark-theme .drag-handle-bar .handle-pill,
+    .dark-theme .drag-handle-bar .handle-pill {
+        background: rgba(255, 255, 255, 0.45) !important;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.2) !important;
+    }
+    #appContainer.dark-theme .drag-handle-bar .handle-text,
+    .dark-theme .drag-handle-bar .handle-text {
+        color: #94a3b8 !important;
+    }
 
 
 :root {
@@ -2126,6 +2453,24 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         color: #e2e8f0 !important;
     }
 
+    /* ========================================================== */
+    /* 💡 系統實時計算資訊卡片：雙主題自適應樣式 */
+    /* ========================================================== */
+
+    /* 1. 預設開燈模式（淺綠金屬風） */
+    .calc-info-box {
+        background: linear-gradient(135deg, #eaf3f0 0%, #cbdce1 100%) !important;
+        border: 1.5px solid rgba(212, 175, 55, 0.5) !important;
+    }
+
+    /* 2. 熄燈模式 / 深色模式（深色金屬風） */
+    .dark-theme .calc-info-box,
+    body.dark-theme .calc-info-box,
+    html.dark-theme .calc-info-box,
+    ion-app.dark-theme .calc-info-box {
+        background: #020617 !important;
+        border: 1.5px solid rgba(129, 140, 248, 0.5) !important;
+    }
 
     </style>
 </head>
@@ -2231,7 +2576,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 
 <!-- 快捷入口卡片 (3 欄版：消費 / 儲蓄 / 借貸) -->
 <h8 class="section-title" style="margin-bottom: 12px;">快捷理財模組</h8>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;margin-top:10px; margin-bottom: 16px;">
     <!-- Box 1: 消費記錄 -->
     <div onclick="switchPage('expense')" 
         class="custom-sliding-item" 
@@ -2435,7 +2780,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
                 </div>
 </div>
                 <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
+                    style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 0px 4px;">
 <!-- 💡 借貸頁標題與載入測試按鈕 -->
 <div style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px; width: 100%;">
     <h3 class="section-title">還款計劃與到期提醒</h3>
@@ -2523,8 +2868,8 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
                 </div>
 </div>
 <!-- 📊 金管局官方市場利率數據總覽卡片 -->
-<div id="marketRateCard">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+<div id="marketRateCard" style="margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <!-- 💡 標題改用更深嘅純深黃色 (#ca8a04)，濃郁、實淨、清晰 -->
         <h3 style="font-size: 14px; font-weight: 800; color: #ca8a04; margin: 0; display: flex; align-items: center; gap: 6px;">
             <ion-icon name="trending-up-outline"></ion-icon> 金管局官方市場利率總覽
@@ -2542,51 +2887,51 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     </div>
 </div>
 
+<!-- 💡 儲蓄存入紀錄標題 -->
+<h3 class="section-title" style="margin: 28px 0 20px 4px !important; display: block !important;">儲蓄存入紀錄</h3>
+<ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
 
-
-
-                <h3 class="section-title" style="margin: 12px 0 12px 4px;">儲蓄存入紀錄</h3>
-                <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;"></ion-list>
-            </div>
+<!-- 💡 補回正確對應嘅結尾標籤，確保下方切換制同外層卡片唔會走位消失 -->
 </div>
-            <!-- 💡 消息動態 Modal -->
-          <ion-modal id="logsModal" initial-breakpoint="1" handle="true">
-                <ion-header class="ion-no-border" style="background: #0f172a; touch-action: none;">
-                    <div id="dragHandleArea"
-                        style="display: flex; flex-direction: column; align-items: center; padding: 10px 0 4px 0; background: #0f172a; cursor: grab;">
-                        <div
-                            style="width: 40px; height: 5px; background: rgba(255, 255, 255, 0.4); border-radius: 10px;">
-                        </div>
-                        <span style="font-size: 10px; color: #64748b; margin-top: 3px;">向下滑動關閉</span>
-                    </div>
+</div>
 
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; padding: 6px 16px 12px 16px; background: #0f172a; border-bottom: 1px solid rgba(255,255,255,0.08);">
-                        <div
-                            style="font-weight: 800; font-size: 16px; color: #ffffff; display: flex; align-items: center; gap: 6px;">
-                            🔔 操作動態消息
-                        </div>
+           <!-- 💡 消息動態 Modal（完美結合通用 drag-handle-bar 類別） -->
+<ion-modal id="logsModal" initial-breakpoint="0.91" handle="true">
+    <ion-header class="ion-no-border logs-page-header" style="touch-action: none;">
+        <!-- 💡 這裡加上了 class="drag-handle-bar"，完美套用你上面果段通用拖拽條樣式 -->
+        <div id="dragHandleArea" class="drag-handle-bar" style="cursor: grab;">
+            <div class="handle-pill"></div>
+            <span class="handle-text">向下滑動關閉</span>
+        </div>
 
-                        <div style="display: flex; align-items: center; gap: 10px; z-index: 9999;">
-                            <button type="button" onclick="clearAllLogs()"
-                                style="background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
-                                🗑️ 清除
-                            </button>
-                            <button type="button" onclick="closeLogsModal()"
-                                style="background: rgba(255, 255, 255, 0.1); color: #cbd5e1; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                ✕
-                            </button>
-                        </div>
-                    </div>
-                </ion-header>
+        <div class="logs-page-titlebar"
+            style="display: flex; justify-content: space-between; align-items: center; padding: 6px 16px 12px 16px;">
+            <div class="logs-page-title-text"
+                style="font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 6px;">
+                🔔 操作動態消息
+            </div>
 
-                <ion-content style="--background: #0f172a;" class="ion-padding">
-                    <div id="logsContainer"></div>
-                </ion-content>
-            </ion-modal>
+            <div style="display: flex; align-items: center; gap: 10px; z-index: 9999;">
+                <button type="button" onclick="clearAllLogs()"
+                    style="background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                    🗑️ 清除
+                </button>
+                <button type="button" onclick="closeLogsModal()"
+                    style="background: rgba(255, 255, 255, 0.1); color: #cbd5e1; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    ✕
+                </button>
+            </div>
+        </div>
+    </ion-header>
+
+    <ion-content class="ion-padding logs-page-content">
+        <div id="logsContainer"></div>
+    </ion-content>
+</ion-modal>
+
 
             <!-- 新增開銷 Modal -->
-            <ion-modal id="addModal" initial-breakpoint="0.9" handle="true">
+            <ion-modal id="addModal" initial-breakpoint="0.91" handle="true">
     <ion-content class="ion-padding">
         <!-- 💡 頂部拖拽指示條 -->
         <div class="drag-handle-bar">
@@ -2671,8 +3016,8 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
                         </div>
 
                         <div class="modal-dark-group">
-                            <select id="manualCategorySelect" class="modal-dark-input"
-    style="color: #ffffff; background-color: #1e293b; cursor: pointer; appearance: auto; text-align: center; padding: 16px 18px; font-size: 15px; font-weight: 700; height: 56px;">
+                            <select id="manualCategorySelect" class="modal-dark-input" style="cursor: pointer; appearance: auto; text-align: center; padding: 16px 18px; font-size: 15px; font-weight: 700; height: 56px;">
+
     <option value="" disabled selected hidden>SELECT CATEGORY</option>
     <option value="餐飲">餐飲食品 · Dining</option>
     <option value="交通">交通出行 · Transit</option>
@@ -2706,7 +3051,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             </ion-modal>
 
             <!-- 借貸 Modal -->
-            <ion-modal id="addLoanModal" initial-breakpoint="0.92" handle="true">
+            <ion-modal id="addLoanModal" initial-breakpoint="0.91" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -2720,8 +3065,8 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         </div>
 
                     <div class="modal-dark-group">
-                        <select id="loanCategorySelect" class="modal-dark-input"
-    style="color: #ffffff; background-color: #1e293b; font-size: 15px; font-weight: 700; height: 54px;">
+                        <select id="loanCategorySelect" class="modal-dark-input" style="font-size: 15px; font-weight: 700; height: 54px;">
+
     <option value="信用卡" selected>CREDIT CARD · 信用卡分期</option>
     <option value="樓宇按揭">MORTGAGE · 樓宇按揭貸款</option>
     <option value="銀行私貸">PERSONAL LOAN · 銀行私人貸款</option>
@@ -2803,7 +3148,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             </ion-modal>
 
             <!-- 修改貸款 Modal -->
-            <ion-modal id="editLoanModal" initial-breakpoint="0.95" handle="true">
+            <ion-modal id="editLoanModal" initial-breakpoint="1" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -2819,8 +3164,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
                     <p id="editLoanSubtitle"
                         style="font-size: 13px; color: #818cf8; margin: -6px 0 14px 4px; font-weight: 600;"></p>
 
-                    <div
-                        style="background: #020617; border-radius: 14px; padding: 14px; border: 1.5px solid #818cf8; margin-bottom: 16px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);">
+                    <div class="calc-info-box" style="border-radius: 14px; padding: 14px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 12px; color: #a5b4fc; font-weight: 700;">⚖️ 系統實時算得剩餘金額
                                 (Remaining)</span>
@@ -2918,7 +3262,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             </ion-modal>
 
             <!-- 預算 Modal -->
-            <ion-modal id="budgetModal" initial-breakpoint="0.7" handle="true">
+            <ion-modal id="budgetModal" initial-breakpoint="0.58" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -2962,7 +3306,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             </ion-modal>
 
             <!-- 儲蓄目標 Modal -->
-            <ion-modal id="savingsGoalModal" initial-breakpoint="0.7" handle="true">
+            <ion-modal id="savingsGoalModal" initial-breakpoint="0.58" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -3009,7 +3353,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
                 </ion-content>
             </ion-modal>
             <!-- 💡 存入儲蓄資金 Modal -->
-            <ion-modal id="addSavingsModal" initial-breakpoint="0.85" handle="true">
+            <ion-modal id="addSavingsModal" initial-breakpoint="0.66" handle="true">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3024,7 +3368,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 
                     <div class="modal-dark-group" style="margin: 14px 0;">
                         <input type="text" id="savingsTitleInput" class="modal-dark-input" placeholder="例如：旅行基金 / 緊急儲蓄"
-                            autocomplete="off" style="height: 48px; padding: 12px; font-size: 13px; background: #1e293b;">
+                            autocomplete="off" style="height: 48px; padding: 12px; font-size: 13px;">
                         <label for="savingsTitleInput">📝 儲蓄備註或目的</label>
                     </div>
 
@@ -3070,63 +3414,68 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
                     </ion-button>
                 </ion-content>
             </ion-modal>
-<!-- 💡 尺寸剛剛好：半頁滑動式計算機 Modal -->
-<ion-modal id="calcModal" initial-breakpoint="0.92" handle="true">
-    <ion-content class="ion-padding">
+<!-- 💡 尺寸剛剛好：半頁滑動式計算機 Modal（全頁雙主題自動適配版） -->
+<ion-modal id="calcModal" initial-breakpoint="0.91" handle="true">
+    <ion-content class="ion-padding calc-page-theme">
         <!-- 頂部拖拽條 -->
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
             <span class="handle-text">向下滑動關閉</span>
         </div>
 
-        <div class="modal-header-box" style="margin-bottom: 12px; padding: 12px 16px;">
-            <h2 class="modal-header-title" style="font-size: 17px;">🧮 快捷計算機</h2>
+        <div class="modal-header-box calc-header-box">
+            <h2 class="modal-header-title calc-title">🧮 計算機</h2>
         </div>
 
-        <div class="calc-container-card" style="padding: 12px; margin-bottom: 10px;">
-            <div class="calc-display" style="padding: 10px 14px; margin-bottom: 12px;">
+        <!-- 計算機外框卡片 -->
+        <div class="calc-container-card calc-card-box">
+            <div class="calc-display calc-screen-box">
                 <div id="calcSubscreen" class="calc-subscreen" style="min-height: 16px; font-size: 11px;"></div>
                 <div id="calcScreen" class="calc-screen" style="font-size: 28px;">0</div>
             </div>
 
-            <div class="calc-grid" style="gap: 8px; padding-bottom: 8px;">
-                <div class="calc-btn clear-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('C')">C</div>
-                <div class="calc-btn clear-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('DEL')">⌫</div>
-                <div class="calc-btn op" style="height: 48px; font-size: 20px;" onclick="calcInput('/')">÷</div>
-                <div class="calc-btn op" style="height: 48px; font-size: 20px;" onclick="calcInput('*')">×</div>
+            <div class="calc-grid" style="gap: 8px; padding-bottom: 4px;">
+                <div class="calc-btn calc-key clear-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('C')">C</div>
+                <div class="calc-btn calc-key clear-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('DEL')">⌫</div>
+                <div class="calc-btn calc-key op" style="height: 48px; font-size: 20px;" onclick="calcInput('/')">÷</div>
+                <div class="calc-btn calc-key op" style="height: 48px; font-size: 20px;" onclick="calcInput('*')">×</div>
 
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('7')">7</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('8')">8</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('9')">9</div>
-                <div class="calc-btn op" style="height: 48px; font-size: 20px;" onclick="calcInput('-')">-</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('7')">7</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('8')">8</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('9')">9</div>
+                <div class="calc-btn calc-key op" style="height: 48px; font-size: 20px;" onclick="calcInput('-')">-</div>
 
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('4')">4</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('5')">5</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('6')">6</div>
-                <div class="calc-btn op" style="height: 48px; font-size: 20px;" onclick="calcInput('+')">+</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('4')">4</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('5')">5</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('6')">6</div>
+                <div class="calc-btn calc-key op" style="height: 48px; font-size: 20px;" onclick="calcInput('+')">+</div>
 
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('1')">1</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('2')">2</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('3')">3</div>
-                <div class="calc-btn action" style="grid-row: span 2; height: 104px; font-size: 24px;" onclick="calcInput('=')">=</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('1')">1</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('2')">2</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('3')">3</div>
+                <div class="calc-btn calc-key action" style="grid-row: span 2; height: 104px; font-size: 24px;" onclick="calcInput('=')">=</div>
 
-                <div class="calc-btn" style="grid-column: span 2; height: 48px; font-size: 19px;" onclick="calcInput('0')">0</div>
-                <div class="calc-btn" style="height: 48px; font-size: 19px;" onclick="calcInput('.')">.</div>
+                <div class="calc-btn calc-key" style="grid-column: span 2; height: 48px; font-size: 19px;" onclick="calcInput('0')">0</div>
+                <div class="calc-btn calc-key" style="height: 48px; font-size: 19px;" onclick="calcInput('.')">.</div>
             </div>
+        </div>
 
-            <div style="padding-top: 4px;">
-                <button type="button" class="custom-save-btn" onclick="applyCalcToExpenseFromModal()" style="height: 44px; font-size: 14px; margin-top: 0;">
-                    📥 將計算結果帶入記帳金額
-                </button>
-            </div>
+        <!-- 💡 橫跨成行的大按鈕 -->
+        <div style="padding: 0 2px; margin-top: 10px; width: 100%;">
+            <button type="button" class="calc-full-save-btn" onclick="applyCalcToExpenseFromModal()">
+                📥 將計算結果帶入記帳金額
+            </button>
         </div>
 
         <div style="height: 30px;"></div>
     </ion-content>
 </ion-modal>
 
+
+
+
 <!-- 💡 設定本月收入 Modal -->
-<ion-modal id="incomeModal" initial-breakpoint="0.7" handle="true">
+<ion-modal id="incomeModal" initial-breakpoint="0.58" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -3166,7 +3515,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     </ion-content>
 </ion-modal>
 
-<ion-modal id="extraIncomeModal" initial-breakpoint="0.88" handle="true">
+<ion-modal id="extraIncomeModal" initial-breakpoint="0.91" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -3178,7 +3527,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         </div>
 
         <div class="modal-dark-group" style="margin: 10px 0;">
-            <input type="text" id="extraIncomeTitleInput" class="modal-dark-input" placeholder="例如：兼職 / 獎金 / 網拍" autocomplete="off" style="height: 54px; padding: 12px; font-size: 14px; background: #1e293b;">
+            <input type="text" id="extraIncomeTitleInput" class="modal-dark-input" placeholder="例如：兼職 / 獎金 / 網拍" autocomplete="off" style="height: 54px; padding: 12px; font-size: 14px;">
             <label for="extraIncomeTitleInput">📝 收入來源備註</label>
         </div>
 
@@ -3220,7 +3569,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 </ion-modal>
 
 <!-- 💡 升級版設定儲蓄年利率 (p.a.) 與期數 Modal -->
-<ion-modal id="savingsPaModal" initial-breakpoint="0.75" handle="true">
+<ion-modal id="savingsPaModal" initial-breakpoint="0.58" handle="true">
     <ion-content class="ion-padding">
         <div class="drag-handle-bar">
             <div class="handle-pill"></div>
@@ -3239,7 +3588,8 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 
         <!-- 2. 定存期數選擇 (1年 / 6個月 / 3個月 / 1個月) -->
         <div class="modal-dark-group" style="margin-bottom: 16px;">
-            <select id="savingsTenorSelect" class="modal-dark-input" style="color: #ffffff; background-color: #1e293b; height: 54px; font-size: 14px; font-weight: 700; text-align: center; appearance: auto; cursor: pointer;">
+            <select id="savingsTenorSelect" class="modal-dark-input" style="height: 54px; font-size: 14px; font-weight: 700; text-align: center; appearance: auto; cursor: pointer;">
+
                 <option value="12">1 年 (12個月全期)</option>
                 <option value="9">9 個月</option>
                 <option value="6">6 個月</option>
