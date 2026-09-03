@@ -2346,19 +2346,21 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 
     /* 👑 自訂 Header 最終完美版：擴大不銹鋼暈眩光 + 3px 漸隱金光束 */
     .my-custom-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 65px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 16px;
-        z-index: 9999;
-        box-sizing: border-box;
-        overflow: hidden;
-    }
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 9999;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0 !important; /* 確保自己完全冇外距 */
+}
+
 
     /* ☀️ 開燈模式：擴大範圍的不銹鋼中央發散暈眩光 */
     #appContainer:not(.dark-theme) .my-custom-header {
@@ -3655,18 +3657,27 @@ border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 
                         <div class="option-grid">
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Visa')">
-                    <div class="logo-box">
-                        <svg viewBox="0 0 1000 324" style="height: 11px; fill: #2563eb;"><path d="M413.5 316.4L476.3 11.7H552.4L489.6 316.4H413.5ZM763.7 18.3C748.2 12.2 724.1 6.1 694.3 6.1C618.3 6.1 564.8 45.9 564.4 102.7C563.6 144.9 602.8 168.4 632.1 182.5C662.3 197 672.4 206.2 672.4 219.2C672.4 239.1 648.3 247.9 625.8 247.9C590.8 247.9 571 242.9 542.4 230.3L530.7 225.1L517.8 304.5C541.6 315.2 584.8 324 629.7 324C710.8 324 763.7 284.6 764.5 224.2C764.9 187 741.9 158.4 693.1 135.4C664.8 121.3 647.5 111.4 647.5 97.2C647.5 84.6 662.4 71.2 694.7 71.2C721.7 71.2 742.6 76.9 759.1 83.8L767.1 87.3L780.4 13.7L763.7 18.3ZM938 11.7H879.3C861.1 11.7 847 16.8 839 35.8L717.2 316.4H797.3L813.4 271.8H911.6L920.8 316.4H991.4L938 11.7ZM835.8 209.6L875.7 101.4L898.6 209.6H835.8ZM339.4 11.7L265 316.4H189.6L129.2 65.6C125.6 51.5 122 46.1 110.7 40.4C92.2 30.5 61.2 21.3 32.2 15.2L33.8 7.6H144.5C163.4 7.6 179.9 19.8 184 41.5L213.8 195.9L288.5 11.7H339.4Z"/></svg>
-                    </div>
-                    <span>Visa</span>
-                </button>
+    <div class="logo-box" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 24px; background: #ffffff; border-radius: 6px; overflow: hidden; padding: 3px;">
+        <img src="https://api.iconify.design/logos:visa.svg" alt="Visa" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+    </div>
+    <span>Visa</span>
+</button>
 
-                <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Mastercard')">
-                    <div class="logo-box">
-                        <svg viewBox="0 0 50 30" style="height: 14px;"><circle cx="18" cy="15" r="12" fill="#EB001B"/><circle cx="32" cy="15" r="12" fill="#F79E1B" fill-opacity="0.95"/></svg>
-                    </div>
-                    <span>Mastercard</span>
-                </button>
+
+
+               <button type="button" class="payment-option-btn" onclick="selectPaymentOption('Mastercard')">
+    <div class="logo-box" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 24px; background: #262626; border-radius: 6px; overflow: hidden; padding: 0;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" preserveAspectRatio="none" width="100%" height="100%" style="display: block;">
+            <circle cx="9" cy="8" r="5.5" fill="#eb001b"/>
+            <circle cx="15" cy="8" r="5.5" fill="#f79e1b" fill-opacity="0.95"/>
+            <path d="M12 3.3a5.5 5.5 0 0 1 0 9.4 5.5 5.5 0 0 0 0-9.4z" fill="#ff5f00"/>
+        </svg>
+    </div>
+    <span>Mastercard</span>
+</button>
+
+
+
 
                 <button type="button" class="payment-option-btn" onclick="selectPaymentOption('八達通')">
                     <div class="logo-box">
