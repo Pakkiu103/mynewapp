@@ -281,34 +281,183 @@
 .pay-default { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
 
 
-/* 💡 強制將支付方式選擇器的 z-index 提升至最高，蓋過所有 Modal */
-.payment-picker-modal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    background: rgba(0, 0, 0, 0.8) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-    z-index: 9999999 !important; /* 👈 超高層級 */
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-}
+    /*     /*     /*     /*     /*     /*     /* ========================================================== */
+    /* 💡 支付方式選擇器：最終純淨完美版（極致頂層 + 雙主題 + Logo 完美顯示） */
+    /* ========================================================== */
 
-.payment-picker-modal.active {
-    display: flex !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
+    /* 1. 預設開燈模式：遮罩背景 */
+    .payment-picker-modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(15, 23, 42, 0.4) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 9999999 !important;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
 
-.payment-picker-modal .picker-content {
-    z-index: 10000000 !important;
-}
+    /* 2. 熄燈模式：遮罩背景（透過 JS 自動帶入 .dark-theme） */
+    .payment-picker-modal.dark-theme {
+        background: rgba(0, 0, 0, 0.85) !important;
+    }
+
+    .payment-picker-modal.active {
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* 3. 彈出面板內容（預設開燈：淺綠金屬風） */
+    .payment-picker-modal .picker-content {
+        z-index: 10000000 !important;
+        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+        border-top: 1px solid rgba(212, 175, 55, 0.45) !important;
+        border-radius: 24px 24px 0 0 !important;
+        padding: 20px 20px 36px 20px !important;
+        width: 100% !important;
+        max-width: 480px !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        max-height: 75vh !important;
+        overflow-y: auto !important;
+        box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* 4. 彈出面板內容（深色模式：深色金屬風） */
+    .payment-picker-modal.dark-theme .picker-content {
+        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+        border-top: 1px solid rgba(245, 158, 11, 0.3) !important;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .payment-picker-modal.active .picker-content {
+        transform: translateY(0) !important;
+    }
+
+    /* 5. 標題與按鈕文字適配 */
+    .picker-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 16px !important;
+        padding-bottom: 12px !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .payment-picker-modal.dark-theme .picker-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .picker-title {
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        color: #070d1b !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .payment-picker-modal.dark-theme .picker-title {
+        color: #ffffff !important;
+    }
+
+    .close-picker-btn {
+        background: rgba(0, 0, 0, 0.08) !important;
+        border: none !important;
+        color: #334155 !important;
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 50% !important;
+        cursor: pointer !important;
+        font-size: 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .payment-picker-modal.dark-theme .close-picker-btn {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #94a3b8 !important;
+    }
+
+    /* 6. 選項按鈕與網格適配 */
+    .option-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .payment-option-btn {
+        background: rgba(255, 255, 255, 0.6) !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        border-radius: 12px !important;
+        padding: 10px 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        text-align: left !important;
+    }
+
+    .payment-picker-modal.dark-theme .payment-option-btn {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #f1f5f9 !important;
+    }
+
+    .payment-option-btn:active,
+    .payment-option-btn.selected {
+        background: rgba(212, 175, 55, 0.25) !important;
+        border-color: #d97706 !important;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.3) !important;
+    }
+
+    .payment-picker-modal.dark-theme .payment-option-btn:active,
+    .payment-picker-modal.dark-theme .payment-option-btn.selected {
+        background: rgba(59, 130, 246, 0.2) !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
+    }
+
+    /* 7. Logo 框專屬安全保護區塊（確保圖片、SVG 完美呈現、絕不消失） */
+    .logo-box {
+        width: 36px !important;
+        height: 26px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-radius: 6px !important;
+        flex-shrink: 0 !important;
+        padding: 2px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .logo-box img,
+    .logo-box svg,
+    .logo-box ion-icon {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        display: inline-block !important;
+    }
+
+    .payment-picker-modal.dark-theme .logo-box {
+        background: rgba(255, 255, 255, 0.12) !important;
+    }
+
+
 
 /* 💡 專屬原生高級金色按鈕（100% 貼合卡片內部，絕不出界遮線） */
 .custom-save-btn {
@@ -891,154 +1040,287 @@ ion-app.dark-theme {
             text-shadow: 0 2px 10px rgba(52, 211, 153, 0.35);
         }
 
-        .stepper-container {
-            background: #0f172a;
-            border-radius: 14px;
-            padding: 12px;
-            border: 1.5px solid rgba(255, 255, 255, 0.18);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
-            margin-bottom: 14px;
-        }
+            /* ========================================================== */
+    /* 💎 數值調節器元件（100% 逐字核對、雙主題完美適配版） */
+    /* ========================================================== */
 
-        .stepper-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+    /* ☀️ 1. 開燈模式：容器背景 */
+    .stepper-container {
+        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+        border-radius: 14px;
+        padding: 12px;
+        border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        margin-bottom: 14px;
+    }
 
-        .stepper-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #94a3b8;
-        }
+    /* 🌙 2. 熄燈模式：容器背景 */
+    ion-app.dark-theme .stepper-container,
+    .dark-theme .stepper-container {
+        background: #0f172a !important;
+        border-radius: 14px;
+        padding: 12px;
+        border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+        margin-bottom: 14px;
+    }
 
-        .stepper-main-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .stepper-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
 
-        .stepper-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            font-size: 22px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
+    /* ☀️ 1. 開燈模式：標籤文字 */
+    .stepper-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #334155 !important;
+    }
 
-        .stepper-btn:active {
-            transform: scale(0.92);
-            background: #3b82f6;
-            color: white;
-        }
+    /* 🌙 2. 熄燈模式：標籤文字 */
+    ion-app.dark-theme .stepper-label,
+    .dark-theme .stepper-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #94a3b8 !important;
+    }
 
-        .stepper-input-wrapper {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            background: #020617;
-            border-radius: 12px;
-            padding: 0 12px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6);
-        }
+    .stepper-main-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .stepper-currency {
-            font-size: 15px;
-            font-weight: 800;
-            color: #38bdf8;
-            margin-right: 4px;
-        }
+    /* ☀️ 1. 開燈模式：按鈕 */
+    .stepper-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(210, 225, 220, 0.7) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        color: #070d1b !important;
+        font-size: 22px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.15s ease;
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1) !important;
+    }
 
-        .stepper-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fbbf24;
-            font-size: 22px;
-            font-weight: 800;
-            text-align: right;
-            font-family: inherit;
-            padding: 8px 0;
-        }
+    /* 🌙 2. 熄燈模式：按鈕 */
+    ion-app.dark-theme .stepper-btn,
+    .dark-theme .stepper-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+        font-size: 22px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.15s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+    }
 
-        .stepper-input.emerald {
-            color: #34d399;
-        }
+    .stepper-btn:active {
+        transform: scale(0.92);
+        background: #3b82f6 !important;
+        color: white !important;
+    }
 
-        .stepper-input.indigo {
-            color: #818cf8;
-        }
+    /* ☀️ 1. 開燈模式：輸入框包裝層 */
+    .stepper-input-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.85) !important;
+        border-radius: 12px;
+        padding: 0 12px;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+    }
 
-        .custom-range-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 8px;
-            border-radius: 6px;
-            background: #1e293b;
-            outline: none;
-            margin: 14px 0 6px 0;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
+    /* 🌙 2. 熄燈模式：輸入框包裝層 */
+    ion-app.dark-theme .stepper-input-wrapper,
+    .dark-theme .stepper-input-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background: #020617 !important;
+        border-radius: 12px;
+        padding: 0 12px;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6) !important;
+    }
 
-        .custom-range-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #fbbf24;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
-            border: 2px solid #ffffff;
-            transition: transform 0.1s ease;
-        }
+    /* ☀️ 1. 開燈模式：貨幣符號 */
+    .stepper-currency {
+        font-size: 15px;
+        font-weight: 800;
+        color: #0369a1 !important;
+        margin-right: 4px;
+    }
 
-        .custom-range-slider.emerald::-webkit-slider-thumb {
-            background: #34d399;
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
-        }
+    /* 🌙 2. 熄燈模式：貨幣符號 */
+    ion-app.dark-theme .stepper-currency,
+    .dark-theme .stepper-currency {
+        font-size: 15px;
+        font-weight: 800;
+        color: #38bdf8 !important;
+        margin-right: 4px;
+    }
 
-        .quick-chip-row {
-            display: flex;
-            gap: 6px;
-            margin-top: 10px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
+    /* ☀️ 1. 開燈模式：輸入框 */
+    .stepper-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #92400e !important;
+        font-size: 22px;
+        font-weight: 800;
+        text-align: right;
+        font-family: inherit;
+        padding: 8px 0;
+    }
 
-        .quick-chip {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #cbd5e1;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 5px 11px;
-            border-radius: 8px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s ease;
-            flex-shrink: 0;
-        }
+    /* 🌙 2. 熄燈模式：輸入框 */
+    ion-app.dark-theme .stepper-input,
+    .dark-theme .stepper-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #fbbf24 !important;
+        font-size: 22px;
+        font-weight: 800;
+        text-align: right;
+        font-family: inherit;
+        padding: 8px 0;
+    }
 
-        .quick-chip:active {
-            background: #38bdf8;
-            color: #0f172a;
-            border-color: #38bdf8;
-        }
+    /* ☀️ 1. 開燈模式：翡翠色輸入框 */
+    .stepper-input.emerald {
+        color: #047857 !important;
+    }
+
+    /* 🌙 2. 熄燈模式：翡翠色輸入框 */
+    ion-app.dark-theme .stepper-input.emerald,
+    .dark-theme .stepper-input.emerald {
+        color: #34d399 !important;
+    }
+
+    /* ☀️ 1. 開燈模式：靛藍色輸入框 */
+    .stepper-input.indigo {
+        color: #4338ca !important;
+    }
+
+    /* 🌙 2. 熄燈模式：靛藍色輸入框 */
+    ion-app.dark-theme .stepper-input.indigo,
+    .dark-theme .stepper-input.indigo {
+        color: #818cf8 !important;
+    }
+
+    /* ☀️ 1. 開燈模式：滑動條 */
+    .custom-range-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.6) !important;
+        outline: none;
+        margin: 14px 0 6px 0;
+        border: 1px solid rgba(212, 175, 55, 0.35) !important;
+    }
+
+    /* 🌙 2. 熄燈模式：滑動條 */
+    ion-app.dark-theme .custom-range-slider,
+    .dark-theme .custom-range-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 6px;
+        background: #1e293b !important;
+        outline: none;
+        margin: 14px 0 6px 0;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .custom-range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #fbbf24;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+        border: 2px solid #ffffff;
+        transition: transform 0.1s ease;
+    }
+
+    .custom-range-slider.emerald::-webkit-slider-thumb {
+        background: #34d399;
+        box-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+    }
+
+    .quick-chip-row {
+        display: flex;
+        gap: 6px;
+        margin-top: 10px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    /* ☀️ 1. 開燈模式：快速標籤 */
+    .quick-chip {
+        background: rgba(255, 255, 255, 0.6) !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        color: #1e293b !important;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 5px 11px;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s ease;
+        flex-shrink: 0;
+    }
+
+    /* 🌙 2. 熄燈模式：快速標籤 */
+    ion-app.dark-theme .quick-chip,
+    .dark-theme .quick-chip {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        color: #cbd5e1 !important;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 5px 11px;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s ease;
+        flex-shrink: 0;
+    }
+
+    .quick-chip:active {
+        background: #38bdf8 !important;
+        color: #0f172a !important;
+        border-color: #38bdf8 !important;
+    }
+
 
 /* 💡 終極唯一版：清單卡片 Box（開燈原裝漸變 + 熄燈微調暗沉深色金屬漸變） */
 /* ☀️ 1. 開燈模式（Light Mode）：流光位在中間的金屬漸變 + 淺金黃幼邊框 */
@@ -1392,237 +1674,121 @@ ion-app.dark-theme .custom-sliding-item ion-item {
     }
 
 
-        /* 修正 WebKit (iOS / Safari / Chrome) 日期輸入框內部文字置中與高度 */
-        input[type="date"]::-webkit-date-and-time-value {
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            min-height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* 調整月曆小圖示樣式 */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.8);
-            /* 將圖示轉為淺色以配合深色背景 */
-            cursor: pointer;
-            margin-left: 4px;
-        }
-
-        /* 💡 自訂型格下拉選單觸發按鈕 */
-        .custom-select-trigger {
-            background: rgba(30, 41, 59, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 12px;
-            padding: 0 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            height: 54px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .custom-select-trigger:active {
-            transform: scale(0.98);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .selected-value-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
             /* ========================================================== */
-    /* 💡 彈出官方 Logo 選擇介面（雙主題適配版） */
+    /* 📅 日期輸入框與日曆圖示（雙主題精準適配版） */
     /* ========================================================== */
 
-    .payment-picker-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.75);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        display: none;
-        align-items: flex-end;
-        justify-content: center;
-        z-index: 999999;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-    }
-
-    .payment-picker-modal.active {
+    /* ☀️ 1. 開燈模式：WebKit 日期數值與圖示樣式 */
+    input[type="date"]::-webkit-date-and-time-value {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        min-height: 100%;
         display: flex;
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    /* ☀️ 預設開燈模式 */
-    .picker-content {
-        background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%);
-        border-top: 1px solid rgba(212, 175, 55, 0.45);
-        border-radius: 24px 24px 0 0;
-        padding: 20px 20px 36px 20px;
-        width: 100%;
-        max-width: 480px;
-        transform: translateY(100%);
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        max-height: 75vh;
-        overflow-y: auto;
-        box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    /* 🌙 熄燈模式（深色主題） */
-    body.dark-theme .picker-content,
-    ion-app.dark-theme .picker-content,
-    .dark-theme .picker-content {
-        background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
-        border-top: 1px solid rgba(245, 158, 11, 0.3) !important;
-        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .payment-picker-modal.active .picker-content {
-        transform: translateY(0);
-    }
-
-    /* 標題列：開燈模式 */
-    .picker-header {
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        justify-content: center;
     }
 
-    /* 標題列：熄燈模式 */
-    body.dark-theme .picker-header,
-    ion-app.dark-theme .picker-header,
-    .dark-theme .picker-header {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.2) !important;
+        cursor: pointer;
+        margin-left: 4px;
     }
 
-    /* 標題文字：開燈模式 */
-    .picker-title {
-        font-size: 16px;
-        font-weight: 800;
-        color: #070d1b;
-        letter-spacing: 0.5px;
+    /* 🌙 2. 熄燈模式：WebKit 日期數值與圖示樣式 */
+    ion-app.dark-theme input[type="date"]::-webkit-date-and-time-value,
+    .dark-theme input[type="date"]::-webkit-date-and-time-value {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    /* 標題文字：熄燈模式 */
-    body.dark-theme .picker-title,
-    ion-app.dark-theme .picker-title,
-    .dark-theme .picker-title {
+    ion-app.dark-theme input[type="date"]::-webkit-calendar-picker-indicator,
+    .dark-theme input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.8) !important;
+        cursor: pointer;
+        margin-left: 4px;
+    }
+
+
+            /* ========================================================== */
+    /* 💡 自訂型格下拉選單觸發按鈕（100% 逐字核對、雙主題完美適配版） */
+    /* ========================================================== */
+
+    /* ☀️ 1. 開燈模式：觸發按鈕 */
+    .custom-select-trigger {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(210, 225, 220, 0.7) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.45) !important;
+        border-radius: 12px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        height: 54px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* 🌙 2. 熄燈模式：觸發按鈕 */
+    ion-app.dark-theme .custom-select-trigger,
+    .dark-theme .custom-select-trigger {
+        background: rgba(30, 41, 59, 0.9) !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        border-radius: 12px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        height: 54px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: none !important;
+    }
+
+    .custom-select-trigger:active {
+        transform: scale(0.98);
+        border-color: rgba(212, 175, 55, 0.7);
+    }
+
+    ion-app.dark-theme .custom-select-trigger:active,
+    .dark-theme .custom-select-trigger:active {
+        transform: scale(0.98);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ☀️ 1. 開燈模式：已選擇數值顯示區 */
+    .selected-value-display {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #070d1b !important;
+    }
+
+    /* 🌙 2. 熄燈模式：已選擇數值顯示區 */
+    ion-app.dark-theme .selected-value-display,
+    .dark-theme .selected-value-display {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 14px;
         color: #ffffff !important;
     }
 
-    /* 關閉按鈕：開燈模式 */
-    .close-picker-btn {
-        background: rgba(0, 0, 0, 0.08);
-        border: none;
-        color: #334155;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 
-    /* 關閉按鈕：熄燈模式 */
-    body.dark-theme .close-picker-btn,
-    ion-app.dark-theme .close-picker-btn,
-    .dark-theme .close-picker-btn {
-        background: rgba(255, 255, 255, 0.1) !important;
-        color: #94a3b8 !important;
-    }
-
-    /* 官方 Logo 選項網格 */
-    .option-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    /* 選項按鈕：開燈模式 */
-    .payment-option-btn {
-        background: rgba(255, 255, 255, 0.4);
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        border-radius: 12px;
-        padding: 10px 12px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        color: #0f172a;
-        font-weight: 700;
-        font-size: 13px;
-        text-align: left;
-    }
-
-    /* 選項按鈕：熄燈模式 */
-    body.dark-theme .payment-option-btn,
-    ion-app.dark-theme .payment-option-btn,
-    .dark-theme .payment-option-btn {
-        background: rgba(255, 255, 255, 0.04) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        color: #f1f5f9 !important;
-    }
-
-    /* 選中狀態：開燈模式 */
-    .payment-option-btn:active,
-    .payment-option-btn.selected {
-        background: rgba(245, 158, 11, 0.25);
-        border-color: #d97706;
-        box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
-    }
-
-    /* 選中狀態：熄燈模式 */
-    body.dark-theme .payment-option-btn:active,
-    body.dark-theme .payment-option-btn.selected,
-    ion-app.dark-theme .payment-option-btn:active,
-    ion-app.dark-theme .payment-option-btn.selected,
-    .dark-theme .payment-option-btn:active,
-    .dark-theme .payment-option-btn.selected {
-        background: rgba(59, 130, 246, 0.2) !important;
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.3) !important;
-    }
-
-    /* Logo 框：開燈模式 */
-    .logo-box {
-        width: 34px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.6);
-        border-radius: 6px;
-        flex-shrink: 0;
-    }
-
-    /* Logo 框：熄燈模式 */
-    body.dark-theme .logo-box,
-    ion-app.dark-theme .logo-box,
-    .dark-theme .logo-box {
-        background: rgba(255, 255, 255, 0.08) !important;
-    }
 
 /* 💡 通用 Modal 頂部拖拽提示條 */
 .drag-handle-bar {
@@ -3269,20 +3435,22 @@ const LOAN_CATEGORY_MAP = {
 };
 
 
-// 💡 乾淨俐落嘅主題切換函數（已移除無謂嘅 toolbar 函數）
 function initTheme() {
     const savedTheme = localStorage.getItem('app_theme');
     const app = document.getElementById('appContainer');
     const icon = document.getElementById('themeIcon');
-    
+    const paymentModal = document.querySelector('.payment-picker-modal'); // 👈 新增：抓取支付 Modal
+
     const isDark = (savedTheme === 'dark');
 
     if (app) {
         if (isDark) {
             app.classList.add('dark-theme');
+            if (paymentModal) paymentModal.classList.add('dark-theme'); // 👈 新增：同步加入
             if (icon) icon.setAttribute('name', 'sunny-outline');
         } else {
             app.classList.remove('dark-theme');
+            if (paymentModal) paymentModal.classList.remove('dark-theme'); // 👈 新增：同步移除
             if (icon) icon.setAttribute('name', 'moon-outline');
         }
     }
@@ -3291,8 +3459,18 @@ function initTheme() {
 function toggleTheme() {
     const app = document.getElementById('appContainer');
     const icon = document.getElementById('themeIcon');
+    const paymentModal = document.querySelector('.payment-picker-modal'); // 👈 新增：抓取支付 Modal
 
-    const isDark = app.classList.toggle('dark-theme');
+    const isDark = app ? app.classList.toggle('dark-theme') : false;
+
+    // 👈 新增：隨時同步支付 Modal 的 dark-theme 狀態
+    if (paymentModal) {
+        if (isDark) {
+            paymentModal.classList.add('dark-theme');
+        } else {
+            paymentModal.classList.remove('dark-theme');
+        }
+    }
 
     if (isDark) {
         if (icon) icon.setAttribute('name', 'sunny-outline');
@@ -3303,8 +3481,24 @@ function toggleTheme() {
     }
 }
 
+function openPaymentPicker() {
+    const modal = document.querySelector('.payment-picker-modal');
+    
+    // 檢查目前網頁係咪深色模式
+    const isDark = document.body.classList.contains('dark-theme') || 
+                   document.documentElement.classList.contains('dark-theme') ||
+                   document.querySelector('ion-app')?.classList.contains('dark-theme');
 
+    if (isDark) {
+        modal.classList.add('dark-theme');
+        modal.style.setProperty('background', 'rgba(0, 0, 0, 0.85)', 'important');
+    } else {
+        modal.classList.remove('dark-theme');
+        modal.style.setProperty('background', 'rgba(15, 23, 42, 0.5)', 'important');
+    }
 
+    modal.classList.add('active');
+}
 
 
         // 💡 1. 取得當前真實年月字串 (格式: "YYYY-MM")
