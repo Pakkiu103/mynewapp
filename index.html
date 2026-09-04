@@ -1096,21 +1096,6 @@
             --color: #ffffff !important;
         }
 
-		/* ☀️ 預設開燈模式：html, body 背景貼合你的		淺綠金屬風 (例如 #eaf3f0) */
-		html, body {
-    	background-color: #eaf3f0 !important;
-    	color: #070d1b !important;
-		}
-
-		/* 🌙 熄燈模式：當開啟 dark-theme 時，html, 		body 背景自動轉為深色金屬風 (例如 #090d16) 		*/
-		ion-app.dark-theme,
-		ion-app.dark-theme html,
-		ion-app.dark-theme body,
-		body.dark-theme {
-    	background-color: #090d16 !important;
-    	color: #f8fafc !important;
-		}
-
         .theme-toggle-btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(148, 163, 184, 0.08) 100%);
             border: 1px solid rgba(226, 232, 240, 0.35);
@@ -2400,21 +2385,23 @@
 
         /* 👑 自訂 Header 最終完美版：擴大不銹鋼暈眩光 + 3px 漸隱金光束 */
         .my-custom-header {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            height: 65px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            z-index: 9999;
-            box-sizing: border-box;
-            overflow: hidden;
-            margin: 0 !important;
-            /* 確保自己完全冇外距 */
-        }
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: calc(65px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 9999;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0 !important;
+}
+
 
 
         /* ☀️ 開燈模式：擴大範圍的不銹鋼中央發散暈眩光 */
@@ -2529,6 +2516,17 @@
             background: #020617 !important;
             border: 1.5px solid rgba(129, 140, 248, 0.5) !important;
         }
+
+html, body {
+    background-color: #eaf3f0 !important;
+}
+
+ion-app.dark-theme,
+ion-app.dark-theme html,
+ion-app.dark-theme body {
+    background-color: #090d16 !important;
+}
+
     </style>
 </head>
 
