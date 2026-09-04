@@ -6,9 +6,9 @@
     <title>個人理財總覽</title>
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- 💡 根據你的兩個主題自動變色的 Meta Theme Color -->
-<meta name="theme-color" content="#eaf3f0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
+    <!-- 💡 根據你的兩個主題自動變色的 Meta Theme Color -->
+    <meta name="theme-color" content="#eaf3f0" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
 
 
     <!-- Ionic Framework CSS & JS -->
@@ -18,7 +18,6 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
     <style>
-
         /* ⚡ 款式 D：純黑液體金屬 (Obsidian) */
         #pageHome .card-inner-content {
             background:
@@ -1094,6 +1093,11 @@
         ion-app.dark-theme ion-content {
             --background: #090d16 !important;
             --color: #ffffff !important;
+        }
+
+        ion-content {
+            --background: transparent !important;
+            background: transparent !important;
         }
 
         .theme-toggle-btn {
@@ -2312,36 +2316,24 @@
         /* 💡 終極完美釘死 (Fixed) 方案：不變形、不放大、完全釘死在頂部唔郁 */
         .fixed-top-card-area {
             position: fixed !important;
-            top: 75px !important;
-            /* 緊貼在頂部 Header 下方 (Header 高度 65px) */
+            top: calc(65px + env(safe-area-inset-top, 0px)) !important;
             left: 16px !important;
-            /* 左右留返 16px 邊距，保證卡片大小跟之前一模一樣，絕不放大變闊 */
             right: 16px !important;
             width: auto !important;
-            /* 自動適應左右邊距，保持最完美比例 */
             z-index: 100 !important;
             background: #edf2f4 !important;
-            /* 開燈模式實色底色，徹底遮光 */
-
-            /* 保留你最鍾意嘅向上平移 */
             transform: translateY(-16px) !important;
             padding: 10px 0px 0px 0px !important;
             margin: 0 !important;
             box-sizing: border-box !important;
-
-            /* 下方兩角切 20px 圓角 */
             border-bottom-left-radius: 20px !important;
             border-bottom-right-radius: 20px !important;
-
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
         }
 
-        /* 熄燈模式下的實色底色與圓角 */
         ion-app.dark-theme .fixed-top-card-area {
-            /* 唔會移位嘅頂部微光邊框（熄燈模式） */
-            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-
             background: #090d16 !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
 
         /* 下方頁面容器：空出頂部空間，確保清單在卡片下方順暢滾動 */
@@ -2385,23 +2377,22 @@
 
         /* 👑 自訂 Header 最終完美版：擴大不銹鋼暈眩光 + 3px 漸隱金光束 */
         .my-custom-header {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: calc(65px + env(safe-area-inset-top, 0px)) !important;
-    padding-top: env(safe-area-inset-top, 0px) !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 16px;
-    padding-right: 16px;
-    z-index: 9999;
-    box-sizing: border-box;
-    overflow: hidden;
-    margin: 0 !important;
-}
-
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: calc(65px + env(safe-area-inset-top, 0px)) !important;
+            padding-top: env(safe-area-inset-top, 0px) !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 16px;
+            padding-right: 16px;
+            z-index: 9999;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0 !important;
+        }
 
 
         /* ☀️ 開燈模式：擴大範圍的不銹鋼中央發散暈眩光 */
@@ -2517,16 +2508,20 @@
             border: 1.5px solid rgba(129, 140, 248, 0.5) !important;
         }
 
-html, body {
-    background-color: #eaf3f0 !important;
-}
+        html,
+        body {
+            background-color: #eaf3f0 !important;
+            margin: 0;
+            padding: 0;
+        }
 
-ion-app.dark-theme,
-ion-app.dark-theme html,
-ion-app.dark-theme body {
-    background-color: #090d16 !important;
-}
+        ion-app {
+            background-color: #eaf3f0 !important;
+        }
 
+        ion-app.dark-theme {
+            background-color: #090d16 !important;
+        }
     </style>
 </head>
 
@@ -4001,7 +3996,7 @@ ion-app.dark-theme body {
                 };
 
 
-                 function initTheme() {
+                function initTheme() {
                     const savedTheme = localStorage.getItem('app_theme');
                     const app = document.getElementById('appContainer');
                     const icon = document.getElementById('themeIcon');
