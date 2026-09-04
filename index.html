@@ -6,6 +6,10 @@
     <title>個人理財總覽</title>
     <meta name="viewport"
         content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- 💡 根據你的兩個主題自動變色的 Meta Theme Color -->
+<meta name="theme-color" content="#eaf3f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
+
 
     <!-- Ionic Framework CSS & JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
@@ -14,20 +18,6 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7/dist/ionicons/ionicons.js"></script>
 
     <style>
-/* 🚀 強制將自訂 Header 貼到最頂，無視任何 Ionic 預設間距 */
-.my-custom-header {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin-top: 0 !important;
-    transform: none !important;
-}
-
-/* 確保 Ionic 的內容容器不會被頂部 Header 誤導下壓，如果底下的內容被遮住，可以調整這裡 */
-ion-content {
-    --padding-top: 0px !important;
-}
 
         /* ⚡ 款式 D：純黑液體金屬 (Obsidian) */
         #pageHome .card-inner-content {
@@ -1106,6 +1096,20 @@ ion-content {
             --color: #ffffff !important;
         }
 
+		/* ☀️ 預設開燈模式：html, body 背景貼合你的		淺綠金屬風 (例如 #eaf3f0) */
+		html, body {
+    	background-color: #eaf3f0 !important;
+    	color: #070d1b !important;
+		}
+
+		/* 🌙 熄燈模式：當開啟 dark-theme 時，html, 		body 背景自動轉為深色金屬風 (例如 #090d16) 		*/
+		ion-app.dark-theme,
+		ion-app.dark-theme html,
+		ion-app.dark-theme body,
+		body.dark-theme {
+    	background-color: #090d16 !important;
+    	color: #f8fafc !important;
+		}
 
         .theme-toggle-btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(148, 163, 184, 0.08) 100%);
@@ -3999,23 +4003,25 @@ ion-content {
                 };
 
 
-                function initTheme() {
+                 function initTheme() {
                     const savedTheme = localStorage.getItem('app_theme');
                     const app = document.getElementById('appContainer');
                     const icon = document.getElementById('themeIcon');
-                    const paymentModal = document.querySelector('.payment-picker-modal'); // 👈 新增：抓取支付 Modal
+                    const paymentModal = document.querySelector('.payment-picker-modal');
 
                     const isDark = (savedTheme === 'dark');
 
                     if (app) {
                         if (isDark) {
                             app.classList.add('dark-theme');
-                            if (paymentModal) paymentModal.classList.add('dark-theme'); // 👈 新增：同步加入
+                            if (paymentModal) paymentModal.classList.add('dark-theme');
                             if (icon) icon.setAttribute('name', 'sunny-outline');
+                            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#090d16');
                         } else {
                             app.classList.remove('dark-theme');
-                            if (paymentModal) paymentModal.classList.remove('dark-theme'); // 👈 新增：同步移除
+                            if (paymentModal) paymentModal.classList.remove('dark-theme');
                             if (icon) icon.setAttribute('name', 'moon-outline');
+                            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#eaf3f0');
                         }
                     }
                 }
@@ -4023,11 +4029,10 @@ ion-content {
                 function toggleTheme() {
                     const app = document.getElementById('appContainer');
                     const icon = document.getElementById('themeIcon');
-                    const paymentModal = document.querySelector('.payment-picker-modal'); // 👈 新增：抓取支付 Modal
+                    const paymentModal = document.querySelector('.payment-picker-modal');
 
                     const isDark = app ? app.classList.toggle('dark-theme') : false;
 
-                    // 👈 新增：隨時同步支付 Modal 的 dark-theme 狀態
                     if (paymentModal) {
                         if (isDark) {
                             paymentModal.classList.add('dark-theme');
@@ -4039,11 +4044,14 @@ ion-content {
                     if (isDark) {
                         if (icon) icon.setAttribute('name', 'sunny-outline');
                         localStorage.setItem('app_theme', 'dark');
+                        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#090d16');
                     } else {
                         if (icon) icon.setAttribute('name', 'moon-outline');
                         localStorage.setItem('app_theme', 'light');
+                        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#eaf3f0');
                     }
                 }
+
 
                 function openPaymentPicker() {
                     const modal = document.querySelector('.payment-picker-modal');
