@@ -2343,17 +2343,18 @@
         }
 
 
-        /* 下方頁面容器：空出頂部空間，確保清單在卡片下方順暢滾動 */
+                /* 下方頁面容器：動態計算劉海高度，無論普通網頁定 PWA 模式都唔會走位！ */
         .view-page {
             display: none;
-            padding-top: 305px !important;
-            /* 確保清單從卡片下方順暢展開 */
+            /* 305px（你本來度好嘅完美高度） + env(safe-area-inset-top)（自動適應 PWA 狀態欄） */
+            padding-top: calc(305px + env(safe-area-inset-top, 0px)) !important;
             padding-bottom: 110px !important;
         }
 
         .view-page.active-page {
             display: block !important;
         }
+
 
 
         /* 💳 卡片固定頂部容器：內部只准左右滾動，絕不上下亂走 */
