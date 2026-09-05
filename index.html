@@ -2656,6 +2656,16 @@ ion-modal.custom-bottom-modal::part(handle) {
     display: none !important;
 }
 
+/* 讓 Modal 完美貼頂，但自動保留安全距離畀 PWA 嘅動態島／劉海 */
+ion-modal.custom-bottom-modal {
+  --height: 100vh !important;
+  --max-height: 100vh !important;
+  top: 0 !important;
+  
+  /* 用 calc 結合系統安全距離：PWA 會自動避開動態島，瀏覽器預覽則頂到最盡 */
+  padding-top: env(safe-area-inset-top, 0px) !important;
+}
+
     </style>
 </head>
 
@@ -4543,22 +4553,29 @@ ion-modal.custom-bottom-modal::part(handle) {
                 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. 定義每個 Modal 獨特嘅高度設定
+  // 精準判斷係咪真正獨立運行嘅 PWA App（true 代表 PWA，false 代表手機瀏覽器）
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  
+  // 檢查當前 appContainer 係咪已經係深色模式
+  const isDark = document.getElementById('appContainer')?.classList.contains('dark-theme');
+
+  // 設定每個 Modal 喺「PWA App」同「手機瀏覽器」嘅高度
+  // 格式：isPWA ? [PWA高度] : [手機瀏覽器高度]
   const modalConfigs = {
-    '#editLoanModal': { breakpoints: [0, 1], initial: 1 },
-    '#logsModal':      { breakpoints: [0, 0.92],  initial: 0.92 },
-    '#addModal':       { breakpoints: [0, 0.92],  initial: 0.92 }, // 假設呢個比較矮
-    '#addLoanModal':   { breakpoints: [0, 0.92],  initial: 0.92 },
-    '#budgetModal':    { breakpoints: [0, 0.58], initial: 0.58 },
-    '#savingsGoalModal':{ breakpoints: [0, 0.58],  initial: 0.58 },
-    '#addSavingsModal':{ breakpoints: [0, 0.64],  initial: 0.64 },
-    '#calcModal':      { breakpoints: [0, 0.92], initial: 0.92 }, // 呢個可能需要全螢幕咁濟
-    '#incomeModal':    { breakpoints: [0, 0.58], initial: 0.58 },
-    '#extraIncomeModal':{ breakpoints: [0, 0.92], initial: 0.92 },
-    '#savingsPaModal': { breakpoints: [0, 0.58],  initial: 0.58 }
+    '#editLoanModal':     { breakpoints: isPWA ? [0, 95]    : [0, 1],  initial: isPWA ? 0.95  : 1  },
+    '#logsModal':         { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
+    '#addModal':          { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
+    '#addLoanModal':      { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
+    '#budgetModal':       { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
+    '#savingsGoalModal':  { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
+    '#addSavingsModal':   { breakpoints: isPWA ? [0, 0.67] : [0, 0.64],  initial: isPWA ? 0.67 : 0.64 },
+    '#calcModal':         { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
+    '#incomeModal':       { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
+    '#extraIncomeModal':  { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
+    '#savingsPaModal':    { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 }
   };
 
-  // 2. 用迴圈一次過自動為所有存在嘅 Modal 賦予設定
+  // 自動套用高度設定到每一個 Modal
   Object.keys(modalConfigs).forEach(selector => {
     const modal = document.querySelector(selector);
     if (modal) {
@@ -4567,7 +4584,18 @@ document.addEventListener('DOMContentLoaded', () => {
       modal.initialBreakpoint = config.initial;
     }
   });
+
+  // 🌙 網頁一開好，如果本身係深色模式，即刻幫所有 Modal 著上深色底
+  if (isDark) {
+    document.querySelectorAll('ion-modal.custom-bottom-modal').forEach(modal => {
+      const wrapper = modal.shadowRoot ? modal.shadowRoot.querySelector('.modal-wrapper') : null;
+      if (wrapper) {
+        wrapper.style.background = 'linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%)';
+      }
+    });
+  }
 });
+
 
 
                 // 💡 為所有 Modal（包含 calcModal）綁定下拉關閉手勢
