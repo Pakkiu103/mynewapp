@@ -4562,10 +4562,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 設定每個 Modal 喺「PWA App」同「手機瀏覽器」嘅高度
   // 格式：isPWA ? [PWA高度] : [手機瀏覽器高度]
   const modalConfigs = {
-    '#editLoanModal':     { breakpoints: isPWA ? [0, 85]    : [0, 1],  initial: isPWA ? 0.95  : 1  },
-    '#logsModal':         { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
-    '#addModal':          { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
-    '#addLoanModal':      { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
+    '#editLoanModal':     { breakpoints: isPWA ? [0, 0.85]    : [0, 1],  initial: isPWA ? 0.85  : 1  },
+    '#logsModal':         { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.85 : 0.92 },
+    '#addModal':          { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.85 : 0.92 },
+    '#addLoanModal':      { breakpoints: isPWA ? [0, 0.80] : [0, 0.92],  initial: isPWA ? 0.80 : 0.92 },
     '#budgetModal':       { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
     '#savingsGoalModal':  { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
     '#addSavingsModal':   { breakpoints: isPWA ? [0, 0.67] : [0, 0.64],  initial: isPWA ? 0.67 : 0.64 },
