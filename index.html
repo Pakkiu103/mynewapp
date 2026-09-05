@@ -1895,10 +1895,13 @@
         /* ========================================================== */
 
         /* ☀️ 開燈模式 Modal 背景：全面轉為淺綠金屬漸變 */
-        ion-modal ion-content {
+        Ion-modal ion-content {
             --background: transparent !important;
             background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
             --color: #070d1b;
+            
+            /* 幫 Modal 內部內容頂部預留安全空間，避免貼死最頂拉唔到 */
+            padding-top: env(safe-area-inset-top, 0px) !important;
         }
 
         /* 🌙 熄燈模式 Modal 背景：深色金屬風 */
@@ -2430,21 +2433,19 @@
             z-index: 3;
         }
 
-        /* ☀️ 開燈模式：3px 漸隱金光束（上下皆離邊 3px） */
+                /* ☀️ 開燈模式：3px 漸隱金光束（自動適應 safe-area 避開頂部） */
         #appContainer:not(.dark-theme) .my-custom-header::after {
             background:
-                linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.95) 50%, transparent) 0 3px / 100% 3px no-repeat,
+                linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.95) 50%, transparent) 0 calc(3px + env(safe-area-inset-top, 0px)) / 100% 3px no-repeat,
                 linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.95) 50%, transparent) 0 calc(100% - 3px) / 100% 3px no-repeat;
         }
 
-        /* 🌙 熄燈模式：3px 漸隱亮金光束（上下皆離邊 3px） */
+        /* 🌙 熄燈模式：3px 漸隱亮金光束（自動適應 safe-area 避開頂部） */
         #appContainer.dark-theme .my-custom-header::after {
             background:
-                linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.9) 50%, transparent) 0 3px / 100% 3px no-repeat,
+                linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.9) 50%, transparent) 0 calc(3px + env(safe-area-inset-top, 0px)) / 100% 3px no-repeat,
                 linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.9) 50%, transparent) 0 calc(100% - 3px) / 100% 3px no-repeat;
         }
-
-
 
 
         /* 💎 標題置中與金屬漸層特效 */
