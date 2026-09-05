@@ -2527,15 +2527,21 @@ ion-app.dark-theme body {
     background-color: #090d16 !important;
 }
 
-/* 全域統一設定所有 Modal：自動適應 PWA 狀態欄，告別貼頂！ */
+/* 針對 Ionic Modal 頂部進行安全下沉，避開動態島 */
 ion-modal {
-    --ion-safe-area-top: env(safe-area-inset-top, 0px) !important;
+    --ion-safe-area-top: 24px !important;
 }
 
-/* 確保 Modal 內部嘅頂部內容或者 wrapper 自動向下沉，留空間畀手勢或按鈕 */
-ion-modal .modal-wrapper, 
+/* 確保 Modal 內部第一層容器向下推開，留出空間畀「向下滑動關閉」同標題 */
+ion-modal .ion-page, 
 ion-modal ion-content {
-    padding-top: env(safe-area-inset-top, 0px) !important;
+    padding-top: env(safe-area-inset-top, 20px) !important;
+}
+
+/* 如果 Modal 裡面本身有自定嘅頂部標題列，額外增加距離 */
+ion-modal .modal-header,
+ion-modal header {
+    margin-top: env(safe-area-inset-top, 15px) !important;
 }
 
     </style>
