@@ -4562,17 +4562,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 設定每個 Modal 喺「PWA App」同「手機瀏覽器」嘅高度
   // 格式：isPWA ? [PWA高度] : [手機瀏覽器高度]
   const modalConfigs = {
-    '#editLoanModal':     { breakpoints: isPWA ? [0, 0.85]    : [0, 1],  initial: isPWA ? 0.85  : 1  },
-    '#logsModal':         { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.85 : 0.92 },
-    '#addModal':          { breakpoints: isPWA ? [0, 0.85] : [0, 0.92],  initial: isPWA ? 0.85 : 0.92 },
-    '#addLoanModal':      { breakpoints: isPWA ? [0, 0.80] : [0, 0.92],  initial: isPWA ? 0.80 : 0.92 },
-    '#budgetModal':       { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
-    '#savingsGoalModal':  { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
-    '#addSavingsModal':   { breakpoints: isPWA ? [0, 0.67] : [0, 0.64],  initial: isPWA ? 0.67 : 0.64 },
-    '#calcModal':         { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
-    '#incomeModal':       { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 },
-    '#extraIncomeModal':  { breakpoints: isPWA ? [0, 0.95] : [0, 0.92],  initial: isPWA ? 0.95 : 0.92 },
-    '#savingsPaModal':    { breakpoints: isPWA ? [0, 0.61] : [0, 0.58],  initial: isPWA ? 0.61 : 0.58 }
+    '#editLoanModal':     { breakpoints: isPWA ? [0, 0.92]    : [0, 0.95],  initial: isPWA ? 0.92  : 0.95  },
+    '#logsModal':         { breakpoints: isPWA ? [0, 0.92] : [0, 0.87],  initial: isPWA ? 0.92 : 0.87 },
+    '#addModal':          { breakpoints: isPWA ? [0, 0.92] : [0, 0.97],  initial: isPWA ? 0.92 : 0.87 },
+    '#addLoanModal':      { breakpoints: isPWA ? [0, 0.92] : [0, 0.87],  initial: isPWA ? 0.92 : 0.87 },
+    '#budgetModal':       { breakpoints: isPWA ? [0, 0.58] : [0, 0.53],  initial: isPWA ? 0.58 : 0.53 },
+    '#savingsGoalModal':  { breakpoints: isPWA ? [0, 0.58] : [0, 0.53],  initial: isPWA ? 0.58 : 0.53 },
+    '#addSavingsModal':   { breakpoints: isPWA ? [0, 0.64] : [0, 0.59],  initial: isPWA ? 0.64 : 0.59 },
+    '#calcModal':         { breakpoints: isPWA ? [0, 0.92] : [0, 0.87],  initial: isPWA ? 0.92 : 0.87 },
+    '#incomeModal':       { breakpoints: isPWA ? [0, 0.58] : [0, 0.53],  initial: isPWA ? 0.58 : 0.53 },
+    '#extraIncomeModal':  { breakpoints: isPWA ? [0, 0.92] : [0, 0.87],  initial: isPWA ? 0.92 : 0.87 },
+    '#savingsPaModal':    { breakpoints: isPWA ? [0, 0.58] : [0, 0.53],  initial: isPWA ? 0.58 : 0.53 }
   };
 
   // 自動套用高度設定到每一個 Modal
