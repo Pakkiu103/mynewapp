@@ -2527,6 +2527,17 @@ ion-app.dark-theme body {
     background-color: #090d16 !important;
 }
 
+/* 全域統一設定所有 Modal：自動適應 PWA 狀態欄，告別貼頂！ */
+ion-modal {
+    --ion-safe-area-top: env(safe-area-inset-top, 0px) !important;
+}
+
+/* 確保 Modal 內部嘅頂部內容或者 wrapper 自動向下沉，留空間畀手勢或按鈕 */
+ion-modal .modal-wrapper, 
+ion-modal ion-content {
+    padding-top: env(safe-area-inset-top, 0px) !important;
+}
+
     </style>
 </head>
 
