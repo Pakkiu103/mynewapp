@@ -2527,22 +2527,28 @@ ion-app.dark-theme body {
     background-color: #090d16 !important;
 }
 
-/* 針對 Ionic Modal 頂部進行安全下沉，避開動態島 */
+/* 1. 將整個 modal 嘅外層底色設為透明，消除白色截斷 */
 ion-modal {
-    --ion-safe-area-top: 24px !important;
+    --background: transparent !important;
+    background: transparent !important;
 }
 
-/* 確保 Modal 內部第一層容器向下推開，留出空間畀「向下滑動關閉」同標題 */
-ion-modal .ion-page, 
+/* 2. 針對 modal 的主體 wrapper 統一背景，並利用 padding 避開動態島 */
+ion-modal .modal-wrapper {
+    background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+    overflow: hidden !important;
+    /* 自動向下沉開避開動態島 */
+    margin-top: env(safe-area-inset-top, 20px) !important;
+}
+
+/* 3. 確保入面嘅 content 配合透明背景 */
 ion-modal ion-content {
-    padding-top: env(safe-area-inset-top, 20px) !important;
+    --background: transparent !important;
+    background: transparent !important;
 }
 
-/* 如果 Modal 裡面本身有自定嘅頂部標題列，額外增加距離 */
-ion-modal .modal-header,
-ion-modal header {
-    margin-top: env(safe-area-inset-top, 15px) !important;
-}
 
     </style>
 </head>
