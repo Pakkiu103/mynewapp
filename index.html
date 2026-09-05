@@ -1894,23 +1894,58 @@
         /* 💎 Modal 彈窗與表單元件雙主題完美適配版（全景淺綠金屬風） */
         /* ========================================================== */
 
-        /* ☀️ 開燈模式 Modal 背景：全面轉為淺綠金屬漸變 */
-        Ion-modal ion-content {
-            --background: transparent !important;
-            background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
-            --color: #070d1b;
-            
-            /* 幫 Modal 內部內容頂部預留安全空間，避免貼死最頂拉唔到 */
-            padding-top: env(safe-area-inset-top, 0px) !important;
-        }
+      /* ==========================================
+  /* ==========================================
+   1. 共同基礎設定：圓角、陰影、透明背景與安全距離
+   ========================================== */
+ion-modal.custom-bottom-modal .modal-wrapper {
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15) !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
 
-        /* 🌙 熄燈模式 Modal 背景：深色金屬風 */
-        ion-app.dark-theme ion-modal ion-content,
-        .dark-theme ion-modal ion-content {
-            --background: transparent !important;
-            background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
-            --color: #f8fafc;
-        }
+ion-modal.custom-bottom-modal ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+}
+
+/* ==========================================
+   2. ☀️ 開燈模式 (Light Theme) - 預設
+   ========================================== */
+ion-modal.custom-bottom-modal .modal-wrapper {
+    background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+}
+
+ion-modal.custom-bottom-modal ion-content {
+    --color: #070d1b !important;
+}
+
+/* ==========================================
+   3. 🌙 熄燈模式 (Dark Theme) - 必須提高權重
+   ========================================== */
+/* ==========================================
+   🌙 終極深色模式 Modal 修正 (確保一定食到深色漸變)
+   ========================================== */
+
+/* 確保無論 .dark-theme 係掛喺 body、html 定 ion-app，都能夠強制覆蓋 modal-wrapper */
+body.dark-theme ion-modal.custom-bottom-modal .modal-wrapper,
+ion-app.dark-theme ion-modal.custom-bottom-modal .modal-wrapper,
+.dark-theme ion-modal.custom-bottom-modal .modal-wrapper {
+    background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%) !important;
+}
+
+body.dark-theme ion-modal.custom-bottom-modal ion-content,
+ion-app.dark-theme ion-modal.custom-bottom-modal ion-content,
+.dark-theme ion-modal.custom-bottom-modal ion-content {
+    --color: #f8fafc !important;
+    --background: transparent !important;
+    background: transparent !important;
+}
+
+
 
         /* ☀️ 1. 開燈模式：Modal 頂部標題卡片（淺綠金屬漸變 + 精緻金邊） */
         .modal-header-box {
@@ -2527,28 +2562,99 @@ ion-app.dark-theme body {
     background-color: #090d16 !important;
 }
 
-/* 1. 將整個 modal 嘅外層底色設為透明，消除白色截斷 */
+/* 1. 強制鎖死整個 modal 及其動畫中的底色，防止關閉時露底 */
 ion-modal {
-    --background: transparent !important;
-    background: transparent !important;
+    --background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+    background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+    background-color: #9bb5ad !important;
+    --ion-safe-area-top: env(safe-area-inset-top, 20px) !important;
 }
 
-/* 2. 針對 modal 的主體 wrapper 統一背景，並利用 padding 避開動態島 */
+/* 2. 針對正在關閉（dismissing）或者滑動中的 modal 狀態進行底色鎖定 */
+ion-modal.ion-paying,
+ion-modal.overlay-hidden,
+.ion-page-hidden {
+    background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
+    background-color: #9bb5ad !important;
+}
+
+/* 3. 背景遮罩設定 */
+ion-modal::part(backdrop) {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* 4. 主體 wrapper 鎖死漸層與安全距離 */
 ion-modal .modal-wrapper {
     background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
-    border-top-left-radius: 20px !important;
-    border-top-right-radius: 20px !important;
+    background-color: #9bb5ad !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
     overflow: hidden !important;
-    /* 自動向下沉開避開動態島 */
-    margin-top: env(safe-area-inset-top, 20px) !important;
+    margin-top: calc(env(safe-area-inset-top, 20px) + 10px) !important;
+    height: calc(100% - env(safe-area-inset-top, 20px) - 10px) !important;
+    
+    /* 確保動畫過程暢順且不閃爍 */
+    transform-translate: 0;
+    will-change: transform, opacity;
 }
 
-/* 3. 確保入面嘅 content 配合透明背景 */
+/* 5. 內部保持透明 */
 ion-modal ion-content {
     --background: transparent !important;
     background: transparent !important;
 }
 
+/* 1. 徹底放棄會造成中間色曝光嘅三色漸層，改用乾淨嘅單一實色或極柔和微漸層 */
+ion-modal.sheet-modal,
+ion-modal[initial-breakpoint] {
+    --background: #9bb5ad !important;
+    background-color: #9bb5ad !important;
+}
+
+/* 2. 確保 wrapper 亦都係同一個實色，完全消除壓縮時嘅色差閃爍 */
+ion-modal.sheet-modal .modal-wrapper,
+ion-modal[initial-breakpoint] .modal-wrapper {
+    background: #9bb5ad !important;
+    background-color: #9bb5ad !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+    overflow: hidden !important;
+}
+
+/* 3. 確保關閉時的底層遮罩穩定 */
+ion-modal.sheet-modal::part(backdrop),
+ion-modal[initial-breakpoint]::part(backdrop) {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* 1. 只管外觀，絕對唔好寫死 --height！ */
+ion-modal.custom-bottom-modal {
+    background: transparent !important;
+}
+
+/* 2. 讓 wrapper 負責圓角同顏色，高度交由 JS/Ionic 嘅 Sheet 邏輯處理 */
+ion-modal.custom-bottom-modal .modal-wrapper {
+    background: #9bb5ad !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15) !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    /* ⚠️ 刪除 height: 100%！如果寫死咗 100%，Modal 會直接變全螢幕，拉唔細架！ */
+}
+
+/* 3. 確保背景半透明遮罩正常 */
+ion-modal.custom-bottom-modal::part(backdrop) {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* 隱藏 Ionic 內置預設嘅下拉銀條 */
+ion-modal.custom-bottom-modal::part(handle) {
+    display: none !important;
+}
 
     </style>
 </head>
@@ -3034,7 +3140,7 @@ ion-modal ion-content {
             </div>
 
             <!-- 💡 消息動態 Modal（完美結合通用 drag-handle-bar 類別） -->
-            <ion-modal id="logsModal" initial-breakpoint="0.91" handle="true">
+            <ion-modal id="logsModal" class="custom-bottom-modal">
                 <ion-header class="ion-no-border logs-page-header" style="touch-action: none;">
                     <!-- 💡 這裡加上了 class="drag-handle-bar"，完美套用你上面果段通用拖拽條樣式 -->
                     <div id="dragHandleArea" class="drag-handle-bar" style="cursor: grab;">
@@ -3069,7 +3175,7 @@ ion-modal ion-content {
 
 
             <!-- 新增開銷 Modal -->
-            <ion-modal id="addModal" initial-breakpoint="0.91" handle="true">
+            <ion-modal id="addModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <!-- 💡 頂部拖拽指示條 -->
                     <div class="drag-handle-bar">
@@ -3190,7 +3296,7 @@ ion-modal ion-content {
             </ion-modal>
 
             <!-- 借貸 Modal -->
-            <ion-modal id="addLoanModal" initial-breakpoint="0.91" handle="true">
+            <ion-modal id="addLoanModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3288,7 +3394,7 @@ ion-modal ion-content {
             </ion-modal>
 
             <!-- 修改貸款 Modal -->
-            <ion-modal id="editLoanModal" initial-breakpoint="1" handle="true">
+            <ion-modal id="editLoanModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3403,7 +3509,7 @@ ion-modal ion-content {
             </ion-modal>
 
             <!-- 預算 Modal -->
-            <ion-modal id="budgetModal" initial-breakpoint="0.58" handle="true">
+            <ion-modal id="budgetModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3447,7 +3553,7 @@ ion-modal ion-content {
             </ion-modal>
 
             <!-- 儲蓄目標 Modal -->
-            <ion-modal id="savingsGoalModal" initial-breakpoint="0.58" handle="true">
+            <ion-modal id="savingsGoalModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3495,7 +3601,7 @@ ion-modal ion-content {
                 </ion-content>
             </ion-modal>
             <!-- 💡 存入儲蓄資金 Modal -->
-            <ion-modal id="addSavingsModal" initial-breakpoint="0.66" handle="true">
+            <ion-modal id="addSavingsModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3565,7 +3671,7 @@ ion-modal ion-content {
                 </ion-content>
             </ion-modal>
             <!-- 💡 尺寸剛剛好：半頁滑動式計算機 Modal（全頁雙主題自動適配版） -->
-            <ion-modal id="calcModal" initial-breakpoint="0.91" handle="true">
+            <ion-modal id="calcModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding calc-page-theme">
                     <!-- 頂部拖拽條 -->
                     <div class="drag-handle-bar">
@@ -3645,7 +3751,7 @@ ion-modal ion-content {
 
 
             <!-- 💡 設定本月收入 Modal -->
-            <ion-modal id="incomeModal" initial-breakpoint="0.58" handle="true">
+            <ion-modal id="incomeModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3692,7 +3798,7 @@ ion-modal ion-content {
                 </ion-content>
             </ion-modal>
 
-            <ion-modal id="extraIncomeModal" initial-breakpoint="0.91" handle="true">
+            <ion-modal id="extraIncomeModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -3759,7 +3865,7 @@ ion-modal ion-content {
             </ion-modal>
 
             <!-- 💡 升級版設定儲蓄年利率 (p.a.) 與期數 Modal -->
-            <ion-modal id="savingsPaModal" initial-breakpoint="0.58" handle="true">
+            <ion-modal id="savingsPaModal" class="custom-bottom-modal">
                 <ion-content class="ion-padding">
                     <div class="drag-handle-bar">
                         <div class="handle-pill"></div>
@@ -4048,30 +4154,43 @@ ion-modal ion-content {
                 }
 
                 function toggleTheme() {
-                    const app = document.getElementById('appContainer');
-                    const icon = document.getElementById('themeIcon');
-                    const paymentModal = document.querySelector('.payment-picker-modal');
+    const app = document.getElementById('appContainer');
+    const icon = document.getElementById('themeIcon');
+    const paymentModal = document.querySelector('.payment-picker-modal');
 
-                    const isDark = app ? app.classList.toggle('dark-theme') : false;
+    const isDark = app ? app.classList.toggle('dark-theme') : false;
 
-                    if (paymentModal) {
-                        if (isDark) {
-                            paymentModal.classList.add('dark-theme');
-                        } else {
-                            paymentModal.classList.remove('dark-theme');
-                        }
-                    }
+    if (paymentModal) {
+        if (isDark) {
+            paymentModal.classList.add('dark-theme');
+        } else {
+            paymentModal.classList.remove('dark-theme');
+        }
+    }
 
-                    if (isDark) {
-                        if (icon) icon.setAttribute('name', 'sunny-outline');
-                        localStorage.setItem('app_theme', 'dark');
-                        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#090d16');
-                    } else {
-                        if (icon) icon.setAttribute('name', 'moon-outline');
-                        localStorage.setItem('app_theme', 'light');
-                        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#eaf3f0');
-                    }
-                }
+    // 🌙 ☀️ 強制幫所有 custom-bottom-modal 切換背景色
+    document.querySelectorAll('ion-modal.custom-bottom-modal').forEach(modal => {
+        const wrapper = modal.shadowRoot ? modal.shadowRoot.querySelector('.modal-wrapper') : null;
+        if (wrapper) {
+            if (isDark) {
+                wrapper.style.background = 'linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%)';
+            } else {
+                wrapper.style.background = 'linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%)';
+            }
+        }
+    });
+
+    if (isDark) {
+        if (icon) icon.setAttribute('name', 'sunny-outline');
+        localStorage.setItem('app_theme', 'dark');
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#090d16');
+    } else {
+        if (icon) icon.setAttribute('name', 'moon-outline');
+        localStorage.setItem('app_theme', 'light');
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#eaf3f0');
+    }
+}
+
 
 
                 function openPaymentPicker() {
@@ -4358,6 +4477,7 @@ ion-modal ion-content {
                     }
                 }
 
+
                 function closeExpenseModal() {
                     const modal = document.getElementById('addModal');
                     if (modal) modal.dismiss();
@@ -4421,6 +4541,34 @@ ion-modal ion-content {
                         modal.dismiss();
                     }
                 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. 定義每個 Modal 獨特嘅高度設定
+  const modalConfigs = {
+    '#editLoanModal': { breakpoints: [0, 1], initial: 1 },
+    '#logsModal':      { breakpoints: [0, 0.92],  initial: 0.92 },
+    '#addModal':       { breakpoints: [0, 0.92],  initial: 0.92 }, // 假設呢個比較矮
+    '#addLoanModal':   { breakpoints: [0, 0.92],  initial: 0.92 },
+    '#budgetModal':    { breakpoints: [0, 0.58], initial: 0.58 },
+    '#savingsGoalModal':{ breakpoints: [0, 0.58],  initial: 0.58 },
+    '#addSavingsModal':{ breakpoints: [0, 0.64],  initial: 0.64 },
+    '#calcModal':      { breakpoints: [0, 0.92], initial: 0.92 }, // 呢個可能需要全螢幕咁濟
+    '#incomeModal':    { breakpoints: [0, 0.58], initial: 0.58 },
+    '#extraIncomeModal':{ breakpoints: [0, 0.92], initial: 0.92 },
+    '#savingsPaModal': { breakpoints: [0, 0.58],  initial: 0.58 }
+  };
+
+  // 2. 用迴圈一次過自動為所有存在嘅 Modal 賦予設定
+  Object.keys(modalConfigs).forEach(selector => {
+    const modal = document.querySelector(selector);
+    if (modal) {
+      const config = modalConfigs[selector];
+      modal.breakpoints = config.breakpoints;
+      modal.initialBreakpoint = config.initial;
+    }
+  });
+});
+
 
                 // 💡 為所有 Modal（包含 calcModal）綁定下拉關閉手勢
                 function setupAllModalsDragToClose() {
