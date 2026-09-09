@@ -5773,28 +5773,61 @@
         }
 
         .note-tag-chip {
-            background: rgba(255, 255, 255, 0.62);
-            border: 1px solid rgba(212, 175, 55, 0.45);
-            color: #1e293b;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.26) 0%, rgba(56, 189, 248, 0.34) 100%);
+            border: 1.2px solid rgba(37, 99, 235, 0.55);
+            color: #0c3d69;
             font-size: 11.5px;
             font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 999px;
+            padding: 5px 11px;
+            border-radius: 9px;
             cursor: pointer;
             white-space: nowrap;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 2px 5px rgba(15, 23, 42, 0.16);
         }
 
         .note-tag-chip:active {
-            background: rgba(212, 175, 55, 0.28);
-            border-color: #d97706;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.5) 0%, rgba(56, 189, 248, 0.58) 100%);
+            border-color: #1d4ed8;
+            color: #ffffff;
         }
 
         .dark-theme .note-tag-chip {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(245, 158, 11, 0.42);
-            color: #e2e8f0;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.32) 0%, rgba(37, 99, 235, 0.42) 100%);
+            border-color: rgba(125, 211, 252, 0.7);
+            color: #e0f2fe;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 2px 6px rgba(0, 0, 0, 0.42);
+        }
+
+        /* 人物標籤：另一種色系，方便同備註標籤區分 */
+        .note-tag-row.person .note-tag-chip {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.26) 0%, rgba(236, 72, 153, 0.32) 100%);
+            border-color: rgba(168, 85, 247, 0.58);
+            color: #5b1a86;
+        }
+
+        .note-tag-row.person .note-tag-chip:active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.55) 0%, rgba(236, 72, 153, 0.6) 100%);
+            border-color: #a855f7;
+            color: #ffffff;
+        }
+
+        .dark-theme .note-tag-row.person .note-tag-chip {
+            background: linear-gradient(135deg, rgba(216, 180, 254, 0.28) 0%, rgba(244, 114, 182, 0.36) 100%);
+            border-color: rgba(240, 171, 252, 0.7);
+            color: #fae8ff;
+        }
+
+        /* 消費清單上的對象標記 */
+        .record-person-chip {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 7px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.34) 100%);
+            border: 1px solid rgba(216, 180, 254, 0.6);
+            color: #f5e8ff;
+            white-space: nowrap;
         }
 
         .tag-manage-row {
@@ -5853,6 +5886,222 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        /* ---------- 使用者頭像（黑金風格） ---------- */
+        #userToggleBtn {
+            background:
+                radial-gradient(120% 120% at 30% 18%, rgba(255, 244, 214, 0.30) 0%, rgba(212, 175, 55, 0.20) 38%, rgba(15, 23, 42, 0.62) 100%) !important;
+            border: 1.4px solid rgba(212, 175, 55, 0.78) !important;
+            box-shadow:
+                0 4px 14px rgba(0, 0, 0, 0.5),
+                inset 0 1.2px 0 rgba(255, 240, 200, 0.55),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.45),
+                0 0 11px rgba(212, 175, 55, 0.3) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #userToggleBtn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(158deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.06) 42%, rgba(255, 255, 255, 0) 60%);
+            pointer-events: none;
+        }
+
+        #userToggleBtn:active {
+            transform: scale(0.94);
+        }
+
+        ion-app:not(.dark-theme) #userToggleBtn {
+            background:
+                radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(253, 230, 168, 0.85) 42%, rgba(212, 175, 55, 0.42) 100%) !important;
+            border-color: rgba(146, 64, 14, 0.65) !important;
+            box-shadow:
+                0 4px 12px rgba(15, 23, 42, 0.22),
+                inset 0 1.4px 0 rgba(255, 255, 255, 0.95),
+                inset 0 -2px 5px rgba(180, 83, 9, 0.28),
+                0 0 10px rgba(212, 175, 55, 0.28) !important;
+        }
+
+        /* 名稱首字：金屬燙金字 */
+        .user-mono {
+            position: relative;
+            z-index: 1;
+            font-size: 15.5px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 0.5px;
+            background: linear-gradient(158deg, #fffaf0 0%, #f7e2a0 32%, #d4af37 58%, #9a7517 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
+        }
+
+        ion-app:not(.dark-theme) .user-mono {
+            background: linear-gradient(158deg, #7c4a03 0%, #b45309 45%, #78350f 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+        }
+
+        .user-emoji {
+            position: relative;
+            z-index: 1;
+            font-size: 17px;
+            line-height: 1;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+        }
+
+        /* ---------- 使用者帳戶列 ---------- */
+        .user-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 2px;
+            border-bottom: 1px dashed rgba(100, 116, 139, 0.28);
+        }
+
+        .user-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-avatar {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(120% 120% at 30% 18%, rgba(255, 244, 214, 0.34) 0%, rgba(212, 175, 55, 0.22) 40%, rgba(15, 23, 42, 0.55) 100%);
+            border: 1.3px solid rgba(212, 175, 55, 0.72);
+            box-shadow:
+                inset 0 1.2px 0 rgba(255, 240, 200, 0.5),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.35),
+                0 3px 8px rgba(0, 0, 0, 0.28);
+        }
+
+        .user-avatar .user-mono {
+            font-size: 17px;
+        }
+
+        ion-app:not(.dark-theme) .user-avatar {
+            background:
+                radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(253, 230, 168, 0.9) 44%, rgba(212, 175, 55, 0.4) 100%);
+            border-color: rgba(146, 64, 14, 0.55);
+            box-shadow:
+                inset 0 1.4px 0 rgba(255, 255, 255, 0.95),
+                inset 0 -2px 5px rgba(180, 83, 9, 0.24),
+                0 3px 8px rgba(15, 23, 42, 0.16);
+        }
+
+        .user-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 13.5px;
+            font-weight: 900;
+            color: var(--box-text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-active-tag {
+            font-size: 9.5px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(5, 150, 105, 0.22);
+            color: #047857;
+            margin-left: 6px;
+        }
+
+        .dark-theme .user-active-tag {
+            color: #34d399;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        /* ---------- 計算機匯率列 ---------- */
+        .calc-fx-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 10px 0 4px 0;
+        }
+
+        .calc-fx-select {
+            flex: 1;
+            min-width: 0;
+            height: 36px;
+            border-radius: 9px;
+            border: 1.2px solid rgba(212, 175, 55, 0.5);
+            background: rgba(255, 255, 255, 0.82);
+            color: #0f172a;
+            font-size: 12.5px;
+            font-weight: 800;
+            padding: 0 6px;
+            outline: none;
+        }
+
+        .dark-theme .calc-fx-select {
+            background: rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .calc-fx-arrow {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--box-text-sub);
+            flex-shrink: 0;
+        }
+
+        .calc-fx-btn {
+            flex-shrink: 0;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 9px;
+            border: 1.2px solid rgba(212, 175, 55, 0.6);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.35) 0%, rgba(217, 119, 6, 0.4) 100%);
+            color: #1f2937;
+            font-size: 12.5px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .calc-fx-btn.ghost {
+            padding: 0 10px;
+            background: rgba(255, 255, 255, 0.55);
+        }
+
+        .dark-theme .calc-fx-btn {
+            color: #fef3c7;
+        }
+
+        .dark-theme .calc-fx-btn.ghost {
+            background: rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+        }
+
+        .calc-fx-hint {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--box-text-sub);
+            margin: 2px 0 6px 2px;
+            min-height: 14px;
         }
 
         .tag-manage-state {
@@ -5975,7 +6224,10 @@
                  頂部自訂標題列：動態消息按鈕、頁面標題、計算機與深淺主題切換按鈕
                  ======================================================== -->
         <div class="my-custom-header">
-            <div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button id="userToggleBtn" type="button" class="theme-toggle-btn" onclick="openUserModal()">
+                    <span id="userAvatarIcon" class="user-mono">·</span>
+                </button>
                 <button id="logsToggleBtn" type="button" class="theme-toggle-btn" onclick="openLogsModal()"
                     style="position: relative;">
                     <ion-icon name="notifications-outline" class="theme-icon-color"
@@ -6056,7 +6308,7 @@
                                         本月預計可用淨剩餘 (Net Surplus)
                                     </p>
                                     <div class="gold-amount-display" style="margin: 0; font-size: 32px;">
-                                        HK$
+                                        <span class="cur-sym">HK$</span>
                                         <span id="overviewNetSurplusDisplay">
                                             0
                                         </span>
@@ -6216,7 +6468,7 @@
                                             目前累積總開銷
                                         </p>
                                         <div class="gold-amount-display" style="margin: 0;">
-                                            HK$
+                                            <span class="cur-sym">HK$</span>
                                             <span id="totalAmountDisplay">
                                                 0
                                             </span>
@@ -6229,7 +6481,7 @@
                                             每月預算
                                         </div>
                                         <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
-                                            HK$
+                                            <span class="cur-sym">HK$</span>
                                             <span id="budgetLimitDisplay">
                                                 10,000
                                             </span>
@@ -6375,7 +6627,7 @@
                                     </div>
                                     <div class="gold-amount-display"
                                         style="font-size: 24px; color: #fbbf24; margin-top: 2px; line-height: 1.2;">
-                                        HK$
+                                        <span class="cur-sym">HK$</span>
                                         <span id="loanMonthlyDueDisplay">
                                             0
                                         </span>
@@ -6391,7 +6643,7 @@
                                         </p>
                                         <p style="margin: 1px 0 0 0; font-size: 14px; font-weight: 900; color: #ffffff;"
                                             id="loanTotalRemainingDisplay">
-                                            HK$0
+                                            <span class="cur-sym">HK$</span>0
                                         </p>
                                     </div>
                                     <div
@@ -6402,7 +6654,7 @@
                                         </p>
                                         <p style="margin: 1px 0 0 0; font-size: 14px; font-weight: 900; color: #34d399;"
                                             id="loanTotalRepaidDisplay">
-                                            HK$0
+                                            <span class="cur-sym">HK$</span>0
                                         </p>
                                     </div>
                                 </div>
@@ -6481,7 +6733,7 @@
                                             目前已累積儲蓄金額
                                         </p>
                                         <div class="green-amount-display" style="margin: 0;">
-                                            HK$
+                                            <span class="cur-sym">HK$</span>
                                             <span id="savingsTotalDisplay">
                                                 0
                                             </span>
@@ -6516,7 +6768,7 @@
                                     <div style="font-size: 13px; font-weight: 700; color: #e2e8f0;">
                                         目標進度：
                                         <span style="color: #ffffff;">
-                                            HK$
+                                            <span class="cur-sym">HK$</span>
                                             <span id="savingsGoalDisplay">
                                                 20,000
                                             </span>
@@ -6610,14 +6862,14 @@
                                     <div>
                                         <p style="margin:0 0 2px 0; font-size:11px; color:#bae6fd; font-weight:600;">
                                             本月實際開銷</p>
-                                        <div class="gold-amount-display" style="margin:0;">HK$<span
+                                        <div class="gold-amount-display" style="margin:0;"><span class="cur-sym">HK$</span><span
                                                 id="calMonthTotalDisplay">0</span></div>
                                     </div>
                                     <div
                                         style="background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:5px 12px; text-align:right; backdrop-filter: blur(4px);">
                                         <div style="font-size:10px; color:#bae6fd; font-weight:600; margin-bottom:1px;">
                                             每日平均</div>
-                                        <div style="font-size:14px; font-weight:800; color:#fff;">HK$<span
+                                        <div style="font-size:14px; font-weight:800; color:#fff;"><span class="cur-sym">HK$</span><span
                                                 id="calDailyAvgDisplay">0</span></div>
                                     </div>
                                 </div>
@@ -6628,13 +6880,13 @@
                                         <p style="margin:0; font-size:10px; color:#cbd5e1; font-weight:700;">🔁 固定支出總額
                                         </p>
                                         <p style="margin:1px 0 0 0; font-size:14px; font-weight:900; color:#fff;"
-                                            id="calFixedTotalDisplay">HK$0</p>
+                                            id="calFixedTotalDisplay"><span class="cur-sym">HK$</span>0</p>
                                     </div>
                                     <div
                                         style="background:rgba(0,0,0,0.25); padding:5px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.08);">
                                         <p style="margin:0; font-size:10px; color:#fca5a5; font-weight:700;">⏰ 本月未支付</p>
                                         <p style="margin:1px 0 0 0; font-size:14px; font-weight:900; color:#f87171;"
-                                            id="calFixedUnpaidDisplay">HK$0</p>
+                                            id="calFixedUnpaidDisplay"><span class="cur-sym">HK$</span>0</p>
                                     </div>
                                 </div>
                             </div>
@@ -6663,7 +6915,7 @@
 
                     <div class="np-row">
                         <h3 class="section-title" id="calDayTitle">當日消費明細</h3>
-                        <span id="calDayTotal" style="font-size:15px; font-weight:900; color:#dc2626;">-HK$0</span>
+                        <span id="calDayTotal" style="font-size:15px; font-weight:900; color:#dc2626;">-<span class="cur-sym">HK$</span>0</span>
                     </div>
                     <div class="np-panel" id="calDayDetail"></div>
 
@@ -6723,13 +6975,13 @@
                                     <div>
                                         <p style="margin:0 0 2px 0; font-size:11px; color:#fbcfe8; font-weight:600;">
                                             目標已儲蓄總額</p>
-                                        <div class="gold-amount-display" style="margin:0;">HK$<span
+                                        <div class="gold-amount-display" style="margin:0;"><span class="cur-sym">HK$</span><span
                                                 id="goalSavedTotalDisplay">0</span></div>
                                     </div>
                                     <div
                                         style="background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:5px 12px; text-align:right;">
                                         <div style="font-size:10px; color:#fbcfe8; font-weight:600;">目標總金額</div>
-                                        <div style="font-size:14px; font-weight:800; color:#fff;">HK$<span
+                                        <div style="font-size:14px; font-weight:800; color:#fff;"><span class="cur-sym">HK$</span><span
                                                 id="goalTargetTotalDisplay">0</span></div>
                                     </div>
                                 </div>
@@ -6812,13 +7064,13 @@
                                     <div>
                                         <p style="margin:0 0 2px 0; font-size:11px; color:#a5f3fc; font-weight:600;">
                                             本月每日平均花費</p>
-                                        <div class="gold-amount-display" style="margin:0;">HK$<span
+                                        <div class="gold-amount-display" style="margin:0;"><span class="cur-sym">HK$</span><span
                                                 id="statsAvgDisplay">0</span></div>
                                     </div>
                                     <div
                                         style="background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:5px 12px; text-align:right;">
                                         <div style="font-size:10px; color:#a5f3fc; font-weight:600;">預算日均</div>
-                                        <div style="font-size:14px; font-weight:800; color:#fff;">HK$<span
+                                        <div style="font-size:14px; font-weight:800; color:#fff;"><span class="cur-sym">HK$</span><span
                                                 id="statsBudgetAvgDisplay">0</span></div>
                                     </div>
                                 </div>
@@ -7016,6 +7268,20 @@
                         </button>
                     </div>
                     <div class="note-tag-row" id="tagRow-expense"></div>
+                    <div class="tag-field">
+                        <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                            <input type="text" id="expPersonInput" class="modal-dark-input" placeholder=" "
+                                autocomplete="off">
+                            <label for="expPersonInput">
+                                👤 為誰而消費（選填）
+                            </label>
+                        </div>
+                        <button type="button" class="tag-setting-btn" onclick="openTagManager('expPerson')"
+                            aria-label="對象標籤設定">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </button>
+                    </div>
+                    <div class="note-tag-row person" id="tagRow-expPerson"></div>
                     <p id="expTitleError" style="color: #f87171; font-size: 12px; margin: -6px 0 10px 4px;">
                     </p>
                     <div class="stepper-container">
@@ -7031,7 +7297,7 @@
                             </button>
                             <div class="stepper-input-wrapper">
                                 <span class="stepper-currency">
-                                    HK$
+                                    <span class="cur-sym">HK$</span>
                                 </span>
                                 <input type="number" id="finalAmountInput" class="stepper-input" value="65" min="1"
                                     step="5" oninput="syncInputToRange('finalAmountInput', 'finalAmountRange')">
@@ -7231,7 +7497,7 @@
                         </button>
                         <div class="stepper-input-wrapper">
                             <span class="stepper-currency">
-                                HK$
+                                <span class="cur-sym">HK$</span>
                             </span>
                             <input type="number" id="loanAmountInput" class="stepper-input indigo" value="12000"
                                 min="100" step="500">
@@ -7333,12 +7599,12 @@
                     </div>
                     <div style="font-size: 30px; font-weight: 900; color: #fbbf24; margin-top: 4px;"
                         id="editCalcRemainingDisplay">
-                        HK$0
+                        <span class="cur-sym">HK$</span>0
                     </div>
                     <div
                         style="font-size: 11px; color: #94a3b8; margin-top: 2px; display: flex; justify-content: space-between;">
                         <span>
-                            已還金額: HK$
+                            已還金額: <span class="cur-sym">HK$</span>
                             <span id="editCalcRepaidDisplay">
                                 0
                             </span>
@@ -7496,7 +7762,7 @@
                         </button>
                         <div class="stepper-input-wrapper">
                             <span class="stepper-currency">
-                                HK$
+                                <span class="cur-sym">HK$</span>
                             </span>
                             <input type="number" id="budgetInput" class="stepper-input" value="5000" min="500"
                                 step="500">
@@ -7555,7 +7821,7 @@
                         </button>
                         <div class="stepper-input-wrapper">
                             <span class="stepper-currency">
-                                HK$
+                                <span class="cur-sym">HK$</span>
                             </span>
                             <input type="number" id="savingsGoalInput" class="stepper-input emerald" value="20000"
                                 min="1000" step="1000">
@@ -7644,7 +7910,7 @@
                         </button>
                         <div class="stepper-input-wrapper" style="height: 40px;">
                             <span class="stepper-currency" style="font-size: 13px;">
-                                HK$
+                                <span class="cur-sym">HK$</span>
                             </span>
                             <input type="number" id="savingsAmountInput" class="stepper-input emerald" value="1000"
                                 min="1" step="100" style="font-size: 18px; padding: 4px 0;"
@@ -7714,6 +7980,15 @@
                             0
                         </div>
                     </div>
+                    <div class="calc-fx-bar">
+                        <select id="calcFxFrom" class="calc-fx-select"></select>
+                        <span class="calc-fx-arrow">→</span>
+                        <select id="calcFxTo" class="calc-fx-select"></select>
+                        <button type="button" class="calc-fx-btn" onclick="calcConvertCurrency()">換算</button>
+                        <button type="button" class="calc-fx-btn ghost" onclick="fetchFxRates(false).then(updateCalcFxHint)"
+                            aria-label="更新匯率">↻</button>
+                    </div>
+                    <p class="calc-fx-hint" id="calcFxHint"></p>
                     <div class="calc-grid" style="gap: 8px; padding-bottom: 4px;">
                         <div class="calc-btn calc-key clear-btn" style="height: 48px; font-size: 19px;"
                             onclick="calcInput('C')">
@@ -7816,7 +8091,7 @@
                         </button>
                         <div class="stepper-input-wrapper">
                             <span class="stepper-currency">
-                                HK$
+                                <span class="cur-sym">HK$</span>
                             </span>
                             <input type="number" id="incomeInput" class="stepper-input emerald" value="25000" min="0"
                                 step="1000">
@@ -7890,7 +8165,7 @@
                         </button>
                         <div class="stepper-input-wrapper">
                             <span class="stepper-currency">
-                                HK$
+                                <span class="cur-sym">HK$</span>
                             </span>
                             <input type="number" id="extraIncomeAmountInput" class="stepper-input" value="1000"
                                 min="100" step="100" style="color: #fbbf24;">
@@ -8084,6 +8359,66 @@
         </ion-modal>
 
         <!-- Modal：新增／編輯希望購買目標 -->
+        <!-- Modal：使用者帳戶與顯示貨幣 -->
+        <ion-modal id="userModal" class="custom-bottom-modal">
+            <ion-content class="ion-padding">
+                <div class="drag-handle-bar">
+                    <div class="handle-pill"></div>
+                    <span class="handle-text">下滑關閉</span>
+                </div>
+                <div class="modal-header-box"
+                    style="background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%); border-color: rgba(212, 175, 55, 0.4);">
+                    <h2 class="modal-header-title" style="color: #fcd34d;">
+                        👤 使用者帳戶與顯示貨幣
+                    </h2>
+                </div>
+
+                <div class="np-row" style="margin-top: 4px;">
+                    <h3 class="section-title">使用者帳戶</h3>
+                    <button type="button" class="np-mini-btn gold" onclick="promptAddUser()">＋ 新增帳戶</button>
+                </div>
+                <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 10px 4px;">
+                    每個帳戶擁有完全獨立的消費、儲蓄、借貸、固定支出、願望項目、標籤與設定紀錄，互不影響。
+                </p>
+                <div class="np-panel" id="userListPanel" style="margin-bottom:16px;"></div>
+
+                <div class="np-row">
+                    <h3 class="section-title">顯示貨幣</h3>
+                    <span id="fxUpdatedLabel"
+                        style="font-size:10.5px; font-weight:800; color:var(--box-text-title);"></span>
+                </div>
+                <div class="np-panel" style="margin-bottom:16px;">
+                    <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 10px 0;">
+                        選定後，全部頁面的金額將即時以該貨幣顯示。資料仍以港元為記帳基準，輸入金額時請沿用港元。
+                    </p>
+                    <div class="modal-dark-group" style="margin: 4px 0 12px 0;">
+                        <select id="currencySelect" class="modal-dark-input"></select>
+                        <label for="currencySelect">💱 全站顯示貨幣</label>
+                    </div>
+                    <div id="currencyPreview" class="calc-info-box"
+                        style="font-size:11.5px; font-weight:800; line-height:1.8; margin-bottom:12px;"></div>
+                    <div style="display:flex; gap:8px;">
+                        <ion-button expand="block" color="warning" onclick="applyCurrencyFromModal()"
+                            style="flex:1; margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                            一鍵套用
+                        </ion-button>
+                        <ion-button expand="block" fill="outline" onclick="refreshFxRatesFromModal()"
+                            style="flex:1; margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                            更新匯率
+                        </ion-button>
+                    </div>
+                    <p style="font-size:10px; font-weight:700; color:var(--box-text-sub); margin:10px 0 0 0;">
+                        匯率資料來源：ExchangeRate-API 公開端點（備用來源：Frankfurter／歐洲央行）。
+                    </p>
+                </div>
+
+                <ion-button expand="block" fill="outline" onclick="document.getElementById('userModal').dismiss()"
+                    style="margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                    完成
+                </ion-button>
+                <div style="height:50px;"></div>
+            </ion-content>
+        </ion-modal>
         <!-- Modal：備註標籤管理 -->
         <ion-modal id="tagManagerModal" class="custom-bottom-modal">
             <ion-content class="ion-padding">
@@ -8182,6 +8517,20 @@
                     </button>
                 </div>
                 <div class="note-tag-row" id="tagRow-wish"></div>
+                <div class="tag-field">
+                    <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                        <input type="text" id="wgPersonInput" class="modal-dark-input" placeholder=" "
+                            autocomplete="off">
+                        <label for="wgPersonInput">
+                            👤 為誰而購買（選填）
+                        </label>
+                    </div>
+                    <button type="button" class="tag-setting-btn" onclick="openTagManager('wishPerson')"
+                        aria-label="對象標籤設定">
+                        <ion-icon name="people-outline"></ion-icon>
+                    </button>
+                </div>
+                <div class="note-tag-row person" id="tagRow-wishPerson"></div>
                 <div class="modal-dark-group">
                     <input type="number" id="wgTargetInput" class="modal-dark-input" placeholder="0" min="0">
                     <label for="wgTargetInput">🎯 目標金額 (HKD)</label>
@@ -8538,6 +8887,151 @@
                （下列變數的宣告順序與原始檔案完全相同，
                  因為部分變數的初始值仰賴先前變數已經存在）
                ================================================ */
+            /* ================================================
+               〇、多使用者資料隔離與顯示貨幣
+               （必須排喺所有資料變數之前，因為下面部分變數
+                 於宣告時即會直接讀取 localStorage）
+               ================================================ */
+
+            // 不隨使用者切換的全域設定鍵
+            const GLOBAL_STORE_KEYS = ['app_users', 'app_active_user', 'app_theme', 'app_fx_cache'];
+
+            // 每位使用者各自獨立保存的資料鍵
+            const USER_DATA_KEYS = [
+                'app_expense_records', 'app_savings_records', 'app_loan_records',
+                'app_budget_limit', 'app_savings_goal', 'activity_logs',
+                'app_monthly_income', 'app_extra_income_records', 'app_card_note_history',
+                'app_fixed_expenses', 'app_wish_goals', 'app_category_limits',
+                'app_note_tags', 'app_savings_pa', 'app_savings_tenor', 'app_currency'
+            ];
+
+            let userProfiles = [];
+            let activeUserId = 'default';
+
+            // 把資料鍵換成「目前使用者」專屬的鍵名
+            function uk(key) {
+                return GLOBAL_STORE_KEYS.indexOf(key) >= 0 ? key : ('u_' + activeUserId + '::' + key);
+            }
+
+            // 舊版（未分使用者）的資料一次性搬遷至預設使用者名下
+            function migrateLegacyUserData(id) {
+                USER_DATA_KEYS.forEach(k => {
+                    const v = localStorage.getItem(k);
+                    if (v !== null && localStorage.getItem('u_' + id + '::' + k) === null) {
+                        localStorage.setItem('u_' + id + '::' + k, v);
+                    }
+                });
+            }
+
+            function initUserStore() {
+                try { userProfiles = JSON.parse(localStorage.getItem('app_users') || '[]'); }
+                catch (e) { userProfiles = []; }
+
+                if (!Array.isArray(userProfiles) || userProfiles.length === 0) {
+                    userProfiles = [{ id: 'default', name: '主要帳戶', icon: '' }];
+                    localStorage.setItem('app_users', JSON.stringify(userProfiles));
+                    migrateLegacyUserData('default');
+                }
+
+                activeUserId = localStorage.getItem('app_active_user') || userProfiles[0].id;
+                if (!userProfiles.some(u => u.id === activeUserId)) activeUserId = userProfiles[0].id;
+                localStorage.setItem('app_active_user', activeUserId);
+            }
+            initUserStore();
+
+            /* ---------- 顯示貨幣 ---------- */
+            const BASE_CURRENCY = 'HKD';
+            const CURRENCY_LIST = [
+                { code: 'HKD', symbol: 'HK$', name: '港元' },
+                { code: 'USD', symbol: 'US$', name: '美元' },
+                { code: 'CNY', symbol: 'CN¥', name: '人民幣' },
+                { code: 'TWD', symbol: 'NT$', name: '新台幣' },
+                { code: 'MOP', symbol: 'MOP$', name: '澳門元' },
+                { code: 'JPY', symbol: 'JP¥', name: '日圓' },
+                { code: 'KRW', symbol: '₩', name: '韓圜' },
+                { code: 'EUR', symbol: '€', name: '歐元' },
+                { code: 'GBP', symbol: '£', name: '英鎊' },
+                { code: 'CHF', symbol: 'CHF ', name: '瑞士法郎' },
+                { code: 'AUD', symbol: 'A$', name: '澳元' },
+                { code: 'CAD', symbol: 'C$', name: '加元' },
+                { code: 'SGD', symbol: 'S$', name: '新加坡元' },
+                { code: 'THB', symbol: '฿', name: '泰銖' },
+                { code: 'MYR', symbol: 'RM', name: '馬來西亞令吉' },
+                { code: 'PHP', symbol: '₱', name: '菲律賓披索' },
+                { code: 'VND', symbol: '₫', name: '越南盾' },
+                { code: 'INR', symbol: '₹', name: '印度盧比' },
+                { code: 'NZD', symbol: 'NZ$', name: '紐西蘭元' }
+            ];
+
+            let currencyCode = localStorage.getItem(uk('app_currency')) || BASE_CURRENCY;
+            let fxRates = {};          // 以港元為基準的匯率表
+            let fxUpdatedAt = '';
+            try {
+                const cache = JSON.parse(localStorage.getItem('app_fx_cache') || '{}');
+                fxRates = cache.rates || {};
+                fxUpdatedAt = cache.date || '';
+            } catch (e) { }
+
+            function currencyMeta(code) {
+                return CURRENCY_LIST.find(x => x.code === code) || { code: code, symbol: code + ' ', name: code };
+            }
+
+            // 目前顯示貨幣的符號
+            function curSym() {
+                return currencyMeta(currencyCode).symbol;
+            }
+
+            // 由基準貨幣（港元）換算至目前顯示貨幣的匯率
+            function curRate() {
+                if (currencyCode === BASE_CURRENCY) return 1;
+                const r = Number(fxRates[currencyCode]);
+                return (r > 0) ? r : 1;
+            }
+
+            function cvt(n) {
+                return (Number(n) || 0) * curRate();
+            }
+
+            // 金額格式化（已完成貨幣換算，不含符號）
+            function fmtAmt(n) {
+                return Math.round(cvt(n)).toLocaleString();
+            }
+
+            // 更新頁面上所有靜態貨幣符號
+            function refreshCurrencySymbols() {
+                document.querySelectorAll('.cur-sym').forEach(el => { el.textContent = curSym(); });
+            }
+
+            /* 取得最新匯率。採用免註冊、免 API key 的公開匯率服務：
+               主來源 ExchangeRate-API 開放端點，備用來源 Frankfurter（歐洲央行資料）。 */
+            async function fetchFxRates(silent) {
+                const sources = [
+                    'https://open.er-api.com/v6/latest/' + BASE_CURRENCY,
+                    'https://api.frankfurter.dev/v2/rates?base=' + BASE_CURRENCY
+                ];
+
+                for (let i = 0; i < sources.length; i++) {
+                    try {
+                        const res = await fetch(sources[i]);
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const rates = data && data.rates;
+                        if (!rates || typeof rates !== 'object') continue;
+
+                        fxRates = rates;
+                        fxUpdatedAt = data.time_last_update_utc
+                            ? new Date(data.time_last_update_utc).toISOString().split('T')[0]
+                            : (data.date || new Date().toISOString().split('T')[0]);
+                        localStorage.setItem('app_fx_cache', JSON.stringify({ rates: fxRates, date: fxUpdatedAt }));
+                        if (!silent) showToast(`匯率已更新（${fxUpdatedAt}）`, 'success');
+                        return true;
+                    } catch (e) { }
+                }
+
+                if (!silent) showToast('未能取得最新匯率，請檢查網絡連線', 'warning');
+                return false;
+            }
+
             // 記憶體中所有「日常開銷」記錄的陣列
             let records = [];
 
@@ -8575,10 +9069,10 @@
             let monthlyIncome = 25000;
 
             // 額外收入記錄的陣列（從 localStorage 讀取）
-            let extraIncomeRecords = JSON.parse(localStorage.getItem('app_extra_income_records') || '[]');
+            let extraIncomeRecords = JSON.parse(localStorage.getItem(uk('app_extra_income_records')) || '[]');
 
             // 儲蓄的存款期數（月），從 localStorage 讀取
-            let savingsTenorMonths = Number(localStorage.getItem('app_savings_tenor')) || 3;
+            let savingsTenorMonths = Number(localStorage.getItem(uk('app_savings_tenor'))) || 3;
 
             // 消費分類對照表：分類名稱 → 顯示名稱／圖示／顏色
             const CATEGORY_MAP = {
@@ -8607,7 +9101,7 @@
             };
 
             // 儲蓄年利率 (p.a.)，從 localStorage 讀取
-            let savingsInterestPa = Number(localStorage.getItem('app_savings_pa')) || 3.5;
+            let savingsInterestPa = Number(localStorage.getItem(uk('app_savings_pa'))) || 3.5;
 
             // 是否啟用「計算儲蓄利息」功能
             let isSavingsInterestEnabled = false;
@@ -8636,7 +9130,7 @@
             let recordWalletFilter = 'all';
 
             // 使用者曾經輸入過的信用卡備註（作為下次輸入時的快捷建議）
-            let cardNoteHistory = JSON.parse(localStorage.getItem('app_card_note_history') || '[]');
+            let cardNoteHistory = JSON.parse(localStorage.getItem(uk('app_card_note_history')) || '[]');
 
             // 星期顯示用的中文對照
             const WEEKDAY_LABELS = ['日', '一', '二', '三', '四', '五', '六'];
@@ -8792,7 +9286,7 @@
                 const val = (note || '').trim();
                 if (!val) return;
                 cardNoteHistory = [val].concat(cardNoteHistory.filter(n => n !== val)).slice(0, 8);
-                localStorage.setItem('app_card_note_history', JSON.stringify(cardNoteHistory));
+                localStorage.setItem(uk('app_card_note_history'), JSON.stringify(cardNoteHistory));
             }
 
             /* 🔑 信用卡自動記帳核心：
@@ -9407,6 +9901,7 @@
 
             // 開啟內建計算機彈出視窗
             function openCalcModal() {
+                initCalcFxSelects();
                 const modal = document.getElementById('calcModal');
                 if (modal) {
                     modal.present();
@@ -9447,8 +9942,12 @@
 
                 // 依目前已選的付款方式，決定要不要顯示信用卡備註欄位
                 const paymentInput = document.getElementById('manualPaymentSelect');
+                const personInput = document.getElementById('expPersonInput');
+                if (personInput) personInput.value = '';
+
                 updateCardNoteVisibility(paymentInput ? paymentInput.value : '現金付款');
                 renderNoteTagRow('expense');
+                renderNoteTagRow('expPerson');
 
                 modal.present();
             }
@@ -9470,6 +9969,12 @@
 
             // 側滑「修改」：把整筆消費記錄載入表單，改用編輯模式開啟同一個視窗
             function openEditRecordModal(recordId) {
+                setTimeout(() => {
+                    const rec = records.find(r => r.id === recordId);
+                    const pi = document.getElementById('expPersonInput');
+                    if (rec && pi) pi.value = rec.person || '';
+                    renderNoteTagRow('expPerson');
+                }, 0);
                 const rec = records.find(r => r.id === recordId);
                 if (!rec) return;
 
@@ -9531,6 +10036,11 @@
                    若有填寫，內容會自動成為下次可快速選用的標籤。 */
                 const title = noteText || category;
                 if (noteText) rememberNoteTag('expense', noteText);
+
+                const personEl = document.getElementById('expPersonInput');
+                const person = personEl ? personEl.value.trim() : '';
+                if (person) rememberNoteTag('expPerson', person);
+
                 document.getElementById('expTitleError').textContent = '';
 
                 // 💳 Visa / Mastercard 扣帳時，讀取使用者輸入的自訂備註（用來歸類信用卡）
@@ -9566,7 +10076,7 @@
                     if (cardNote) wallet = 'credit';
 
                     const updated = Object.assign({}, oldRec, {
-                        title, amount, category, payment, date, wallet, cardNote
+                        title, amount, category, payment, date, wallet, cardNote, person
                     });
                     records[idx] = updated;
 
@@ -9578,7 +10088,7 @@
                     saveData();
                     renderUI();
                     closeExpenseModal();
-                    addLog('修改開銷', `已更新「${title}」HK$${amount.toLocaleString()}`);
+                    addLog('修改開銷', `已更新「${title}」${curSym()}${fmtAmt(amount)}`);
                     return;
                 }
 
@@ -9593,7 +10103,9 @@
                     // 🧾 錢包分類：現金流錢包 'cash' 或 信用卡錢包 'credit'
                     wallet: getDefaultWallet(payment),
                     // 💳 信用卡自訂備註（非信用卡消費則為空字串）
-                    cardNote: cardNote
+                    cardNote: cardNote,
+                    // 👤 為誰而消費（選填）
+                    person: person
                 };
 
                 records.unshift(newRecord);
@@ -9609,9 +10121,9 @@
                 closeExpenseModal();
 
                 if (cardNote) {
-                    addLog('信用卡消費', `「${title}」HK$${amount.toLocaleString()} 已記入信用卡「${cardNote}」`);
+                    addLog('信用卡消費', `「${title}」${curSym()}${fmtAmt(amount)} 已記入信用卡「${cardNote}」`);
                 } else {
-                    addLog('消費項目', '新增「' + title + '」HK$' + amount.toLocaleString());
+                    addLog('消費項目', '新增「' + title + '」' + curSym() + fmtAmt(amount));
                 }
 
                 // Clear inputs
@@ -9679,7 +10191,7 @@
                         && brand.toLowerCase() === currentBrand;
                     return {
                         type: 'radio',
-                        label: `💳 ${name}\n${brand}．結欠 $${rem.toLocaleString()}`,
+                        label: `💳 ${name}\n${brand}．結欠 ${curSym()}${fmtAmt(rem)}`,
                         value: String(l.id),
                         checked: isCurrent
                     };
@@ -9706,7 +10218,7 @@
                 alert.cssClass = 'custom-app-alert';
                 alert.backdropDismiss = !required;
                 alert.header = '💳 選擇入帳信用卡';
-                alert.subHeader = `${rec.title}．HK$${Number(rec.amount).toLocaleString()}`;
+                alert.subHeader = `${rec.title}．${curSym()}${fmtAmt(Number(rec.amount))}`;
                 alert.message = required
                     ? '這筆已剔選為信用卡付款，請指定要記在哪一張卡上。'
                     : '選擇另一張卡時，付款方式會自動跟着改為該卡的卡別。';
@@ -9982,7 +10494,7 @@
                 const alert = document.createElement('ion-alert');
                 alert.cssClass = 'custom-danger-alert';
                 alert.header = '🗑️ 確認刪除開銷紀錄';
-                alert.message = `確定要刪除「${escapeHtml(target.title)}」HK$${Number(target.amount).toLocaleString()} 嗎？`;
+                alert.message = `確定要刪除「${escapeHtml(target.title)}」${curSym()}${fmtAmt(Number(target.amount))} 嗎？`;
                 alert.buttons = [
                     { text: '取消', role: 'cancel' },
                     {
@@ -9996,7 +10508,7 @@
                             }
                             saveData();
                             renderUI();
-                            addLog('刪除開銷', `已刪除「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
+                            addLog('刪除開銷', `已刪除「${target.title}」${curSym()}${fmtAmt(Number(target.amount))}`);
                         }
                     }
                 ];
@@ -10082,6 +10594,7 @@
                                             <span class="record-cat-chip" style="display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px 7px; font-size: 10px; color: var(--box-text-title); font-weight: 700; white-space: nowrap;">
                                                 ${escapeHtml(cat.name || r.category)}
                                             </span>
+                                            ${(r.person || '').trim() ? `<span class="record-person-chip">👤 ${escapeHtml(r.person)}</span>` : ''}
 
                                             <div class="pay-type-toggle" onclick="event.stopPropagation();">
                                                 <button type="button" class="pay-type-btn cash ${wallet === 'cash' ? 'active' : ''}"
@@ -10097,7 +10610,7 @@
 
                                     <!-- 💡 右邊專區：金額 + 靠右支付方式 Badge（限制寬度避免出界） -->
                                     <div slot="end" class="record-end-col">
-                                        <div class="record-amount">-HK$${Number(r.amount).toLocaleString()}</div>
+                                        <div class="record-amount">-${curSym()}${fmtAmt(Number(r.amount))}</div>
                                         <div class="record-pay-badge">
                                             ${getPaymentBadgeHtml(r.payment)}
                                         </div>
@@ -10130,8 +10643,8 @@
                         total += (Number(r.amount) || 0);
                     }
                 });
-                document.getElementById('totalAmountDisplay').textContent = total.toLocaleString();
-                document.getElementById('budgetLimitDisplay').textContent = budgetLimit.toLocaleString();
+                document.getElementById('totalAmountDisplay').textContent = fmtAmt(total);
+                document.getElementById('budgetLimitDisplay').textContent = fmtAmt(budgetLimit);
 
                 const progress = budgetLimit > 0 ? Math.min(1, total / budgetLimit) : 0;
                 const progressBar = document.getElementById('budgetProgressBar');
@@ -10141,10 +10654,10 @@
                 if (tip) {
                     const remain = budgetLimit - total;
                     if (remain < 0) {
-                        tip.textContent = `🚨 已超支 HK$${Math.abs(remain).toLocaleString()}！請注意控制消費！`;
+                        tip.textContent = `🚨 已超支 ${curSym()}${fmtAmt(Math.abs(remain))}！請注意控制消費！`;
                         tip.style.color = '#f87171';
                     } else {
-                        tip.textContent = `💡 本月剩餘可用預算：HK$${remain.toLocaleString()}`;
+                        tip.textContent = `💡 本月剩餘可用預算：${curSym()}${fmtAmt(remain)}`;
                         tip.style.color = '#34d399';
                     }
                 }
@@ -10169,8 +10682,8 @@
 
                 container.innerHTML = groups.map(g => {
                     const miniTags = [];
-                    if (g.cash > 0) miniTags.push(`<span class="day-group-mini cash">💵 $${g.cash.toLocaleString()}</span>`);
-                    if (g.credit > 0) miniTags.push(`<span class="day-group-mini credit">💳 $${g.credit.toLocaleString()}</span>`);
+                    if (g.cash > 0) miniTags.push(`<span class="day-group-mini cash">💵 ${curSym()}${fmtAmt(g.cash)}</span>`);
+                    if (g.credit > 0) miniTags.push(`<span class="day-group-mini credit">💳 ${curSym()}${fmtAmt(g.credit)}</span>`);
 
                     // 🔽 日期標題可展開／收起當日的消費細項（預設收起）
                     const isOpen = expandedDayKeys.has(g.date);
@@ -10189,7 +10702,7 @@
                                         </div>
                                     </div>
                                     <div class="day-group-right">
-                                        <div class="day-group-total">-HK$${g.total.toLocaleString()}</div>
+                                        <div class="day-group-total">-${curSym()}${fmtAmt(g.total)}</div>
                                         <div class="day-group-count">當日共 ${g.items.length} 筆</div>
                                     </div>
                                 </div>
@@ -10216,7 +10729,7 @@
 
                 const setTxt = (id, val) => {
                     const el = document.getElementById(id);
-                    if (el) el.textContent = `$${val.toLocaleString()}`;
+                    if (el) el.textContent = `${curSym()}${fmtAmt(val)}`;
                 };
                 setTxt('chipAmtAll', allSum);
                 setTxt('chipAmtCash', cashSum);
@@ -10281,7 +10794,7 @@
                     budgetLimit = Number(input.value) || 10000;
                     saveData();
                     renderUI();
-                    addLog('開銷預算上限', '預算上限已更新為 HK$' + budgetLimit.toLocaleString());
+                    addLog('開銷預算上限', '預算上限已更新為 ' + curSym() + fmtAmt(budgetLimit));
                 }
                 document.getElementById('budgetModal').dismiss();
             }
@@ -10305,7 +10818,7 @@
                     monthlyIncome = Number(input.value) || 0;
                     saveData();
                     renderUI();
-                    addLog('收入設定', '本月薪金收入已更新為 HK$' + monthlyIncome.toLocaleString());
+                    addLog('收入設定', '本月薪金收入已更新為 ' + curSym() + fmtAmt(monthlyIncome));
                 }
                 document.getElementById('incomeModal').dismiss();
             }
@@ -10351,7 +10864,7 @@
                 saveData();
                 renderUI();
                 renderExtraIncomeList();
-                addLog('額外收入', `新增「${title}」HK$${amount.toLocaleString()}`);
+                addLog('額外收入', `新增「${title}」${curSym()}${fmtAmt(amount)}`);
 
                 titleInput.value = '';
                 amountInput.value = '1000';
@@ -10387,7 +10900,7 @@
                                 <div style="font-size: 10px; color: var(--box-text-sub); margin-top: 2px;">📅 ${item.date}</div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="font-weight: 900; color: #38bdf8; font-size: 15px;">+HK$${Number(item.amount).toLocaleString()}</div>
+                                <div style="font-weight: 900; color: #38bdf8; font-size: 15px;">+${curSym()}${fmtAmt(Number(item.amount))}</div>
                                 <button type="button" onclick="deleteExtraIncomeRecord(${item.id})" style="background: rgba(239, 68, 68, 0.2); color: #f87171; border: none; border-radius: 6px; width: 26px; height: 26px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
                             </div>
                         </div>
@@ -10413,7 +10926,7 @@
                     savingsGoal = Number(input.value) || 20000;
                     saveData();
                     renderUI();
-                    addLog('儲蓄目標', '儲蓄目標已更新為 HK$' + savingsGoal.toLocaleString());
+                    addLog('儲蓄目標', '儲蓄目標已更新為 ' + curSym() + fmtAmt(savingsGoal));
                 }
                 document.getElementById('savingsGoalModal').dismiss();
             }
@@ -10463,7 +10976,7 @@
 
                 saveData();
                 renderUI();
-                addLog('儲蓄存款', '存入「' + title + '」HK$' + amount.toLocaleString()
+                addLog('儲蓄存款', '存入「' + title + '」' + curSym() + fmtAmt(amount)
                     + (goal ? `（已同步計入願望「${goal.title}」進度）` : ''));
 
                 titleInput.value = '';
@@ -10555,7 +11068,7 @@
                 const alert = document.createElement('ion-alert');
                 alert.cssClass = 'custom-danger-alert';
                 alert.header = '🗑️ 確認刪除儲蓄紀錄';
-                alert.message = `確定要刪除「${escapeHtml(target.title)}」HK$${Number(target.amount).toLocaleString()} 嗎？`;
+                alert.message = `確定要刪除「${escapeHtml(target.title)}」${curSym()}${fmtAmt(Number(target.amount))} 嗎？`;
                 alert.buttons = [
                     { text: '取消', role: 'cancel' },
                     {
@@ -10575,7 +11088,7 @@
                             savingsRecords = savingsRecords.filter(s => s.id !== id);
                             saveData();
                             renderUI();
-                            addLog('刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」HK$${Number(target.amount).toLocaleString()}${unlinked}`);
+                            addLog('刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」${curSym()}${fmtAmt(Number(target.amount))}${unlinked}`);
                         }
                     }
                 ];
@@ -10609,11 +11122,11 @@
                 const select = document.getElementById('savingsTenorSelect');
                 if (input) {
                     savingsInterestPa = Number(input.value) || 0;
-                    localStorage.setItem('app_savings_pa', savingsInterestPa);
+                    localStorage.setItem(uk('app_savings_pa'), savingsInterestPa);
                 }
                 if (select) {
                     savingsTenorMonths = Number(select.value) || 3;
-                    localStorage.setItem('app_savings_tenor', savingsTenorMonths);
+                    localStorage.setItem(uk('app_savings_tenor'), savingsTenorMonths);
                 }
                 updatePaButtonDisplay();
                 renderSavings();
@@ -10648,8 +11161,8 @@
                     displaySavings = Math.round(totalSavings + interest);
                 }
 
-                document.getElementById('savingsTotalDisplay').textContent = displaySavings.toLocaleString();
-                document.getElementById('savingsGoalDisplay').textContent = savingsGoal.toLocaleString();
+                document.getElementById('savingsTotalDisplay').textContent = fmtAmt(displaySavings);
+                document.getElementById('savingsGoalDisplay').textContent = fmtAmt(savingsGoal);
                 updatePaButtonDisplay();
 
                 const progress = savingsGoal > 0 ? Math.min(1, displaySavings / savingsGoal) : 0;
@@ -10663,7 +11176,7 @@
                         tip.textContent = `已達成目標儲蓄額。${isSavingsInterestEnabled ? `(含 ${savingsTenorMonths} 個月定存利息)` : ''}`;
                         tip.style.color = '#34d399';
                     } else {
-                        tip.textContent = `距離儲蓄目標尚餘 HK$${diff.toLocaleString()}${isSavingsInterestEnabled ? `(已計入 ${savingsTenorMonths} 個月利息)` : ''}`;
+                        tip.textContent = `距離儲蓄目標尚餘 ${curSym()}${fmtAmt(diff)}${isSavingsInterestEnabled ? `(已計入 ${savingsTenorMonths} 個月利息)` : ''}`;
                         tip.style.color = '#fbbf24';
                     }
                 }
@@ -10684,7 +11197,7 @@
                                     <p style="font-size: 11px; color: var(--box-text-sub);">📅 ${s.date}${savingsWishLabel(s)}</p>
                                 </ion-label>
                                 <div slot="end" style="text-align: right;">
-                                    <div style="font-size: 17px; font-weight: 900; color: #ca8a04;">+HK$${Number(s.amount).toLocaleString()}</div>
+                                    <div style="font-size: 17px; font-weight: 900; color: #ca8a04;">+${curSym()}${fmtAmt(Number(s.amount))}</div>
                                 </div>
                             </ion-item>
                             <ion-item-options side="end">
@@ -10822,7 +11335,7 @@
                 saveData();
                 renderUI();
                 document.getElementById('addLoanModal').dismiss();
-                addLog('貸款項目', '新增「' + title + '」總額 HK$' + amount.toLocaleString());
+                addLog('貸款項目', '新增「' + title + '」總額 ' + curSym() + fmtAmt(amount));
                 document.getElementById('loanTitleInput').value = '';
             }
 
@@ -10853,7 +11366,7 @@
                     const outstanding = Math.max(0, (Number(loan.totalAmount) || 0) - (Number(loan.repaidAmount) || 0));
                     climitHint.style.display = isCardType ? 'block' : 'none';
                     climitHint.textContent = limit > 0
-                        ? `目前結欠 HK$${outstanding.toLocaleString()}，尚可簽帳 HK$${Math.max(0, limit - outstanding).toLocaleString()}（已用 ${Math.min(100, Math.round(outstanding / limit * 100))}%）`
+                        ? `目前結欠 ${curSym()}${fmtAmt(outstanding)}，尚可簽帳 ${curSym()}${fmtAmt(Math.max(0, limit - outstanding))}（已用 ${Math.min(100, Math.round(outstanding / limit * 100))}%）`
                         : '尚未設定額度，填寫後即可在「願望目標」與「行事曆」頁看到可用額度。';
                 }
 
@@ -10906,8 +11419,8 @@
                 const remaining = Math.max(0, total - repaid);
                 const percent = total > 0 ? Math.min(100, Math.round((repaid / total) * 100)) : 0;
 
-                document.getElementById('editCalcRemainingDisplay').textContent = `HK$${remaining.toLocaleString()}`;
-                document.getElementById('editCalcRepaidDisplay').textContent = repaid.toLocaleString();
+                document.getElementById('editCalcRemainingDisplay').textContent = `${curSym()}${fmtAmt(remaining)}`;
+                document.getElementById('editCalcRepaidDisplay').textContent = fmtAmt(repaid);
                 document.getElementById('editCalcPercentDisplay').textContent = `${percent}%`;
             }
 
@@ -11079,10 +11592,10 @@
                     }
                 });
 
-                document.getElementById('loanMonthlyDueDisplay').textContent = totalDue.toLocaleString();
+                document.getElementById('loanMonthlyDueDisplay').textContent = fmtAmt(totalDue);
                 document.getElementById('loanMonthlyCountBadge').textContent = `${pendingCount} 筆待還`;
-                document.getElementById('loanTotalRemainingDisplay').textContent = `HK$${totalRemaining.toLocaleString()}`;
-                document.getElementById('loanTotalRepaidDisplay').textContent = `HK$${totalRepaid.toLocaleString()}`;
+                document.getElementById('loanTotalRemainingDisplay').textContent = `${curSym()}${fmtAmt(totalRemaining)}`;
+                document.getElementById('loanTotalRepaidDisplay').textContent = `${curSym()}${fmtAmt(totalRepaid)}`;
 
                 if (loanRecords.length === 0) {
                     container.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:30px 0; font-size:14px;">無貸款或分期項目</div>`;
@@ -11128,8 +11641,8 @@
                                         </div>
                 
                                         <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--box-text-title);">
-                                            <span>${l.isCardAuto ? '本期應繳' : '每月固定還款'}: <strong style="color:#ca8a04;">HK$${Number(l.monthlyAmount || 0).toLocaleString()}</strong></span>
-                                            <span>${isCardAcc ? '未清還' : '剩餘'}: <strong style="color:#047857;">HK$${rem.toLocaleString()}</strong></span>
+                                            <span>${l.isCardAuto ? '本期應繳' : '每月固定還款'}: <strong style="color:#ca8a04;">${curSym()}${fmtAmt(Number(l.monthlyAmount || 0))}</strong></span>
+                                            <span>${isCardAcc ? '未清還' : '剩餘'}: <strong style="color:#047857;">${curSym()}${fmtAmt(rem)}</strong></span>
                                         </div>
                 
                                         ${(isCardCat && Number(l.creditLimit) > 0) ? (() => {
@@ -11140,7 +11653,7 @@
                                                         <div class="cl-bar ${lvl}"><i style="width:${usage}%"></i></div>
                                                         <div style="display:flex; justify-content:space-between; font-size:10px; font-weight:800; color:var(--box-text-title); margin-top:4px;">
                                                             <span>🏦 額度使用 ${usage}%</span>
-                                                            <span>可用 HK$${Math.max(0, limit - rem).toLocaleString()} / HK$${limit.toLocaleString()}</span>
+                                                            <span>可用 ${curSym()}${fmtAmt(Math.max(0, limit - rem))} / ${curSym()}${fmtAmt(limit)}</span>
                                                         </div>
                                                     </div>`;
                         })() : (isCardCat ? `<div style="margin-top:8px; font-size:10px; font-weight:800; color:#b45309;">🏦 尚未設定信用卡額度（按「還款 / 修改」可設定）</div>` : '')}
@@ -11149,7 +11662,7 @@
                                             <ion-progress-bar value="${percent / 100}" style="--progress-background: ${isCardAcc ? '#7c3aed' : '#818cf8'}; height: 6px; border-radius: 3px;"></ion-progress-bar>
                                             <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--box-text-title); margin-top:4px;">
                                                 <span>${isCardAcc ? '已清還' : '進度'} ${percent}%</span>
-                                                <span>${isCardAcc ? `累計簽帳 HK$${Number(l.totalAmount || 0).toLocaleString()}` : `已還 ${l.repaidPeriods}/${l.totalPeriods} 期`}</span>
+                                                <span>${isCardAcc ? `累計簽帳 ${curSym()}${fmtAmt(Number(l.totalAmount || 0))}` : `已還 ${l.repaidPeriods}/${l.totalPeriods} 期`}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -11502,19 +12015,19 @@
             function loadData() {
                 try {
                     // 從瀏覽器記憶體讀取各項數據
-                    records = JSON.parse(localStorage.getItem('app_expense_records') || '[]');
-                    savingsRecords = JSON.parse(localStorage.getItem('app_savings_records') || '[]');
-                    loanRecords = JSON.parse(localStorage.getItem('app_loan_records') || '[]');
-                    budgetLimit = Number(localStorage.getItem('app_budget_limit')) || 10000;
-                    savingsGoal = Number(localStorage.getItem('app_savings_goal')) || 20000;
-                    activityLogs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
-                    monthlyIncome = Number(localStorage.getItem('app_monthly_income')) || 25000;
-                    extraIncomeRecords = JSON.parse(localStorage.getItem('app_extra_income_records') || '[]');
-                    cardNoteHistory = JSON.parse(localStorage.getItem('app_card_note_history') || '[]');
-                    fixedExpenses = JSON.parse(localStorage.getItem('app_fixed_expenses') || '[]');
-                    wishGoals = JSON.parse(localStorage.getItem('app_wish_goals') || '[]');
-                    categoryLimits = JSON.parse(localStorage.getItem('app_category_limits') || '{}');
-                    noteTags = JSON.parse(localStorage.getItem('app_note_tags') || '{}');
+                    records = JSON.parse(localStorage.getItem(uk('app_expense_records')) || '[]');
+                    savingsRecords = JSON.parse(localStorage.getItem(uk('app_savings_records')) || '[]');
+                    loanRecords = JSON.parse(localStorage.getItem(uk('app_loan_records')) || '[]');
+                    budgetLimit = Number(localStorage.getItem(uk('app_budget_limit'))) || 10000;
+                    savingsGoal = Number(localStorage.getItem(uk('app_savings_goal'))) || 20000;
+                    activityLogs = JSON.parse(localStorage.getItem(uk('activity_logs')) || '[]');
+                    monthlyIncome = Number(localStorage.getItem(uk('app_monthly_income'))) || 25000;
+                    extraIncomeRecords = JSON.parse(localStorage.getItem(uk('app_extra_income_records')) || '[]');
+                    cardNoteHistory = JSON.parse(localStorage.getItem(uk('app_card_note_history')) || '[]');
+                    fixedExpenses = JSON.parse(localStorage.getItem(uk('app_fixed_expenses')) || '[]');
+                    wishGoals = JSON.parse(localStorage.getItem(uk('app_wish_goals')) || '[]');
+                    categoryLimits = JSON.parse(localStorage.getItem(uk('app_category_limits')) || '{}');
+                    noteTags = JSON.parse(localStorage.getItem(uk('app_note_tags')) || '{}');
 
                     // 🧾 舊版資料相容：為未有錢包分類的記錄補上預設分類
                     let migrated = false;
@@ -11529,7 +12042,7 @@
                         }
                     });
                     if (migrated) {
-                        localStorage.setItem('app_expense_records', JSON.stringify(records));
+                        localStorage.setItem(uk('app_expense_records'), JSON.stringify(records));
                     }
 
                     // 🚀 每次開 App 讀取完資料後，立刻進行跨月檢查
@@ -11542,24 +12055,25 @@
 
             // 將目前記憶體中的所有資料寫回 localStorage，進行持久化儲存
             function saveData() {
-                localStorage.setItem('app_expense_records', JSON.stringify(records));
-                localStorage.setItem('app_savings_records', JSON.stringify(savingsRecords));
-                localStorage.setItem('app_loan_records', JSON.stringify(loanRecords));
-                localStorage.setItem('app_budget_limit', budgetLimit);
-                localStorage.setItem('app_savings_goal', savingsGoal);
-                localStorage.setItem('activity_logs', JSON.stringify(activityLogs));
-                localStorage.setItem('app_monthly_income', monthlyIncome);
-                localStorage.setItem('app_extra_income_records', JSON.stringify(extraIncomeRecords));
-                localStorage.setItem('app_card_note_history', JSON.stringify(cardNoteHistory));
-                localStorage.setItem('app_fixed_expenses', JSON.stringify(fixedExpenses));
-                localStorage.setItem('app_wish_goals', JSON.stringify(wishGoals));
-                localStorage.setItem('app_category_limits', JSON.stringify(categoryLimits));
-                localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
+                localStorage.setItem(uk('app_expense_records'), JSON.stringify(records));
+                localStorage.setItem(uk('app_savings_records'), JSON.stringify(savingsRecords));
+                localStorage.setItem(uk('app_loan_records'), JSON.stringify(loanRecords));
+                localStorage.setItem(uk('app_budget_limit'), budgetLimit);
+                localStorage.setItem(uk('app_savings_goal'), savingsGoal);
+                localStorage.setItem(uk('activity_logs'), JSON.stringify(activityLogs));
+                localStorage.setItem(uk('app_monthly_income'), monthlyIncome);
+                localStorage.setItem(uk('app_extra_income_records'), JSON.stringify(extraIncomeRecords));
+                localStorage.setItem(uk('app_card_note_history'), JSON.stringify(cardNoteHistory));
+                localStorage.setItem(uk('app_fixed_expenses'), JSON.stringify(fixedExpenses));
+                localStorage.setItem(uk('app_wish_goals'), JSON.stringify(wishGoals));
+                localStorage.setItem(uk('app_category_limits'), JSON.stringify(categoryLimits));
+                localStorage.setItem(uk('app_note_tags'), JSON.stringify(noteTags));
 
             }
 
             // 重新渲染整個應用程式介面（會依序呼叫各分頁自己的渲染函式）
             function renderUI() {
+                refreshCurrencySymbols();
                 renderOverview();   // 內含首頁錢包分類總覽 renderWallets()
                 renderRecords();    // 內含同一天歸納顯示與錢包篩選
                 renderLoans();
@@ -11641,13 +12155,13 @@
                 const expDisplay = document.getElementById('overviewExpenseDisplay');
 
                 if (surplusDisplay) {
-                    surplusDisplay.textContent = netSurplus.toLocaleString();
+                    surplusDisplay.textContent = fmtAmt(netSurplus);
                     // 如果結餘小於 0 顯示紅色警示，否則保持金色
                     surplusDisplay.style.color = netSurplus < 0 ? '#f87171' : '#fbbf24';
                 }
-                if (incomeDisplay) incomeDisplay.textContent = totalMonthlyIncome.toLocaleString();
-                if (loanDueDisplay) loanDueDisplay.textContent = totalLoanDue.toLocaleString();
-                if (expDisplay) expDisplay.textContent = totalExp.toLocaleString();
+                if (incomeDisplay) incomeDisplay.textContent = fmtAmt(totalMonthlyIncome);
+                if (loanDueDisplay) loanDueDisplay.textContent = fmtAmt(totalLoanDue);
+                if (expDisplay) expDisplay.textContent = fmtAmt(totalExp);
 
                 // 💼 首頁改為顯示「現金流錢包 / 信用卡錢包」的分類總覽
                 renderWallets();
@@ -11698,7 +12212,7 @@
                     return entries.map(([name, amt]) => `
                                 <div class="wallet-method-row">
                                     <span>· ${escapeHtml(name)}</span>
-                                    <span>$${amt.toLocaleString()}</span>
+                                    <span>${curSym()}${fmtAmt(amt)}</span>
                                 </div>
                             `).join('');
                 };
@@ -11715,7 +12229,7 @@
                                     <div class="wallet-box-icon">💵</div>
                                     <div class="wallet-box-title">現金流錢包</div>
                                 </div>
-                                <div class="wallet-box-amount">$${stats.cash.total.toLocaleString()}</div>
+                                <div class="wallet-box-amount">${curSym()}${fmtAmt(stats.cash.total)}</div>
                                 <div class="wallet-box-sub">本月 ${stats.cash.count} 筆 · 佔 ${cashPct}%</div>
                                 <div class="wallet-box-bar"><div style="width: ${cashPct}%;"></div></div>
                                 ${methodRows(stats.cash.methods)}
@@ -11727,7 +12241,7 @@
                                     <div class="wallet-box-icon">💳</div>
                                     <div class="wallet-box-title">信用卡錢包</div>
                                 </div>
-                                <div class="wallet-box-amount">$${stats.credit.total.toLocaleString()}</div>
+                                <div class="wallet-box-amount">${curSym()}${fmtAmt(stats.credit.total)}</div>
                                 <div class="wallet-box-sub">本月 ${stats.credit.count} 筆 · 佔 ${creditPct}%</div>
                                 <div class="wallet-box-bar"><div style="width: ${creditPct}%;"></div></div>
                                 ${methodRows(stats.credit.methods)}
@@ -11737,7 +12251,7 @@
                         <div class="wallet-summary-bar" onclick="toggleCardSummaryDetail()">
                             <div>
                                 <div class="wallet-summary-label">🏦 信用卡待清還結欠</div>
-                                <div class="wallet-summary-val credit">HK$${cardOutstanding.toLocaleString()}</div>
+                                <div class="wallet-summary-val credit">${curSym()}${fmtAmt(cardOutstanding)}</div>
                             </div>
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <div style="text-align:right;">
@@ -11775,8 +12289,8 @@
                                     <div class="card-detail-sub">${escapeHtml(l.cardBrand || '信用卡')} · 累計 ${Number(l.linkedCount) || 0} 筆 · 已清還 ${percent}%</div>
                                 </div>
                                 <div>
-                                    <div class="card-detail-amt">HK$${rem.toLocaleString()}</div>
-                                    <div class="card-detail-amt-sub">累計簽帳 $${total.toLocaleString()}</div>
+                                    <div class="card-detail-amt">${curSym()}${fmtAmt(rem)}</div>
+                                    <div class="card-detail-amt-sub">累計簽帳 ${curSym()}${fmtAmt(total)}</div>
                                 </div>
                             </div>`;
                 }).join('');
@@ -12068,7 +12582,7 @@
 
             // 金額格式化
             function money(n) {
-                return `HK$${Math.round(Number(n) || 0).toLocaleString()}`;
+                return `${curSym()}${fmtAmt(Math.round(Number(n) || 0))}`;
             }
 
             // 取得某年某月的總日數
@@ -12245,10 +12759,10 @@
                 const net = (monthlyIncome + extra) - due - exp;
 
                 const vals = {
-                    home: `${net < 0 ? '-' : ''}$${Math.abs(Math.round(net)).toLocaleString()}`,
-                    expense: `$${Math.round(exp).toLocaleString()}`,
-                    savings: `$${Math.round(savings).toLocaleString()}`,
-                    loans: `$${Math.round(due).toLocaleString()}`
+                    home: `${net < 0 ? '-' : ''}${curSym()}${fmtAmt(Math.abs(Math.round(net)))}`,
+                    expense: `${curSym()}${fmtAmt(Math.round(exp))}`,
+                    savings: `${curSym()}${fmtAmt(Math.round(savings))}`,
+                    loans: `${curSym()}${fmtAmt(Math.round(due))}`
                 };
 
                 HUB_PAGES.forEach(k => {
@@ -12504,8 +13018,8 @@
                 const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
                 setTxt('calMonthLabel', `${y} 年 ${m + 1} 月`);
                 setTxt('calMonthSub', isCurrentMonth ? '本月消費總覽（目前月份）' : '歷史月份消費總覽');
-                setTxt('calMonthTotalDisplay', monthTotal.toLocaleString());
-                setTxt('calDailyAvgDisplay', dailyAvg.toLocaleString());
+                setTxt('calMonthTotalDisplay', fmtAmt(monthTotal));
+                setTxt('calDailyAvgDisplay', fmtAmt(dailyAvg));
                 setTxt('calFixedTotalDisplay', money(fixedTotal));
                 setTxt('calFixedUnpaidDisplay', money(unpaidTotal));
 
@@ -13045,11 +13559,11 @@
                 const savedTotal = wishGoals.reduce((s, g) => s + (Number(g.savedAmount) || 0), 0);
 
                 const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-                setTxt('goalSavedTotalDisplay', Math.round(savedTotal).toLocaleString());
-                setTxt('goalTargetTotalDisplay', Math.round(targetTotal).toLocaleString());
-                setTxt('goalSavingsAccDisplay', `$${Math.round(savingsAcc).toLocaleString()}`);
-                setTxt('goalCashBudgetDisplay', `$${Math.round(cashBudget).toLocaleString()}`);
-                setTxt('goalCardAvailDisplay', `$${Math.round(card.available).toLocaleString()}`);
+                setTxt('goalSavedTotalDisplay', fmtAmt(Math.round(savedTotal)));
+                setTxt('goalTargetTotalDisplay', fmtAmt(Math.round(targetTotal)));
+                setTxt('goalSavingsAccDisplay', `${curSym()}${fmtAmt(Math.round(savingsAcc))}`);
+                setTxt('goalCashBudgetDisplay', `${curSym()}${fmtAmt(Math.round(cashBudget))}`);
+                setTxt('goalCardAvailDisplay', `${curSym()}${fmtAmt(Math.round(card.available))}`);
 
                 const now = new Date();
                 setTxt('goalCardNumberDisplay',
@@ -13115,7 +13629,7 @@
                         return `
                             <div class="goal-item ${done ? 'done' : ''}">
                                 <div class="goal-head">
-                                    <h4 class="goal-name">${done ? '🎉' : '🛍️'}<span>${escapeHtml(g.title)}</span></h4>
+                                    <h4 class="goal-name">${done ? '🎉' : '🛍️'}<span>${escapeHtml(g.title)}</span>${(g.person || '').trim() ? `<span class="record-person-chip" style="margin-left:6px;">👤 ${escapeHtml(g.person)}</span>` : ''}</h4>
                                     <div style="display:flex; gap:5px; flex-shrink:0;">
                                         <button type="button" class="np-mini-btn" onclick="openWishGoalModal(${g.id})">✏️</button>
                                         <button type="button" class="np-mini-btn red" onclick="deleteWishGoal(${g.id})">🗑️</button>
@@ -13205,7 +13719,11 @@
                 document.getElementById('wgLiveCheckbox').checked = g ? g.deductLive !== false : true;
                 document.getElementById('wgNoteInput').value = g ? (g.note || '') : '';
 
+                const wgPerson = document.getElementById('wgPersonInput');
+                if (wgPerson) wgPerson.value = g ? (g.person || '') : '';
+
                 renderNoteTagRow('wish');
+                renderNoteTagRow('wishPerson');
                 const modal = document.getElementById('wishGoalModal');
                 if (modal) modal.present();
             }
@@ -13220,6 +13738,9 @@
                 const fundSource = document.getElementById('wgSourceSelect').value || 'savings';
                 const deductLive = document.getElementById('wgLiveCheckbox').checked;
                 const note = document.getElementById('wgNoteInput').value.trim();
+                const personEl2 = document.getElementById('wgPersonInput');
+                const person = personEl2 ? personEl2.value.trim() : '';
+                if (person) rememberNoteTag('wishPerson', person);
 
                 if (!title) { alert('請輸入想購買的物品名稱'); return; }
                 if (targetAmount <= 0) { alert('請輸入正確的目標金額'); return; }
@@ -13228,7 +13749,7 @@
                     const idx = wishGoals.findIndex(x => x.id === editingWishId);
                     if (idx >= 0) {
                         wishGoals[idx] = Object.assign({}, wishGoals[idx], {
-                            title, targetAmount, savedAmount, startDate, deadline, fundSource, deductLive, note
+                            title, targetAmount, savedAmount, startDate, deadline, fundSource, deductLive, note, person
                         });
                         addLog('購買目標', `已修改「${title}」目標 ${money(targetAmount)}`);
                     }
@@ -13238,7 +13759,7 @@
                         selfSaved: 0,
                         title, targetAmount, savedAmount,
                         startDate: startDate || toDateStr(new Date()),
-                        deadline, fundSource, deductLive, note,
+                        deadline, fundSource, deductLive, note, person,
                         history: []
                     });
                     addLog('購買目標', `已新增「${title}」目標 ${money(targetAmount)}`);
@@ -13452,7 +13973,7 @@
 
                 /* 三張圖表統一用 360 x 260 的座標系，
                    令輪播裡面三張圖高度完全一致，唔會出現大片留白。 */
-                const W = 360, H = 260, padL = 46, padR = 12, padT = 30, padB = 34;
+                const W = 360, H = 260, padL = 46, padR = 12, padT = 40, padB = 34;
                 const innerW = W - padL - padR, innerH = H - padT - padB;
                 const bw = innerW / total;
 
@@ -13473,11 +13994,15 @@
                     bars += `<rect x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${Math.max(1.4, w).toFixed(1)}" height="${Math.max(1, h).toFixed(1)}" rx="1.6" fill="${fill}"${isToday ? ' stroke="#d4af37" stroke-width="1.2"' : ''}></rect>`;
 
                     if (i === maxIdx) {
-                        const cxp = Math.min(W - padR - 26, Math.max(padL + 26, padL + i * bw + bw / 2));
+                        const cxp = Math.min(W - padR - 30, Math.max(padL + 30, padL + i * bw + bw / 2));
+                        /* 金額標籤預設放喺柱頂上方；若柱身已到頂，就改放入柱內，
+                           避免頂穿圖表上方的說明文字。 */
+                        const inside = (yy - 21) < padT;
+                        const boxY = inside ? (yy + 4) : (yy - 21);
                         peak = `<g>
-                                    <rect x="${(cxp - 27).toFixed(1)}" y="${(yy - 20).toFixed(1)}" width="54" height="15" rx="7.5" fill="#ef4444" opacity="0.95"></rect>
-                                    <text x="${cxp.toFixed(1)}" y="${(yy - 9).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">${shortMoney(max)}</text>
-                                    <line x1="${cxp.toFixed(1)}" y1="${(yy - 5).toFixed(1)}" x2="${cxp.toFixed(1)}" y2="${(yy - 1).toFixed(1)}" stroke="#ef4444" stroke-width="1.4"/>
+                                    <rect x="${(cxp - 28).toFixed(1)}" y="${boxY.toFixed(1)}" width="56" height="16" rx="8" fill="#ef4444" opacity="0.96"></rect>
+                                    <text x="${cxp.toFixed(1)}" y="${(boxY + 11.6).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">${shortMoney(max)}</text>
+                                    ${inside ? '' : `<line x1="${cxp.toFixed(1)}" y1="${(yy - 5).toFixed(1)}" x2="${cxp.toFixed(1)}" y2="${(yy - 1).toFixed(1)}" stroke="#ef4444" stroke-width="1.4"/>`}
                                 </g>`;
                     }
                 }
@@ -13503,13 +14028,13 @@
 
                 return `
                     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">
-                        <text class="cx-dim" x="${padL}" y="14" font-size="10.5" font-weight="800">單位：HK$　·　柱高＝當日總開銷</text>
+                        <text class="cx-dim" x="${padL}" y="14" font-size="10.5" font-weight="800">單位：${curSym()}　·　柱高＝當日總開銷</text>
                         ${gridLines}
                         ${bars}
                         ${peak}
                         <line x1="${padL}" y1="${avgY.toFixed(1)}" x2="${W - padR}" y2="${avgY.toFixed(1)}" stroke="#10b981" stroke-width="1.6" stroke-dasharray="5 3"/>
                         <rect x="${(W - padR - 84).toFixed(1)}" y="${(avgY - 16).toFixed(1)}" width="84" height="14" rx="7" fill="#10b981" opacity="0.92"></rect>
-                        <text x="${(W - padR - 42).toFixed(1)}" y="${(avgY - 5.5).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">日均 HK$${Math.round(avg).toLocaleString()}</text>
+                        <text x="${(W - padR - 42).toFixed(1)}" y="${(avgY - 5.5).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">日均 ${curSym()}${fmtAmt(Math.round(avg))}</text>
                         ${xLabels}
                         <text class="cx-dim" x="${padL}" y="${H - 8}" font-size="10" font-weight="800">🔵 低於日均　🟠 高於日均　🔴 明顯偏高　🟡框 今日</text>
                     </svg>`;
@@ -13517,7 +14042,7 @@
 
             // 把大數字縮短成 1.2k / 15k，方便喺細小嘅座標軸上顯示
             function shortMoney(n) {
-                const v = Math.round(Number(n) || 0);
+                const v = Math.round(cvt(n));
                 if (v >= 10000) return Math.round(v / 1000) + 'k';
                 if (v >= 1000) return (v / 1000).toFixed(1) + 'k';
                 return String(v);
@@ -13528,7 +14053,7 @@
                 const data = statsRecentMonths(6);
                 const max = Math.max(1, ...data.map(d => d.avg));
 
-                const W = 360, H = 260, padL = 46, padR = 12, padT = 38, padB = 46;
+                const W = 360, H = 260, padL = 46, padR = 12, padT = 44, padB = 46;
                 const innerW = W - padL - padR, innerH = H - padT - padB;
                 const step = innerW / data.length;
 
@@ -13545,10 +14070,12 @@
                     line += `${i === 0 ? 'M' : 'L'}${cx.toFixed(1)},${yy.toFixed(1)} `;
 
                     // 柱頂數值膠囊：直接睇到當月「每日平均」係幾多
+                    const vInside = (yy - 21) < padT;
+                    const vBoxY = vInside ? (yy + 4) : (yy - 21);
                     values += `<g>
-                                   <rect x="${(cx - 24).toFixed(1)}" y="${(yy - 21).toFixed(1)}" width="48" height="15" rx="7.5"
-                                         fill="${isLast ? '#d97706' : '#1d4ed8'}" opacity="0.95"></rect>
-                                   <text x="${cx.toFixed(1)}" y="${(yy - 10).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">${shortMoney(d.avg)}</text>
+                                   <rect x="${(cx - 25).toFixed(1)}" y="${vBoxY.toFixed(1)}" width="50" height="16" rx="8"
+                                         fill="${isLast ? '#d97706' : '#1d4ed8'}" opacity="0.96"></rect>
+                                   <text x="${cx.toFixed(1)}" y="${(vBoxY + 11.6).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">${shortMoney(d.avg)}</text>
                                </g>`;
 
                     labels += `<text class="cx-dim" x="${cx.toFixed(1)}" y="${(padT + innerH + 16).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="900">${d.label}${isLast ? '' : ''}</text>`;
@@ -13572,7 +14099,7 @@
                                 <stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/>
                             </linearGradient>
                         </defs>
-                        <text class="cx-dim" x="${padL}" y="14" font-size="10.5" font-weight="800">單位：HK$／日　·　標籤數值＝當月每日平均</text>
+                        <text class="cx-dim" x="${padL}" y="14" font-size="10.5" font-weight="800">單位：${curSym()}／日　·　標籤數值＝當月每日平均</text>
                         ${gridLines}
                         ${bars}
                         <path d="${line.trim()}" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-linejoin="round"/>
@@ -13612,11 +14139,11 @@
                 });
 
                 const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-                setTxt('statsAvgDisplay', avg.toLocaleString());
-                setTxt('statsBudgetAvgDisplay', budgetAvg.toLocaleString());
-                setTxt('statsMonthTotalDisplay', `$${monthTotal.toLocaleString()}`);
-                setTxt('statsMaxDayDisplay', `$${maxDayAmt.toLocaleString()}`);
-                setTxt('statsForecastDisplay', `$${forecast.toLocaleString()}`);
+                setTxt('statsAvgDisplay', fmtAmt(avg));
+                setTxt('statsBudgetAvgDisplay', fmtAmt(budgetAvg));
+                setTxt('statsMonthTotalDisplay', `${curSym()}${fmtAmt(monthTotal)}`);
+                setTxt('statsMaxDayDisplay', `${curSym()}${fmtAmt(maxDayAmt)}`);
+                setTxt('statsForecastDisplay', `${curSym()}${fmtAmt(forecast)}`);
                 setTxt('statsCardNumberDisplay',
                     `•••• •••• ANALYTICS ${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`);
                 setTxt('statsDailyRangeLabel', `${now.getFullYear()}/${now.getMonth() + 1} · 1 – ${totalDays} 日`);
@@ -13967,7 +14494,7 @@
                 });
 
                 /* ---- 中心：字級按位數自動縮放，保證唔會出界 ---- */
-                const amtText = 'HK$' + Math.round(total).toLocaleString();
+                const amtText = curSym() + fmtAmt(Math.round(total));
                 const avail = CORE * 2 * 0.88;
                 const fontSize = Math.max(12.5, Math.min(23, avail / (amtText.length * 0.585)));
 
@@ -14007,7 +14534,7 @@
                         <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="${fontSize.toFixed(1)}" font-weight="900" style="fill:#0f172a">${amtText}</text>
                         <text x="${cx}" y="${cy + 24}" text-anchor="middle" font-size="10.5" font-weight="900" style="fill:${trendColor}">${trendText}</text>
 
-                        <text class="cx-dim" x="${cx}" y="${H - 6}" text-anchor="middle" font-size="10.5" font-weight="800">日均 HK$${Math.round(now ? now.avg : 0).toLocaleString()}　·　共 ${items.length} 個分類　·　外圈為分類、環上為佔比</text>
+                        <text class="cx-dim" x="${cx}" y="${H - 6}" text-anchor="middle" font-size="10.5" font-weight="800">日均 ${curSym()}${fmtAmt(Math.round(now ? now.avg : 0))}　·　共 ${items.length} 個分類　·　外圈為分類、環上為佔比</text>
                     </svg>`;
             }
 
@@ -14489,23 +15016,33 @@
                 loan: { label: '借貸項目名稱', input: 'loanTitleInput' },
                 fixed: { label: '固定支出項目名稱', input: 'fxTitleInput' },
                 wish: { label: '願望購買項目', input: 'wgTitleInput' },
-                income: { label: '收入來源備註', input: 'extraIncomeTitleInput' }
+                income: { label: '收入來源備註', input: 'extraIncomeTitleInput' },
+                expPerson: { label: '消費對象', input: 'expPersonInput', pool: 'person' },
+                wishPerson: { label: '購買對象', input: 'wgPersonInput', pool: 'person' }
             };
+
+            // 部分欄位共用同一個標籤庫（例如消費對象與購買對象）
+            function tagPool(scope) {
+                const cfg = NOTE_TAG_SCOPES[scope];
+                return (cfg && cfg.pool) ? cfg.pool : scope;
+            }
 
             // 目前正在管理的標籤範圍
             let tagManagerScope = 'expense';
 
             function getNoteTags(scope) {
-                return Array.isArray(noteTags[scope]) ? noteTags[scope] : [];
+                const key = tagPool(scope);
+                return Array.isArray(noteTags[key]) ? noteTags[key] : [];
             }
 
             // 記下使用者填寫過的備註，成為下次可選用的標籤
             function rememberNoteTag(scope, name) {
                 const val = String(name || '').trim();
                 if (!val || !NOTE_TAG_SCOPES[scope]) return;
-                if (!Array.isArray(noteTags[scope])) noteTags[scope] = [];
+                const key = tagPool(scope);
+                if (!Array.isArray(noteTags[key])) noteTags[key] = [];
 
-                const list = noteTags[scope];
+                const list = noteTags[key];
                 const idx = list.findIndex(t => t && t.name === val);
                 if (idx >= 0) {
                     const kept = list.splice(idx, 1)[0];
@@ -14515,8 +15052,16 @@
                 }
                 if (list.length > 40) list.length = 40;
 
-                localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
-                renderNoteTagRow(scope);
+                localStorage.setItem(uk('app_note_tags'), JSON.stringify(noteTags));
+                renderPoolTagRows(scope);
+            }
+
+            // 重新繪製所有共用同一標籤庫的欄位
+            function renderPoolTagRows(scope) {
+                const key = tagPool(scope);
+                Object.keys(NOTE_TAG_SCOPES).forEach(sc => {
+                    if (tagPool(sc) === key) renderNoteTagRow(sc);
+                });
             }
 
             // 於輸入欄下方顯示可選用的 # 標籤（只顯示已啟用者）
@@ -14602,9 +15147,9 @@
                 if (!t) return;
 
                 t.hidden = !t.hidden;
-                localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
+                localStorage.setItem(uk('app_note_tags'), JSON.stringify(noteTags));
                 renderTagManagerList();
-                renderNoteTagRow(tagManagerScope);
+                renderPoolTagRows(tagManagerScope);
                 showToast(`標籤「${name}」已${t.hidden ? '隱藏' : '啟用'}`, 'primary');
             }
 
@@ -14623,10 +15168,10 @@
                         text: '確認刪除',
                         role: 'destructive',
                         handler: () => {
-                            noteTags[tagManagerScope] = list.filter(x => !(x && x.name === name));
-                            localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
+                            noteTags[tagPool(tagManagerScope)] = list.filter(x => !(x && x.name === name));
+                            localStorage.setItem(uk('app_note_tags'), JSON.stringify(noteTags));
                             renderTagManagerList();
-                            renderNoteTagRow(tagManagerScope);
+                            renderPoolTagRows(tagManagerScope);
                             showToast(`已刪除標籤「${name}」`, 'danger');
                         }
                     }
@@ -14634,6 +15179,353 @@
 
                 document.body.appendChild(alertEl);
                 await alertEl.present();
+            }
+
+
+            /* ================================================================
+               24. 使用者帳戶、顯示貨幣與計算機匯率換算
+               ================================================================ */
+
+            function activeUser() {
+                return userProfiles.find(u => u.id === activeUserId) || userProfiles[0];
+            }
+
+            function saveUserProfiles() {
+                localStorage.setItem('app_users', JSON.stringify(userProfiles));
+            }
+
+            /* 產生使用者頭像內容。
+               未自訂圖示者，以帳戶名稱首字組成燙金字樣；
+               有自訂圖示（表情符號）則直接沿用。 */
+            function userAvatarInner(u) {
+                const icon = ((u && u.icon) || '').trim();
+                if (icon && icon !== '👤') {
+                    return `<span class="user-emoji">${escapeHtml(icon)}</span>`;
+                }
+                const name = ((u && u.name) || '').trim();
+                const ch = name ? name.charAt(0) : '·';
+                return `<span class="user-mono">${escapeHtml(ch)}</span>`;
+            }
+
+            // 更新標題列上的使用者頭像
+            function refreshUserAvatar() {
+                const el = document.getElementById('userAvatarIcon');
+                const u = activeUser();
+                if (!el || !u) return;
+                el.outerHTML = userAvatarInner(u).replace('<span class="', '<span id="userAvatarIcon" class="');
+            }
+
+            function openUserModal() {
+                renderUserList();
+                renderCurrencySelect();
+                updateCurrencyPreview();
+
+                const modal = document.getElementById('userModal');
+                if (modal) {
+                    modal.present();
+                    if (typeof setupAllModalsDragToClose === 'function') setTimeout(setupAllModalsDragToClose, 100);
+                }
+            }
+
+            function renderUserList() {
+                const box = document.getElementById('userListPanel');
+                if (!box) return;
+
+                box.innerHTML = userProfiles.map(u => {
+                    const isActive = (u.id === activeUserId);
+                    return `
+                        <div class="user-row">
+                            <div class="user-avatar">${userAvatarInner(u)}</div>
+                            <div class="user-name">
+                                ${escapeHtml(u.name)}
+                                ${isActive ? '<span class="user-active-tag">使用中</span>' : ''}
+                            </div>
+                            <div class="user-actions">
+                                ${isActive ? '' : `<button type="button" class="np-mini-btn gold" data-id="${escapeHtml(u.id)}" onclick="switchUser(this.dataset.id)">切換</button>`}
+                                <button type="button" class="np-mini-btn" data-id="${escapeHtml(u.id)}" onclick="promptEditUser(this.dataset.id)">修改</button>
+                                ${userProfiles.length > 1 ? `<button type="button" class="np-mini-btn red" data-id="${escapeHtml(u.id)}" onclick="promptDeleteUser(this.dataset.id)">刪除</button>` : ''}
+                            </div>
+                        </div>`;
+                }).join('');
+            }
+
+            // 切換使用者：重新載入該帳戶的全部資料
+            function switchUser(id) {
+                if (!userProfiles.some(u => u.id === id)) return;
+                if (id === activeUserId) return;
+
+                activeUserId = id;
+                localStorage.setItem('app_active_user', activeUserId);
+                reloadActiveUserData();
+                renderUserList();
+                showToast(`已切換至帳戶「${activeUser().name}」`, 'primary');
+            }
+
+            /* 重新載入目前帳戶的所有資料。
+               loadData() 未涵蓋的幾個獨立設定，喺呢度一併重讀。 */
+            function reloadActiveUserData() {
+                loadData();
+                savingsInterestPa = Number(localStorage.getItem(uk('app_savings_pa'))) || 3.5;
+                savingsTenorMonths = Number(localStorage.getItem(uk('app_savings_tenor'))) || 3;
+                currencyCode = localStorage.getItem(uk('app_currency')) || BASE_CURRENCY;
+
+                isSavingsInterestEnabled = false;
+                isMultiSelectMode = false;
+                selectedRecordIds = new Set();
+                editingRecordId = null;
+                recordWalletFilter = 'all';
+                unreadLogCount = 0;
+
+                refreshUserAvatar();
+                updateLogBadge();
+                renderAllNoteTagRows();
+                renderUI();
+                renderCurrencySelect();
+                updateCurrencyPreview();
+            }
+
+            async function promptAddUser() {
+                const alertEl = document.createElement('ion-alert');
+                alertEl.cssClass = 'custom-danger-alert';
+                alertEl.header = '新增使用者帳戶';
+                alertEl.message = '新帳戶會由一份全新的空白紀錄開始。';
+                alertEl.inputs = [
+                    { name: 'name', type: 'text', placeholder: '帳戶名稱，例如：家庭開支' },
+                    { name: 'icon', type: 'text', placeholder: '代表圖示，可留空（留空則以名稱首字顯示）', attributes: { maxlength: 2 } }
+                ];
+                alertEl.buttons = [
+                    { text: '取消', role: 'cancel' },
+                    {
+                        text: '建立',
+                        handler: (data) => {
+                            const name = (data.name || '').trim();
+                            if (!name) { showToast('請輸入帳戶名稱', 'warning'); return false; }
+                            const id = 'u' + Date.now();
+                            userProfiles.push({ id, name, icon: (data.icon || '').trim() });
+                            saveUserProfiles();
+                            renderUserList();
+                            showToast(`已建立帳戶「${name}」`, 'success');
+                        }
+                    }
+                ];
+                document.body.appendChild(alertEl);
+                await alertEl.present();
+            }
+
+            async function promptEditUser(id) {
+                const u = userProfiles.find(x => x.id === id);
+                if (!u) return;
+
+                const alertEl = document.createElement('ion-alert');
+                alertEl.cssClass = 'custom-danger-alert';
+                alertEl.header = '修改使用者帳戶';
+                alertEl.inputs = [
+                    { name: 'name', type: 'text', value: u.name, placeholder: '帳戶名稱' },
+                    { name: 'icon', type: 'text', value: (u.icon === '👤' ? '' : (u.icon || '')), placeholder: '代表圖示，可留空（留空則以名稱首字顯示）', attributes: { maxlength: 2 } }
+                ];
+                alertEl.buttons = [
+                    { text: '取消', role: 'cancel' },
+                    {
+                        text: '儲存',
+                        handler: (data) => {
+                            const name = (data.name || '').trim();
+                            if (!name) { showToast('請輸入帳戶名稱', 'warning'); return false; }
+                            u.name = name;
+                            u.icon = (data.icon || '').trim();
+                            saveUserProfiles();
+                            renderUserList();
+                            refreshUserAvatar();
+                            showToast(`帳戶資料已更新`, 'primary');
+                        }
+                    }
+                ];
+                document.body.appendChild(alertEl);
+                await alertEl.present();
+            }
+
+            async function promptDeleteUser(id) {
+                const u = userProfiles.find(x => x.id === id);
+                if (!u || userProfiles.length <= 1) return;
+
+                const alertEl = document.createElement('ion-alert');
+                alertEl.cssClass = 'custom-danger-alert';
+                alertEl.header = '確認刪除使用者帳戶';
+                alertEl.message = `確定要刪除帳戶「${escapeHtml(u.name)}」嗎？該帳戶的所有消費、儲蓄、借貸、固定支出、願望項目與標籤紀錄將一併永久刪除，且無法復原。`;
+                alertEl.buttons = [
+                    { text: '取消', role: 'cancel' },
+                    {
+                        text: '確認刪除',
+                        role: 'destructive',
+                        handler: () => {
+                            // 清除該帳戶名下所有資料
+                            const prefix = 'u_' + id + '::';
+                            const doomed = [];
+                            for (let i = 0; i < localStorage.length; i++) {
+                                const k = localStorage.key(i);
+                                if (k && k.indexOf(prefix) === 0) doomed.push(k);
+                            }
+                            doomed.forEach(k => localStorage.removeItem(k));
+
+                            userProfiles = userProfiles.filter(x => x.id !== id);
+                            saveUserProfiles();
+
+                            if (activeUserId === id) {
+                                activeUserId = userProfiles[0].id;
+                                localStorage.setItem('app_active_user', activeUserId);
+                                reloadActiveUserData();
+                            }
+                            renderUserList();
+                            showToast(`已刪除帳戶「${u.name}」`, 'danger');
+                        }
+                    }
+                ];
+                document.body.appendChild(alertEl);
+                await alertEl.present();
+            }
+
+            /* ---------- 顯示貨幣 ---------- */
+
+            function renderCurrencySelect() {
+                const sel = document.getElementById('currencySelect');
+                if (!sel) return;
+                sel.innerHTML = CURRENCY_LIST.map(c =>
+                    `<option value="${c.code}">${c.code} · ${c.name}（${c.symbol.trim()}）</option>`).join('');
+                sel.value = currencyCode;
+                sel.onchange = updateCurrencyPreview;
+
+                const lab = document.getElementById('fxUpdatedLabel');
+                if (lab) lab.textContent = fxUpdatedAt ? `匯率日期 ${fxUpdatedAt}` : '未取得匯率';
+            }
+
+            function updateCurrencyPreview() {
+                const box = document.getElementById('currencyPreview');
+                const sel = document.getElementById('currencySelect');
+                if (!box || !sel) return;
+
+                const code = sel.value;
+                const meta = currencyMeta(code);
+                const rate = (code === BASE_CURRENCY) ? 1 : Number(fxRates[code]);
+
+                if (code === BASE_CURRENCY) {
+                    box.innerHTML = `
+                        <div>💱 顯示貨幣：${meta.name}（${code}）</div>
+                        <div>📐 記帳基準貨幣，毋須換算</div>
+                        <div>🧾 示例：HK$1,000 → <b>${meta.symbol}1,000</b></div>`;
+                    return;
+                }
+
+                if (!(rate > 0)) {
+                    box.innerHTML = `
+                        <div>💱 顯示貨幣：${meta.name}（${code}）</div>
+                        <div>⚠️ 尚未取得 ${code} 匯率，請先按「更新匯率」</div>`;
+                    return;
+                }
+
+                box.innerHTML = `
+                    <div>💱 顯示貨幣：${meta.name}（${code}）</div>
+                    <div>📐 匯率：HK$1 ＝ ${meta.symbol}${rate.toFixed(4)}</div>
+                    <div>🧾 示例：HK$1,000 → <b>${meta.symbol}${Math.round(1000 * rate).toLocaleString()}</b></div>
+                    <div>🗓️ 匯率日期：${fxUpdatedAt || '—'}</div>`;
+            }
+
+            async function refreshFxRatesFromModal() {
+                await fetchFxRates(false);
+                renderCurrencySelect();
+                updateCurrencyPreview();
+                updateCalcFxHint();
+                renderUI();
+            }
+
+            async function applyCurrencyFromModal() {
+                const sel = document.getElementById('currencySelect');
+                if (!sel) return;
+                const code = sel.value;
+
+                if (code !== BASE_CURRENCY && !(Number(fxRates[code]) > 0)) {
+                    const ok = await fetchFxRates(true);
+                    if (!ok || !(Number(fxRates[code]) > 0)) {
+                        showToast('未能取得該貨幣匯率，請稍後再試', 'warning');
+                        return;
+                    }
+                }
+
+                currencyCode = code;
+                localStorage.setItem(uk('app_currency'), currencyCode);
+                refreshCurrencySymbols();
+                renderUI();
+                renderCurrencySelect();
+                updateCurrencyPreview();
+                showToast(`全站顯示貨幣已切換為 ${currencyMeta(code).name}（${code}）`, 'success');
+            }
+
+            /* ---------- 計算機：即時匯率換算 ---------- */
+
+            function initCalcFxSelects() {
+                const from = document.getElementById('calcFxFrom');
+                const to = document.getElementById('calcFxTo');
+                if (!from || !to) return;
+
+                const opts = CURRENCY_LIST.map(c => `<option value="${c.code}">${c.code}</option>`).join('');
+                if (!from.innerHTML) from.innerHTML = opts;
+                if (!to.innerHTML) to.innerHTML = opts;
+                if (!from.value) from.value = BASE_CURRENCY;
+                if (!to.value) to.value = (currencyCode !== BASE_CURRENCY) ? currencyCode : 'USD';
+
+                from.onchange = updateCalcFxHint;
+                to.onchange = updateCalcFxHint;
+                updateCalcFxHint();
+            }
+
+            // 以港元為中介，計算任意兩種貨幣之間的匯率
+            function fxPairRate(from, to) {
+                const rf = (from === BASE_CURRENCY) ? 1 : Number(fxRates[from]);
+                const rt = (to === BASE_CURRENCY) ? 1 : Number(fxRates[to]);
+                if (!(rf > 0) || !(rt > 0)) return 0;
+                return rt / rf;
+            }
+
+            function updateCalcFxHint() {
+                const hint = document.getElementById('calcFxHint');
+                const from = document.getElementById('calcFxFrom');
+                const to = document.getElementById('calcFxTo');
+                if (!hint || !from || !to) return;
+
+                const r = fxPairRate(from.value, to.value);
+                hint.textContent = r > 0
+                    ? `1 ${from.value} ＝ ${r.toFixed(4)} ${to.value}　·　匯率日期 ${fxUpdatedAt || '—'}`
+                    : '尚未取得匯率，請按 ↻ 更新';
+            }
+
+            // 把計算機目前的數值按匯率換算
+            async function calcConvertCurrency() {
+                const screen = document.getElementById('calcScreen');
+                const sub = document.getElementById('calcSubscreen');
+                const from = document.getElementById('calcFxFrom');
+                const to = document.getElementById('calcFxTo');
+                if (!screen || !from || !to) return;
+
+                let value;
+                try {
+                    value = calcExpr ? Function('"use strict";return (' + calcExpr + ')')() : 0;
+                } catch (e) {
+                    showToast('算式未完成，無法換算', 'warning');
+                    return;
+                }
+                if (!isFinite(value)) { showToast('數值無效，無法換算', 'warning'); return; }
+
+                let rate = fxPairRate(from.value, to.value);
+                if (!(rate > 0)) {
+                    await fetchFxRates(true);
+                    rate = fxPairRate(from.value, to.value);
+                    updateCalcFxHint();
+                }
+                if (!(rate > 0)) { showToast('未能取得匯率，請檢查網絡連線', 'warning'); return; }
+
+                const result = Math.round(value * rate * 100) / 100;
+                if (sub) sub.textContent = `${Number(value).toLocaleString()} ${from.value} × ${rate.toFixed(4)} =`;
+                calcExpr = String(result);
+                screen.textContent = calcExpr;
+                showToast(`已換算為 ${to.value} ${result.toLocaleString()}`, 'success');
             }
 
 
@@ -14652,7 +15544,7 @@
                 const head = document.getElementById('loanCardLimitSummary');
                 if (head) {
                     head.textContent = sum.limit > 0
-                        ? `可用 HK$${Math.round(sum.available).toLocaleString()}`
+                        ? `可用 ${curSym()}${fmtAmt(Math.round(sum.available))}`
                         : '未設定額度';
                 }
 
@@ -14706,7 +15598,12 @@
                ================================================ */
             window.addEventListener('DOMContentLoaded', () => {
                 buildHubStack();
+                refreshUserAvatar();
+                refreshCurrencySymbols();
                 renderAllNoteTagRows();
+                if (!fxUpdatedAt || fxUpdatedAt !== new Date().toISOString().split('T')[0]) {
+                    fetchFxRates(true).then(() => { updateCalcFxHint(); if (currencyCode !== BASE_CURRENCY) renderUI(); });
+                }
                 initHubSwipe();
                 initHubAutoCollapse();
                 initStatsCarousel();
