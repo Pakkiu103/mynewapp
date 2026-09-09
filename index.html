@@ -5385,6 +5385,483 @@
             padding: 14px 15px !important;
         }
 
+
+        /* ================================================================
+           22. 第三次改版
+           22.1 底部圓形導覽列：淺色模式未選中按鈕的立體感
+           22.2 圖表輪播：三張圖高度一致 + 圖表下方數值清單
+           22.3 快速新增選單（＋ 圓鈕）
+           22.4 分類支出上限
+           ================================================================ */
+
+        /* ---------- 22.1 淺色模式：未選中的圓形導覽鈕 ---------- */
+        ion-app:not(.dark-theme) .circle-nav-btn:not(.active):not(.primary-add-btn) {
+            background: linear-gradient(160deg, #ffffff 0%, #f4f6f9 52%, #dfe5ec 100%) !important;
+            border: 1.6px solid rgba(180, 83, 9, 0.45) !important;
+            color: #475569 !important;
+            box-shadow:
+                0 4px 9px rgba(15, 23, 42, 0.20),
+                0 1px 2px rgba(120, 53, 15, 0.22),
+                inset 0 1.6px 0 rgba(255, 255, 255, 0.98),
+                inset 0 -2.5px 5px rgba(148, 163, 184, 0.42) !important;
+        }
+
+        ion-app:not(.dark-theme) .circle-nav-btn:not(.active):not(.primary-add-btn) ion-icon {
+            filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
+        }
+
+        ion-app:not(.dark-theme) .circle-nav-btn:not(.active):not(.primary-add-btn) .btn-label {
+            color: #64748b !important;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+        }
+
+        ion-app:not(.dark-theme) .circle-nav-btn:not(.active):not(.primary-add-btn):active {
+            transform: translateY(1.5px) scale(0.95);
+            box-shadow:
+                inset 0 2.5px 6px rgba(15, 23, 42, 0.26),
+                0 1px 2px rgba(15, 23, 42, 0.12) !important;
+        }
+
+        /* 深色模式也補少少立體邊，令未選中同樣睇得清 */
+        ion-app.dark-theme .circle-nav-btn:not(.active):not(.primary-add-btn) {
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+            border: 1.4px solid rgba(245, 158, 11, 0.42) !important;
+            box-shadow:
+                inset 0 1.4px 0 rgba(255, 255, 255, 0.28),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.42),
+                0 3px 8px rgba(0, 0, 0, 0.45) !important;
+        }
+
+        /* ＋ 主按鈕：加強立體感 */
+        .circle-nav-btn.primary-add-btn {
+            box-shadow:
+                0 8px 24px rgba(239, 68, 68, 0.45),
+                inset 0 2px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -3px 7px rgba(120, 20, 20, 0.42) !important;
+        }
+
+        .circle-nav-btn.primary-add-btn.menu-open ion-icon {
+            transform: rotate(135deg);
+        }
+
+        /* ---------- 22.2 圖表輪播：三張圖高度一致 ---------- */
+        .chart-carousel {
+            align-items: stretch;
+        }
+
+        .chart-slide {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-wrap {
+            flex: 0 0 auto;
+        }
+
+        /* 三張圖下方統一用同一個高度的資料清單，令輪播唔會出現大片留白 */
+        .chart-foot,
+        .donut-legend {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(100, 116, 139, 0.35);
+            height: 146px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .chart-foot::-webkit-scrollbar,
+        .donut-legend::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chart-foot-title {
+            font-size: 10.5px;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            color: var(--box-text-title);
+            margin: 0 0 4px 2px;
+        }
+
+        .chart-foot-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 2px;
+            border-bottom: 1px dashed rgba(100, 116, 139, 0.22);
+        }
+
+        .chart-foot-row:last-child {
+            border-bottom: none;
+        }
+
+        .chart-foot-chip {
+            flex-shrink: 0;
+            min-width: 42px;
+            text-align: center;
+            font-size: 10.5px;
+            font-weight: 900;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 3px 6px;
+            background: linear-gradient(135deg, #64748b 0%, #334155 100%);
+        }
+
+        .chart-foot-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--box-text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chart-foot-sub {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--box-text-sub);
+            white-space: nowrap;
+        }
+
+        .chart-foot-amt {
+            font-size: 12.5px;
+            font-weight: 900;
+            color: var(--box-text-main);
+            white-space: nowrap;
+        }
+
+        /* ---------- 22.3 快速新增選單 ---------- */
+        .quick-add-picker .option-grid {
+            grid-template-columns: 1fr !important;
+            gap: 9px !important;
+        }
+
+        .quick-add-picker .payment-option-btn {
+            padding: 12px 14px !important;
+            font-size: 14px !important;
+            font-weight: 800 !important;
+        }
+
+        .quick-add-emoji {
+            width: 40px !important;
+            height: 40px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 22px !important;
+            border-radius: 10px !important;
+            flex-shrink: 0 !important;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 5px rgba(15, 23, 42, 0.14);
+        }
+
+        .payment-picker-modal.dark-theme .quick-add-emoji {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 5px rgba(0, 0, 0, 0.45);
+        }
+
+        .quick-add-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .quick-add-sub {
+            font-size: 10.5px;
+            font-weight: 700;
+            opacity: 0.72;
+        }
+
+        /* ---------- 22.4 分類支出上限 ---------- */
+        .cat-limit-row {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(100, 116, 139, 0.3);
+        }
+
+        .cat-limit-row:last-child {
+            border-bottom: none;
+        }
+
+        .cat-limit-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cat-limit-name {
+            min-width: 0;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--box-text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cat-limit-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .cat-limit-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--box-text-sub);
+            margin-top: 4px;
+        }
+
+        .cat-limit-tag {
+            display: inline-block;
+            font-size: 9.5px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            margin-left: 6px;
+            vertical-align: 1px;
+            background: rgba(100, 116, 139, 0.2);
+            color: var(--box-text-sub);
+        }
+
+        .cat-limit-tag.set {
+            background: rgba(5, 150, 105, 0.18);
+            color: #047857;
+        }
+
+        .cat-limit-tag.over {
+            background: rgba(220, 38, 38, 0.18);
+            color: #dc2626;
+        }
+
+        .dark-theme .cat-limit-tag.set {
+            color: #34d399;
+        }
+
+        .dark-theme .cat-limit-tag.over {
+            color: #f87171;
+        }
+
+        .cat-over-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 7px 2px;
+            border-bottom: 1px dashed rgba(100, 116, 139, 0.24);
+        }
+
+        .cat-over-line:last-child {
+            border-bottom: none;
+        }
+
+        /* ================================================================
+           23. 第四次改版
+           23.1 進度條配色（深色模式下亦清晰可見）
+           23.2 提示訊息（Toast）
+           23.3 備註標籤與標籤管理
+           ================================================================ */
+
+        /* ---------- 23.1 進度條：取消灰色底槽 ---------- */
+        .cl-bar,
+        .stat-cat-bar,
+        .stat-split,
+        .goal-progress {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.16) 0%, rgba(15, 23, 42, 0.09) 100%) !important;
+            border: 1px solid rgba(15, 23, 42, 0.14) !important;
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.18) !important;
+            box-sizing: border-box;
+        }
+
+        .dark-theme .cl-bar,
+        .dark-theme .stat-cat-bar,
+        .dark-theme .stat-split,
+        .dark-theme .goal-progress {
+            background: linear-gradient(180deg, rgba(148, 197, 255, 0.24) 0%, rgba(148, 197, 255, 0.14) 100%) !important;
+            border: 1px solid rgba(191, 219, 254, 0.42) !important;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(15, 23, 42, 0.35) !important;
+        }
+
+        .cl-bar i {
+            background: linear-gradient(90deg, #6366f1 0%, #a78bfa 100%) !important;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.55);
+        }
+
+        .cl-bar.warn i {
+            background: linear-gradient(90deg, #d97706 0%, #fbbf24 100%) !important;
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+        }
+
+        .cl-bar.danger i {
+            background: linear-gradient(90deg, #b91c1c 0%, #f87171 100%) !important;
+            box-shadow: 0 0 9px rgba(248, 113, 113, 0.7);
+        }
+
+        .stat-cat-bar i {
+            box-shadow: 0 0 7px rgba(255, 255, 255, 0.28);
+        }
+
+        .goal-progress i {
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.55);
+        }
+
+        .dark-theme .stat-split-cash,
+        .dark-theme .stat-split-credit {
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.22);
+        }
+
+        /* ---------- 23.2 提示訊息 ---------- */
+        ion-toast.novus-toast {
+            --border-radius: 14px;
+            --box-shadow: 0 12px 30px rgba(15, 23, 42, 0.38);
+            --min-height: 46px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        /* ---------- 23.3 備註標籤 ---------- */
+        .tag-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0 8px 0;
+            width: 100%;
+        }
+
+        .tag-setting-btn {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(212, 175, 55, 0.55);
+            background: linear-gradient(160deg, #ffffff 0%, #eef2f7 100%);
+            color: #b45309;
+            font-size: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: inset 0 1.4px 0 rgba(255, 255, 255, 0.95), 0 3px 7px rgba(15, 23, 42, 0.18);
+        }
+
+        .tag-setting-btn:active {
+            transform: scale(0.94);
+        }
+
+        .dark-theme .tag-setting-btn {
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%);
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #fcd34d;
+            box-shadow: inset 0 1.4px 0 rgba(255, 255, 255, 0.24), 0 3px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .note-tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 12px 2px;
+        }
+
+        .note-tag-chip {
+            background: rgba(255, 255, 255, 0.62);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            color: #1e293b;
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .note-tag-chip:active {
+            background: rgba(212, 175, 55, 0.28);
+            border-color: #d97706;
+        }
+
+        .dark-theme .note-tag-chip {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(245, 158, 11, 0.42);
+            color: #e2e8f0;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+        }
+
+        .tag-manage-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 2px;
+            border-bottom: 1px dashed rgba(100, 116, 139, 0.28);
+        }
+
+        .tag-manage-row:last-child {
+            border-bottom: none;
+        }
+
+        .tag-led-btn {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(100, 116, 139, 0.4);
+            background: rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .dark-theme .tag-led-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.24);
+        }
+
+        .tag-led {
+            display: block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.3);
+            border: 1px solid rgba(100, 116, 139, 0.55);
+            box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .tag-led.on {
+            background: rgba(16, 185, 129, 0.55);
+            border-color: rgba(16, 185, 129, 0.95);
+            box-shadow: 0 0 9px rgba(16, 185, 129, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.55);
+        }
+
+        .tag-manage-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--box-text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tag-manage-state {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: var(--box-text-sub);
+            white-space: nowrap;
+        }
+
     </style>
 
     <!-- ================================================
@@ -5790,7 +6267,7 @@
                             </ion-button>
                             <ion-button id="seedDataBtn" fill="clear" size="small"
                                 style="--color: #2563eb; font-weight: 600;" onclick="seedDemoData()">
-                                🎲 載入測試範例
+                                載入示範資料
                             </ion-button>
                         </div>
                     </div>
@@ -5957,7 +6434,7 @@
                             <ion-button fill="clear" size="small"
                                 style="--color: #818cf8; font-weight: 600; margin-left: auto;"
                                 onclick="seedLoanDemoData()">
-                                🎲 載入測試範例
+                                載入示範資料
                             </ion-button>
                         </div>
                     </div>
@@ -6197,6 +6674,13 @@
                     <div id="fixedExpenseList"></div>
 
                     <div class="np-row">
+                        <h3 class="section-title">分類支出上限</h3>
+                        <span id="catLimitSummary"
+                            style="font-size:10.5px; font-weight:800; color:var(--box-text-title);">未設定</span>
+                    </div>
+                    <div class="np-panel" id="catLimitPanel"></div>
+
+                    <div class="np-row">
                         <h3 class="section-title">連動信用卡狀況</h3>
                         <button type="button" class="np-mini-btn" onclick="switchPage('loans')">管理借貸 →</button>
                     </div>
@@ -6374,15 +6858,17 @@
                                 <p class="chart-slide-title">📊 本月每日花費</p>
                                 <p class="chart-slide-sub" id="statsDailyRangeLabel"></p>
                                 <div class="chart-wrap" id="statsDailyChart"></div>
+                                <div class="chart-foot" id="statsDailyFoot"></div>
                             </div>
                             <div class="chart-slide">
                                 <p class="chart-slide-title">📈 近 6 個月：每日平均花費</p>
                                 <p class="chart-slide-sub">柱狀為當月日均，金線為走勢</p>
                                 <div class="chart-wrap" id="statsMonthlyChart"></div>
+                                <div class="chart-foot" id="statsMonthlyFoot"></div>
                             </div>
                             <div class="chart-slide">
-                                <p class="chart-slide-title">🥇 用錢趨勢圓形圖</p>
-                                <p class="chart-slide-sub">本月各分類佔比與較上月的升跌</p>
+                                <p class="chart-slide-title">🥇 消費分類佔比</p>
+                                <p class="chart-slide-sub">本月各分類佔比及與上月比較</p>
                                 <div class="chart-wrap" id="statsDonutChart"></div>
                                 <div class="donut-legend" id="statsDonutLegend"></div>
                             </div>
@@ -6398,7 +6884,7 @@
                     </div>
 
                     <div class="np-row">
-                        <h3 class="section-title">用錢狀況資料</h3>
+                        <h3 class="section-title">支出概況</h3>
                     </div>
                     <div class="np-panel" id="statsFactPanel"></div>
 
@@ -6408,7 +6894,13 @@
                     <div class="np-panel" id="statsCategoryPanel"></div>
 
                     <div class="np-row">
-                        <h3 class="section-title">整體用錢評估</h3>
+                        <h3 class="section-title">分類上限監控</h3>
+                        <button type="button" class="np-mini-btn" onclick="switchPage('calendar')">設定上限 →</button>
+                    </div>
+                    <div class="np-panel" id="statsCatLimitPanel"></div>
+
+                    <div class="np-row">
+                        <h3 class="section-title">整體財務評估</h3>
                     </div>
                     <div id="statsVerdictPanel" style="margin: 0 2px 16px 2px;"></div>
                 </div>
@@ -6510,13 +7002,20 @@
                     <p class="card-note-hint" id="cardNoteHint" style="display: none;">
                         ✨ 此筆消費會即時記入「借貸」頁的信用卡清單；<strong>相同備註</strong>的信用卡消費會自動累計金額。
                     </p>
-                    <div class="modal-dark-group">
-                        <input type="text" id="finalTitleInput" class="modal-dark-input" placeholder=" "
-                            autocomplete="off">
-                        <label for="finalTitleInput">
-                            🏷️ 項目名稱 (例如: 茶餐廳午餐)
-                        </label>
+                    <div class="tag-field">
+                        <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                            <input type="text" id="finalTitleInput" class="modal-dark-input" placeholder=" "
+                                autocomplete="off">
+                            <label for="finalTitleInput">
+                                🏷️ 備註（選填，例如：商務午膳）
+                            </label>
+                        </div>
+                        <button type="button" class="tag-setting-btn" onclick="openTagManager('expense')"
+                            aria-label="標籤設定">
+                            <ion-icon name="pricetags-outline"></ion-icon>
+                        </button>
                     </div>
+                    <div class="note-tag-row" id="tagRow-expense"></div>
                     <p id="expTitleError" style="color: #f87171; font-size: 12px; margin: -6px 0 10px 4px;">
                     </p>
                     <div class="stepper-container">
@@ -6706,13 +7205,20 @@
                         🏦 信用卡總額度 (HKD, 可選填)
                     </label>
                 </div>
-                <div class="modal-dark-group">
-                    <input type="text" id="loanTitleInput" class="modal-dark-input" placeholder="例如: 匯豐信用卡iPhone分期"
-                        autocomplete="off">
-                    <label for="loanTitleInput">
-                        🏷️ 借貸項目名稱
-                    </label>
+                <div class="tag-field">
+                    <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                        <input type="text" id="loanTitleInput" class="modal-dark-input"
+                            placeholder="例如：匯豐信用卡 iPhone 分期" autocomplete="off">
+                        <label for="loanTitleInput">
+                            🏷️ 借貸項目名稱
+                        </label>
+                    </div>
+                    <button type="button" class="tag-setting-btn" onclick="openTagManager('loan')"
+                        aria-label="標籤設定">
+                        <ion-icon name="pricetags-outline"></ion-icon>
+                    </button>
                 </div>
+                <div class="note-tag-row" id="tagRow-loan"></div>
                 <div class="stepper-container">
                     <div class="stepper-header">
                         <span class="stepper-label">
@@ -7100,12 +7606,30 @@
                         存入儲蓄資金
                     </h2>
                 </div>
-                <div class="modal-dark-group" style="margin: 14px 0;">
-                    <input type="text" id="savingsTitleInput" class="modal-dark-input" placeholder="例如：旅行基金 / 緊急儲蓄"
-                        autocomplete="off" style="height: 48px; padding: 12px; font-size: 13px;">
-                    <label for="savingsTitleInput">
-                        📝 儲蓄備註或目的
+                <div class="tag-field" style="margin: 14px 0 8px 0;">
+                    <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                        <input type="text" id="savingsTitleInput" class="modal-dark-input"
+                            placeholder="例如：旅行基金 / 應急儲備" autocomplete="off"
+                            style="height: 48px; padding: 12px; font-size: 13px;">
+                        <label for="savingsTitleInput">
+                            📝 儲蓄備註（選填）
+                        </label>
+                    </div>
+                    <button type="button" class="tag-setting-btn" onclick="openTagManager('savings')"
+                        aria-label="標籤設定">
+                        <ion-icon name="pricetags-outline"></ion-icon>
+                    </button>
+                </div>
+                <div class="note-tag-row" id="tagRow-savings"></div>
+                <div class="modal-dark-group" style="margin: 0 0 10px 0;">
+                    <select id="savingsWishSelect" class="modal-dark-input" onchange="onSavingsWishChanged()"
+                        style="height: 48px; padding: 12px; font-size: 13px;"></select>
+                    <label for="savingsWishSelect">
+                        🎯 連動願望購買物品（可選）
                     </label>
+                </div>
+                <div id="savingsWishPreview" class="calc-info-box"
+                    style="display:none; font-size:11.5px; font-weight:800; line-height:1.75; margin-bottom:12px;">
                 </div>
                 <div class="stepper-container" style="padding: 12px; margin-bottom: 12px;">
                     <div class="stepper-header" style="margin-bottom: 6px;">
@@ -7339,13 +7863,21 @@
                         💵 本月額外收入管理
                     </h2>
                 </div>
-                <div class="modal-dark-group" style="margin: 10px 0;">
-                    <input type="text" id="extraIncomeTitleInput" class="modal-dark-input" placeholder="例如：兼職 / 獎金 / 網拍"
-                        autocomplete="off" style="height: 54px; padding: 12px; font-size: 14px;">
-                    <label for="extraIncomeTitleInput">
-                        📝 收入來源備註
-                    </label>
+                <div class="tag-field" style="margin: 10px 0 8px 0;">
+                    <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                        <input type="text" id="extraIncomeTitleInput" class="modal-dark-input"
+                            placeholder="例如：兼職 / 花紅 / 網上銷售" autocomplete="off"
+                            style="height: 54px; padding: 12px; font-size: 14px;">
+                        <label for="extraIncomeTitleInput">
+                            📝 收入來源備註
+                        </label>
+                    </div>
+                    <button type="button" class="tag-setting-btn" onclick="openTagManager('income')"
+                        aria-label="標籤設定">
+                        <ion-icon name="pricetags-outline"></ion-icon>
+                    </button>
                 </div>
+                <div class="note-tag-row" id="tagRow-income"></div>
                 <div class="stepper-container" style="margin-bottom: 14px;">
                     <div class="stepper-header">
                         <span class="stepper-label">
@@ -7484,12 +8016,20 @@
                     <h2 class="modal-header-title" id="fixedExpenseModalTitle">🔁 新增每月固定支出</h2>
                 </div>
                 <p style="font-size:13px; color:#0369a1; margin:-6px 0 14px 4px; font-weight:600;">
-                    每月同一日自動提醒，可一鍵記入開銷並連動信用卡戶口。
+                    每月同日自動提醒，可一鍵記入開銷並連結信用卡帳戶。
                 </p>
-                <div class="modal-dark-group">
-                    <input type="text" id="fxTitleInput" class="modal-dark-input" placeholder="例如：家用寬頻月費 / 手機月費 / 租金">
-                    <label for="fxTitleInput">🏷️ 支出項目名稱</label>
+                <div class="tag-field">
+                    <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                        <input type="text" id="fxTitleInput" class="modal-dark-input"
+                            placeholder="例如：家用寬頻月費 / 流動通訊月費 / 租金">
+                        <label for="fxTitleInput">🏷️ 支出項目名稱</label>
+                    </div>
+                    <button type="button" class="tag-setting-btn" onclick="openTagManager('fixed')"
+                        aria-label="標籤設定">
+                        <ion-icon name="pricetags-outline"></ion-icon>
+                    </button>
                 </div>
+                <div class="note-tag-row" id="tagRow-fixed"></div>
                 <div class="modal-dark-group">
                     <input type="number" id="fxAmountInput" class="modal-dark-input" placeholder="0" min="0">
                     <label for="fxAmountInput">💰 每月金額 (HKD)</label>
@@ -7544,6 +8084,80 @@
         </ion-modal>
 
         <!-- Modal：新增／編輯希望購買目標 -->
+        <!-- Modal：備註標籤管理 -->
+        <ion-modal id="tagManagerModal" class="custom-bottom-modal">
+            <ion-content class="ion-padding">
+                <div class="drag-handle-bar">
+                    <div class="handle-pill"></div>
+                    <span class="handle-text">下滑關閉</span>
+                </div>
+                <div class="modal-header-box"
+                    style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); border-color: rgba(147, 197, 253, 0.35);">
+                    <h2 class="modal-header-title" id="tagManagerTitle" style="color: #bfdbfe;">
+                        🏷️ 標籤設定
+                    </h2>
+                </div>
+                <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:-4px 0 12px 4px;">
+                    綠燈亮起表示該標籤會顯示於輸入欄下方，供快速選用；關閉綠燈則僅隱藏而保留紀錄。
+                    按「刪除」可永久移除標籤，操作前會再作確認。
+                </p>
+                <div class="np-panel" id="tagManagerList" style="margin-bottom:14px;"></div>
+                <ion-button expand="block" fill="outline"
+                    onclick="document.getElementById('tagManagerModal').dismiss()"
+                    style="margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                    完成
+                </ion-button>
+                <div style="height:50px;"></div>
+            </ion-content>
+        </ion-modal>
+        <!-- Modal：設定分類支出上限 -->
+        <ion-modal id="catLimitModal" class="custom-bottom-modal">
+            <ion-content class="ion-padding">
+                <div class="drag-handle-bar">
+                    <div class="handle-pill"></div>
+                    <span class="handle-text">向下滑動關閉</span>
+                </div>
+                <div class="modal-header-box"
+                    style="background: linear-gradient(135deg, #7c2d12 0%, #b45309 100%); border-color: rgba(251, 191, 36, 0.35);">
+                    <h2 class="modal-header-title" id="catLimitModalTitle" style="color: #fcd34d;">
+                        🚦 設定分類支出上限
+                    </h2>
+                </div>
+                <p id="catLimitModalSub"
+                    style="font-size:12px; font-weight:800; color:var(--box-text-sub); margin:-4px 0 12px 4px;"></p>
+                <div class="modal-dark-group">
+                    <select id="clCategorySelect" class="modal-dark-input" onchange="onCatLimitCategoryChanged()"></select>
+                    <label for="clCategorySelect">📂 消費分類</label>
+                </div>
+                <div class="modal-dark-group">
+                    <input type="number" id="clAmountInput" class="modal-dark-input" placeholder="0" min="0"
+                        oninput="updateCatLimitPreview()">
+                    <label for="clAmountInput">🚦 每月上限金額 (HKD)</label>
+                </div>
+                <div class="quick-chip-row" style="margin: -4px 2px 12px 2px;">
+                    <button type="button" class="quick-chip" onclick="clAddAmount(500)">+$500</button>
+                    <button type="button" class="quick-chip" onclick="clAddAmount(1000)">+$1,000</button>
+                    <button type="button" class="quick-chip" onclick="clAddAmount(2000)">+$2,000</button>
+                    <button type="button" class="quick-chip" onclick="clAddAmount(5000)">+$5,000</button>
+                    <button type="button" class="quick-chip" onclick="clSetAmount(0)">清空</button>
+                </div>
+                <div id="clPreviewBox" class="calc-info-box"
+                    style="font-size:11.5px; font-weight:800; line-height:1.8; margin-bottom:14px;"></div>
+                <ion-button expand="block" color="warning" onclick="confirmSaveCategoryLimit()"
+                    style="margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:16px;">
+                    💾 儲存上限
+                </ion-button>
+                <ion-button expand="block" color="danger" id="clDeleteBtn" onclick="deleteCategoryLimitFromModal()"
+                    style="margin-inline:0px; margin-top:8px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                    🗑️ 刪除此分類上限
+                </ion-button>
+                <ion-button expand="block" fill="outline" onclick="document.getElementById('catLimitModal').dismiss()"
+                    style="margin-inline:0px; margin-top:8px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                    取消
+                </ion-button>
+                <div style="height:50px;"></div>
+            </ion-content>
+        </ion-modal>
         <ion-modal id="wishGoalModal" class="custom-bottom-modal">
             <ion-content class="ion-padding">
                 <div class="drag-handle-bar">
@@ -7551,15 +8165,23 @@
                     <span class="handle-text">向下滑動關閉</span>
                 </div>
                 <div class="modal-header-box" style="background: linear-gradient(135deg,#4a1d3f 0%,#7c2d5b 100%);">
-                    <h2 class="modal-header-title" id="wishGoalModalTitle">🎯 新增希望購買目標</h2>
+                    <h2 class="modal-header-title" id="wishGoalModalTitle">🎯 新增願望購買項目</h2>
                 </div>
                 <p style="font-size:13px; color:#be185d; margin:-6px 0 14px 4px; font-weight:600;">
-                    設定想買的東西、目標金額與儲蓄期限，系統會自動計算建議每月儲蓄額。
+                    設定目標項目、金額與儲蓄期限，系統將自動計算建議每月儲蓄額。
                 </p>
-                <div class="modal-dark-group">
-                    <input type="text" id="wgTitleInput" class="modal-dark-input" placeholder="例如：MacBook Pro / 日本旅行">
-                    <label for="wgTitleInput">🛍️ 想購買的物品</label>
+                <div class="tag-field">
+                    <div class="modal-dark-group" style="flex:1; min-width:0; margin:0;">
+                        <input type="text" id="wgTitleInput" class="modal-dark-input"
+                            placeholder="例如：MacBook Pro / 日本旅遊">
+                        <label for="wgTitleInput">🛍️ 願望購買項目</label>
+                    </div>
+                    <button type="button" class="tag-setting-btn" onclick="openTagManager('wish')"
+                        aria-label="標籤設定">
+                        <ion-icon name="pricetags-outline"></ion-icon>
+                    </button>
                 </div>
+                <div class="note-tag-row" id="tagRow-wish"></div>
                 <div class="modal-dark-group">
                     <input type="number" id="wgTargetInput" class="modal-dark-input" placeholder="0" min="0">
                     <label for="wgTargetInput">🎯 目標金額 (HKD)</label>
@@ -7692,7 +8314,7 @@
                     行事曆
                 </span>
             </button>
-            <button class="circle-nav-btn primary-add-btn" id="openModalBtn" onclick="openExpenseModal()">
+            <button class="circle-nav-btn primary-add-btn" id="openModalBtn" onclick="openQuickAddMenu()">
                 <ion-icon name="add-outline">
                 </ion-icon>
             </button>
@@ -7710,6 +8332,57 @@
                     統計
                 </span>
             </button>
+        </div>
+        <!-- Modal：＋ 圓鈕快速新增選單 -->
+        <div class="payment-picker-modal quick-add-picker" id="quickAddModal"
+            onclick="if(event.target===this) closeQuickAddMenu()">
+            <div class="picker-content">
+                <div class="picker-header">
+                    <span class="picker-title">
+                        選擇新增項目
+                    </span>
+                    <button type="button" class="close-picker-btn" onclick="closeQuickAddMenu()">
+                        ✕
+                    </button>
+                </div>
+                <div class="option-grid">
+                    <button type="button" class="payment-option-btn" onclick="quickAdd('expense')">
+                        <div class="quick-add-emoji">💸</div>
+                        <span class="quick-add-text">
+                            <span>新增消費</span>
+                            <span class="quick-add-sub">登錄一筆日常開銷</span>
+                        </span>
+                    </button>
+                    <button type="button" class="payment-option-btn" onclick="quickAdd('savings')">
+                        <div class="quick-add-emoji">🐷</div>
+                        <span class="quick-add-text">
+                            <span>儲蓄存入</span>
+                            <span class="quick-add-sub">存入儲蓄戶口，可同步連結願望項目</span>
+                        </span>
+                    </button>
+                    <button type="button" class="payment-option-btn" onclick="quickAdd('loan')">
+                        <div class="quick-add-emoji">🏛️</div>
+                        <span class="quick-add-text">
+                            <span>新增借貸</span>
+                            <span class="quick-add-sub">信用卡分期 / 貸款供款</span>
+                        </span>
+                    </button>
+                    <button type="button" class="payment-option-btn" onclick="quickAdd('fixed')">
+                        <div class="quick-add-emoji">🔁</div>
+                        <span class="quick-add-text">
+                            <span>新增固定支出</span>
+                            <span class="quick-add-sub">每月自動重複的支出項目</span>
+                        </span>
+                    </button>
+                    <button type="button" class="payment-option-btn" onclick="quickAdd('wish')">
+                        <div class="quick-add-emoji">🎯</div>
+                        <span class="quick-add-text">
+                            <span>新增願望購買物品</span>
+                            <span class="quick-add-sub">設定目標金額與儲蓄進度</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
         </div>
         <!-- Modal：選擇付款方式（供新增開銷等表單共用） -->
         <div class="payment-picker-modal" id="paymentPickerModal"
@@ -8191,6 +8864,7 @@
                 const input = document.getElementById(inputId);
                 const range = document.getElementById(rangeId);
                 if (input && range) range.value = input.value;
+                afterAmountChanged(inputId);
             }
 
             // 將滑桿（range）目前的數值同步到對應的數字輸入框（input）上
@@ -8198,6 +8872,7 @@
                 const range = document.getElementById(rangeId);
                 const input = document.getElementById(inputId);
                 if (range && input) input.value = range.value;
+                afterAmountChanged(inputId);
             }
 
             // 以指定的增減值調整某個金額輸入框的數值（例如按 + / - 按鈕時使用）
@@ -8213,6 +8888,15 @@
                 }
                 if (inputId === 'editLoanTotalAmountInput' || inputId === 'editLoanRepaidAmountInput' || inputId === 'editLoanMonthlyInput') {
                     calculateEditRemaining();
+                }
+                afterAmountChanged(inputId);
+            }
+
+            /* 金額輸入有任何變動之後的共用回呼：
+               目前用嚟即時刷新「儲蓄存入 ↔ 願望購買物品」的進度預覽。 */
+            function afterAmountChanged(inputId) {
+                if (inputId === 'savingsAmountInput' && typeof onSavingsWishChanged === 'function') {
+                    onSavingsWishChanged();
                 }
             }
 
@@ -8230,19 +8914,19 @@
                 const savedTheme = localStorage.getItem('app_theme');
                 const app = document.getElementById('appContainer');
                 const icon = document.getElementById('themeIcon');
-                const paymentModal = document.querySelector('.payment-picker-modal');
+                const pickerModals = document.querySelectorAll('.payment-picker-modal');
 
                 const isDark = (savedTheme === 'dark');
 
                 if (app) {
                     if (isDark) {
                         app.classList.add('dark-theme');
-                        if (paymentModal) paymentModal.classList.add('dark-theme');
+                        pickerModals.forEach(m => m.classList.add('dark-theme'));
                         if (icon) icon.setAttribute('name', 'sunny-outline');
                         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#090d16');
                     } else {
                         app.classList.remove('dark-theme');
-                        if (paymentModal) paymentModal.classList.remove('dark-theme');
+                        pickerModals.forEach(m => m.classList.remove('dark-theme'));
                         if (icon) icon.setAttribute('name', 'moon-outline');
                         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#eaf3f0');
                     }
@@ -8253,17 +8937,17 @@
             function toggleTheme() {
                 const app = document.getElementById('appContainer');
                 const icon = document.getElementById('themeIcon');
-                const paymentModal = document.querySelector('.payment-picker-modal');
+                const pickerModals = document.querySelectorAll('.payment-picker-modal');
 
                 const isDark = app ? app.classList.toggle('dark-theme') : false;
 
-                if (paymentModal) {
+                pickerModals.forEach(m => {
                     if (isDark) {
-                        paymentModal.classList.add('dark-theme');
+                        m.classList.add('dark-theme');
                     } else {
-                        paymentModal.classList.remove('dark-theme');
+                        m.classList.remove('dark-theme');
                     }
-                }
+                });
 
                 // 🌙 ☀️ 強制幫所有 custom-bottom-modal 切換背景色
                 document.querySelectorAll('ion-modal.custom-bottom-modal').forEach(modal => {
@@ -8394,6 +9078,58 @@
             /* ================================================
                4. Modal／付款方式選擇器共用控制
                ================================================ */
+            /* ---------- ＋ 圓鈕：快速新增選單 ---------- */
+
+            // 打開底部「選擇新增項目」選單
+            function openQuickAddMenu() {
+                const modal = document.getElementById('quickAddModal');
+                if (!modal) { openExpenseModal(); return; }
+
+                // 依目前主題套用底色
+                const isDark = document.getElementById('appContainer')?.classList.contains('dark-theme');
+                modal.classList.toggle('dark-theme', !!isDark);
+
+                modal.classList.add('active');
+                document.getElementById('openModalBtn')?.classList.add('menu-open');
+            }
+
+            // 關閉快速新增選單
+            function closeQuickAddMenu() {
+                const modal = document.getElementById('quickAddModal');
+                if (modal) modal.classList.remove('active');
+                document.getElementById('openModalBtn')?.classList.remove('menu-open');
+            }
+
+            /* 依使用者所揀嘅項目，跳去相應分頁再開對應的新增視窗。
+               先關閉選單、等收起動畫行完，先至 present()，避免兩個彈窗疊住。 */
+            function quickAdd(kind) {
+                closeQuickAddMenu();
+                setTimeout(() => {
+                    switch (kind) {
+                        case 'expense':
+                            switchPage('expense');
+                            openExpenseModal();
+                            break;
+                        case 'savings':
+                            switchPage('savings');
+                            openAddSavingsModal();
+                            break;
+                        case 'loan':
+                            switchPage('loans');
+                            openAddLoanModal();
+                            break;
+                        case 'fixed':
+                            switchPage('calendar');
+                            openFixedExpenseModal();
+                            break;
+                        case 'wish':
+                            switchPage('goals');
+                            openWishGoalModal();
+                            break;
+                    }
+                }, 240);
+            }
+
             // 顯示或隱藏「選擇付款方式」的彈出選單
             function togglePaymentPicker(show) {
                 const modal = document.getElementById('paymentPickerModal');
@@ -8712,6 +9448,7 @@
                 // 依目前已選的付款方式，決定要不要顯示信用卡備註欄位
                 const paymentInput = document.getElementById('manualPaymentSelect');
                 updateCardNoteVisibility(paymentInput ? paymentInput.value : '現金付款');
+                renderNoteTagRow('expense');
 
                 modal.present();
             }
@@ -8784,16 +9521,16 @@
                 const paymentInput = document.getElementById('manualPaymentSelect');
                 const dateInput = document.getElementById('finalDateInput');
 
-                const title = titleInput.value.trim();
+                const noteText = titleInput.value.trim();
                 const amount = Number(amountInput.value) || 0;
                 const category = categorySelect.value || '其他';
                 const payment = paymentInput.value || '現金';
                 const date = dateInput.value || new Date().toISOString().split('T')[0];
 
-                if (!title) {
-                    document.getElementById('expTitleError').textContent = '⚠️ 請輸入項目名稱';
-                    return;
-                }
+                /* 備註屬選填。未填寫時，直接以消費分類作為該筆記錄的名稱；
+                   若有填寫，內容會自動成為下次可快速選用的標籤。 */
+                const title = noteText || category;
+                if (noteText) rememberNoteTag('expense', noteText);
                 document.getElementById('expTitleError').textContent = '';
 
                 // 💳 Visa / Mastercard 扣帳時，讀取使用者輸入的自訂備註（用來歸類信用卡）
@@ -9186,13 +9923,7 @@
 
             // 簡單的提示訊息（開戶成功／重複時使用）
             async function showCardToast(message, isWarning) {
-                const toast = document.createElement('ion-toast');
-                toast.message = message;
-                toast.duration = 2200;
-                toast.position = 'top';
-                toast.color = isWarning ? 'warning' : 'success';
-                document.body.appendChild(toast);
-                await toast.present();
+                await showToast(message, isWarning ? 'warning' : 'success');
             }
 
             // 建立一個結欠為 0 的信用卡戶口，並加進借貸清單
@@ -9200,7 +9931,7 @@
                 const key = buildCardKey(brand, note);
 
                 if (loanRecords.some(l => isCardAccount(l) && l.cardKey === key)) {
-                    showCardToast(`「${note}」(${brand}) 戶口已經存在`, true);
+                    showCardToast(`「${note}」(${brand}) 帳戶已存在`, true);
                     return;
                 }
 
@@ -9228,8 +9959,8 @@
                 const modal = document.getElementById('addLoanModal');
                 if (modal) modal.dismiss();
 
-                showCardToast(`已開立「${note}」(${brand}) 信用卡戶口`, false);
-                addLog('信用卡帳戶', `已開立「${note}」(${brand}) 信用卡戶口`);
+                showCardToast(`已建立「${note}」(${brand}) 信用卡帳戶`, false);
+                addLog('信用卡帳戶', `已建立「${note}」(${brand}) 信用卡戶口`);
             }
 
             // 切換消費清單的錢包篩選（全部 / 現金 / 信用卡）
@@ -9587,6 +10318,7 @@
                     dateInput.value = new Date().toISOString().split('T')[0];
                 }
                 renderExtraIncomeList();
+                renderNoteTagRow('income');
                 if (modal) {
                     modal.present();
                     if (typeof setupAllModalsDragToClose === 'function') {
@@ -9613,6 +10345,8 @@
                     amount,
                     date
                 });
+
+                rememberNoteTag('income', titleInput.value.trim());
 
                 saveData();
                 renderUI();
@@ -9688,30 +10422,122 @@
             function addSavingsRecord() {
                 const titleInput = document.getElementById('savingsTitleInput');
                 const amountInput = document.getElementById('savingsAmountInput');
+                const wishSelect = document.getElementById('savingsWishSelect');
 
-                const title = titleInput.value.trim() || '日常儲蓄';
+                const wishId = wishSelect ? (Number(wishSelect.value) || 0) : 0;
+                const goal = wishId ? wishGoals.find(g => g.id === wishId) : null;
+
+                const title = titleInput.value.trim()
+                    || (goal ? `願望儲蓄：${goal.title}` : '日常儲蓄');
                 const amount = Number(amountInput.value) || 0;
+                const todayStr = new Date().toISOString().split('T')[0];
 
                 if (amount <= 0) return;
 
+                const recId = Date.now();
                 savingsRecords.unshift({
-                    id: Date.now(),
+                    id: recId,
                     title,
                     amount,
-                    date: new Date().toISOString().split('T')[0]
+                    date: todayStr,
+                    wishGoalId: goal ? goal.id : null
                 });
+
+                /* 🎯 連動願望購買物品：
+                   錢本身留喺儲蓄戶口（唔會扣走），只係同步將呢筆存款
+                   標記為該件物品嘅儲蓄進度，所以 deductLive 一定係 false。 */
+                if (goal) {
+                    goal.savedAmount = (Number(goal.savedAmount) || 0) + amount;
+                    goal.fundSource = 'savings';
+                    goal.deductLive = false;
+                    goal.history = (goal.history || []).concat([{
+                        date: todayStr,
+                        amount,
+                        source: 'savings',
+                        live: false,
+                        fromSavingsId: recId
+                    }]);
+                }
+
+                rememberNoteTag('savings', titleInput.value.trim());
 
                 saveData();
                 renderUI();
-                addLog('儲蓄存款', '存入「' + title + '」HK$' + amount.toLocaleString());
+                addLog('儲蓄存款', '存入「' + title + '」HK$' + amount.toLocaleString()
+                    + (goal ? `（已同步計入願望「${goal.title}」進度）` : ''));
 
                 titleInput.value = '';
+                if (wishSelect) wishSelect.value = '';
+                onSavingsWishChanged();
             }
 
             // 開啟「新增儲蓄」彈出視窗
-            function openAddSavingsModal() {
+            function openAddSavingsModal(presetWishId) {
                 const modal = document.getElementById('addSavingsModal');
+                populateSavingsWishSelect(presetWishId);
+                renderNoteTagRow('savings');
+                onSavingsWishChanged();
                 if (modal) modal.present();
+            }
+
+            /* 把目前所有「願望購買物品」填入儲蓄視窗的連動選單。
+               只列出未完成（或全部）的目標，並顯示進度方便揀。 */
+            function populateSavingsWishSelect(presetWishId) {
+                const sel = document.getElementById('savingsWishSelect');
+                if (!sel) return;
+
+                const opts = ['<option value="">－ 不連動，一般儲蓄 －</option>'];
+                wishGoals.forEach(g => {
+                    const target = Number(g.targetAmount) || 0;
+                    const saved = Number(g.savedAmount) || 0;
+                    const pct = target > 0 ? Math.min(100, Math.round(saved / target * 100)) : 0;
+                    const done = target > 0 && saved >= target;
+                    opts.push(`<option value="${g.id}">${escapeHtml(g.title)}（${pct}%${done ? ' ✅已達標' : ''}）</option>`);
+                });
+
+                sel.innerHTML = opts.join('');
+                if (presetWishId && wishGoals.some(g => g.id === presetWishId)) {
+                    sel.value = String(presetWishId);
+                } else {
+                    sel.value = '';
+                }
+            }
+
+            // 揀咗連動目標之後：即時顯示進度預覽，並自動幫備註填個名
+            function onSavingsWishChanged() {
+                const sel = document.getElementById('savingsWishSelect');
+                const box = document.getElementById('savingsWishPreview');
+                const titleInput = document.getElementById('savingsTitleInput');
+                if (!sel || !box) return;
+
+                const id = Number(sel.value) || 0;
+                const g = id ? wishGoals.find(x => x.id === id) : null;
+
+                if (!g) {
+                    box.style.display = 'none';
+                    box.innerHTML = '';
+                    if (titleInput && /^願望儲蓄：/.test(titleInput.value)) titleInput.value = '';
+                    return;
+                }
+
+                if (titleInput && (!titleInput.value.trim() || /^願望儲蓄：/.test(titleInput.value))) {
+                    titleInput.value = `願望儲蓄：${g.title}`;
+                }
+
+                const amt = Number(document.getElementById('savingsAmountInput')?.value) || 0;
+                const target = Number(g.targetAmount) || 0;
+                const saved = Number(g.savedAmount) || 0;
+                const after = saved + amt;
+                const pct = target > 0 ? Math.min(100, Math.round(saved / target * 100)) : 0;
+                const pctAfter = target > 0 ? Math.min(100, Math.round(after / target * 100)) : 0;
+
+                box.style.display = '';
+                box.innerHTML = `
+                    <div>🎯 目標「${escapeHtml(g.title)}」：${money(target)}</div>
+                    <div>📈 進度：${money(saved)}（${pct}%）→ <b>${money(after)}（${pctAfter}%）</b></div>
+                    <div>🐷 本筆款項存入儲蓄戶口，並同時計入該項目的儲蓄進度</div>
+                    <div>📊 儲蓄戶口總額不受影響</div>
+                    ${target > 0 && after >= target ? '<div style="color:#047857;">🎉 存入後即可達成目標</div>' : ''}`;
             }
 
             // 驗證並確認新增儲蓄記錄（從彈出視窗提交時觸發）
@@ -9736,10 +10562,20 @@
                         text: '確認刪除',
                         role: 'destructive',
                         handler: () => {
+                            // 🎯 如果呢筆存款曾經連動願望購買物品，要同步扣返該物品的進度
+                            let unlinked = '';
+                            if (target.wishGoalId) {
+                                const g = wishGoals.find(x => x.id === target.wishGoalId);
+                                if (g) {
+                                    g.savedAmount = Math.max(0, (Number(g.savedAmount) || 0) - (Number(target.amount) || 0));
+                                    g.history = (g.history || []).filter(h => h.fromSavingsId !== target.id);
+                                    unlinked = `，並扣回願望「${g.title}」的進度`;
+                                }
+                            }
                             savingsRecords = savingsRecords.filter(s => s.id !== id);
                             saveData();
                             renderUI();
-                            addLog('刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」HK$${Number(target.amount).toLocaleString()}`);
+                            addLog('刪除儲蓄', `已刪除儲蓄紀錄「${target.title}」HK$${Number(target.amount).toLocaleString()}${unlinked}`);
                         }
                     }
                 ];
@@ -9795,6 +10631,7 @@
             function toggleSavingsInterestCheckbox(isChecked) {
                 isSavingsInterestEnabled = isChecked;
                 renderSavings();
+                showToast(isChecked ? '已啟用定期存款利息試算' : '已停用定期存款利息試算', 'primary');
             }
 
             // 渲染整個儲蓄頁面，包括存款總額、進度條與利率資訊
@@ -9823,16 +10660,16 @@
                 if (tip) {
                     const diff = savingsGoal - displaySavings;
                     if (diff <= 0) {
-                        tip.textContent = `🎉 太棒了！已達成目標儲蓄額！${isSavingsInterestEnabled ? `(含 ${savingsTenorMonths} 個月定存利息)` : ''}`;
+                        tip.textContent = `已達成目標儲蓄額。${isSavingsInterestEnabled ? `(含 ${savingsTenorMonths} 個月定存利息)` : ''}`;
                         tip.style.color = '#34d399';
                     } else {
-                        tip.textContent = `💪 還差 HK$${diff.toLocaleString()} 即可達成儲蓄目標！${isSavingsInterestEnabled ? `(已計入 ${savingsTenorMonths} 個月利息)` : ''}`;
+                        tip.textContent = `距離儲蓄目標尚餘 HK$${diff.toLocaleString()}${isSavingsInterestEnabled ? `(已計入 ${savingsTenorMonths} 個月利息)` : ''}`;
                         tip.style.color = '#fbbf24';
                     }
                 }
 
                 if (savingsRecords.length === 0) {
-                    container.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:30px 0; font-size:14px;">尚無儲蓄記錄</div>`;
+                    container.innerHTML = `<div style="text-align:center; color:var(--box-text-title); padding:30px 0; font-size:14px;">尚未有儲蓄紀錄</div>`;
                     return;
                 }
 
@@ -9844,7 +10681,7 @@
                                 </div>
                                 <ion-label>
                                     <h2 style="font-weight: 800; font-size: 15px; margin-bottom: 3px;">${escapeHtml(s.title)}</h2>
-                                    <p style="font-size: 11px; color: var(--box-text-sub);">📅 ${s.date}</p>
+                                    <p style="font-size: 11px; color: var(--box-text-sub);">📅 ${s.date}${savingsWishLabel(s)}</p>
                                 </ion-label>
                                 <div slot="end" style="text-align: right;">
                                     <div style="font-size: 17px; font-weight: 900; color: #ca8a04;">+HK$${Number(s.amount).toLocaleString()}</div>
@@ -9864,6 +10701,14 @@
                10. 借貸／分期管理
                ================================================ */
             // 檢查借貸記錄是否跨月，如果是則自動處理每月應繳款項的結轉
+            /* 儲蓄清單上顯示「已連動邊件願望購買物品」 */
+            function savingsWishLabel(s) {
+                if (!s || !s.wishGoalId) return '';
+                const g = wishGoals.find(x => x.id === s.wishGoalId);
+                if (!g) return '';
+                return ` · 🎯 ${escapeHtml(g.title)}`;
+            }
+
             function checkLoanMonthlyRollover() {
                 const currentYM = getCurrentYearMonth(); // 例如 "2026-08" 或 "2026-09"
 
@@ -9889,7 +10734,7 @@
 
                     if (updatedCount > 0) {
                         saveData(); // 儲存更新後嘅貸款數據
-                        addLog('跨月自動結算', `系統已自動為 ${updatedCount} 個未還清貸款項目推進 1 個月的還款期數！`);
+                        addLog('跨月自動結算', `系統已自動為 ${updatedCount} 個未還清貸款項目推進 1 個月的還款期數。`, true);
                     }
 
                     // 更新最後檢查月份為當前月，避免喺同一個月內重複執行
@@ -9910,6 +10755,7 @@
                     catSelect.dataset.brandBound = '1';
                 }
                 updateLoanBrandVisibility();
+                renderNoteTagRow('loan');
 
                 if (modal) modal.present();
             }
@@ -9971,6 +10817,7 @@
                     rememberCardNote(title);
                 }
 
+                rememberNoteTag('loan', title);
                 loanRecords.unshift(newLoan);
                 saveData();
                 renderUI();
@@ -10491,13 +11338,47 @@
             }
 
             // 新增一筆操作紀錄（例如新增/刪除/修改資料時呼叫），並更新未讀數量
-            function addLog(title, desc) {
+            function addLog(title, desc, silent) {
                 const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 activityLogs.unshift({ id: Date.now(), title, desc, time: timeStr });
                 if (activityLogs.length > 30) activityLogs.pop();
                 unreadLogCount++;
                 updateLogBadge();
                 saveData();
+
+                // 每次新增／修改／刪除，都於頁面頂部顯示一則即時回饋
+                if (!silent) {
+                    const t = String(title || '');
+                    const kind = /刪除|移除|清除/.test(t)
+                        ? 'danger'
+                        : (/修改|更新|調整/.test(t) ? 'primary' : 'success');
+                    const plain = String(desc || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                    showToast(plain ? `${t}：${plain}` : t, kind);
+                }
+            }
+
+            /* 頂部提示訊息。同一時間只保留一則，避免連續操作時互相重疊。 */
+            let activeToastEl = null;
+            async function showToast(message, kind) {
+                try {
+                    if (activeToastEl) {
+                        try { await activeToastEl.dismiss(); } catch (e) { }
+                        activeToastEl = null;
+                    }
+                    const toast = document.createElement('ion-toast');
+                    toast.message = message;
+                    toast.duration = 2000;
+                    toast.position = 'top';
+                    toast.color = kind || 'success';
+                    toast.cssClass = 'novus-toast';
+                    activeToastEl = toast;
+                    document.body.appendChild(toast);
+                    await toast.present();
+                    toast.onDidDismiss().then(() => {
+                        if (activeToastEl === toast) activeToastEl = null;
+                        toast.remove();
+                    });
+                } catch (e) { }
             }
 
             // 更新導覽列上顯示未讀操作紀錄數量的紅點／數字徽章
@@ -10519,6 +11400,7 @@
                 updateLogBadge();
                 saveData();
                 renderLogs();
+                showToast('已清除全部操作紀錄', 'danger');
             }
 
             // 將操作紀錄陣列渲染成畫面上的清單
@@ -10631,6 +11513,8 @@
                     cardNoteHistory = JSON.parse(localStorage.getItem('app_card_note_history') || '[]');
                     fixedExpenses = JSON.parse(localStorage.getItem('app_fixed_expenses') || '[]');
                     wishGoals = JSON.parse(localStorage.getItem('app_wish_goals') || '[]');
+                    categoryLimits = JSON.parse(localStorage.getItem('app_category_limits') || '{}');
+                    noteTags = JSON.parse(localStorage.getItem('app_note_tags') || '{}');
 
                     // 🧾 舊版資料相容：為未有錢包分類的記錄補上預設分類
                     let migrated = false;
@@ -10669,6 +11553,8 @@
                 localStorage.setItem('app_card_note_history', JSON.stringify(cardNoteHistory));
                 localStorage.setItem('app_fixed_expenses', JSON.stringify(fixedExpenses));
                 localStorage.setItem('app_wish_goals', JSON.stringify(wishGoals));
+                localStorage.setItem('app_category_limits', JSON.stringify(categoryLimits));
+                localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
 
             }
 
@@ -11143,6 +12029,16 @@
             // 希望購買物品 / 儲蓄目標清單
             let wishGoals = [];
 
+            /* 分類支出上限：{ 分類代號: 每月上限金額 }
+               自動連動（即係喺消費紀錄出現過）的分類預設係「未設定」，
+               使用者設定咗之後就會一直保留，要手動刪除先會消失。 */
+            let categoryLimits = {};
+
+            /* 備註標籤：{ 範圍代號: [ { name, hidden } ] }
+               使用者填寫過的備註／項目名稱會自動成為標籤，方便下次快速選用；
+               可於「標籤設定」中隱藏或永久刪除。 */
+            let noteTags = {};
+
             // 目前正在編輯中的固定支出 / 目標 id
             let editingFixedId = null;
             let editingWishId = null;
@@ -11257,7 +12153,7 @@
                 const handle = document.createElement('div');
                 handle.className = 'hub-handle';
                 handle.id = 'hubHandle';
-                handle.innerHTML = `<span class="hub-handle-pill"></span><span class="hub-handle-text" id="hubHandleText">▲ 卡片上下撥動切換 · 拉呢條收起 ▼</span>`;
+                handle.innerHTML = `<span class="hub-handle-pill"></span><span class="hub-handle-text" id="hubHandleText">▲ 上下滑動切換卡片 · 下拉收合 ▼</span>`;
                 handle.addEventListener('click', () => setHubCollapsed(!hubCollapsed));
                 area.appendChild(handle);
 
@@ -11373,7 +12269,7 @@
                 const txt = document.getElementById('hubHandleText');
                 if (txt) txt.textContent = hubCollapsed
                     ? '▼ 拉下展開卡片'
-                    : '▲ 卡片上下撥動切換 · 拉呢條收起 ▼';
+                    : '▲ 上下滑動切換卡片 · 下拉收合 ▼';
 
                 updateHubMini();
                 syncTopPadding();
@@ -11646,6 +12542,7 @@
 
                 renderCalDayDetail();
                 renderFixedExpenseList();
+                renderCategoryLimitPanel();
                 renderCalCardLink();
                 renderCalOtherInfo();
                 syncTopPadding();
@@ -11923,6 +12820,7 @@
                 document.getElementById('fxEnabledCheckbox').checked = item ? item.enabled !== false : true;
 
                 onFixedPaymentChanged();
+                renderNoteTagRow('fixed');
                 const cardSel = document.getElementById('fxCardSelect');
                 if (cardSel && item && item.cardNote) cardSel.value = item.cardNote;
 
@@ -11991,6 +12889,7 @@
                 }
 
                 if (cardNote) rememberCardNote(cardNote);
+                rememberNoteTag('fixed', title);
                 editingFixedId = null;
                 saveData();
                 renderUI();
@@ -12015,6 +12914,7 @@
                 f.enabled = f.enabled === false;
                 saveData();
                 renderCalendarPage();
+                showToast(`「${f.title}」已${f.enabled === false ? '停用' : '啟用'}`, 'primary');
             }
 
             // 刪除固定支出
@@ -12275,6 +13175,7 @@
                 g.fundSource = src;
                 saveData();
                 renderGoalsPage();
+                showToast(`「${g.title}」資金來源已更新`, 'primary');
             }
 
             // 切換某個目標是否即時扣減資金
@@ -12284,6 +13185,7 @@
                 g.deductLive = !!checked;
                 saveData();
                 renderGoalsPage();
+                showToast(`「${g.title}」${checked ? '將即時扣減資金' : '只記錄進度，不扣減資金'}`, 'primary');
             }
 
             // 開啟「新增／編輯目標」視窗
@@ -12292,7 +13194,7 @@
                 const g = editingWishId ? wishGoals.find(x => x.id === editingWishId) : null;
 
                 const titleEl = document.getElementById('wishGoalModalTitle');
-                if (titleEl) titleEl.textContent = g ? '✏️ 修改購買目標' : '🎯 新增希望購買目標';
+                if (titleEl) titleEl.textContent = g ? '✏️ 修改願望購買項目' : '🎯 新增願望購買項目';
 
                 document.getElementById('wgTitleInput').value = g ? g.title : '';
                 document.getElementById('wgTargetInput').value = g ? g.targetAmount : '';
@@ -12303,6 +13205,7 @@
                 document.getElementById('wgLiveCheckbox').checked = g ? g.deductLive !== false : true;
                 document.getElementById('wgNoteInput').value = g ? (g.note || '') : '';
 
+                renderNoteTagRow('wish');
                 const modal = document.getElementById('wishGoalModal');
                 if (modal) modal.present();
             }
@@ -12341,6 +13244,7 @@
                     addLog('購買目標', `已新增「${title}」目標 ${money(targetAmount)}`);
                 }
 
+                rememberNoteTag('wish', title);
                 editingWishId = null;
                 saveData();
                 renderUI();
@@ -12546,13 +13450,17 @@
                 const sumAll = arr.reduce((a, b) => a + b, 0);
                 const avg = sumAll / now.getDate();
 
-                /* ⚠️ 座標系刻意用接近實際顯示闊度（約 360）嘅數值，
-                   咁 SVG 入面嘅字級先會等於畫面上真正嘅 px，唔會縮到睇唔清。 */
-                const W = 360, H = 210, padL = 40, padR = 8, padT = 16, padB = 30;
+                /* 三張圖表統一用 360 x 260 的座標系，
+                   令輪播裡面三張圖高度完全一致，唔會出現大片留白。 */
+                const W = 360, H = 260, padL = 46, padR = 12, padT = 30, padB = 34;
                 const innerW = W - padL - padR, innerH = H - padT - padB;
                 const bw = innerW / total;
 
-                let bars = '';
+                // 找出最高消費日，喺柱頂直接標數值
+                let maxIdx = -1;
+                for (let i = 0; i < total; i++) { if (arr[i] === max && max > 0) { maxIdx = i; break; } }
+
+                let bars = '', peak = '';
                 for (let i = 0; i < total; i++) {
                     const v = arr[i];
                     const h = (v / max) * innerH;
@@ -12563,14 +13471,25 @@
                     const fill = v === 0 ? 'rgba(148,163,184,0.32)'
                         : (v > avg * 1.6 ? '#ef4444' : (v > avg ? '#f59e0b' : '#38bdf8'));
                     bars += `<rect x="${x.toFixed(1)}" y="${yy.toFixed(1)}" width="${Math.max(1.4, w).toFixed(1)}" height="${Math.max(1, h).toFixed(1)}" rx="1.6" fill="${fill}"${isToday ? ' stroke="#d4af37" stroke-width="1.2"' : ''}></rect>`;
+
+                    if (i === maxIdx) {
+                        const cxp = Math.min(W - padR - 26, Math.max(padL + 26, padL + i * bw + bw / 2));
+                        peak = `<g>
+                                    <rect x="${(cxp - 27).toFixed(1)}" y="${(yy - 20).toFixed(1)}" width="54" height="15" rx="7.5" fill="#ef4444" opacity="0.95"></rect>
+                                    <text x="${cxp.toFixed(1)}" y="${(yy - 9).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">${shortMoney(max)}</text>
+                                    <line x1="${cxp.toFixed(1)}" y1="${(yy - 5).toFixed(1)}" x2="${cxp.toFixed(1)}" y2="${(yy - 1).toFixed(1)}" stroke="#ef4444" stroke-width="1.4"/>
+                                </g>`;
+                    }
                 }
 
                 const avgY = padT + innerH - (avg / max) * innerH;
 
-                const gridLines = [0, 0.5, 1].map(p => {
+                // 五條格線（0 / 25% / 50% / 75% / 100%），四個位置都標返實際金額
+                const gridLines = [0, 0.25, 0.5, 0.75, 1].map(p => {
                     const yy = padT + innerH - p * innerH;
-                    return `<line x1="${padL}" y1="${yy.toFixed(1)}" x2="${W - padR}" y2="${yy.toFixed(1)}" stroke="rgba(100,116,139,0.25)" stroke-width="0.8"/>
-                            <text class="cx-dim" x="${padL - 5}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="10" font-weight="800">${shortMoney(max * p)}</text>`;
+                    const strong = (p === 0 || p === 0.5 || p === 1);
+                    return `<line x1="${padL}" y1="${yy.toFixed(1)}" x2="${W - padR}" y2="${yy.toFixed(1)}" stroke="rgba(100,116,139,${strong ? 0.28 : 0.15})" stroke-width="${strong ? 0.9 : 0.7}"${strong ? '' : ' stroke-dasharray="3 3"'}/>
+                            <text class="cx-dim" x="${padL - 6}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="10" font-weight="800">${shortMoney(max * p)}</text>`;
                 }).join('');
 
                 let xLabels = '';
@@ -12578,18 +13497,21 @@
                     const d = i + 1;
                     if (d === 1 || d % 5 === 0 || d === total) {
                         const x = padL + i * bw + bw / 2;
-                        xLabels += `<text class="cx-dim" x="${x.toFixed(1)}" y="${H - 12}" text-anchor="middle" font-size="10" font-weight="800">${d}</text>`;
+                        xLabels += `<text class="cx-dim" x="${x.toFixed(1)}" y="${(padT + innerH + 15).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="800">${d}</text>`;
                     }
                 }
 
                 return `
                     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">
+                        <text class="cx-dim" x="${padL}" y="14" font-size="10.5" font-weight="800">單位：HK$　·　柱高＝當日總開銷</text>
                         ${gridLines}
                         ${bars}
-                        <line x1="${padL}" y1="${avgY.toFixed(1)}" x2="${W - padR}" y2="${avgY.toFixed(1)}" stroke="#10b981" stroke-width="1.4" stroke-dasharray="5 3"/>
-                        <text x="${W - padR}" y="${(avgY - 5).toFixed(1)}" text-anchor="end" font-size="10.5" style="fill:#10b981" font-weight="900">日均 ${Math.round(avg).toLocaleString()}</text>
+                        ${peak}
+                        <line x1="${padL}" y1="${avgY.toFixed(1)}" x2="${W - padR}" y2="${avgY.toFixed(1)}" stroke="#10b981" stroke-width="1.6" stroke-dasharray="5 3"/>
+                        <rect x="${(W - padR - 84).toFixed(1)}" y="${(avgY - 16).toFixed(1)}" width="84" height="14" rx="7" fill="#10b981" opacity="0.92"></rect>
+                        <text x="${(W - padR - 42).toFixed(1)}" y="${(avgY - 5.5).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">日均 HK$${Math.round(avg).toLocaleString()}</text>
                         ${xLabels}
-                        <text class="cx-dim" x="${padL}" y="${H - 1}" font-size="9.5" font-weight="700">🔵 低於日均　🟠 高於日均　🔴 明顯偏高</text>
+                        <text class="cx-dim" x="${padL}" y="${H - 8}" font-size="10" font-weight="800">🔵 低於日均　🟠 高於日均　🔴 明顯偏高　🟡框 今日</text>
                     </svg>`;
             }
 
@@ -12601,16 +13523,16 @@
                 return String(v);
             }
 
-            // 產生近 6 個月「每日平均花費」的圖表（長條 + 走勢線）
+            // 產生近 6 個月「每日平均花費」的圖表（長條 + 走勢線 + 柱頂數值）
             function buildMonthlyChartSvg() {
                 const data = statsRecentMonths(6);
                 const max = Math.max(1, ...data.map(d => d.avg));
 
-                const W = 360, H = 210, padL = 40, padR = 10, padT = 18, padB = 40;
+                const W = 360, H = 260, padL = 46, padR = 12, padT = 38, padB = 46;
                 const innerW = W - padL - padR, innerH = H - padT - padB;
                 const step = innerW / data.length;
 
-                let bars = '', dots = '', line = '', labels = '';
+                let bars = '', dots = '', line = '', labels = '', values = '';
                 data.forEach((d, i) => {
                     const h = (d.avg / max) * innerH;
                     const cx = padL + i * step + step / 2;
@@ -12621,14 +13543,23 @@
                     bars += `<rect x="${(cx - w / 2).toFixed(1)}" y="${yy.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(1, h).toFixed(1)}" rx="3" fill="${isLast ? 'url(#gradNow)' : 'url(#gradPast)'}"></rect>`;
                     dots += `<circle cx="${cx.toFixed(1)}" cy="${yy.toFixed(1)}" r="2.8" fill="#fbbf24" stroke="#fff" stroke-width="1.2"></circle>`;
                     line += `${i === 0 ? 'M' : 'L'}${cx.toFixed(1)},${yy.toFixed(1)} `;
-                    labels += `<text class="cx-dim" x="${cx.toFixed(1)}" y="${H - 20}" text-anchor="middle" font-size="11" font-weight="900">${d.label}</text>`;
-                    labels += `<text class="cx-dim" x="${cx.toFixed(1)}" y="${H - 7}" text-anchor="middle" font-size="9.5" font-weight="700">${shortMoney(d.avg)}</text>`;
+
+                    // 柱頂數值膠囊：直接睇到當月「每日平均」係幾多
+                    values += `<g>
+                                   <rect x="${(cx - 24).toFixed(1)}" y="${(yy - 21).toFixed(1)}" width="48" height="15" rx="7.5"
+                                         fill="${isLast ? '#d97706' : '#1d4ed8'}" opacity="0.95"></rect>
+                                   <text x="${cx.toFixed(1)}" y="${(yy - 10).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="900" style="fill:#ffffff">${shortMoney(d.avg)}</text>
+                               </g>`;
+
+                    labels += `<text class="cx-dim" x="${cx.toFixed(1)}" y="${(padT + innerH + 16).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="900">${d.label}${isLast ? '' : ''}</text>`;
+                    labels += `<text class="cx-dim" x="${cx.toFixed(1)}" y="${(padT + innerH + 30).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700">總 ${shortMoney(d.total)}</text>`;
                 });
 
-                const gridLines = [0, 0.5, 1].map(p => {
+                const gridLines = [0, 0.25, 0.5, 0.75, 1].map(p => {
                     const yy = padT + innerH - p * innerH;
-                    return `<line x1="${padL}" y1="${yy.toFixed(1)}" x2="${W - padR}" y2="${yy.toFixed(1)}" stroke="rgba(100,116,139,0.25)" stroke-width="0.8"/>
-                            <text class="cx-dim" x="${padL - 5}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="10" font-weight="800">${shortMoney(max * p)}</text>`;
+                    const strong = (p === 0 || p === 0.5 || p === 1);
+                    return `<line x1="${padL}" y1="${yy.toFixed(1)}" x2="${W - padR}" y2="${yy.toFixed(1)}" stroke="rgba(100,116,139,${strong ? 0.28 : 0.15})" stroke-width="${strong ? 0.9 : 0.7}"${strong ? '' : ' stroke-dasharray="3 3"'}/>
+                            <text class="cx-dim" x="${padL - 6}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="10" font-weight="800">${shortMoney(max * p)}</text>`;
                 }).join('');
 
                 return `
@@ -12641,11 +13572,14 @@
                                 <stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/>
                             </linearGradient>
                         </defs>
+                        <text class="cx-dim" x="${padL}" y="14" font-size="10.5" font-weight="800">單位：HK$／日　·　標籤數值＝當月每日平均</text>
                         ${gridLines}
                         ${bars}
                         <path d="${line.trim()}" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-linejoin="round"/>
                         ${dots}
+                        ${values}
                         ${labels}
+                        <text class="cx-dim" x="${padL}" y="${H - 6}" font-size="10" font-weight="800">🟡 本月　🔵 過往月份　金線＝日均走勢</text>
                     </svg>`;
             }
 
@@ -12693,9 +13627,10 @@
                 const donutBox = document.getElementById('statsDonutChart');
                 if (donutBox) donutBox.innerHTML = buildDonutChartSvg();
                 renderDonutLegend();
+                renderChartFoots();
                 initStatsCarousel();
 
-                // ---- 用錢狀況資料 ----
+                // ---- 支出概況 ----
                 let cashSum = 0, creditSum = 0;
                 monthRecords.forEach(r => {
                     const amt = Number(r.amount) || 0;
@@ -12809,7 +13744,7 @@
                             return `
                                 <div class="stat-cat-row">
                                     <div class="stat-cat-top">
-                                        <span><span class="stat-rank">${i + 1}</span>${escapeHtml(x.name)}</span>
+                                        <span><span class="stat-rank">${i + 1}</span>${escapeHtml(x.name)}${catLimitTagHtml(x.key, x.value)}</span>
                                         <span class="stat-cat-num">${money(x.value)} · <b>${pct}%</b></span>
                                     </div>
                                     <div class="stat-cat-bar"><i style="width:${Math.round(x.value / maxV * 100)}%; background:${cat.color};"></i></div>
@@ -12818,7 +13753,10 @@
                     }
                 }
 
-                // ---- 整體評估 ----                // ---- 整體評估 ----
+                // ---- 分類上限監控 ----
+                renderCatLimitStatsPanel();
+
+                // ---- 整體評估 ----
                 const verdictBox = document.getElementById('statsVerdictPanel');
                 if (verdictBox) {
                     let cls = 'good', text = '';
@@ -12826,15 +13764,15 @@
                         cls = 'bad';
                         text = `🚨 目前已超出每月預算，本月開銷 ${money(monthTotal)}，預算 ${money(budgetLimit)}。<br>
                                 依現時每日 ${money(avg)} 的速度，月底預計會用到 ${money(forecast)}。<br>
-                                建議：把日均壓到 ${money(budgetAvg)} 以下，並先檢視「${sortedTopCatName(monthRecords)}」這個最大支出項目。`;
+                                建議：將每日平均開銷控制於 ${money(budgetAvg)} 以下，並優先檢視最大支出項目「${sortedTopCatName(monthRecords)}」。`;
                     } else if (usageRate > 75 || avg > budgetAvg) {
                         cls = 'warn';
-                        text = `⚠️ 用錢速度偏快。目前日均 ${money(avg)}，比預算日均 ${money(budgetAvg)} 高。<br>
+                        text = `⚠️ 支出速度偏快。目前日均 ${money(avg)}，比預算日均 ${money(budgetAvg)} 高。<br>
                                 本月已用 ${usageRate}% 預算，尚餘 ${money(budgetLimit - monthTotal)}，還有 ${Math.max(0, totalDays - elapsed)} 日。<br>
                                 建議：往後每日控制在 ${money(Math.max(0, Math.round((budgetLimit - monthTotal) / Math.max(1, totalDays - elapsed))))} 以內。`;
                     } else {
                         cls = 'good';
-                        text = `✅ 用錢狀況健康。日均 ${money(avg)}，低於預算日均 ${money(budgetAvg)}。<br>
+                        text = `✅ 支出狀況良好。日均 ${money(avg)}，低於預算日均 ${money(budgetAvg)}。<br>
                                 本月已用 ${usageRate}% 預算，收入結餘率 ${saveRate}%。<br>
                                 依現時速度，月底預計花費 ${money(forecast)}，可望剩下 ${money(Math.max(0, budgetLimit - forecast))}。`;
                     }
@@ -12874,7 +13812,10 @@
                 ['#e5dcff', '#a78bfa', '#5b21b6']    // 紫鋼
             ];
 
-            // 產生「本月消費分類佔比」的金屬圓形圖（圖例另外用 HTML 畫）
+            // 產生「本月消費分類佔比」的金屬圓形圖
+            //  · 圓形外邊：分類標籤（附引導線，會自動避免重疊）
+            //  · 圓環之內：該分類的百分比
+            //  · 正中心：本月總開銷（字級會按位數自動縮細，唔會再出界）
             function buildDonutChartSvg() {
                 const d = statsCategoryBreakdown();
                 const total = d.total;
@@ -12885,10 +13826,13 @@
                 const trend = (prev && prev.total > 0)
                     ? Math.round((now.total - prev.total) / prev.total * 100) : 0;
 
-                /* 座標系貼近實際顯示闊度，字級即係畫面上嘅真實大細 */
-                const W = 360, H = 236;
-                const cx = 180, cy = 116, R = 78, SW = 34;
+                /* 同兩張棒形圖一樣用 360 x 260，三張圖高度先會一致。
+                   圓環半徑由 78 加大到 84，中心可用空間亦一併加大。 */
+                const W = 360, H = 260;
+                const cx = 180, cy = 126, R = 84, SW = 32;
                 const C = 2 * Math.PI * R;
+                const OUT = R + SW / 2;              // 圓環外緣
+                const CORE = R - SW / 2 - 7;         // 中心圓盤半徑
 
                 let defs = `
                     <linearGradient id="mSheen" x1="0.12" y1="0" x2="0.72" y2="1">
@@ -12932,6 +13876,7 @@
 
                 let segs = '';
                 let acc = 0;
+                const marks = [];   // 每段的中間角度，供標籤／比率定位
 
                 if (total <= 0) {
                     segs = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="${SW}"/>`;
@@ -12953,9 +13898,78 @@
                                     stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}"
                                     stroke-dashoffset="${(-acc * C).toFixed(2)}"
                                     transform="rotate(-90 ${cx} ${cy})"></circle>`;
+
+                        marks.push({
+                            angle: (acc + frac / 2) * Math.PI * 2 - Math.PI / 2,
+                            frac,
+                            name: it.name,
+                            color: pal[1]
+                        });
                         acc += frac;
                     });
                 }
+
+                /* ---- 環內百分比 ---- */
+                let pcts = '';
+                marks.forEach(mk => {
+                    if (mk.frac < 0.055) return;   // 太細嘅段落唔標，避免逼爆
+                    const px = cx + Math.cos(mk.angle) * R;
+                    const py = cy + Math.sin(mk.angle) * R;
+                    pcts += `<text x="${px.toFixed(1)}" y="${(py + 3.6).toFixed(1)}" text-anchor="middle"
+                                   font-size="11" font-weight="900" fill="#ffffff"
+                                   stroke="rgba(15,23,42,0.55)" stroke-width="2.6" paint-order="stroke"
+                                   style="paint-order:stroke;">${Math.round(mk.frac * 100)}%</text>`;
+                });
+
+                /* ---- 圓形外邊標籤（左右分邊，並自動撐開避免重疊） ---- */
+                const shown = marks.filter(mk => mk.frac >= 0.035);
+                const right = [], left = [];
+                shown.forEach(mk => {
+                    const isRight = Math.cos(mk.angle) >= 0;
+                    (isRight ? right : left).push({
+                        mk,
+                        px: cx + Math.cos(mk.angle) * (OUT + 3),
+                        py: cy + Math.sin(mk.angle) * (OUT + 3),
+                        ly: cy + Math.sin(mk.angle) * (OUT + 12),
+                        dir: isRight ? 1 : -1
+                    });
+                });
+
+                const spread = (list) => {
+                    list.sort((a, b) => a.ly - b.ly);
+                    const gap = 15;
+                    for (let i = 1; i < list.length; i++) {
+                        if (list[i].ly - list[i - 1].ly < gap) list[i].ly = list[i - 1].ly + gap;
+                    }
+                    // 若撐出畫布外，整體推返上去
+                    const overflow = (list.length ? list[list.length - 1].ly : 0) - (H - 26);
+                    if (overflow > 0) list.forEach(o => { o.ly -= overflow; });
+                    if (list.length && list[0].ly < 16) {
+                        const up = 16 - list[0].ly;
+                        list.forEach(o => { o.ly += up; });
+                    }
+                    return list;
+                };
+
+                let outLabels = '';
+                [spread(right), spread(left)].forEach(list => {
+                    list.forEach(o => {
+                        const lx = cx + o.dir * (OUT + 12);
+                        const tx = lx + o.dir * 7;
+                        const short = String(o.mk.name).slice(0, 7);
+                        outLabels += `
+                            <polyline points="${o.px.toFixed(1)},${o.py.toFixed(1)} ${lx.toFixed(1)},${o.ly.toFixed(1)} ${(lx + o.dir * 5).toFixed(1)},${o.ly.toFixed(1)}"
+                                      fill="none" stroke="${o.mk.color}" stroke-width="1.3" stroke-linejoin="round" opacity="0.9"/>
+                            <circle cx="${o.px.toFixed(1)}" cy="${o.py.toFixed(1)}" r="1.8" fill="${o.mk.color}"/>
+                            <text class="cx-dim" x="${tx.toFixed(1)}" y="${(o.ly + 3.4).toFixed(1)}"
+                                  text-anchor="${o.dir > 0 ? 'start' : 'end'}" font-size="10" font-weight="900">${escapeHtml(short)}</text>`;
+                    });
+                });
+
+                /* ---- 中心：字級按位數自動縮放，保證唔會出界 ---- */
+                const amtText = 'HK$' + Math.round(total).toLocaleString();
+                const avail = CORE * 2 * 0.88;
+                const fontSize = Math.max(12.5, Math.min(23, avail / (amtText.length * 0.585)));
 
                 const trendColor = trend > 0 ? '#b91c1c' : (trend < 0 ? '#047857' : '#475569');
                 const trendText = total <= 0 ? '本月未有消費'
@@ -12965,32 +13979,35 @@
                     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">
                         <defs>${defs}</defs>
 
-                        <circle cx="${cx}" cy="${cy}" r="${R + SW / 2 + 6}" fill="none" stroke="url(#mRing)" stroke-width="3"></circle>
+                        <circle cx="${cx}" cy="${cy}" r="${OUT + 6}" fill="none" stroke="url(#mRing)" stroke-width="3"></circle>
                         <circle cx="${cx}" cy="${cy}" r="${R - SW / 2 - 6}" fill="none" stroke="url(#mRing)" stroke-width="2.2"></circle>
 
                         <g filter="url(#mShadow)">
                             <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#94a3b8" stroke-opacity="0.32" stroke-width="${SW}"></circle>
                             ${segs}
                             <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="url(#mSheen)" stroke-width="${SW}"></circle>
-                            <circle cx="${cx}" cy="${cy}" r="${R + SW / 2 - 1.4}" fill="none" stroke="url(#mBevel)" stroke-width="2.8"></circle>
+                            <circle cx="${cx}" cy="${cy}" r="${OUT - 1.4}" fill="none" stroke="url(#mBevel)" stroke-width="2.8"></circle>
                             <circle cx="${cx}" cy="${cy}" r="${R - SW / 2 + 1.4}" fill="none" stroke="url(#mBevel)" stroke-width="2.8"></circle>
                         </g>
 
-                        <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#ffffff" stroke-opacity="0.34"
-                                stroke-width="${SW - 8}" stroke-linecap="round" filter="url(#mSoft)"
+                        <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#ffffff" stroke-opacity="0.30"
+                                stroke-width="${SW - 10}" stroke-linecap="round" filter="url(#mSoft)"
                                 stroke-dasharray="${(C * 0.17).toFixed(1)} ${(C * 0.83).toFixed(1)}"
                                 stroke-dashoffset="${(-C * 0.60).toFixed(1)}"
                                 transform="rotate(-90 ${cx} ${cy})"></circle>
 
-                        <circle cx="${cx}" cy="${cy}" r="${R - SW / 2 - 9}" fill="url(#mCore)"></circle>
-                        <circle cx="${cx}" cy="${cy}" r="${R - SW / 2 - 9}" fill="none" stroke="url(#mBevel)" stroke-width="2.2"></circle>
-                        <ellipse cx="${cx}" cy="${cy - 22}" rx="${R - SW / 2 - 16}" ry="16" fill="url(#mGloss)" opacity="0.42"></ellipse>
+                        ${pcts}
+                        ${outLabels}
 
-                        <text x="${cx}" y="${cy - 18}" text-anchor="middle" font-size="11.5" font-weight="800" style="fill:#475569">本月總開銷</text>
-                        <text x="${cx}" y="${cy + 8}" text-anchor="middle" font-size="23" font-weight="900" style="fill:#0f172a">HK$${Math.round(total).toLocaleString()}</text>
-                        <text x="${cx}" y="${cy + 27}" text-anchor="middle" font-size="11.5" font-weight="900" style="fill:${trendColor}">${trendText}</text>
+                        <circle cx="${cx}" cy="${cy}" r="${CORE}" fill="url(#mCore)"></circle>
+                        <circle cx="${cx}" cy="${cy}" r="${CORE}" fill="none" stroke="url(#mBevel)" stroke-width="2.2"></circle>
+                        <ellipse cx="${cx}" cy="${cy - 24}" rx="${CORE - 8}" ry="17" fill="url(#mGloss)" opacity="0.42"></ellipse>
 
-                        <text class="cx-dim" x="${cx}" y="${H - 8}" text-anchor="middle" font-size="10.5" font-weight="800">日均 HK$${Math.round(now ? now.avg : 0).toLocaleString()}　·　共 ${items.length} 個分類</text>
+                        <text x="${cx}" y="${cy - 21}" text-anchor="middle" font-size="11" font-weight="800" style="fill:#475569">本月總開銷</text>
+                        <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="${fontSize.toFixed(1)}" font-weight="900" style="fill:#0f172a">${amtText}</text>
+                        <text x="${cx}" y="${cy + 24}" text-anchor="middle" font-size="10.5" font-weight="900" style="fill:${trendColor}">${trendText}</text>
+
+                        <text class="cx-dim" x="${cx}" y="${H - 6}" text-anchor="middle" font-size="10.5" font-weight="800">日均 HK$${Math.round(now ? now.avg : 0).toLocaleString()}　·　共 ${items.length} 個分類　·　外圈為分類、環上為佔比</text>
                     </svg>`;
             }
 
@@ -13044,7 +14061,7 @@
             }
 
             /* ---------- 20.3 統計圖表左右滑動輪播 ---------- */
-            const STATS_CHART_NAMES = ['本月每日花費', '近 6 個月每日平均', '用錢趨勢圓形圖'];
+            const STATS_CHART_NAMES = ['本月每日花費', '近 6 個月每日平均', '消費分類佔比'];
 
             // 跳到第 i 張圖表
             function statsGoChart(i) {
@@ -13078,6 +14095,548 @@
 
             /* ---------- 20.4 可收起 / 展開的區塊 ---------- */
             // 切換某個 .fold-section 的收合狀態
+            /* ================================================================
+               22.A 圖表下方的數值清單
+               （棒形圖細細條睇唔清具體金額，用文字清單補足；
+                 三張圖都有同樣高度的清單，令輪播高度一致）
+               ================================================================ */
+            function renderChartFoots() {
+                const now = new Date();
+                const ym = getCurrentYearMonth();
+                const totalDays = daysInMonth(now.getFullYear(), now.getMonth());
+                const elapsed = now.getDate();
+
+                const arr = new Array(totalDays).fill(0);
+                records.forEach(r => {
+                    if (!r.date || !r.date.startsWith(ym)) return;
+                    const d = Number(r.date.split('-')[2]);
+                    if (d >= 1 && d <= totalDays) arr[d - 1] += (Number(r.amount) || 0);
+                });
+
+                const sum = arr.reduce((a, b) => a + b, 0);
+                const avg = elapsed > 0 ? Math.round(sum / elapsed) : 0;
+                const spendDays = arr.filter(v => v > 0).length;
+                const maxV = Math.max(1, ...arr);
+
+                // ① 本月每日花費
+                const dailyBox = document.getElementById('statsDailyFoot');
+                if (dailyBox) {
+                    const rows = arr.map((v, i) => ({ d: i + 1, v })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
+                    dailyBox.innerHTML = `
+                        <p class="chart-foot-title">每日金額明細（由高至低）</p>
+                        <div class="chart-foot-row">
+                            <span class="chart-foot-name">本月合計 · 日均 ${money(avg)}</span>
+                            <span class="chart-foot-amt">${money(sum)}</span>
+                        </div>
+                        <div class="chart-foot-row">
+                            <span class="chart-foot-name">有消費 ${spendDays} 日 · 零消費 ${Math.max(0, elapsed - spendDays)} 日</span>
+                            <span class="chart-foot-sub">全月 ${totalDays} 日</span>
+                        </div>` +
+                        (rows.length ? rows.map(x => {
+                            const wd = WEEKDAY_LABELS[new Date(now.getFullYear(), now.getMonth(), x.d).getDay()];
+                            const pct = Math.round(x.v / maxV * 100);
+                            const color = x.v > avg * 1.6 ? '#ef4444' : (x.v > avg ? '#f59e0b' : '#38bdf8');
+                            return `
+                                <div class="chart-foot-row">
+                                    <span class="chart-foot-chip" style="background:${color};">${x.d} 日</span>
+                                    <span class="chart-foot-name">星期${wd}${x.d === elapsed ? ' · 今日' : ''}</span>
+                                    <span class="chart-foot-sub">${pct}%</span>
+                                    <span class="chart-foot-amt">${money(x.v)}</span>
+                                </div>`;
+                        }).join('') : `<div class="np-empty" style="padding:12px 8px;">本月尚未有消費記錄</div>`);
+                }
+
+                // ② 近 6 個月每日平均
+                const monthBox = document.getElementById('statsMonthlyFoot');
+                if (monthBox) {
+                    const data = statsRecentMonths(6).slice().reverse();
+                    monthBox.innerHTML = `<p class="chart-foot-title">各月金額明細（最新在前）</p>` +
+                        data.map((d, i) => {
+                            const isNow = (i === 0);
+                            return `
+                                <div class="chart-foot-row">
+                                    <span class="chart-foot-chip" style="background:${isNow
+                                        ? 'linear-gradient(135deg,#fbbf24 0%,#d97706 100%)'
+                                        : 'linear-gradient(135deg,#38bdf8 0%,#1d4ed8 100%)'};">${d.label}</span>
+                                    <span class="chart-foot-name">日均 ${money(d.avg)}${isNow ? ' · 本月' : ''}</span>
+                                    <span class="chart-foot-sub">${d.days} 日</span>
+                                    <span class="chart-foot-amt">${money(d.total)}</span>
+                                </div>`;
+                        }).join('');
+                }
+            }
+
+
+            /* ================================================================
+               22.B 分類支出上限
+               ================================================================ */
+
+            // 取得本月每個分類的實際使用金額
+            function categoryMonthSpend() {
+                const ym = getCurrentYearMonth();
+                const map = {};
+                records.forEach(r => {
+                    if (!r.date || !r.date.startsWith(ym)) return;
+                    const k = r.category || '其他';
+                    map[k] = (map[k] || 0) + (Number(r.amount) || 0);
+                });
+                return map;
+            }
+
+            /* 「已入帳紀錄的分類」＝曾經出現喺消費紀錄裡面的分類。
+               另外亦會保留所有已設定上限的分類（即使暫時無紀錄），
+               因為設定咗之後只可以手動刪除。 */
+            function getTrackedCategories() {
+                const set = {};
+                records.forEach(r => { set[r.category || '其他'] = true; });
+                Object.keys(categoryLimits).forEach(k => { set[k] = true; });
+
+                const spend = categoryMonthSpend();
+                return Object.keys(set).sort((a, b) => {
+                    const sa = spend[a] || 0, sb = spend[b] || 0;
+                    if (sb !== sa) return sb - sa;
+                    return a.localeCompare(b);
+                });
+            }
+
+            function categoryName(key) {
+                return (CATEGORY_MAP[key] || CATEGORY_MAP['其他']).name;
+            }
+
+            // 消費分類排行上的小標籤（未設定 / 上限內 / 超支）
+            function catLimitTagHtml(key, spent) {
+                const limit = Number(categoryLimits[key]) || 0;
+                if (limit <= 0) return '';
+                const over = spent - limit;
+                return over > 0
+                    ? `<span class="cat-limit-tag over">超支 ${money(over)}</span>`
+                    : `<span class="cat-limit-tag set">餘 ${money(limit - spent)}</span>`;
+            }
+
+            // 行事曆頁：分類支出上限清單
+            function renderCategoryLimitPanel() {
+                const box = document.getElementById('catLimitPanel');
+                if (!box) return;
+
+                const spend = categoryMonthSpend();
+                const keys = getTrackedCategories();
+                const setCount = Object.keys(categoryLimits).filter(k => Number(categoryLimits[k]) > 0).length;
+                const overCount = Object.keys(categoryLimits)
+                    .filter(k => Number(categoryLimits[k]) > 0 && (spend[k] || 0) > Number(categoryLimits[k])).length;
+
+                const head = document.getElementById('catLimitSummary');
+                if (head) {
+                    head.textContent = setCount === 0
+                        ? '未設定'
+                        : `已設定 ${setCount} 項${overCount > 0 ? ` · 超支 ${overCount} 項` : ''}`;
+                    head.style.color = overCount > 0 ? '#dc2626' : '';
+                }
+
+                if (keys.length === 0) {
+                    box.innerHTML = `<div class="np-empty">尚未有任何已入帳的消費分類<br><span style="font-size:11.5px;">完成首筆消費記錄後，相關分類將自動列於此處，可逐項設定每月支出上限</span></div>`;
+                    return;
+                }
+
+                box.innerHTML = `
+                    <div style="font-size:11px; font-weight:700; color:var(--box-text-sub); line-height:1.7; margin-bottom:8px;">
+                        以下分類由已入帳紀錄自動連結，預設為「未設定」。上限一經設定即長期保留，
+                        如需移除請按「刪除」手動處理；超出上限的金額將於統計頁顯示。
+                    </div>` + keys.map(k => {
+                    const used = spend[k] || 0;
+                    const limit = Number(categoryLimits[k]) || 0;
+                    const hasLimit = limit > 0;
+                    const pct = hasLimit ? Math.round(used / limit * 100) : 0;
+                    const lvl = pct >= 100 ? 'danger' : (pct >= 80 ? 'warn' : '');
+                    const noRecord = !records.some(r => (r.category || '其他') === k);
+
+                    return `
+                        <div class="cat-limit-row">
+                            <div class="cat-limit-head">
+                                <div class="cat-limit-name">
+                                    ${escapeHtml(categoryName(k))}
+                                    ${hasLimit
+                            ? (used > limit
+                                ? `<span class="cat-limit-tag over">超支 ${money(used - limit)}</span>`
+                                : `<span class="cat-limit-tag set">已設定</span>`)
+                            : `<span class="cat-limit-tag">未設定</span>`}
+                                    ${noRecord ? `<span class="cat-limit-tag">本月無紀錄</span>` : ''}
+                                </div>
+                                <div class="cat-limit-actions">
+                                    <button type="button" class="np-mini-btn gold" onclick="openCategoryLimitModal('${k}')">
+                                        ${hasLimit ? '修改' : '設定'}
+                                    </button>
+                                    ${hasLimit
+                            ? `<button type="button" class="np-mini-btn red" onclick="deleteCategoryLimit('${k}')">刪除</button>`
+                            : ''}
+                                </div>
+                            </div>
+                            ${hasLimit
+                            ? `<div class="cl-bar ${lvl}"><i style="width:${Math.min(100, pct)}%"></i></div>
+                                   <div class="cat-limit-meta">
+                                       <span>本月已用 ${money(used)}（${pct}%）</span>
+                                       <span style="color:${used > limit ? '#dc2626' : ''};">
+                                           ${used > limit ? `超出 ${money(used - limit)}` : `尚餘 ${money(limit - used)}`} / 上限 ${money(limit)}
+                                       </span>
+                                   </div>`
+                            : `<div class="cat-limit-meta">
+                                       <span>本月已用 ${money(used)}</span>
+                                       <span>未設定上限</span>
+                                   </div>`}
+                        </div>`;
+                }).join('');
+            }
+
+            // 開啟「設定分類支出上限」視窗
+            function openCategoryLimitModal(key) {
+                const sel = document.getElementById('clCategorySelect');
+                const keys = getTrackedCategories();
+                if (sel) {
+                    if (keys.length === 0) {
+                        alert('尚未有任何已入帳的消費分類，請先記錄一筆消費。');
+                        return;
+                    }
+                    sel.innerHTML = keys.map(k => {
+                        const limit = Number(categoryLimits[k]) || 0;
+                        return `<option value="${k}">${categoryName(k)}${limit > 0 ? `（上限 ${money(limit)}）` : '（未設定）'}</option>`;
+                    }).join('');
+                    sel.value = (key && keys.indexOf(key) >= 0) ? key : keys[0];
+                }
+
+                onCatLimitCategoryChanged();
+
+                const modal = document.getElementById('catLimitModal');
+                if (modal) {
+                    modal.present();
+                    if (typeof setupAllModalsDragToClose === 'function') setTimeout(setupAllModalsDragToClose, 100);
+                }
+            }
+
+            // 換咗分類：把該分類目前的上限帶入輸入框
+            function onCatLimitCategoryChanged() {
+                const sel = document.getElementById('clCategorySelect');
+                const input = document.getElementById('clAmountInput');
+                if (!sel || !input) return;
+
+                const k = sel.value;
+                const limit = Number(categoryLimits[k]) || 0;
+                input.value = limit > 0 ? limit : '';
+
+                const sub = document.getElementById('catLimitModalSub');
+                if (sub) sub.textContent = limit > 0
+                    ? `「${categoryName(k)}」目前上限 ${money(limit)}，可隨時修改或刪除`
+                    : `「${categoryName(k)}」目前未設定上限`;
+
+                const delBtn = document.getElementById('clDeleteBtn');
+                if (delBtn) delBtn.style.display = limit > 0 ? '' : 'none';
+
+                updateCatLimitPreview();
+            }
+
+            function clAddAmount(v) {
+                const input = document.getElementById('clAmountInput');
+                if (!input) return;
+                input.value = Math.max(0, (Number(input.value) || 0) + v);
+                updateCatLimitPreview();
+            }
+
+            function clSetAmount(v) {
+                const input = document.getElementById('clAmountInput');
+                if (!input) return;
+                input.value = v > 0 ? v : '';
+                updateCatLimitPreview();
+            }
+
+            // 即時預覽：呢個上限對本月而言係鬆定緊
+            function updateCatLimitPreview() {
+                const box = document.getElementById('clPreviewBox');
+                const sel = document.getElementById('clCategorySelect');
+                if (!box || !sel) return;
+
+                const k = sel.value;
+                const limit = Number(document.getElementById('clAmountInput')?.value) || 0;
+                const used = categoryMonthSpend()[k] || 0;
+
+                if (limit <= 0) {
+                    box.innerHTML = `
+                        <div>📂 分類：${escapeHtml(categoryName(k))}</div>
+                        <div>💵 本月已用：${money(used)}</div>
+                        <div>🚦 未輸入上限金額（儲存需要大於 0）</div>`;
+                    return;
+                }
+
+                const pct = Math.round(used / limit * 100);
+                const over = used - limit;
+                box.innerHTML = `
+                    <div>📂 分類：${escapeHtml(categoryName(k))}</div>
+                    <div>💵 本月已用：${money(used)}（${pct}%）</div>
+                    <div>🚦 每月上限：<b>${money(limit)}</b></div>
+                    <div>${over > 0
+                        ? `⚠️ 已超出 <b style="color:#dc2626;">${money(over)}</b>，統計頁會標示為超支`
+                        : `✅ 尚餘 <b style="color:#047857;">${money(limit - used)}</b>`}</div>`;
+            }
+
+            // 儲存分類上限
+            function confirmSaveCategoryLimit() {
+                const sel = document.getElementById('clCategorySelect');
+                const input = document.getElementById('clAmountInput');
+                if (!sel || !input) return;
+
+                const k = sel.value;
+                const limit = Number(input.value) || 0;
+                if (limit <= 0) { alert('請輸入大於 0 的上限金額'); return; }
+
+                categoryLimits[k] = limit;
+                saveData();
+                renderUI();
+                addLog('分類上限', `已設定「${categoryName(k)}」每月上限 ${money(limit)}`);
+
+                const modal = document.getElementById('catLimitModal');
+                if (modal) modal.dismiss();
+            }
+
+            // 刪除分類上限（一定要手動確認）
+            function deleteCategoryLimit(key) {
+                if (!(Number(categoryLimits[key]) > 0)) return;
+                if (!confirm(`確定要刪除「${categoryName(key)}」的每月用錢上限嗎？\n刪除後該分類會回復「未設定」。`)) return;
+
+                delete categoryLimits[key];
+                saveData();
+                renderUI();
+                addLog('分類上限', `已刪除「${categoryName(key)}」的每月上限`);
+            }
+
+            function deleteCategoryLimitFromModal() {
+                const sel = document.getElementById('clCategorySelect');
+                if (!sel) return;
+                const k = sel.value;
+                deleteCategoryLimit(k);
+                if (!(Number(categoryLimits[k]) > 0)) {
+                    const modal = document.getElementById('catLimitModal');
+                    if (modal) modal.dismiss();
+                }
+            }
+
+            // 統計頁：分類上限監控
+            function renderCatLimitStatsPanel() {
+                const box = document.getElementById('statsCatLimitPanel');
+                if (!box) return;
+
+                const spend = categoryMonthSpend();
+                const keys = Object.keys(categoryLimits).filter(k => Number(categoryLimits[k]) > 0);
+
+                if (keys.length === 0) {
+                    box.innerHTML = `<div class="np-empty">尚未設定任何分類上限<br><span style="font-size:11.5px;">請於「消費行事曆」頁的「分類支出上限」逐項設定，超出金額將於此處顯示</span></div>`;
+                    return;
+                }
+
+                keys.sort((a, b) => ((spend[b] || 0) - Number(categoryLimits[b])) - ((spend[a] || 0) - Number(categoryLimits[a])));
+
+                const overList = keys.filter(k => (spend[k] || 0) > Number(categoryLimits[k]));
+                const overTotal = overList.reduce((sum, k) => sum + ((spend[k] || 0) - Number(categoryLimits[k])), 0);
+                const limitTotal = keys.reduce((sum, k) => sum + Number(categoryLimits[k]), 0);
+                const usedTotal = keys.reduce((sum, k) => sum + (spend[k] || 0), 0);
+
+                box.innerHTML = `
+                    <div class="np-kv-grid" style="margin-bottom:12px;">
+                        <div class="np-kv">
+                            <div class="np-kv-label">🚦 已設定上限</div>
+                            <div class="np-kv-value">${money(limitTotal)}</div>
+                            <div class="np-kv-sub">共 ${keys.length} 個分類</div>
+                        </div>
+                        <div class="np-kv">
+                            <div class="np-kv-label">${overList.length > 0 ? '⚠️ 超出總額' : '✅ 全部在上限內'}</div>
+                            <div class="np-kv-value" style="color:${overList.length > 0 ? '#dc2626' : '#047857'};">
+                                ${overList.length > 0 ? money(overTotal) : money(Math.max(0, limitTotal - usedTotal))}
+                            </div>
+                            <div class="np-kv-sub">${overList.length > 0 ? `${overList.length} 個分類超支` : '尚餘可用額'}</div>
+                        </div>
+                    </div>
+                ` + keys.map(k => {
+                    const used = spend[k] || 0;
+                    const limit = Number(categoryLimits[k]);
+                    const pct = Math.round(used / limit * 100);
+                    const lvl = pct >= 100 ? 'danger' : (pct >= 80 ? 'warn' : '');
+                    const over = used - limit;
+                    return `
+                        <div class="cat-limit-row">
+                            <div class="cat-limit-head">
+                                <div class="cat-limit-name">
+                                    ${escapeHtml(categoryName(k))}
+                                    ${over > 0
+                            ? `<span class="cat-limit-tag over">超支 ${money(over)}</span>`
+                            : `<span class="cat-limit-tag set">${pct}%</span>`}
+                                </div>
+                                <span class="chart-foot-amt" style="color:${over > 0 ? '#dc2626' : ''};">
+                                    ${money(used)} / ${money(limit)}
+                                </span>
+                            </div>
+                            <div class="cl-bar ${lvl}"><i style="width:${Math.min(100, pct)}%"></i></div>
+                            <div class="cat-limit-meta">
+                                <span>${over > 0 ? `已超出上限 ${money(over)}` : `尚餘 ${money(limit - used)}`}</span>
+                                <span>上限使用率 ${pct}%</span>
+                            </div>
+                        </div>`;
+                }).join('');
+            }
+
+
+            /* ================================================================
+               23.A 備註標籤（可快速選用、可隱藏、可刪除）
+               ================================================================ */
+            const NOTE_TAG_SCOPES = {
+                expense: { label: '消費備註', input: 'finalTitleInput' },
+                savings: { label: '儲蓄備註', input: 'savingsTitleInput' },
+                loan: { label: '借貸項目名稱', input: 'loanTitleInput' },
+                fixed: { label: '固定支出項目名稱', input: 'fxTitleInput' },
+                wish: { label: '願望購買項目', input: 'wgTitleInput' },
+                income: { label: '收入來源備註', input: 'extraIncomeTitleInput' }
+            };
+
+            // 目前正在管理的標籤範圍
+            let tagManagerScope = 'expense';
+
+            function getNoteTags(scope) {
+                return Array.isArray(noteTags[scope]) ? noteTags[scope] : [];
+            }
+
+            // 記下使用者填寫過的備註，成為下次可選用的標籤
+            function rememberNoteTag(scope, name) {
+                const val = String(name || '').trim();
+                if (!val || !NOTE_TAG_SCOPES[scope]) return;
+                if (!Array.isArray(noteTags[scope])) noteTags[scope] = [];
+
+                const list = noteTags[scope];
+                const idx = list.findIndex(t => t && t.name === val);
+                if (idx >= 0) {
+                    const kept = list.splice(idx, 1)[0];
+                    list.unshift(kept);
+                } else {
+                    list.unshift({ name: val, hidden: false });
+                }
+                if (list.length > 40) list.length = 40;
+
+                localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
+                renderNoteTagRow(scope);
+            }
+
+            // 於輸入欄下方顯示可選用的 # 標籤（只顯示已啟用者）
+            function renderNoteTagRow(scope) {
+                const row = document.getElementById('tagRow-' + scope);
+                if (!row) return;
+
+                const list = getNoteTags(scope).filter(t => t && !t.hidden);
+                if (list.length === 0) {
+                    row.innerHTML = '';
+                    row.style.display = 'none';
+                    return;
+                }
+
+                row.style.display = '';
+                row.innerHTML = list.slice(0, 14).map(t =>
+                    `<button type="button" class="note-tag-chip" data-name="${escapeHtml(t.name)}"
+                             onclick="applyNoteTag('${scope}', this.dataset.name)">#${escapeHtml(t.name)}</button>`
+                ).join('');
+            }
+
+            // 全部輸入欄的標籤列一次過重新繪製
+            function renderAllNoteTagRows() {
+                Object.keys(NOTE_TAG_SCOPES).forEach(renderNoteTagRow);
+            }
+
+            // 按下標籤：把內容填入對應的輸入欄
+            function applyNoteTag(scope, name) {
+                const cfg = NOTE_TAG_SCOPES[scope];
+                if (!cfg) return;
+                const input = document.getElementById(cfg.input);
+                if (!input) return;
+
+                input.value = name;
+                try { input.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) { }
+                if (scope === 'savings' && typeof onSavingsWishChanged === 'function') onSavingsWishChanged();
+            }
+
+            // 開啟標籤設定視窗
+            function openTagManager(scope) {
+                tagManagerScope = NOTE_TAG_SCOPES[scope] ? scope : 'expense';
+
+                const titleEl = document.getElementById('tagManagerTitle');
+                if (titleEl) titleEl.textContent = `🏷️ ${NOTE_TAG_SCOPES[tagManagerScope].label} · 標籤設定`;
+
+                renderTagManagerList();
+
+                const modal = document.getElementById('tagManagerModal');
+                if (modal) {
+                    modal.present();
+                    if (typeof setupAllModalsDragToClose === 'function') setTimeout(setupAllModalsDragToClose, 100);
+                }
+            }
+
+            // 標籤設定視窗內的清單
+            function renderTagManagerList() {
+                const box = document.getElementById('tagManagerList');
+                if (!box) return;
+
+                const list = getNoteTags(tagManagerScope);
+                if (list.length === 0) {
+                    box.innerHTML = `<div class="np-empty">尚未有任何標籤<br><span style="font-size:11.5px;">於輸入欄填寫備註並儲存後，該內容會自動成為標籤</span></div>`;
+                    return;
+                }
+
+                box.innerHTML = list.map(t => `
+                    <div class="tag-manage-row">
+                        <button type="button" class="tag-led-btn" data-name="${escapeHtml(t.name)}"
+                                onclick="toggleNoteTagActive(this.dataset.name)" aria-label="切換顯示">
+                            <span class="tag-led ${t.hidden ? '' : 'on'}"></span>
+                        </button>
+                        <span class="tag-manage-name">#${escapeHtml(t.name)}</span>
+                        <span class="tag-manage-state">${t.hidden ? '已隱藏' : '顯示中'}</span>
+                        <button type="button" class="np-mini-btn red" data-name="${escapeHtml(t.name)}"
+                                onclick="deleteNoteTag(this.dataset.name)">刪除</button>
+                    </div>`).join('');
+            }
+
+            // 切換標籤的顯示狀態（綠燈亮起＝會顯示於輸入欄下方）
+            function toggleNoteTagActive(name) {
+                const list = getNoteTags(tagManagerScope);
+                const t = list.find(x => x && x.name === name);
+                if (!t) return;
+
+                t.hidden = !t.hidden;
+                localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
+                renderTagManagerList();
+                renderNoteTagRow(tagManagerScope);
+                showToast(`標籤「${name}」已${t.hidden ? '隱藏' : '啟用'}`, 'primary');
+            }
+
+            // 永久刪除標籤（刪除前先行確認）
+            async function deleteNoteTag(name) {
+                const list = getNoteTags(tagManagerScope);
+                if (!list.some(x => x && x.name === name)) return;
+
+                const alertEl = document.createElement('ion-alert');
+                alertEl.cssClass = 'custom-danger-alert';
+                alertEl.header = '確認刪除標籤';
+                alertEl.message = `確定要永久刪除標籤「${escapeHtml(name)}」嗎？刪除後將無法復原。`;
+                alertEl.buttons = [
+                    { text: '取消', role: 'cancel' },
+                    {
+                        text: '確認刪除',
+                        role: 'destructive',
+                        handler: () => {
+                            noteTags[tagManagerScope] = list.filter(x => !(x && x.name === name));
+                            localStorage.setItem('app_note_tags', JSON.stringify(noteTags));
+                            renderTagManagerList();
+                            renderNoteTagRow(tagManagerScope);
+                            showToast(`已刪除標籤「${name}」`, 'danger');
+                        }
+                    }
+                ];
+
+                document.body.appendChild(alertEl);
+                await alertEl.present();
+            }
+
+
             function toggleFold(sectionId) {
                 const sec = document.getElementById(sectionId);
                 if (!sec) return;
@@ -13147,6 +14706,7 @@
                ================================================ */
             window.addEventListener('DOMContentLoaded', () => {
                 buildHubStack();
+                renderAllNoteTagRows();
                 initHubSwipe();
                 initHubAutoCollapse();
                 initStatsCarousel();
