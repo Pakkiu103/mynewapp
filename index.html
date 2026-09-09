@@ -5926,27 +5926,37 @@
                 0 0 10px rgba(212, 175, 55, 0.28) !important;
         }
 
-        /* 名稱首字：金屬燙金字 */
-        .user-mono {
+        /* 使用者圖示：金屬質感 SVG 人像 */
+        .user-avatar-slot {
             position: relative;
             z-index: 1;
-            font-size: 15.5px;
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: 0.5px;
-            background: linear-gradient(158deg, #fffaf0 0%, #f7e2a0 32%, #d4af37 58%, #9a7517 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
         }
 
-        ion-app:not(.dark-theme) .user-mono {
-            background: linear-gradient(158deg, #7c4a03 0%, #b45309 45%, #78350f 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+        .user-svg {
+            --ua1: #fffaf0;
+            --ua2: #f7e2a0;
+            --ua3: #d4af37;
+            --ua4: #8a6a1a;
+            --uaLine: rgba(255, 244, 214, 0.85);
+            position: relative;
+            z-index: 1;
+            width: 22px;
+            height: 22px;
+            display: block;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+        }
+
+        ion-app:not(.dark-theme) .user-svg {
+            --ua1: #fff6dd;
+            --ua2: #e3b552;
+            --ua3: #b45309;
+            --ua4: #6d3308;
+            --uaLine: rgba(120, 53, 15, 0.7);
+            filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
         }
 
         .user-emoji {
@@ -5989,8 +5999,9 @@
                 0 3px 8px rgba(0, 0, 0, 0.28);
         }
 
-        .user-avatar .user-mono {
-            font-size: 17px;
+        .user-avatar .user-svg {
+            width: 25px;
+            height: 25px;
         }
 
         ion-app:not(.dark-theme) .user-avatar {
@@ -6226,7 +6237,7 @@
         <div class="my-custom-header">
             <div style="display: flex; gap: 8px; align-items: center;">
                 <button id="userToggleBtn" type="button" class="theme-toggle-btn" onclick="openUserModal()">
-                    <span id="userAvatarIcon" class="user-mono">·</span>
+                    <span id="userAvatarIcon" class="user-avatar-slot"></span>
                 </button>
                 <button id="logsToggleBtn" type="button" class="theme-toggle-btn" onclick="openLogsModal()"
                     style="position: relative;">
@@ -15195,16 +15206,51 @@
             }
 
             /* 產生使用者頭像內容。
-               未自訂圖示者，以帳戶名稱首字組成燙金字樣；
-               有自訂圖示（表情符號）則直接沿用。 */
+               預設為金屬質感的人像圖示；若使用者自訂了表情符號則沿用該符號。 */
+            let userAvatarSeq = 0;
+
+            function userAvatarSvg() {
+                const n = ++userAvatarSeq;
+                return `
+                    <svg class="user-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="uaG${n}" x1="0.12" y1="0" x2="0.78" y2="1">
+                                <stop offset="0%" stop-color="var(--ua1)"/>
+                                <stop offset="32%" stop-color="var(--ua2)"/>
+                                <stop offset="64%" stop-color="var(--ua3)"/>
+                                <stop offset="100%" stop-color="var(--ua4)"/>
+                            </linearGradient>
+                            <linearGradient id="uaS${n}" x1="0" y1="0" x2="0.6" y2="1">
+                                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+                                <stop offset="45%" stop-color="#ffffff" stop-opacity="0.12"/>
+                                <stop offset="100%" stop-color="#000000" stop-opacity="0.18"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- 兩側裝飾弧線，帶出科技感 -->
+                        <path d="M5.6 24.5a15.2 15.2 0 0 1 1.4-11" fill="none" stroke="var(--uaLine)"
+                              stroke-opacity="0.55" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M34.4 24.5a15.2 15.2 0 0 0-1.4-11" fill="none" stroke="var(--uaLine)"
+                              stroke-opacity="0.55" stroke-width="1.5" stroke-linecap="round"/>
+
+                        <!-- 頭部 -->
+                        <circle cx="20" cy="14" r="6.4" fill="url(#uaG${n})"/>
+                        <circle cx="20" cy="14" r="6.4" fill="url(#uaS${n})"/>
+
+                        <!-- 肩線：微收角，較貼近立體人像 -->
+                        <path d="M9.2 34.2c0-6.2 4.9-10.4 10.8-10.4s10.8 4.2 10.8 10.4c0 .8-.6 1.4-1.4 1.4H10.6c-.8 0-1.4-.6-1.4-1.4z"
+                              fill="url(#uaG${n})"/>
+                        <path d="M9.2 34.2c0-6.2 4.9-10.4 10.8-10.4s10.8 4.2 10.8 10.4c0 .8-.6 1.4-1.4 1.4H10.6c-.8 0-1.4-.6-1.4-1.4z"
+                              fill="url(#uaS${n})"/>
+                    </svg>`;
+            }
+
             function userAvatarInner(u) {
                 const icon = ((u && u.icon) || '').trim();
                 if (icon && icon !== '👤') {
                     return `<span class="user-emoji">${escapeHtml(icon)}</span>`;
                 }
-                const name = ((u && u.name) || '').trim();
-                const ch = name ? name.charAt(0) : '·';
-                return `<span class="user-mono">${escapeHtml(ch)}</span>`;
+                return userAvatarSvg();
             }
 
             // 更新標題列上的使用者頭像
@@ -15212,7 +15258,7 @@
                 const el = document.getElementById('userAvatarIcon');
                 const u = activeUser();
                 if (!el || !u) return;
-                el.outerHTML = userAvatarInner(u).replace('<span class="', '<span id="userAvatarIcon" class="');
+                el.innerHTML = userAvatarInner(u);
             }
 
             function openUserModal() {
