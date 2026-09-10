@@ -6243,7 +6243,7 @@
         .ns-word span{display:inline-block;
             background:linear-gradient(180deg,#fff6da 0%,#e9c86e 48%,#b8891f 100%);
             -webkit-background-clip:text;background-clip:text;color:transparent}
-        .ns-tag{font-size:clamp(11px,3.5vw,13px);letter-spacing:.3em;text-indent:.3em;color:#a3853f;
+        .ns-tag{font-size:clamp(14px,4.6vw,18px);letter-spacing:.34em;text-indent:.34em;color:#a3853f;
             opacity:0;margin-top:-4px;white-space:pre;font-family:system-ui,-apple-system,sans-serif}
 
         /* 時間軸（--k = 1.14 → 全長 3.2 秒）
@@ -10047,8 +10047,8 @@
                 </div>
                 <div class="modal-dark-group" style="margin-bottom: 14px;">
                     <select id="savingsModeSelect" class="modal-dark-input">
-                        <option value="simple">活期單利 · 利息唔滾存</option>
-                        <option value="compound">定期存款複利 · 按月滾存</option>
+                        <option value="simple">活期單利 · 利息不重複計息</option>
+                        <option value="compound">定期複利 · 按月併入本金計息</option>
                     </select>
                     <label for="savingsModeSelect">
                         🧮 計息方式
@@ -14903,8 +14903,7 @@
                 const area = document.getElementById('hubFixedArea');
                 if (!area) { hubCollapsed = !!collapsed; return; }
 
-                releaseHubLocks();      // 開或合，一律先清走所有鎖
-                setPageScroll(true);    // 並且確保頁面捲得郁
+                releaseHubLocks();      // 開或合，一律先清走所有鎖（冇鎖就自動略過）
 
                 if (!collapsed) {
                     if (hubBusy) return;
@@ -18064,14 +18063,31 @@
 
             /* 一次過解除所有可能卡住嘅鎖。
                寧願重複叫都唔可以漏 —— 漏一次就成頁捲唔郁。 */
-            // 直接控制 ion-content 嘅捲動開關（Ionic 官方 API）
+            /* 直接控制 ion-content 嘅捲動開關（Ionic 官方 API）。
+               ⚠️ scrollY 係 reflected property，寫一次就會令 ion-content
+               重新渲染，慣性捲動會即刻斷開。所以一定要先比較，
+               數值冇變就唔好寫。 */
             function setPageScroll(enabled) {
+                const want = !!enabled;
                 document.querySelectorAll('ion-content').forEach(c => {
-                    try { c.scrollY = !!enabled; } catch (e) { }
+                    try {
+                        if (c.scrollY !== want) c.scrollY = want;
+                    } catch (e) { }
                 });
             }
 
+            // 有冇嘢真係鎖住咗？冇就唔好做任何嘢。
+            function hubHasLocks() {
+                return hubTiltActive
+                    || document.body.classList.contains('tilt-lock')
+                    || !!document.querySelector('.debit-card.is-tilting')
+                    || !!document.querySelector('[data-tilt-unclipped]')
+                    || !!document.querySelector('#hubFixedArea.dragging');
+            }
+
             function releaseHubLocks() {
+                if (!hubHasLocks()) return;     // 冇鎖就即刻走，唔好騷擾 ion-content
+
                 hubTiltActive = false;
                 document.body.classList.remove('tilt-lock');
                 setPageScroll(true);            // 無論如何都要還返捲動能力
@@ -18099,7 +18115,11 @@
                     if (hubTiltActive && e.cancelable) e.preventDefault();
                 }, { passive: false });
 
-                ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(ev => {
+                /* 特登唔監聽 pointerup / touchend：
+                   正常放手已經由傾斜處理器自己收尾，
+                   喺呢度再做一次只會令每個捲動手勢結尾都被打斷。
+                   淨係處理「異常中斷」嘅情況。 */
+                ['pointercancel', 'touchcancel'].forEach(ev => {
                     window.addEventListener(ev, () => setTimeout(releaseHubLocks, 60), { passive: true });
                 });
                 window.addEventListener('blur', releaseHubLocks);
@@ -18928,14 +18948,14 @@
                 box.innerHTML = `
                     <div class="pa-box-head">
                         <span class="pa-box-title">利息試算</span>
-                        <span class="pa-state ${on ? 'on' : ''}">${on ? '● 已計入總額' : '○ 僅作試算'}</span>
+                        <span class="pa-state ${on ? 'on' : ''}">${on ? '● 已計入總額' : '○ 僅供試算'}</span>
                     </div>
 
                     <div class="pa-mode-row">
                         <button type="button" class="pa-mode ${mode === 'simple' ? 'on' : ''}"
                             onclick="onPaModeChange('simple')">活期單利</button>
                         <button type="button" class="pa-mode ${mode === 'compound' ? 'on' : ''}"
-                            onclick="onPaModeChange('compound')">定存複利</button>
+                            onclick="onPaModeChange('compound')">定期複利</button>
                     </div>
 
                     <div class="pa-inputs">
@@ -18970,10 +18990,10 @@
 
                     <div class="pa-box-foot">
                         ${mode === 'compound'
-                        ? '按月滾存複利，上期利息會加入本金再生息；未計提早贖回罰息。'
-                        : '活期單利，利息唔會滾存入本金。'}
+                        ? '按月複利計算，每期利息併入本金後繼續生息；未計算提早贖回之罰息。'
+                        : '單利計算，利息不會併入本金重複計息。'}
                         <button type="button" class="pa-link" onclick="openSavingsPaModal()">
-                            ⚙️ 前往年利率設定${on ? '' : '（喺嗰度開啟計入總額）'}
+                            ⚙️ 前往年利率設定${on ? '' : '（可於該處啟用計入總額）'}
                         </button>
                     </div>`;
             }
@@ -19003,7 +19023,7 @@
                 renderSavings();
                 renderMiniSums();
                 showToast(savingsInterestMode === 'compound'
-                    ? '已切換為定存複利（按月滾存）' : '已切換為活期單利', 'primary');
+                    ? '已切換為定期複利（按月複利計算）' : '已切換為活期單利', 'primary');
             }
 
             function onPaTenorChange(val) {
