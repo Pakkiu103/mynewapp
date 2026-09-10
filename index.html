@@ -14732,6 +14732,8 @@
                         e.stopPropagation();
                         if (hubJustDragged()) return;   // 啱啱拖完，唔好再跳頁
                         switchPage(key);
+                        // 揀好咗就收埋，唔使再撳多次
+                        setTimeout(() => setHubCollapsed(true), 240);
                     });
 
                     wrap.appendChild(tab);
@@ -14746,7 +14748,12 @@
                     const wrap = e.target.closest ? e.target.closest('.hub-card') : null;
                     if (!wrap || !wrap.classList.contains('top')) return;
                     if (e.target.closest('button, ion-button, a, input, select, ion-icon')) return;
-                    if (hubJustDragged()) return;   // 啱啱拖完，唔好即刻收埋
+                    if (hubJustDragged()) return;   // 啱啱拖完，唔好當成點擊
+
+                    /* 最前嗰張卡就係當前選中嗰頁：撳佢即刻去嗰頁再收埋錢包。
+                       淨係收埋而唔跳頁，撳落去會好似冇反應。 */
+                    const key = wrap.getAttribute('data-key');
+                    if (key && key !== currentPageKey) switchPage(key);
                     setHubCollapsed(true);
                 });
 
@@ -14896,7 +14903,8 @@
                 const area = document.getElementById('hubFixedArea');
                 if (!area) { hubCollapsed = !!collapsed; return; }
 
-                releaseHubLocks();   // 開或合，一律先清走所有鎖
+                releaseHubLocks();      // 開或合，一律先清走所有鎖
+                setPageScroll(true);    // 並且確保頁面捲得郁
 
                 if (!collapsed) {
                     if (hubBusy) return;
@@ -15104,7 +15112,7 @@
             /* 剛剛拖完嗰陣，瀏覽器仲會補一個 click 出嚟。
                記低時間，令卡片上的點擊切換喺嗰段時間內失效。 */
             let hubDragAt = 0;
-            function hubJustDragged() { return Date.now() - hubDragAt < 400; }
+            function hubJustDragged() { return Date.now() - hubDragAt < 200; }
 
             function initHubSwipe() {
                 let sx = 0, sy = 0, tracking = false, axis = '', pid = null;
@@ -18175,7 +18183,9 @@
                     unclipAncestors(card);
                     card.classList.remove('tilt-reset');
                     card.classList.add('is-tilting');
-                    setPageScroll(false);       // 觀賞期間唔好跟住捲
+                    /* 特登唔關 ion-content 捲動：關咗一旦漏咗解鎖
+                       就會全 App 捲唔郁。擋捲動交返俾
+                       touch-action: none 同 touchmove preventDefault。 */
                     applyTilt(card, x, y);
                     try { navigator.vibrate && navigator.vibrate(8); } catch (err) { }
                 };
