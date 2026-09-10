@@ -6240,8 +6240,22 @@
             background:radial-gradient(circle,rgba(233,200,110,.32) 0%,transparent 62%);opacity:0;pointer-events:none}
         .ns-word{display:flex;letter-spacing:.42em;text-indent:.42em;font-size:clamp(21px,6.6vw,29px);
             font-weight:600;opacity:0;font-family:system-ui,-apple-system,sans-serif}
+        /* 兩層背景都剪成字形：
+             上層 = 一條窄白光帶，靠移動 background-position 掃過字身
+             下層 = 原本嘅金色漸變
+           再配 drop-shadow 令光由字入面射出嚟。 */
         .ns-word span{display:inline-block;
-            background:linear-gradient(180deg,#fff6da 0%,#e9c86e 48%,#b8891f 100%);
+            background-image:
+                linear-gradient(100deg,
+                    transparent 30%,
+                    rgba(255,255,255,.35) 42%,
+                    rgba(255,255,255,1) 50%,
+                    rgba(255,255,255,.35) 58%,
+                    transparent 70%),
+                linear-gradient(180deg,#fff6da 0%,#e9c86e 48%,#b8891f 100%);
+            background-size:320% 100%,100% 100%;
+            background-position:150% 0,0 0;
+            background-repeat:no-repeat;
             -webkit-background-clip:text;background-clip:text;color:transparent}
         .ns-tag{font-size:clamp(12px,4.1vw,16px);letter-spacing:.34em;text-indent:.34em;color:#a3853f;
             opacity:0;margin-top:-4px;white-space:pre;font-family:system-ui,-apple-system,sans-serif}
@@ -6267,12 +6281,12 @@
         .ns-go .ns-tag{animation:nsTagIn calc(.45s*var(--k)) ease calc(1.5s*var(--k)) both}
         /* 光掃：五個字母各自延遲 75ms 觸發，形成由左至右略過嘅光線。
            結尾 2.42s，啱啱喺 2.45s 放大交棒之前收乾淨。 */
-        .ns-go .ns-word span{animation:nsShine calc(.42s*var(--k)) ease-out both}
-        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.640s*var(--k))}
-        .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.715s*var(--k))}
-        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.790s*var(--k))}
-        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.865s*var(--k))}
-        .ns-go .ns-word span:nth-child(5){animation-delay:calc(1.940s*var(--k))}
+        .ns-go .ns-word span{animation:nsShine calc(.52s*var(--k)) cubic-bezier(.35,0,.25,1) both}
+        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.600s*var(--k))}
+        .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.670s*var(--k))}
+        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.740s*var(--k))}
+        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.810s*var(--k))}
+        .ns-go .ns-word span:nth-child(5){animation-delay:calc(1.880s*var(--k))}
         .ns-go{animation:nsZoom calc(.35s*var(--k)) cubic-bezier(.6,0,.9,.55) calc(2.45s*var(--k)) forwards}
 
         @keyframes nsIris{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(78% at 50% 50%)}}
@@ -6283,12 +6297,15 @@
         @keyframes nsSpread{from{opacity:0;letter-spacing:-.12em;text-indent:-.12em;transform:scale(.92)}
                             to{opacity:1;letter-spacing:.42em;text-indent:.42em;transform:none}}
         @keyframes nsTagIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-        /* 亮度提升配合暖白光暈，收返嗰陣完全歸零，唔會殘留 */
+        /* 光帶由字嘅右外側掃到左外側（視覺上係光線略過），
+           途中用 drop-shadow 令光由筆畫射出嚟，完結時完全歸零。 */
         @keyframes nsShine{
-            0%{filter:brightness(1);text-shadow:none}
-            38%{filter:brightness(2.15) saturate(.72);
-                text-shadow:0 0 14px rgba(255,246,218,.95),0 0 38px rgba(233,200,110,.6)}
-            100%{filter:brightness(1);text-shadow:none}}
+            0%{background-position:150% 0,0 0;
+               filter:drop-shadow(0 0 0 rgba(255,246,218,0))}
+            45%{filter:drop-shadow(0 0 10px rgba(255,246,218,.95))
+                      drop-shadow(0 0 26px rgba(233,200,110,.7))}
+            100%{background-position:-60% 0,0 0;
+                 filter:drop-shadow(0 0 0 rgba(255,246,218,0))}}
         @keyframes nsZoom{to{opacity:0;transform:scale(1.4)}}
 
         @media (prefers-reduced-motion:reduce){
@@ -15047,6 +15064,21 @@
                 });
             }
 
+            /* 背景見證：喺完全冇 overlay 嘅時候如果仲見到捲動鎖，
+               就係真正嘅洩漏。記低時間，等診斷可以показ返證據 ——
+               唔使再靠「開 modal 去睇有冇 modal 鎖」呢種自相矛盾嘅測法。 */
+            let leakWitness = '';
+
+            function watchScrollLeak() {
+                if (anyOverlayOpen()) return;
+                if (!document.querySelector('.backdrop-no-scroll')) return;
+                const t = new Date();
+                leakWitness = `${String(t.getHours()).padStart(2, '0')}:` +
+                    `${String(t.getMinutes()).padStart(2, '0')}:` +
+                    `${String(t.getSeconds()).padStart(2, '0')}（已自動解除）`;
+                healScrollLock();
+            }
+
             /* 🩺 捲動診斷：捲唔郁嗰陣撳一下，會話你知究竟卡喺邊。
                同時會即場嘗試解除所有已知嘅鎖。 */
             async function runScrollDiagnostic() {
@@ -15057,7 +15089,14 @@
                 const bad = (label, cond, detail) =>
                     lines.push(`${cond ? '🔴' : '🟢'} ${label}${detail ? '：' + detail : ''}`);
 
-                bad('body.backdrop-no-scroll', !!document.querySelector('.backdrop-no-scroll'));
+                /* 有 modal 開緊嗰陣，backdrop-no-scroll 存在係正確行為，
+                   唔可以當成錯。真正嘅問題係「冇 overlay 但鎖仲喺度」。 */
+                const lockOn = !!document.querySelector('.backdrop-no-scroll');
+                const overlayOn = anyOverlayOpen();
+                lines.push(`${lockOn && !overlayOn ? '🔴' : '🟢'} 捲動鎖洩漏` +
+                    (lockOn ? (overlayOn ? '：鎖住中，但有 overlay 開緊，屬正常' : '：冇 overlay 但仍然鎖住')
+                        : '：冇鎖'));
+                if (leakWitness) lines.push('🔴 曾經偵測到洩漏：' + leakWitness);
                 bad('body.tilt-lock', document.body.classList.contains('tilt-lock'));
                 bad('錢包仍為展開 (.open)', !!area && area.classList.contains('open'));
                 bad('hubBusy 卡住', !!hubBusy);
@@ -19307,6 +19346,37 @@
 
             /* 撳畫面其他地方就收埋。用 capture 階段，
                確保喺其他 click 處理器之前判斷得到。 */
+            /* 長按標題就出診斷。
+               用 toast 而唔用 alert —— ion-toast 唔會加 backdrop-no-scroll，
+               所以量到嘅係「冇 modal 狀態下」嘅真實情況。 */
+            function initTitleDiagnostic() {
+                const title = document.getElementById('pageHeaderTitle');
+                if (!title) return;
+                let timer = null;
+
+                const start = () => {
+                    timer = setTimeout(() => {
+                        timer = null;
+                        const lock = !!document.querySelector('.backdrop-no-scroll');
+                        const overlays = openOverlays.size;
+                        const leaked = lock && overlays === 0;
+                        if (leaked) healScrollLock();
+                        showToast(
+                            (leaked ? '🔴 偵測到捲動鎖洩漏，已解除' : '🟢 捲動正常')
+                            + `｜鎖 ${lock ? '有' : '冇'}｜overlay ${overlays}`
+                            + (leakWitness ? `｜曾洩漏 ${leakWitness}` : ''),
+                            leaked ? 'warning' : 'success');
+                    }, 1100);
+                };
+                const cancel = () => { if (timer) { clearTimeout(timer); timer = null; } };
+
+                title.addEventListener('touchstart', start, { passive: true });
+                ['touchend', 'touchcancel', 'touchmove'].forEach(ev =>
+                    title.addEventListener(ev, cancel, { passive: true }));
+                title.addEventListener('mousedown', start);
+                ['mouseup', 'mouseleave'].forEach(ev => title.addEventListener(ev, cancel));
+            }
+
             function initHomeFan() {
                 document.addEventListener('click', (e) => {
                     if (!homeFanVisible()) return;
@@ -19403,6 +19473,8 @@
                 initSingleModalPolicy();
                 initLockSafetyNet();
                 initHomeFan();
+                initTitleDiagnostic();
+                setInterval(watchScrollLeak, 1500);   // 持續監察洩漏
 
                 // 預設收埋喺側邊，輕觸卡夾先展開
                 setHubCollapsed(true);
