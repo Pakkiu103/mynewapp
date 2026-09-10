@@ -1039,6 +1039,12 @@
             --color: #070d1b !important;
         }
 
+        /* 內容較長嘅 modal，底部按鈕會跌出畫面外撳唔到。
+           留返足夠底部內距，配合全高斷點就一定拉得到。 */
+        ion-modal.custom-bottom-modal ion-content {
+            --padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+        }
+
         .modal-header-box {
             background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
             border-radius: 16px;
@@ -6408,6 +6414,320 @@
         }
 
 
+
+        /* ---------- 首頁鈕彈出嘅三粒子選項 ---------- */
+        /* 佢用緊 .circle-nav-container，所以底色、邊框、毛玻璃、
+           深淺主題變體全部同下面嗰排一模一樣，呢度淨係改位同動畫。 */
+        .home-fan {
+            bottom: calc(94px + env(safe-area-inset-bottom, 0px)) !important;
+            z-index: 999 !important;
+            /* 靠首頁鈕對齊，左邊位置由 JS 量度後填入 --fan-left */
+            left: var(--fan-left, 14px) !important;
+            right: auto !important;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(16px) scale(0.86);
+            transform-origin: var(--fan-arrow, 34px) 100%;
+            transition: transform 0.36s cubic-bezier(0.22, 1.35, 0.36, 1), opacity 0.24s ease;
+        }
+
+        .home-fan.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 三粒逐一彈出，唔好一齊「啪」出嚟 */
+        .home-fan .hf-item {
+            opacity: 0;
+            transform: translateY(10px) scale(0.8);
+            transition: transform 0.34s cubic-bezier(0.22, 1.4, 0.36, 1), opacity 0.22s ease;
+        }
+
+        .home-fan.show .hf-item {
+            opacity: 1;
+            transform: none;
+        }
+
+        .home-fan.show .hf-item:nth-child(1) { transition-delay: 0.04s; }
+        .home-fan.show .hf-item:nth-child(2) { transition-delay: 0.10s; }
+        .home-fan.show .hf-item:nth-child(3) { transition-delay: 0.16s; }
+
+        /* 一條細小嘅尖角，指返落去首頁鈕，表示係佢彈出嚟 */
+        .home-fan::after {
+            content: '';
+            position: absolute;
+            left: calc(var(--fan-arrow, 34px) - 6px);
+            bottom: -6px;
+            width: 12px;
+            height: 12px;
+            transform: rotate(45deg);
+            background: inherit;
+            border-right: 1px solid rgba(217, 119, 6, 0.45);
+            border-bottom: 1px solid rgba(217, 119, 6, 0.45);
+        }
+
+        ion-app.dark-theme .home-fan::after,
+        .dark-theme .home-fan::after {
+            border-right-color: rgba(245, 158, 11, 0.4);
+            border-bottom-color: rgba(245, 158, 11, 0.4);
+        }
+
+        /* ---------- 頁頂金額摘要條 ---------- */
+        .mini-sum {
+            display: flex;
+            align-items: stretch;
+            gap: 8px;
+            margin: 0 2px 14px 2px;
+            padding: 11px 12px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .dark-theme .mini-sum {
+            background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .mini-sum-cell {
+            flex: 1 1 0;
+            min-width: 0;
+            text-align: center;
+        }
+
+        .mini-sum-cell + .mini-sum-cell {
+            border-left: 1px solid rgba(148, 163, 184, 0.28);
+        }
+
+        .mini-sum-label {
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: var(--box-text-sub);
+            white-space: nowrap;
+        }
+
+        .mini-sum-value {
+            font-size: 15px;
+            font-weight: 900;
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ---------- 儲蓄 P.A. 試算格 ---------- */
+        .pa-box {
+            border-radius: 20px;
+            padding: 15px 16px 14px 16px;
+            margin: 0 2px 20px 2px;
+            background: linear-gradient(135deg, #064e3b 0%, #047857 48%, #065f46 100%);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 10px 26px rgba(3, 7, 18, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        }
+
+        .pa-box-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .pa-box-title {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pa-box-rate {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fbbf24;
+            line-height: 1;
+        }
+
+        .pa-box-rate small {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-left: 3px;
+        }
+
+        .pa-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .pa-cell {
+            background: rgba(0, 0, 0, 0.24);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+            padding: 9px 6px;
+            text-align: center;
+        }
+
+        .pa-cell-label {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgba(226, 232, 240, 0.66);
+        }
+
+        .pa-cell-value {
+            font-size: 13.5px;
+            font-weight: 900;
+            color: #6ee7b7;
+            margin-top: 3px;
+            white-space: nowrap;
+        }
+
+        .pa-state {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgba(226, 232, 240, 0.6);
+        }
+
+        .pa-state.on {
+            color: #6ee7b7;
+        }
+
+        .pa-mode-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .pa-mode {
+            padding: 8px 4px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: rgba(226, 232, 240, 0.7);
+            background: rgba(0, 0, 0, 0.26);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+        }
+
+        .pa-mode:active {
+            transform: scale(0.94);
+        }
+
+        .pa-mode.on {
+            background: linear-gradient(135deg, #fde68a 0%, #f59e0b 55%, #b45309 100%);
+            border-color: rgba(255, 237, 190, 0.7);
+            color: #2a1c02;
+        }
+
+        .pa-link {
+            display: block;
+            width: 100%;
+            margin-top: 9px;
+            padding: 9px 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 800;
+            color: #fcd34d;
+            background: rgba(0, 0, 0, 0.26);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+
+        .pa-link:active {
+            transform: scale(0.96);
+        }
+
+        /* 設定彈窗入面嘅「計入總額」開關 */
+        .pa-modal-switch {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 13px;
+            margin-bottom: 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            background: rgba(148, 163, 184, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .pa-modal-switch input {
+            width: 19px;
+            height: 19px;
+            margin-top: 1px;
+            flex: 0 0 auto;
+            accent-color: #10b981;
+            cursor: pointer;
+        }
+
+        .pa-modal-switch b {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 900;
+            color: var(--box-text-main);
+        }
+
+        .pa-modal-switch small {
+            display: block;
+            margin-top: 3px;
+            font-size: 10.5px;
+            font-weight: 700;
+            line-height: 1.5;
+            color: var(--box-text-sub);
+        }
+
+        .pa-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .pa-field label {
+            display: block;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: rgba(226, 232, 240, 0.66);
+            margin-bottom: 4px;
+        }
+
+        .pa-field input,
+        .pa-field select {
+            width: 100%;
+            height: 36px;
+            padding: 0 9px;
+            border-radius: 11px;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #fdf3d8;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .pa-field input:focus,
+        .pa-field select:focus {
+            outline: none;
+            border-color: rgba(251, 191, 36, 0.7);
+        }
+
+        .pa-box-foot {
+            margin-top: 10px;
+            font-size: 9.5px;
+            font-weight: 700;
+            line-height: 1.6;
+            color: rgba(226, 232, 240, 0.6);
+        }
+
         /* ---------- 首頁快捷操作 ---------- */
         .home-quick-grid {
             display: grid;
@@ -6498,6 +6818,77 @@
 
         .dark-theme .home-recent-amt {
             color: #fbbf24;
+        }
+
+        /* 設定彈窗唔好食晒成個畫面，留一條透光位。
+           留邊一邊由 body 上面嘅 data-hub-side 決定 ——
+           錢包喺右就靠左開，錢包喺左就靠右開，唔會撞到書脊。 */
+        #userModal::part(content) {
+            width: calc(100% - 34px);
+            box-shadow: 0 0 36px rgba(3, 7, 18, 0.5);
+        }
+
+        body[data-hub-side="right"] #userModal::part(content) {
+            left: 0;
+            right: auto;
+            border-radius: 26px 26px 0 0;
+            border-top-right-radius: 26px;
+            border-bottom-right-radius: 26px;
+        }
+
+        body[data-hub-side="left"] #userModal::part(content) {
+            left: auto;
+            right: 0;
+            border-radius: 26px 26px 0 0;
+            border-top-left-radius: 26px;
+            border-bottom-left-radius: 26px;
+        }
+
+        /* 完成掣：成個 box 半透明藍 */
+        .settings-done-btn {
+            --background: rgba(56, 189, 248, 0.34);
+            --background-hover: rgba(56, 189, 248, 0.44);
+            --background-activated: rgba(56, 189, 248, 0.5);
+            --color: #e0f2fe;
+            --border-radius: 14px;
+            --border-width: 1px;
+            --border-style: solid;
+            --border-color: rgba(125, 211, 252, 0.6);
+            --box-shadow: 0 8px 22px rgba(56, 189, 248, 0.22);
+            margin-inline: 0px;
+            font-weight: bold;
+            font-size: 15px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        ion-app:not(.dark-theme) .settings-done-btn {
+            --color: #075985;
+        }
+
+        /* 設定分組入面嘅功能掣 */
+        .set-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .set-btn {
+            padding: 12px 8px;
+            border-radius: 13px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--box-text-main);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            background: rgba(148, 163, 184, 0.12);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+        }
+
+        .set-btn:active {
+            transform: scale(0.94);
+            background: rgba(251, 191, 36, 0.2);
         }
 
         /* ---------- 設定分組（點標題先展開）---------- */
@@ -7197,6 +7588,8 @@
            收起 = 貼邊卡夾；展開 = 覆蓋層，唔再霸頁面高度
            最底一張 = 當前頁 = 最前層
            ================================================ */
+        /* Ionic modal 用 20000 起跳，錢包層一定要低過佢，
+           否則卡片同遮罩會蓋住 modal 上面嘅按鈕。 */
         #hubFixedArea {
             position: fixed !important;
             inset: 0 !important;
@@ -7861,6 +8254,10 @@
                             </div>
                         </div>
                     </div>
+                    <h3 class="section-title" style="margin: 4px 0 12px 4px !important; display: block !important;">
+                        開銷概要
+                    </h3>
+                    <div class="mini-sum" id="miniSumExpense"></div>
                     <div class="budget-alert" id="budgetAlertBox"></div>
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
@@ -8025,6 +8422,9 @@
                             </div>
                         </div>
                     </div>
+                    <h3 class="section-title" style="margin: 4px 0 12px 4px !important; display: block !important;">
+                        信用卡額度總覽
+                    </h3>
                     <!-- 💳 信用卡額度總覽（可收起／展開，預設收起） -->
                     <div class="fold-section collapsed" id="loanCardLimitSection">
                         <div class="fold-head" onclick="toggleFold('loanCardLimitSection')">
@@ -8040,6 +8440,10 @@
                             <div class="np-panel" id="loanCardLimitPanel"></div>
                         </div>
                     </div>
+                    <h3 class="section-title" style="margin: 16px 0 12px 4px !important; display: block !important;">
+                        借貸概要
+                    </h3>
+                    <div class="mini-sum" id="miniSumLoans"></div>
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 0px 4px;">
                         <div
@@ -8151,12 +8555,25 @@
                             </div>
                         </div>
                     </div>
+                    <h3 class="section-title" style="margin: 4px 0 12px 4px !important; display: block !important;">
+                        儲蓄概要
+                    </h3>
+                    <div class="mini-sum" id="miniSumSavings"></div>
+
+                    <h3 class="section-title" style="margin: 4px 0 14px 4px !important; display: block !important;">
+                        利息試算
+                    </h3>
+                    <div class="pa-box" id="savingsPaBox"></div>
+
                     <h3 class="section-title" style="margin: 4px 0 16px 4px !important; display: block !important;">
                         儲蓄存入紀錄
                     </h3>
                     <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;">
                     </ion-list>
-                    <div id="marketRateCard" style="margin: 26px 0 20px 0;">
+                    <h3 class="section-title" style="margin: 26px 0 14px 4px !important; display: block !important;">
+                        金管局市場利率
+                    </h3>
+                    <div id="marketRateCard" style="margin: 0 0 20px 0;">
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <h3
@@ -9628,6 +10045,22 @@
                         ⏳ 選擇計算期數 (Tenor)
                     </label>
                 </div>
+                <div class="modal-dark-group" style="margin-bottom: 14px;">
+                    <select id="savingsModeSelect" class="modal-dark-input">
+                        <option value="simple">活期單利 · 利息唔滾存</option>
+                        <option value="compound">定期存款複利 · 按月滾存</option>
+                    </select>
+                    <label for="savingsModeSelect">
+                        🧮 計息方式
+                    </label>
+                </div>
+                <label class="pa-modal-switch">
+                    <input type="checkbox" id="savingsEnableCheck">
+                    <span>
+                        <b>把利息計入儲蓄總額</b>
+                        <small>開啟後，儲蓄卡總額與目標進度都會包含試算利息</small>
+                    </span>
+                </label>
                 <div class="quick-chip-row" style="margin-bottom: 20px; justify-content: center;">
                     <button type="button" class="quick-chip" onclick="setPaPreset(2.5)">
                         2.5%
@@ -9765,7 +10198,7 @@
                 <div class="modal-header-box"
                     style="background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%); border-color: rgba(212, 175, 55, 0.4);">
                     <h2 class="modal-header-title" style="color: #fcd34d;">
-                        👤 使用者帳戶與顯示貨幣
+                        ⚙️ 設定
                     </h2>
                 </div>
 
@@ -9785,6 +10218,45 @@
                         <div id="userListPanel" style="margin-bottom:12px;"></div>
                         <button type="button" class="np-mini-btn gold" style="width:100%; padding:10px;"
                             onclick="promptAddUser()">＋ 新增帳戶</button>
+                    </div>
+                </div>
+
+                <div class="set-group" id="setGrpMoney">
+                    <button type="button" class="set-head" onclick="toggleSetGroup('setGrpMoney')">
+                        <span class="sh-ico">💰</span>
+                        <span>
+                            <span class="sh-name">收入與預算</span>
+                            <span class="sh-sub">月薪、額外收入、固定支出、每月預算</span>
+                        </span>
+                        <span class="sh-arrow">›</span>
+                    </button>
+                    <div class="set-body">
+                        <div class="set-btn-grid">
+                            <button type="button" class="set-btn" onclick="openIncomeModal()">💰 設定月薪</button>
+                            <button type="button" class="set-btn" onclick="openExtraIncomeModal()">➕ 額外收入</button>
+                            <button type="button" class="set-btn" onclick="openFixedExpenseModal()">📌 固定支出</button>
+                            <button type="button" class="set-btn" onclick="openBudgetModal()">💳 每月預算</button>
+                            <button type="button" class="set-btn" onclick="goCreditLimitSetting()">🏦 信用卡額度</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="set-group" id="setGrpCat">
+                    <button type="button" class="set-head" onclick="toggleSetGroup('setGrpCat')">
+                        <span class="sh-ico">🏷️</span>
+                        <span>
+                            <span class="sh-name">分類與標籤</span>
+                            <span class="sh-sub">備註標籤管理、各分類每月上限</span>
+                        </span>
+                        <span class="sh-arrow">›</span>
+                    </button>
+                    <div class="set-body">
+                        <div class="set-btn-grid">
+                            <button type="button" class="set-btn" onclick="openTagManager('expense')">🏷️ 消費備註標籤</button>
+                            <button type="button" class="set-btn" onclick="openTagManager('expPerson')">👤 對象標籤</button>
+                            <button type="button" class="set-btn" onclick="openCategoryLimitModal()">⚠️ 分類支出上限</button>
+                            <button type="button" class="set-btn" onclick="openSavingsPaModal()">📈 儲蓄年利率</button>
+                        </div>
                     </div>
                 </div>
 
@@ -9843,7 +10315,7 @@
                     </div>
                 </div>
 
-                <ion-button expand="block" fill="outline" onclick="document.getElementById('userModal').dismiss()"
+                <ion-button expand="block" class="settings-done-btn" onclick="document.getElementById('userModal').dismiss()"
                     style="margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
                     完成
                 </ion-button>
@@ -10079,8 +10551,24 @@
             </ion-content>
         </ion-modal>
 
+        <!-- 首頁鈕再撳一次會喺導覽列上面彈出多一層，對應錢包入面另外三張卡 -->
+        <div class="circle-nav-container home-fan" id="homeFan">
+            <button type="button" class="circle-nav-btn hf-item" onclick="homeFanGo('expense')">
+                <ion-icon name="receipt-outline"></ion-icon>
+                <span class="btn-label">開銷</span>
+            </button>
+            <button type="button" class="circle-nav-btn hf-item" onclick="homeFanGo('savings')">
+                <ion-icon name="wallet-outline"></ion-icon>
+                <span class="btn-label">儲蓄</span>
+            </button>
+            <button type="button" class="circle-nav-btn hf-item" onclick="homeFanGo('loans')">
+                <ion-icon name="card-outline"></ion-icon>
+                <span class="btn-label">借貸</span>
+            </button>
+        </div>
+
         <div class="circle-nav-container" slot="fixed">
-            <button class="circle-nav-btn active" id="navBtnHome" onclick="switchPage('home')">
+            <button class="circle-nav-btn active" id="navBtnHome" onclick="homeNavTap()">
                 <ion-icon name="home-outline">
                 </ion-icon>
                 <span class="btn-label">
@@ -10537,6 +11025,26 @@
             // 是否啟用「計算儲蓄利息」功能
             let isSavingsInterestEnabled = false;
 
+            /* 計息方式：
+               'simple'   活期單利 —— 利息 = 本金 × 年利率 × 年期，唔滾存
+               'compound' 定存複利 —— 按月滾存，上期利息會加入本金再生息 */
+            let savingsInterestMode = localStorage.getItem(uk('app_savings_mode')) || 'simple';
+
+            /* 卡片、頁面試算格、設定彈窗全部行呢一條，
+               唔好各自寫一次公式，否則三處數字對唔上。 */
+            function calcSavingsInterest(base, pa, months, mode) {
+                const p = Number(base) || 0;
+                const r = (Number(pa) || 0) / 100;
+                const m = Number(months) || 0;
+                if (p <= 0 || r <= 0 || m <= 0) return 0;
+
+                if ((mode || savingsInterestMode) === 'compound') {
+                    // 按月複利：A = P(1 + r/12)^m
+                    return p * (Math.pow(1 + r / 12, m) - 1);
+                }
+                return p * r * (m / 12);
+            }
+
             // 首頁卡片粒子動畫使用的動畫影格 id 陣列
             let particleAnimFrames = [];
 
@@ -10906,8 +11414,28 @@
             //   會令之前嗰種「一開波」修正完全冇效果。改用呢個 Ionic 生命週期
             //   事件，確保每次真正開啟任何一個 Modal 嗰一刻，都攞返最新、
             //   啱返目前深色／淺色設定嘅底色，唔受載入時序影響）
+            /* Ionic 本身容許多個 modal 疊住開。呢個 App 冇一個位需要疊，
+               疊起上嚟只會令人以為卡死，所以強制同時只開一個。
+               另外錢包展開層 z-index 好高，會遮住 modal 上面嘅掣，
+               所以開 modal 之前一律先收埋錢包。 */
             document.addEventListener('ionModalWillPresent', (ev) => {
                 const modal = ev.target;
+
+                // 收埋錢包，避免覆蓋層擋住 modal
+                try {
+                    if (typeof setHubCollapsed === 'function' && !hubCollapsed) setHubCollapsed(true);
+                } catch (e) { }
+
+                // 關掉其他已經開住嘅 modal
+                document.querySelectorAll('ion-modal').forEach(m => {
+                    if (m !== modal && m.isOpen !== false && m.classList.contains('custom-bottom-modal')) {
+                        try {
+                            const open = m.shadowRoot && m.shadowRoot.querySelector('.modal-wrapper');
+                            if (open) m.dismiss();
+                        } catch (e) { }
+                    }
+                });
+
                 if (!modal || !modal.classList || !modal.classList.contains('custom-bottom-modal')) return;
                 const wrapper = modal.shadowRoot ? modal.shadowRoot.querySelector('.modal-wrapper') : null;
                 if (!wrapper) return;
@@ -10989,6 +11517,7 @@
                 currentPageKey = pageKey;
                 syncNavStrip(pageKey);
                 setPageScroll(true);   // 換頁一律確保捲動可用
+                if (typeof homeFanClose === 'function' && pageKey !== 'home') homeFanClose();
 
                 // 首頁四張卡共用同一個疊層卡片架；其他分頁把它收起來
                 // 錢包在七個分頁都用得著，只有卡片內容跟住當前頁走
@@ -12141,6 +12670,9 @@
                 // 首頁概要同最近消費
                 renderHomePanels();
 
+                // 三頁頂部金額摘要 + 儲蓄利息試算
+                renderMiniSums();
+
                 // 同步更新上方三個錢包篩選按鈕的狀態與金額
                 renderWalletFilterChips();
 
@@ -12584,6 +13116,11 @@
                 const select = document.getElementById('savingsTenorSelect');
                 if (input) input.value = savingsInterestPa;
                 if (select) select.value = String(savingsTenorMonths);
+
+                const modeSel = document.getElementById('savingsModeSelect');
+                if (modeSel) modeSel.value = savingsInterestMode;
+                const chk = document.getElementById('savingsEnableCheck');
+                if (chk) chk.checked = !!isSavingsInterestEnabled;
                 if (modal) {
                     modal.present();
                     if (typeof setupAllModalsDragToClose === 'function') setTimeout(setupAllModalsDragToClose, 100);
@@ -12608,22 +13145,42 @@
                     savingsTenorMonths = Number(select.value) || 3;
                     localStorage.setItem(uk('app_savings_tenor'), savingsTenorMonths);
                 }
+
+                const modeSel = document.getElementById('savingsModeSelect');
+                if (modeSel) {
+                    savingsInterestMode = modeSel.value === 'compound' ? 'compound' : 'simple';
+                    localStorage.setItem(uk('app_savings_mode'), savingsInterestMode);
+                }
+
+                const chk = document.getElementById('savingsEnableCheck');
+                if (chk) {
+                    isSavingsInterestEnabled = !!chk.checked;
+                }
                 updatePaButtonDisplay();
                 renderSavings();
-                addLog('儲蓄設定', `已更新年利率 p.a. ${savingsInterestPa}% (${savingsTenorMonths}個月期)`);
+                renderMiniSums();   // 頁面試算格即刻反映新設定
+                addLog('儲蓄設定',
+                    `已更新年利率 p.a. ${savingsInterestPa}% (${savingsTenorMonths}個月期，` +
+                    `${savingsInterestMode === 'compound' ? '定存複利' : '活期單利'}，` +
+                    `${isSavingsInterestEnabled ? '計入總額' : '僅作試算'})`);
                 document.getElementById('savingsPaModal').dismiss();
             }
 
             // 更新畫面上顯示目前年利率設定的按鈕文字
             function updatePaButtonDisplay() {
                 const btn = document.getElementById('savingsPaBtn');
-                if (btn) btn.textContent = `p.a. ${savingsInterestPa}% (${savingsTenorMonths}個月)`;
+                if (!btn) return;
+                const mode = savingsInterestMode === 'compound' ? '複利' : '單利';
+                btn.textContent =
+                    `p.a. ${savingsInterestPa}% · ${savingsTenorMonths}個月 · ${mode}` +
+                    (isSavingsInterestEnabled ? '' : '（未計入）');
             }
 
             // 切換「是否計算儲蓄利息」的開關狀態，並重新渲染儲蓄頁面
             function toggleSavingsInterestCheckbox(isChecked) {
                 isSavingsInterestEnabled = isChecked;
                 renderSavings();
+                renderMiniSums();
                 showToast(isChecked ? '已啟用定期存款利息試算' : '已停用定期存款利息試算', 'primary');
             }
 
@@ -12637,7 +13194,7 @@
 
                 let displaySavings = totalSavings;
                 if (isSavingsInterestEnabled && savingsInterestPa > 0) {
-                    const interest = totalSavings * (savingsInterestPa / 100) * (savingsTenorMonths / 12);
+                    const interest = calcSavingsInterest(totalSavings, savingsInterestPa, savingsTenorMonths);
                     displaySavings = Math.round(totalSavings + interest);
                 }
 
@@ -13895,7 +14452,13 @@
                     '#savingsPaModal': { breakpoints: isPWA ? [0, 0.60] : [0, 0.56], initial: isPWA ? 0.60 : 0.56 },
                     '#fixedExpenseModal': { breakpoints: isPWA ? [0, 0.92] : [0, 0.92], initial: isPWA ? 0.92 : 0.92 },
                     '#wishGoalModal': { breakpoints: isPWA ? [0, 0.92] : [0, 0.92], initial: isPWA ? 0.92 : 0.92 },
-                    '#goalDepositModal': { breakpoints: isPWA ? [0, 0.92] : [0, 0.92], initial: isPWA ? 0.92 : 0.92 }
+                    '#goalDepositModal': { breakpoints: isPWA ? [0, 0.92] : [0, 0.92], initial: isPWA ? 0.92 : 0.92 },
+
+                    // ---- 後期新增嘅 Modal，之前漏咗登記高度 ----
+                    '#userModal': { breakpoints: isPWA ? [0, 0.88] : [0, 0.88], initial: isPWA ? 0.88 : 0.88 },
+                    '#avatarPickerModal': { breakpoints: isPWA ? [0, 0.62] : [0, 0.58], initial: isPWA ? 0.62 : 0.58 },
+                    '#tagManagerModal': { breakpoints: isPWA ? [0, 0.80] : [0, 0.80], initial: isPWA ? 0.80 : 0.80 },
+                    '#catLimitModal': { breakpoints: isPWA ? [0, 0.80] : [0, 0.80], initial: isPWA ? 0.80 : 0.80 }
                 };
 
                 // 自動套用高度設定到每一個 Modal
@@ -13903,8 +14466,12 @@
                     const modal = document.querySelector(selector);
                     if (modal) {
                         const config = modalConfigs[selector];
-                        modal.breakpoints = config.breakpoints;
+                        /* 一律補多一個 1（全高）斷點：內容長嘅 modal
+                           先拉得上去睇齊，唔會有掣永遠喺畫面外撳唔到。 */
+                        modal.breakpoints = Array.from(new Set(config.breakpoints.concat([1])))
+                            .sort((a, b) => a - b);
                         modal.initialBreakpoint = config.initial;
+                        modal.handleBehavior = 'cycle';
                     }
                 });
 
@@ -14206,6 +14773,8 @@
 
             // 切換錢包收埋的方向（左 / 右），即時生效並記住
             function setHubSide(side) {
+                // 記喺 body 上面，設定彈窗嘅 CSS 會據此自動反邊
+                document.body.setAttribute('data-hub-side', side === 'left' ? 'left' : 'right');
                 hubSide = (side === 'left') ? 'left' : 'right';
                 localStorage.setItem('app_hub_side', hubSide);
 
@@ -14348,9 +14917,9 @@
                     return;
                 }
 
-                /* 收埋嗰刻先真正切頁：最前（最底）嗰張卡係邊頁就去邊頁。 */
-                const frontKey = hubOrder[hubOrder.length - 1];
-                if (frontKey && frontKey !== currentPageKey) switchPage(frontKey);
+                /* 收埋錢包純粹係收埋，唔會改變當前頁。
+                   想換頁就撳卡片 —— 喺其他頁隨手收個錢包
+                   就被拉走去第二頁，好唔合理。 */
 
                 hubBusy = true;
                 hubCollapsed = true;
@@ -17023,6 +17592,7 @@
             function reloadActiveUserData() {
                 loadData();
                 savingsInterestPa = Number(localStorage.getItem(uk('app_savings_pa'))) || 3.5;
+                savingsInterestMode = localStorage.getItem(uk('app_savings_mode')) || 'simple';
                 savingsTenorMonths = Number(localStorage.getItem(uk('app_savings_tenor'))) || 3;
                 currencyCode = localStorage.getItem(uk('app_currency')) || BASE_CURRENCY;
 
@@ -17515,6 +18085,12 @@
 
             /* 保險網：指標放開、離開頁面、視窗失焦都強制解鎖 */
             function initLockSafetyNet() {
+                /* 3D 觀賞期間攔截 touchmove。
+                   一定要 passive:false，否則 preventDefault 會被忽略。 */
+                document.addEventListener('touchmove', (e) => {
+                    if (hubTiltActive && e.cancelable) e.preventDefault();
+                }, { passive: false });
+
                 ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(ev => {
                     window.addEventListener(ev, () => setTimeout(releaseHubLocks, 60), { passive: true });
                 });
@@ -17995,43 +18571,44 @@
             /* 每一項都係「留喺同一頁」的操作：開設定彈窗、重新整理資料等。
                刻意唔放跳去第二頁嘅捷徑 —— 呢個面板係講「本頁有咩」，
                唔係另一條導覽列。冇嘢好列嘅頁就唔會彈出面板。 */
+            /* 展開嘅係「本頁有咩段落」目錄 —— 撳一下就捲去嗰一段，
+               唔會離開當前頁。所以呢度全部都係頁內小標題，
+               唔再放計算機、批次刪除、更新匯率呢啲操作。 */
             const NAV_PANEL_ITEMS = {
-                home: [
-                    { icon: '\u{1F4B0}', label: '設定月薪收入', act: () => openIncomeModal() },
-                    { icon: '\u2795', label: '新增額外收入', act: () => openExtraIncomeModal() },
-                    { icon: '\u{1F4CC}', label: '固定每月支出', act: () => openFixedExpenseModal() },
-                    { icon: '\u{1F9EE}', label: '開啟計算機', act: () => openCalcModal() }
-                ],
-                expense: [
-                    { icon: '\u{1F9FE}', label: '新增一筆消費', act: () => openExpenseModal() },
-                    { icon: '\u{1F4B3}', label: '設定每月預算', act: () => openBudgetModal() },
-                    { icon: '\u{1F3F7}\uFE0F', label: '管理備註標籤', act: () => openTagManager('expense') },
-                    { icon: '\u2611\uFE0F', label: '多選 / 批次刪除', act: () => toggleMultiSelectMode() }
-                ],
-                savings: [
-                    { icon: '\u{1F3E6}', label: '新增儲蓄存款', act: () => openAddSavingsModal() },
-                    { icon: '\u{1F4C8}', label: '設定年利率', act: () => openSavingsPaModal() },
-                    { icon: '\u{1F504}', label: '更新市場利率', act: () => fetchTimeDepositRates() },
-                    { icon: '\u{1F4B1}', label: '更新外幣匯率', act: () => fetchFxRates() }
-                ],
-                loans: [
-                    { icon: '\u{1F4B3}', label: '新增借貸紀錄', act: () => openAddLoanModal() }
-                ],
-                calendar: [
-                    { icon: '\u{1F4CC}', label: '固定每月支出', act: () => openFixedExpenseModal() },
-                    { icon: '\u26A0\uFE0F', label: '設定分類上限', act: () => openCategoryLimitModal() }
-                ],
-                goals: [
-                    { icon: '\u{1F3AF}', label: '新增願望目標', act: () => openWishGoalModal() },
-                    { icon: '\u{1F4B0}', label: '為目標存錢', act: () => openGoalDepositModal() }
-                ],
-                stats: [
-                    { icon: '\u{1F947}', label: '消費分類佔比', act: () => statsGoChart(0) },
-                    { icon: '\u{1F4CA}', label: '本月每日花費', act: () => statsGoChart(1) },
-                    { icon: '\u{1F4C8}', label: '近 6 個月走勢', act: () => statsGoChart(2) },
-                    { icon: '\u26A0\uFE0F', label: '設定分類上限', act: () => openCategoryLimitModal() }
-                ]
+                home: ['快捷理財模組', '本月概要', '錢包分類總覽', '快捷操作', '最近消費'],
+                expense: ['開銷概要', '消費記錄明細'],
+                savings: ['儲蓄概要', '利息試算', '儲蓄存入紀錄', '金管局市場利率'],
+                loans: ['信用卡額度總覽', '借貸概要', '還款計劃與到期提醒'],
+                calendar: ['每日花費日曆', '當日消費明細', '每月固定支出清單', '分類支出上限', '連動信用卡狀況', '其他資訊'],
+                goals: ['希望購買物品清單', '可動用資金連動'],
+                stats: ['消費圖表', '支出概況', '消費分類排行', '分類上限監控', '整體財務評估']
             };
+
+            /* 喺當前頁搵標題文字相符嘅 .section-title，捲到佢嗰度。
+               用文字比對而唔係 id，係為咗唔使改動幾十個現有標題。 */
+            function jumpToSection(title) {
+                const page = document.getElementById('page' +
+                    currentPageKey.charAt(0).toUpperCase() + currentPageKey.slice(1));
+                if (!page) return;
+
+                const hit = Array.from(page.querySelectorAll('.section-title'))
+                    .find(h => (h.textContent || '').trim() === title);
+                if (!hit) { showToast('搵唔到「' + title + '」呢一段', 'warning'); return; }
+
+                closeNavPanel();
+                // 留返頂部固定列嘅高度，唔好畀標題被蓋住
+                const offset = 118 + 40;
+                const content = page.closest('ion-content');
+                const top = hit.getBoundingClientRect().top;
+
+                if (content && content.getScrollElement) {
+                    content.getScrollElement().then(el => {
+                        el.scrollTo({ top: el.scrollTop + top - offset, behavior: 'smooth' });
+                    }).catch(() => hit.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+                } else {
+                    hit.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
 
             function closeNavPanel() {
                 const p = document.getElementById('navPanel');
@@ -18057,24 +18634,18 @@
                 if (!panel || !items.length) return;
 
                 panel.innerHTML =
-                    `<div class="nav-panel-title">本頁可用功能</div>` +
+                    `<div class="nav-panel-title">本頁段落 · 撳一下即到</div>` +
                     `<div class="nav-panel-grid">` +
-                    items.map((it, i) =>
+                    items.map((t, i) =>
                         `<button type="button" class="nav-panel-item" data-i="${i}">` +
-                        `<span class="npi-icon">${it.icon}</span>` +
-                        `<span class="npi-label">${escapeHtml(it.label)}</span>` +
+                        `<span class="npi-icon">▸</span>` +
+                        `<span class="npi-label">${escapeHtml(t)}</span>` +
                         `</button>`
                     ).join('') +
                     `</div>`;
 
                 panel.querySelectorAll('.nav-panel-item').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const it = items[Number(btn.dataset.i)];
-                        closeNavPanel();
-                        if (it && typeof it.act === 'function') {
-                            try { it.act(); } catch (e) { showToast('呢個功能暫時開唔到', 'warning'); }
-                        }
-                    });
+                    btn.addEventListener('click', () => jumpToSection(items[Number(btn.dataset.i)]));
                 });
 
                 panel.setAttribute('data-page', pageKey);
@@ -18258,11 +18829,285 @@
                 }
             }
 
+
+            /* ================================================
+               28. 頁頂金額摘要 + 儲蓄 P.A. 實時試算
+               卡片全部收咗入錢包，所以三頁頂部各放一條摘要。
+               ================================================ */
+            function renderMiniSums() {
+                const ym = getCurrentYearMonth();
+
+                let spent = 0;
+                records.forEach(r => { if (r.date && r.date.startsWith(ym)) spent += (Number(r.amount) || 0); });
+
+                const cell = (label, value, color) =>
+                    `<div class="mini-sum-cell">
+                        <div class="mini-sum-label">${label}</div>
+                        <div class="mini-sum-value" style="color:${color};">${value}</div>
+                    </div>`;
+
+                // ---- 開銷頁 ----
+                const exp = document.getElementById('miniSumExpense');
+                if (exp) {
+                    const left = budgetLimit > 0 ? budgetLimit - spent : null;
+                    exp.innerHTML =
+                        cell('本月開銷', money(spent), '#dc2626') +
+                        cell('每月預算', budgetLimit > 0 ? money(budgetLimit) : '未設定', '#b45309') +
+                        cell('預算剩餘',
+                            left === null ? '—' : money(left),
+                            left === null ? '#64748b' : (left < 0 ? '#dc2626' : '#047857'));
+                }
+
+                // ---- 儲蓄頁 ----
+                const totalSavings = savingsRecords.reduce((a, r) => a + (Number(r.amount) || 0), 0);
+                const sav = document.getElementById('miniSumSavings');
+                if (sav) {
+                    let monthIn = 0;
+                    savingsRecords.forEach(r => { if (r.date && r.date.startsWith(ym)) monthIn += (Number(r.amount) || 0); });
+
+                    /* 開咗「計入總額」就要同儲蓄卡顯示同一個數，
+                       否則卡片有利息、頂部摘要冇，兩邊對唔上。 */
+                    const withInt = isSavingsInterestEnabled && savingsInterestPa > 0;
+                    const shownTotal = withInt
+                        ? Math.round(totalSavings + calcSavingsInterest(totalSavings, savingsInterestPa, savingsTenorMonths))
+                        : totalSavings;
+                    const modeTxt = savingsInterestMode === 'compound' ? '複利' : '單利';
+
+                    sav.innerHTML =
+                        cell(withInt ? '儲蓄總額（含息）' : '儲蓄總額', money(shownTotal), '#047857') +
+                        cell('本月存入', money(monthIn), '#0369a1') +
+                        cell(`年利率 · ${modeTxt}`, savingsInterestPa.toFixed(2) + '%', '#b45309');
+                }
+
+                // ---- 借貸頁 ----
+                const loan = document.getElementById('miniSumLoans');
+                if (loan) {
+                    let remain = 0, monthly = 0;
+                    loanRecords.forEach(l => {
+                        const left = Math.max(0, (Number(l.totalAmount) || 0) - (Number(l.repaidAmount) || 0));
+                        remain += left;
+                        if (left > 0) monthly += (Number(l.monthlyAmount) || 0);
+                    });
+                    loan.innerHTML =
+                        cell('尚欠總額', money(remain), '#dc2626') +
+                        cell('每月還款', money(monthly), '#7c3aed') +
+                        cell('未清筆數', String(loanRecords.filter(l =>
+                            (Number(l.totalAmount) || 0) - (Number(l.repaidAmount) || 0) > 0).length), '#0369a1');
+                }
+
+                renderSavingsPaBox(totalSavings);
+            }
+
+            /* 儲蓄利息試算格：連動現時儲蓄總額，即場改利率同期數就即刻重算。
+               原本要開彈窗先改到嘅嘢，全部搬咗入呢個格度。 */
+            const PA_TENORS = [1, 3, 6, 9, 12, 24, 36];
+
+            function renderSavingsPaBox(total) {
+                const box = document.getElementById('savingsPaBox');
+                if (!box) return;
+
+                const pa = Number(savingsInterestPa) || 0;
+                const base = Number(total) || 0;
+                const tenor = Number(savingsTenorMonths) || 3;
+                const on = !!isSavingsInterestEnabled;
+
+                const mode = savingsInterestMode;
+                const interest = calcSavingsInterest(base, pa, tenor, mode);
+                const matured = base + interest;
+
+                box.innerHTML = `
+                    <div class="pa-box-head">
+                        <span class="pa-box-title">利息試算</span>
+                        <span class="pa-state ${on ? 'on' : ''}">${on ? '● 已計入總額' : '○ 僅作試算'}</span>
+                    </div>
+
+                    <div class="pa-mode-row">
+                        <button type="button" class="pa-mode ${mode === 'simple' ? 'on' : ''}"
+                            onclick="onPaModeChange('simple')">活期單利</button>
+                        <button type="button" class="pa-mode ${mode === 'compound' ? 'on' : ''}"
+                            onclick="onPaModeChange('compound')">定存複利</button>
+                    </div>
+
+                    <div class="pa-inputs">
+                        <div class="pa-field">
+                            <label for="paRateInput">年利率 p.a. (%)</label>
+                            <input type="number" id="paRateInput" step="0.05" min="0" max="30"
+                                value="${pa}" oninput="onPaRateInput(this.value)">
+                        </div>
+                        <div class="pa-field">
+                            <label for="paTenorSelect">存款期數</label>
+                            <select id="paTenorSelect" onchange="onPaTenorChange(this.value)">
+                                ${PA_TENORS.map(m =>
+                    `<option value="${m}" ${m === tenor ? 'selected' : ''}>${m} 個月</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pa-grid">
+                        <div class="pa-cell">
+                            <div class="pa-cell-label">本金</div>
+                            <div class="pa-cell-value" style="color:#e2e8f0;">${money(base)}</div>
+                        </div>
+                        <div class="pa-cell">
+                            <div class="pa-cell-label">${tenor} 個月利息</div>
+                            <div class="pa-cell-value">${money(interest)}</div>
+                        </div>
+                        <div class="pa-cell">
+                            <div class="pa-cell-label">到期總額</div>
+                            <div class="pa-cell-value" style="color:#fbbf24;">${money(matured)}</div>
+                        </div>
+                    </div>
+
+                    <div class="pa-box-foot">
+                        ${mode === 'compound'
+                        ? '按月滾存複利，上期利息會加入本金再生息；未計提早贖回罰息。'
+                        : '活期單利，利息唔會滾存入本金。'}
+                        <button type="button" class="pa-link" onclick="openSavingsPaModal()">
+                            ⚙️ 前往年利率設定${on ? '' : '（喺嗰度開啟計入總額）'}
+                        </button>
+                    </div>`;
+            }
+
+            // 即場改年利率（有防抖，唔會打一個字就寫一次 localStorage）
+            let paRateTimer = null;
+            function onPaRateInput(val) {
+                const v = Math.max(0, Math.min(30, Number(val) || 0));
+                savingsInterestPa = v;
+                if (paRateTimer) clearTimeout(paRateTimer);
+                paRateTimer = setTimeout(() => {
+                    localStorage.setItem(uk('app_savings_pa'), savingsInterestPa);
+                    if (typeof updatePaButtonDisplay === 'function') updatePaButtonDisplay();
+                    renderSavings();
+                    renderMiniSums();
+                }, 400);
+
+                // 數字即刻更新，唔使等防抖
+                paQuickRefresh();
+            }
+
+            // 切換活期單利 / 定存複利
+            function onPaModeChange(mode) {
+                savingsInterestMode = (mode === 'compound') ? 'compound' : 'simple';
+                localStorage.setItem(uk('app_savings_mode'), savingsInterestMode);
+                updatePaButtonDisplay();
+                renderSavings();
+                renderMiniSums();
+                showToast(savingsInterestMode === 'compound'
+                    ? '已切換為定存複利（按月滾存）' : '已切換為活期單利', 'primary');
+            }
+
+            function onPaTenorChange(val) {
+                savingsTenorMonths = Number(val) || 3;
+                localStorage.setItem(uk('app_savings_tenor'), savingsTenorMonths);
+                if (typeof updatePaButtonDisplay === 'function') updatePaButtonDisplay();
+                renderSavings();
+                paQuickRefresh();
+            }
+
+            /* 只更新三格數字，唔重畫成個格 ——
+               重畫會令輸入框失焦，打字打到一半就跳走。 */
+            function paQuickRefresh() {
+                const box = document.getElementById('savingsPaBox');
+                if (!box) return;
+                const base = savingsRecords.reduce((a, r) => a + (Number(r.amount) || 0), 0);
+                const interest = calcSavingsInterest(base, savingsInterestPa, savingsTenorMonths);
+
+                const cells = box.querySelectorAll('.pa-cell-value');
+                if (cells.length === 3) {
+                    cells[0].textContent = money(base);
+                    cells[1].textContent = money(interest);
+                    cells[2].textContent = money(base + interest);
+                }
+                const lbl = box.querySelectorAll('.pa-cell-label')[1];
+                if (lbl) lbl.textContent = `${savingsTenorMonths} 個月利息`;
+            }
+
+
+            /* ================================================
+               29. 底部首頁鈕：再撳一次彈出三粒子選項
+               錢包入面四張卡，首頁鈕本身係「總覽」，
+               另外三張（開銷／儲蓄／借貸）就用呢三粒直達。
+               ================================================ */
+            function homeFanOpen() {
+                const fan = document.getElementById('homeFan');
+                if (!fan) return;
+
+                /* 對齊首頁鈕：量度佢喺畫面上嘅實際位置，
+                   再決定個膠囊擺喺邊、尖角指邊度。
+                   導覽列係置中嘅，所以呢兩個值會隨畫面闊度變，
+                   寫死偏移喺唔同闊度嘅機就會歪。 */
+                const btn = document.getElementById('navBtnHome');
+                if (btn) {
+                    const r = btn.getBoundingClientRect();
+                    const pad = 14;                       // 膠囊本身嘅左右內距
+                    let left = Math.round(r.left - pad);
+                    if (left < 8) left = 8;               // 唔好貼死畫面邊
+
+                    fan.style.setProperty('--fan-left', left + 'px');
+                    // 尖角對正首頁鈕中心（相對膠囊左邊計）
+                    fan.style.setProperty('--fan-arrow',
+                        Math.round(r.left + r.width / 2 - left) + 'px');
+                }
+
+                fan.classList.add('show');
+            }
+
+            function homeFanClose() {
+                const fan = document.getElementById('homeFan');
+                if (fan) fan.classList.remove('show');
+            }
+
+            function homeFanVisible() {
+                const fan = document.getElementById('homeFan');
+                return !!fan && fan.classList.contains('show');
+            }
+
+            /* 未喺首頁 → 直接返首頁；
+               已經喺首頁 → 開／關三粒子選項。 */
+            function homeNavTap() {
+                if (currentPageKey !== 'home') {
+                    homeFanClose();
+                    switchPage('home');
+                    return;
+                }
+                if (homeFanVisible()) homeFanClose();
+                else homeFanOpen();
+            }
+
+            /* 信用卡額度冇獨立彈窗，係借貸頁上面嗰個可摺區。
+               由設定撳落去就關咗設定、跳去借貸頁、順手幫佢攤開。 */
+            function goCreditLimitSetting() {
+                const modal = document.getElementById('userModal');
+                if (modal) modal.dismiss();
+                switchPage('loans');
+                setTimeout(() => {
+                    const sec = document.getElementById('loanCardLimitSection');
+                    if (sec) sec.classList.remove('collapsed');
+                    if (typeof jumpToSection === 'function') jumpToSection('信用卡額度總覽');
+                }, 320);
+            }
+
+            function homeFanGo(pageKey) {
+                homeFanClose();
+                switchPage(pageKey);
+            }
+
+            /* 撳畫面其他地方就收埋。用 capture 階段，
+               確保喺其他 click 處理器之前判斷得到。 */
+            function initHomeFan() {
+                document.addEventListener('click', (e) => {
+                    if (!homeFanVisible()) return;
+                    if (e.target.closest && (e.target.closest('.home-fan') || e.target.closest('#navBtnHome'))) return;
+                    homeFanClose();
+                }, true);
+            }
+
             /* ================================================
                19.F 啟動：建立疊層卡片、綁定手勢、初次渲染
                ================================================ */
             window.addEventListener('DOMContentLoaded', () => {
                 buildHubStack();
+                document.body.setAttribute('data-hub-side', hubSide === 'left' ? 'left' : 'right');
                 refreshUserAvatar();
                 refreshCardHolderName();
                 refreshCurrencySymbols();
@@ -18282,6 +19127,7 @@
                 // 微互動：金融卡跟手指 3D 傾斜
                 initCardTilt();
                 initLockSafetyNet();
+                initHomeFan();
 
                 // 預設收埋喺側邊，輕觸卡夾先展開
                 setHubCollapsed(true);
