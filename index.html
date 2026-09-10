@@ -6249,16 +6249,7 @@
             font-weight:600;opacity:0;font-family:system-ui,-apple-system,sans-serif}
         /* 每隻字自己就係光源。字身後面放一團徑向光暈，
            光由筆畫內裡向外爆出，逐隻字接力traverse過去 —— 好似「叮」一聲。 */
-        .ns-word span{position:relative}
-        .ns-word span::before{content:'';position:absolute;left:50%;top:50%;
-            width:190%;height:190%;margin:-95% 0 0 -95%;
-            border-radius:50%;pointer-events:none;opacity:0;
-            background:radial-gradient(circle,
-                rgba(255,255,255,.95) 0%,
-                rgba(255,246,218,.7) 22%,
-                rgba(233,200,110,.35) 45%,
-                transparent 72%);
-            mix-blend-mode:screen;transform:scale(.2)}
+
         /* 兩層背景都剪成字形：
              上層 = 一條窄白光帶，靠移動 background-position 掃過字身
              下層 = 原本嘅金色漸變
@@ -6300,18 +6291,14 @@
         .ns-go .ns-tag{animation:nsTagIn calc(.45s*var(--k)) ease calc(1.5s*var(--k)) both}
         /* 光掃：五個字母各自延遲 75ms 觸發，形成由左至右略過嘅光線。
            結尾 2.42s，啱啱喺 2.45s 放大交棒之前收乾淨。 */
-        .ns-go .ns-word span::before{animation:nsPop calc(.5s*var(--k)) cubic-bezier(.2,.85,.3,1) both}
-        .ns-go .ns-word span:nth-child(1)::before{animation-delay:calc(1.600s*var(--k))}
-        .ns-go .ns-word span:nth-child(2)::before{animation-delay:calc(1.670s*var(--k))}
-        .ns-go .ns-word span:nth-child(3)::before{animation-delay:calc(1.740s*var(--k))}
-        .ns-go .ns-word span:nth-child(4)::before{animation-delay:calc(1.810s*var(--k))}
-        .ns-go .ns-word span:nth-child(5)::before{animation-delay:calc(1.880s*var(--k))}
-        .ns-go .ns-word span{animation:nsShine calc(.52s*var(--k)) cubic-bezier(.35,0,.25,1) both}
-        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.600s*var(--k))}
+
+        .ns-go .ns-word span{transform-origin:50% 55%;
+            animation:nsShine calc(.46s*var(--k)) cubic-bezier(.3,.9,.35,1) both}
+        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.560s*var(--k))}
         .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.670s*var(--k))}
-        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.740s*var(--k))}
-        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.810s*var(--k))}
-        .ns-go .ns-word span:nth-child(5){animation-delay:calc(1.880s*var(--k))}
+        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.780s*var(--k))}
+        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.890s*var(--k))}
+        .ns-go .ns-word span:nth-child(5){animation-delay:calc(2.000s*var(--k))}
         .ns-go{animation:nsZoom calc(.35s*var(--k)) cubic-bezier(.6,0,.9,.55) calc(2.45s*var(--k)) forwards}
 
         @keyframes nsIris{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(78% at 50% 50%)}}
@@ -6323,21 +6310,24 @@
                             to{opacity:1;letter-spacing:.42em;text-indent:.42em;transform:none}}
         @keyframes nsTagIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
         /* 光由字身向外爆開再收返 */
-        @keyframes nsPop{
-            0%{opacity:0;transform:scale(.15)}
-            22%{opacity:1;transform:scale(.75)}
-            100%{opacity:0;transform:scale(1.5)}}
+
 
         /* 每隻字喺光柱掃到嗰陣，筆畫本身亮起並向外射光。
            drop-shadow 疊三層：貼身白光、中距暖白、遠距金光。 */
+        /* 字體自身發光：白光帶掃過筆畫嘅同時，
+           drop-shadow 由零爆到最亮，字亦即時脹大一下再收返。
+           三樣嘢同一個時間點（38%）到達頂峰，所以「光到」同
+           「變大」係同步嘅，睇落就係字自己叮一聲着咗。 */
         @keyframes nsShine{
-            0%{background-position:150% 0,0 0;
+            0%{background-position:150% 0,0 0;transform:scale(1);
                filter:drop-shadow(0 0 0 rgba(255,246,218,0))}
-            42%{background-position:20% 0,0 0;
-                filter:drop-shadow(0 0 4px rgba(255,255,255,1))
-                       drop-shadow(0 0 16px rgba(255,246,218,.95))
-                       drop-shadow(0 0 40px rgba(233,200,110,.85))}
-            100%{background-position:-60% 0,0 0;
+            38%{background-position:30% 0,0 0;transform:scale(1.22);
+                filter:drop-shadow(0 0 3px rgba(255,255,255,1))
+                       drop-shadow(0 0 12px rgba(255,255,255,.9))
+                       drop-shadow(0 0 30px rgba(255,246,218,.9))
+                       drop-shadow(0 0 60px rgba(233,200,110,.75))}
+            62%{transform:scale(1.06)}
+            100%{background-position:-60% 0,0 0;transform:scale(1);
                  filter:drop-shadow(0 0 0 rgba(255,246,218,0))}}
         @keyframes nsZoom{to{opacity:0;transform:scale(1.4)}}
 
@@ -15053,6 +15043,20 @@
                 el.classList.remove('open', 'gather', 'tuck', 'dragging', 'settling');
                 hubCollapsed = true;
                 hubBusy = false;
+                nudgeScroller();
+            }
+
+            /* 錢包收合期間版面高度改變過，iOS 有機會仲用緊舊嘅捲動範圍，
+               結果只郁得一個方向。寫一次 scrollTop 逼佢重新計算。 */
+            function nudgeScroller() {
+                const c = document.querySelector('ion-content');
+                if (!c || !c.getScrollElement) return;
+                c.getScrollElement().then(el => {
+                    if (!el) return;
+                    const t = el.scrollTop;
+                    el.scrollTop = t + 1;
+                    el.scrollTop = t;
+                }).catch(() => { });
             }
 
             /* Ionic 每次有 overlay 彈出就會喺 <body> 加 .backdrop-no-scroll，
@@ -19423,11 +19427,31 @@
                         const overlays = openOverlays.size;
                         const leaked = lock && overlays === 0;
                         if (leaked) healScrollLock();
-                        showToast(
-                            (leaked ? '🔴 偵測到捲動鎖洩漏，已解除' : '🟢 捲動正常')
-                            + `｜鎖 ${lock ? '有' : '冇'}｜overlay ${overlays}`
-                            + (leakWitness ? `｜曾洩漏 ${leakWitness}` : ''),
-                            leaked ? 'warning' : 'success');
+
+                        const actives = document.querySelectorAll('.view-page.active-page');
+                        const page = actives[0];
+                        const c = document.querySelector('ion-content');
+
+                        const finish = (sc) => {
+                            const pt = page ? getComputedStyle(page).paddingTop : '?';
+                            showToast(
+                                (leaked ? '🔴 鎖洩漏已解除' : '🟢 無鎖')
+                                + `｜active頁 ${actives.length}`
+                                + `｜top ${sc.top}／${sc.max}`
+                                + `｜padTop ${pt}`,
+                                leaked ? 'warning' : 'success');
+                        };
+
+                        if (c && c.getScrollElement) {
+                            c.getScrollElement().then(el => {
+                                finish({
+                                    top: Math.round(el.scrollTop),
+                                    max: Math.round(el.scrollHeight - el.clientHeight)
+                                });
+                            }).catch(() => finish({ top: '?', max: '?' }));
+                        } else {
+                            finish({ top: '?', max: '?' });
+                        }
                     }, 1100);
                 };
                 const cancel = () => { if (timer) { clearTimeout(timer); timer = null; } };
