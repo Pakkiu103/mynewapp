@@ -203,6 +203,9 @@
             display: none;
             padding-top: calc(305px + env(safe-area-inset-top, 0px)) !important;
             padding-bottom: 110px !important;
+            /* 兩邊各留 8px，書脊淨係 22px 闊而且貼實邊，唔會遮到內容 */
+            padding-left: 8px !important;
+            padding-right: 8px !important;
         }
 
         .view-page.active-page {
@@ -3838,8 +3841,10 @@
         }
 
         /* ---------- 19.3 首頁卡片區手勢 ---------- */
+        /* 一定要 pan-y。寫 none 的話，呢個闊晒畫面的固定容器
+           會喺自己嗰條橫帶食晒所有觸控，該範圍永遠捲唔郁。 */
         .fixed-top-card-area {
-            touch-action: none;
+            touch-action: pan-y;
         }
 
         .hub-dots {
@@ -4417,22 +4422,30 @@
         }
 
         /* ---------- 19.5 願望儲蓄目標 ---------- */
+        /* 跟 .np-panel 同一套金屬質感，唔再用半透明白／黑 */
         .goal-item {
             border-radius: 18px;
-            background: rgba(255, 255, 255, 0.58);
-            border: 1px solid rgba(15, 23, 42, 0.10);
+            background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
             padding: 13px 14px;
             margin-bottom: 12px;
         }
 
         .dark-theme .goal-item {
-            background: rgba(15, 23, 42, 0.48);
-            border-color: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .goal-item.done {
-            border-color: rgba(5, 150, 105, 0.6);
-            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(5, 150, 105, 0.75);
+            background: linear-gradient(135deg, #8fbfa8 0%, #e3f5ea 50%, #7aa992 100%);
+        }
+
+        .dark-theme .goal-item.done {
+            background: linear-gradient(135deg, #10241c 0%, #1b3a2c 50%, #0a1712 100%);
+            border-color: rgba(52, 211, 153, 0.4);
         }
 
         .goal-head {
@@ -4832,8 +4845,18 @@
 
         .hub-card:not(.top) .hub-card-tab {
             opacity: 1;
-            pointer-events: auto;
             cursor: pointer;
+        }
+
+        /* 一定要錢包展開咗，感應層先食點擊。
+           唔加 .open 條件的話，收埋咗之後隱形嘅感應層
+           仍然覆蓋成個螢幕，撳邊度都會跳頁。 */
+        #hubFixedArea.open .hub-card:not(.top) .hub-card-tab {
+            pointer-events: auto;
+        }
+
+        #hubFixedArea:not(.open) .hub-card-tab {
+            pointer-events: none !important;
         }
 
         /* 金額文字只保留喺 DOM 內（畀收起後嘅迷你列讀取），畫面上唔顯示 */
@@ -5376,6 +5399,23 @@
         .stat-cat-bar {
             height: 10px;
             border-radius: 5px;
+            overflow: hidden;
+            background: rgba(148, 163, 184, 0.22);
+            box-shadow: inset 0 1px 2px rgba(3, 7, 18, 0.25);
+        }
+
+        .dark-theme .stat-cat-bar {
+            background: rgba(226, 232, 240, 0.14);
+        }
+
+        /* 之前漏咗呢條：<i> 係 inline，冇高度就完全睇唔到色條 */
+        .stat-cat-bar i {
+            display: block;
+            height: 100%;
+            min-width: 6px;
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(251, 191, 36, 0.25);
+            transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         /* ---------- 21.8 整體評估 ---------- */
@@ -5721,12 +5761,58 @@
         }
 
         /* ---------- 23.2 提示訊息 ---------- */
+        /* 半透明毛玻璃底。留意：唔可以再用 ion-toast 嘅 color 屬性，
+           因為佢會設定 --background 而且權重壓過呢度，令底色變返實色。
+           所以 showToast() 已經唔再設 color，改為只落 cssClass。 */
         ion-toast.novus-toast {
-            --border-radius: 14px;
-            --box-shadow: 0 12px 30px rgba(15, 23, 42, 0.38);
+            --border-radius: 15px;
+            --box-shadow: none;
             --min-height: 46px;
+            --background: transparent !important;
             font-weight: 800;
             letter-spacing: 0.3px;
+        }
+
+        /* 成條框都係半透明彩色，唔止一條邊 */
+        ion-toast.novus-toast::part(container) {
+            backdrop-filter: blur(20px) saturate(170%);
+            -webkit-backdrop-filter: blur(20px) saturate(170%);
+            border-radius: 15px;
+            border-width: 1px;
+            border-style: solid;
+            box-shadow: 0 12px 30px rgba(3, 7, 18, 0.3);
+            background: rgba(15, 23, 42, 0.42);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        ion-toast.novus-toast.toast-success::part(container) {
+            background: rgba(16, 185, 129, 0.42);
+            border-color: rgba(52, 211, 153, 0.6);
+        }
+
+        ion-toast.novus-toast.toast-danger::part(container) {
+            background: rgba(239, 68, 68, 0.42);
+            border-color: rgba(248, 113, 113, 0.62);
+        }
+
+        ion-toast.novus-toast.toast-primary::part(container) {
+            background: rgba(56, 189, 248, 0.42);
+            border-color: rgba(125, 211, 252, 0.62);
+        }
+
+        ion-toast.novus-toast.toast-warning::part(container) {
+            background: rgba(245, 158, 11, 0.44);
+            border-color: rgba(251, 191, 36, 0.66);
+        }
+
+        ion-toast.novus-toast::part(message) {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(3, 7, 18, 0.55);
+        }
+
+        ion-toast.novus-toast.toast-warning::part(message) {
+            color: #2a1c02;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
         }
 
         /* ---------- 23.3 備註標籤 ---------- */
@@ -6213,6 +6299,1215 @@
             if (t === 'dark') document.documentElement.classList.add('app-dark');
         })();
     </script>
+
+    <!-- ================================================
+         NOVUS 體驗升級樣式
+         21. 功能總覽快捷列 / 錢包收合 / 預算警示
+         22. 微互動：金幣特效、數字滾動、3D 傾斜、骨架屏
+         ================================================ -->
+    <style id="novus-enhance">
+        :root {
+            --nav-strip-h: 40px;
+        }
+
+        /* ================================================
+           21.1 標題列下方「功能總覽快捷列」
+           ================================================ */
+        .nav-strip {
+            position: fixed !important;
+            top: calc(65px + env(safe-area-inset-top, 0px));
+            left: 0;
+            right: 0;
+            height: var(--nav-strip-h);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        .nav-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        #appContainer:not(.dark-theme) .nav-strip {
+            background: linear-gradient(180deg, #d2e2db 0%, #bacfc5 100%);
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.14);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.45);
+        }
+
+        #appContainer.dark-theme .nav-strip {
+            background: linear-gradient(180deg, #111823 0%, #080d15 100%);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.32);
+        }
+
+        .nav-chip {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            height: 27px;
+            padding: 0 11px;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .nav-chip:active {
+            transform: scale(0.93);
+        }
+
+        #appContainer:not(.dark-theme) .nav-chip {
+            background: rgba(255, 255, 255, 0.55);
+            border-color: rgba(15, 23, 42, 0.1);
+            color: #35513f;
+        }
+
+        #appContainer.dark-theme .nav-chip {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+        }
+
+        #appContainer:not(.dark-theme) .nav-chip.active {
+            background: linear-gradient(135deg, #fde68a 0%, #d4af37 55%, #a16207 100%);
+            border-color: rgba(161, 98, 7, 0.55);
+            color: #2a1c02;
+            box-shadow: 0 3px 10px rgba(202, 138, 4, 0.45);
+        }
+
+        #appContainer.dark-theme .nav-chip.active {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-color: rgba(251, 191, 36, 0.6);
+            color: #14100a;
+            box-shadow: 0 3px 12px rgba(245, 158, 11, 0.5);
+        }
+
+        /* 快捷列佔用咗高度，下面所有固定／捲動內容一律往下推 */
+        .fixed-top-card-area {
+            top: calc(65px + var(--nav-strip-h) + env(safe-area-inset-top, 0px)) !important;
+        }
+
+        #pageCalendar,
+        #pageGoals,
+        #pageStats {
+            padding-top: calc(56px + var(--nav-strip-h) + env(safe-area-inset-top, 0px)) !important;
+        }
+
+
+        /* ---------- 首頁快捷操作 ---------- */
+        .home-quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9px;
+            margin: 0 2px 18px 2px;
+        }
+
+        .home-quick {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 14px 4px 12px 4px;
+            border-radius: 17px;
+            cursor: pointer;
+            font-family: inherit;
+            background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            box-shadow: 0 5px 14px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .home-quick:active {
+            transform: scale(0.93);
+        }
+
+        .dark-theme .home-quick {
+            background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 5px 16px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .home-quick .hq-ico {
+            font-size: 21px;
+            line-height: 1;
+        }
+
+        .home-quick .hq-txt {
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            color: var(--box-text-main);
+        }
+
+        .home-recent-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 2px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .home-recent-row:last-child {
+            border-bottom: none;
+        }
+
+        .home-recent-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex: 0 0 auto;
+        }
+
+        .home-recent-name {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--box-text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .home-recent-sub {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: var(--box-text-sub);
+        }
+
+        .home-recent-amt {
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 900;
+            color: #b45309;
+            flex: 0 0 auto;
+        }
+
+        .dark-theme .home-recent-amt {
+            color: #fbbf24;
+        }
+
+        /* ---------- 設定分組（點標題先展開）---------- */
+        .set-group {
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%);
+        }
+
+        .dark-theme .set-group {
+            background: linear-gradient(135deg, #161f2c 0%, #222e3e 50%, #0d131a 100%);
+            border-color: rgba(245, 158, 11, 0.28);
+        }
+
+        .set-head {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 15px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            text-align: left;
+        }
+
+        .set-head .sh-ico {
+            font-size: 18px;
+        }
+
+        .set-head .sh-name {
+            font-size: 13.5px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            color: var(--box-text-main);
+        }
+
+        .set-head .sh-sub {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--box-text-sub);
+            margin-top: 2px;
+        }
+
+        .set-head .sh-arrow {
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--box-text-sub);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .set-group.open .sh-arrow {
+            transform: rotate(90deg);
+        }
+
+        .set-body {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            padding: 0 14px;
+            transition: max-height 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.26s ease, padding 0.3s ease;
+        }
+
+        .set-group.open .set-body {
+            max-height: 720px;
+            opacity: 1;
+            padding: 0 14px 14px 14px;
+        }
+
+        /* ---------- 快捷列展開面板 ---------- */
+        .nav-panel {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: calc(65px + var(--nav-strip-h) + env(safe-area-inset-top, 0px));
+            z-index: 9997;
+            padding: 0 12px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.24s ease, padding 0.3s ease;
+        }
+
+        .nav-panel.show {
+            max-height: 320px;
+            opacity: 1;
+            pointer-events: auto;
+            padding: 10px 12px 12px 12px;
+        }
+
+        #appContainer:not(.dark-theme) .nav-panel.show {
+            background: linear-gradient(180deg, #cfe0d8 0%, #bccfc5 100%);
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.45);
+        }
+
+        #appContainer.dark-theme .nav-panel.show {
+            background: linear-gradient(180deg, #0e151f 0%, #070c14 100%);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .nav-panel-title {
+            font-size: 9.5px;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+            margin: 0 2px 8px 4px;
+            color: var(--box-text-sub, #64748b);
+        }
+
+        .nav-panel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .nav-panel-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 12px;
+            border-radius: 13px;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+            border: 1px solid rgba(148, 163, 184, 0.26);
+            background: rgba(148, 163, 184, 0.1);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+        }
+
+        .nav-panel-item:active {
+            transform: scale(0.95);
+            background: rgba(251, 191, 36, 0.18);
+        }
+
+        .nav-panel-item .npi-icon {
+            font-size: 16px;
+            flex: 0 0 auto;
+        }
+
+        .nav-panel-item .npi-label {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            color: var(--box-text-title, #e2e8f0);
+        }
+
+        /* ---------- 備註標籤：跟消費分類上色 ---------- */
+        .note-tag-chip.has-cat {
+            color: #fff !important;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.28);
+        }
+
+        .note-tag-chip .tag-cat-dot {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            margin-right: 5px;
+            background: rgba(255, 255, 255, 0.92);
+            vertical-align: middle;
+        }
+
+        /* ---------- 消費明細上的時間標籤 ---------- */
+        .record-time-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            cursor: pointer;
+            font-family: ui-monospace, Menlo, 'Courier New', monospace;
+            background: rgba(56, 189, 248, 0.14);
+            border: 1px solid rgba(56, 189, 248, 0.36);
+            color: #38bdf8;
+            transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+        }
+
+        .record-time-chip:active {
+            transform: scale(0.9);
+            background: rgba(56, 189, 248, 0.28);
+        }
+
+        .record-time-chip.unset {
+            background: rgba(148, 163, 184, 0.14);
+            border-color: rgba(148, 163, 184, 0.3);
+            color: var(--box-text-sub, #94a3b8);
+        }
+
+        /* ---------- 卡片上的持卡人姓名 ---------- */
+        .card-holder-name {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.66);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            margin-top: 3px;
+            position: relative;
+            z-index: 3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ================================================
+           21.2 收起後嘅「錢包」外觀（輕觸打開先變返疊層卡片）
+           ================================================ */
+        .hub-fixed-area.collapsed .hub-mini {
+            display: none !important;
+        }
+
+        .hub-wallet {
+            display: none;
+        }
+
+        .hub-fixed-area.collapsed .hub-wallet {
+            display: block;
+        }
+
+        .hub-wallet {
+            position: relative;
+            margin-top: 2px;
+            padding-top: 16px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* 錢包口露出嚟嘅四張卡邊 */
+        .hw-cards {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            top: 0;
+            height: 22px;
+        }
+
+        .hw-cards i {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 74%;
+            height: 20px;
+            border-radius: 9px 9px 4px 4px;
+            box-shadow: 0 -2px 6px rgba(15, 23, 42, 0.3);
+            transform-origin: 50% 100%;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .hw-cards i:nth-child(1) {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0f2042 100%);
+            transform: translateX(-50%) translateY(0) rotate(0deg);
+            z-index: 4;
+        }
+
+        .hw-cards i:nth-child(2) {
+            background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #065f46 100%);
+            transform: translateX(-50%) translateY(4px) rotate(-2.4deg);
+            z-index: 3;
+        }
+
+        .hw-cards i:nth-child(3) {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #4338ca 100%);
+            transform: translateX(-50%) translateY(8px) rotate(2.4deg);
+            z-index: 2;
+        }
+
+        .hw-cards i:nth-child(4) {
+            background: linear-gradient(135deg, #7c2d12 0%, #b45309 55%, #92400e 100%);
+            transform: translateX(-50%) translateY(12px) rotate(-4deg);
+            z-index: 1;
+        }
+
+        .hub-wallet:active .hw-cards i:nth-child(1) {
+            transform: translateX(-50%) translateY(-7px) rotate(0deg);
+        }
+
+        .hub-wallet:active .hw-cards i:nth-child(2) {
+            transform: translateX(-50%) translateY(-2px) rotate(-5deg);
+        }
+
+        .hub-wallet:active .hw-cards i:nth-child(3) {
+            transform: translateX(-50%) translateY(2px) rotate(5deg);
+        }
+
+        .hub-wallet:active .hw-cards i:nth-child(4) {
+            transform: translateX(-50%) translateY(6px) rotate(-8deg);
+        }
+
+        /* 錢包本體：真皮質感 + 車線 */
+        .hw-body {
+            position: relative;
+            z-index: 6;
+            border-radius: 16px;
+            padding: 11px 15px 9px 15px;
+            box-sizing: border-box;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.02) 42%, rgba(0, 0, 0, 0.28) 100%),
+                linear-gradient(135deg, #3a2a18 0%, #5c4326 45%, #2b1e10 100%);
+            border: 1px solid rgba(212, 175, 55, 0.42);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.28s ease;
+        }
+
+        .hub-wallet:active .hw-body {
+            transform: translateY(3px) scale(0.985);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.4);
+        }
+
+        .hw-body::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border-radius: 12px;
+            border: 1px dashed rgba(255, 232, 178, 0.34);
+            pointer-events: none;
+        }
+
+        ion-app:not(.dark-theme) .hw-body {
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(0, 0, 0, 0.12) 100%),
+                linear-gradient(135deg, #8b6a3c 0%, #b08a50 45%, #6f5330 100%);
+        }
+
+        .hw-row {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .hw-name {
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            color: #fdf3d8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .hw-amt {
+            font-size: 14.5px;
+            font-weight: 900;
+            color: #fbbf24;
+            flex-shrink: 0;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+        }
+
+        .hw-hint {
+            position: relative;
+            z-index: 2;
+            margin-top: 3px;
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: rgba(253, 243, 216, 0.72);
+        }
+
+        /* ================================================
+           21.3 預算警示徽章
+           ================================================ */
+        .budget-alert {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            margin: 8px 2px 0 2px;
+            padding: 8px 12px;
+            border-radius: 13px;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.35;
+            box-sizing: border-box;
+        }
+
+        .budget-alert.show {
+            display: flex;
+            animation: budgetAlertIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .budget-alert.warn {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.14) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.55);
+            color: #b45309;
+        }
+
+        .budget-alert.danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(185, 28, 28, 0.14) 100%);
+            border: 1px solid rgba(248, 113, 113, 0.6);
+            color: #b91c1c;
+            animation: budgetAlertIn 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                budgetPulse 1.9s ease-in-out 0.5s infinite;
+        }
+
+        .dark-theme .budget-alert.warn {
+            color: #fbbf24;
+        }
+
+        .dark-theme .budget-alert.danger {
+            color: #fca5a5;
+        }
+
+        @keyframes budgetAlertIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes budgetPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.16);
+            }
+        }
+
+        /* 標題列上嘅超支紅點 */
+        .nav-chip .nav-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+            animation: navDotPulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes navDotPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+            }
+
+            60% {
+                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+            }
+        }
+
+        /* ================================================
+           22.1 骨架屏（載入中閃爍）
+           ================================================ */
+        .sk-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+        }
+
+        .sk-line {
+            height: 11px;
+            border-radius: 6px;
+            background: linear-gradient(90deg,
+                    rgba(148, 163, 184, 0.16) 0%,
+                    rgba(203, 213, 225, 0.42) 45%,
+                    rgba(148, 163, 184, 0.16) 100%);
+            background-size: 220% 100%;
+            animation: skShimmer 1.25s ease-in-out infinite;
+        }
+
+        .dark-theme .sk-line {
+            background: linear-gradient(90deg,
+                    rgba(148, 163, 184, 0.1) 0%,
+                    rgba(203, 213, 225, 0.26) 45%,
+                    rgba(148, 163, 184, 0.1) 100%);
+            background-size: 220% 100%;
+        }
+
+        @keyframes skShimmer {
+            0% {
+                background-position: 130% 0;
+            }
+
+            100% {
+                background-position: -130% 0;
+            }
+        }
+
+        /* ================================================
+           22.2 卡片 3D 傾斜（跟手指位置）
+           ================================================ */
+        /* 注意：唔可以喺呢度加 transform-style: preserve-3d。
+           .debit-card 本身係 overflow:hidden，兩者一齊用會令瀏覽器
+           另開裁切圖層，傾斜時卡片左右會出現黑邊。
+           傾斜效果已經由 transform 入面嘅 perspective() 提供。 */
+        .debit-card {
+            transform-style: flat;
+        }
+
+        .debit-card.is-tilting {
+            transition: transform 0.08s linear, box-shadow 0.2s ease !important;
+        }
+
+        .debit-card.tilt-reset {
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease !important;
+        }
+
+        /* 3D 觀賞模式時，卡片微微提起同加強陰影，代替原本嘅 translateZ 景深 */
+        .debit-card.is-tilting {
+            box-shadow: 0 26px 50px rgba(3, 7, 18, 0.6) !important;
+            position: relative;
+            z-index: 200;
+        }
+
+        /* 連外層 .hub-card 一齊提上去，否則喺疊層入面
+           只提內層係跨唔過兄弟卡片嘅堆疊層級 */
+        .hub-card:has(.debit-card.is-tilting) {
+            z-index: 200 !important;
+        }
+
+        /* 觸控中唔好再套用 hover / active 嘅位移，避免同傾斜打架 */
+        .debit-card.is-tilting:hover,
+        .debit-card.is-tilting:active {
+            transform: none;
+        }
+
+        /* 3D 觀賞模式：鎖住頁面上下捲動，唔好搞亂視角 */
+        /* 3D 觀賞模式：卡片本身唔交手勢畀瀏覽器。
+           頁面捲動另外用 ion-content 嘅 scrollY 屬性關掉，
+           因為真正捲動嗰層喺 shadow DOM 入面，喺呢度落樣式冇用。 */
+        body.tilt-lock .debit-card,
+        body.tilt-lock .hub-card {
+            touch-action: none !important;
+        }
+
+        /* 長按卡片係想睇 3D，唔係想選字 */
+        .debit-card,
+        .hub-card,
+        .card-inner-content,
+        .card-number-sim,
+        .card-holder-name {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* ================================================
+           22.3 金幣 / 紙花特效畫布
+           ================================================ */
+        #fxConfettiCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100000;
+        }
+
+        /* ================================================
+           22.4 頭像風格選擇器
+           ================================================ */
+        .av-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 4px 0 14px 0;
+        }
+
+        .av-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 9px 2px 7px 2px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(148, 163, 184, 0.3);
+            background: rgba(148, 163, 184, 0.09);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .av-cell:active {
+            transform: scale(0.93);
+        }
+
+        .av-cell.active {
+            border-color: #d4af37;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.22) 0%, rgba(212, 175, 55, 0.1) 100%);
+            box-shadow: 0 3px 12px rgba(202, 138, 4, 0.28);
+        }
+
+        .av-cell .user-svg {
+            width: 34px;
+            height: 34px;
+        }
+
+        /* ================================================
+           24. 記帳時的幣種選擇
+           ================================================ */
+        .exp-cur-select {
+            flex: 0 0 auto;
+            height: 30px;
+            padding: 0 8px;
+            border-radius: 9px;
+            font-size: 11.5px;
+            font-weight: 800;
+            cursor: pointer;
+            appearance: auto;
+            background: rgba(15, 23, 42, 0.55);
+            border: 1px solid rgba(251, 191, 36, 0.42);
+            color: #fcd34d;
+        }
+
+        ion-app:not(.dark-theme) .exp-cur-select {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(161, 98, 7, 0.5);
+            color: #7c5c17;
+        }
+
+        .exp-fx-hint {
+            display: none;
+            margin: 6px 2px 0 2px;
+            padding: 7px 11px;
+            border-radius: 11px;
+            font-size: 11.5px;
+            font-weight: 800;
+            line-height: 1.5;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            color: #fcd34d;
+        }
+
+        .exp-fx-hint.show {
+            display: block;
+        }
+
+        ion-app:not(.dark-theme) .exp-fx-hint {
+            color: #7c5c17;
+        }
+
+        .exp-fx-hint b {
+            font-size: 13px;
+        }
+
+        .exp-fx-hint .fx-stale {
+            color: #f87171;
+        }
+
+        /* 消費清單上的原幣金額小字 */
+        .record-orig-amt {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            color: #fbbf24;
+            white-space: nowrap;
+            margin-top: 1px;
+        }
+
+        ion-app:not(.dark-theme) .record-orig-amt {
+            color: #a16207;
+        }
+
+        .av-cell span {
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            color: var(--box-text-sub);
+            text-align: center;
+        }
+    </style>
+
+    <style id="novus-wallet">
+        /* ================================================
+           25. 側邊錢包（F 弧線拋出）
+           收起 = 貼邊卡夾；展開 = 覆蓋層，唔再霸頁面高度
+           最底一張 = 當前頁 = 最前層
+           ================================================ */
+        #hubFixedArea {
+            position: fixed !important;
+            inset: 0 !important;
+            width: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            transform: none !important;
+            overflow: visible !important;
+            z-index: 9200 !important;
+            pointer-events: none;
+            touch-action: auto !important;
+        }
+
+        #hubFixedArea * {
+            touch-action: auto !important;
+        }
+
+        /* 展開後的卡片組：由我哋自己接管手勢。
+           如果留返 touch-action: auto，瀏覽器會把打直拖當成捲頁搶走，
+           發出 pointercancel，撥動選卡就完全冇反應。 */
+        #hubFixedArea.open #hubCardStack,
+        #hubFixedArea.open #hubCardStack .hub-card,
+        #hubFixedArea.open #hubCardStack .hub-card-tab {
+            touch-action: none !important;
+        }
+
+        /* 卡面上的按鈕仍然要可以正常撳同捲 */
+        #hubFixedArea.open #hubCardStack button,
+        #hubFixedArea.open #hubCardStack ion-button,
+        #hubFixedArea.open #hubCardStack input,
+        #hubFixedArea.open #hubCardStack select {
+            touch-action: auto !important;
+        }
+
+        #hubFixedArea[data-side="right"] { --dir: 1; }
+        #hubFixedArea[data-side="left"] { --dir: -1; }
+
+        /* ---------- 遮罩 ---------- */
+        .hub-scrim {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 7, 18, 0.55);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        ion-app:not(.dark-theme) .hub-scrim {
+            background: rgba(15, 23, 42, 0.42);
+        }
+
+        #hubFixedArea.open .hub-scrim {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- 卡片疊 ---------- */
+        #hubCardStack {
+            position: absolute !important;
+            left: 18px;
+            right: 18px;
+            top: calc(65px + var(--nav-strip-h) + 4px + env(safe-area-inset-top, 0px));
+            width: auto !important;
+            transform-style: preserve-3d;
+            transition: none !important;
+            pointer-events: none;
+        }
+
+        #hubFixedArea.open #hubCardStack {
+            pointer-events: auto;
+        }
+
+        #hubCardStack .hub-card {
+            position: absolute !important;
+            left: 0 !important;
+            right: 0 !important;
+            top: 0 !important;
+            opacity: 0;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            filter: none !important;
+            transform-origin: 50% 50%;
+            transform: translateX(calc(var(--dir) * 152px)) translateY(96px)
+                rotate(calc(var(--dir) * 24deg)) scale(0.4);
+            transition: transform 0.68s cubic-bezier(0.28, 1.46, 0.46, 1), opacity 0.3s ease;
+        }
+
+        #hubFixedArea.open #hubCardStack .hub-card {
+            opacity: 1;
+            transform: translateX(0) translateY(calc(var(--y, 0px) + var(--drag, 0px)))
+                rotate(0deg) scale(var(--s, 1));
+            transition-delay: calc((3 - var(--i, 0)) * 0.08s);
+        }
+
+        /* 手指按住上下拖時：即刻跟手，唔要過渡同延遲 */
+        #hubFixedArea.open.dragging #hubCardStack .hub-card {
+            transition: none !important;
+            transition-delay: 0s !important;
+        }
+
+        /* 放手後彈返定位 */
+        #hubFixedArea.open.settling #hubCardStack .hub-card {
+            transition: transform 0.46s cubic-bezier(0.22, 1.2, 0.36, 1),
+                opacity 0.3s ease !important;
+            transition-delay: 0s !important;
+        }
+
+        /* 唔係當前嗰張：整塊透明感應層食晒點擊，避免誤按卡上按鈕 */
+        #hubCardStack .hub-card-tab {
+            border-radius: 24px;
+        }
+
+        /* ---------- 收合第一段：聚攏成一疊 ---------- */
+        #hubFixedArea.open.gather #hubCardStack .hub-card {
+            transition: transform 0.24s cubic-bezier(0.55, 0, 0.8, 0.2) !important;
+            transition-delay: 0s !important;
+            transform: translateX(0) translateY(calc(var(--i, 0) * 13px))
+                rotate(0deg) scale(calc(1 - (3 - var(--i, 0)) * 0.015)) !important;
+        }
+
+        /* ---------- 收合第二段：整疊縮返入卡夾 ---------- */
+        #hubFixedArea.tuck #hubCardStack .hub-card {
+            transition: transform 0.4s cubic-bezier(0.6, 0.02, 0.72, 0.35),
+                opacity 0.26s ease 0.08s !important;
+            transition-delay: 0s !important;
+            opacity: 0;
+            transform: translateX(calc(var(--dir) * 176px)) translateY(calc(72px + var(--i, 0) * 7px))
+                rotate(calc(var(--dir) * 7deg)) scale(0.34) !important;
+        }
+
+        /* ---------- 側邊卡夾 ---------- */
+        /* 薄身卡夾：只留一條金色書脊同直排 WALLET 字樣，
+           淨闊 22px，其餘畫面全部留返俾內容。 */
+        .hub-dock {
+            position: absolute;
+            top: calc(96px + var(--nav-strip-h) + env(safe-area-inset-top, 0px));
+            width: 22px;
+            height: 44vh;
+            min-height: 210px;
+            max-height: 360px;
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            pointer-events: auto;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 45%, rgba(0, 0, 0, 0.26) 100%),
+                linear-gradient(135deg, #3a2a18 0%, #5c4326 45%, #2b1e10 100%);
+            border: 1px solid rgba(212, 175, 55, 0.42);
+            box-shadow: 0 6px 18px rgba(3, 7, 18, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+            transition: transform 0.44s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.28s ease;
+        }
+
+        /* 貼邊嗰一側收平角，似一本書插喺書架度 */
+        #hubFixedArea[data-side="right"] .hub-dock {
+            right: 0;
+            border-radius: 12px 0 0 12px;
+            border-right: none;
+        }
+
+        #hubFixedArea[data-side="left"] .hub-dock {
+            left: 0;
+            border-radius: 0 12px 12px 0;
+            border-left: none;
+        }
+
+        .hub-dock:active {
+            transform: scaleX(1.18);
+        }
+
+        /* 書脊上下兩條金線，令加長後唔會空蕩蕩 */
+        .hub-dock::before,
+        .hub-dock::after {
+            content: '';
+            flex: 1 1 auto;
+            width: 1.5px;
+            border-radius: 1px;
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0), rgba(212, 175, 55, 0.55));
+        }
+
+        .hub-dock::after {
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.55), rgba(212, 175, 55, 0));
+        }
+
+        .hub-dock .hub-dock-word {
+            flex: 0 0 auto;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 3.5px;
+            text-indent: 3.5px;
+            color: #fcd34d;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            user-select: none;
+        }
+
+        #hubFixedArea[data-side="left"] .hub-dock .hub-dock-word {
+            transform: rotate(180deg);
+        }
+
+        #hubFixedArea.open .hub-dock {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(calc(var(--dir) * 54px)) scale(0.9);
+        }
+
+        /* ---------- 收合掣 ---------- */
+        .hub-close {
+            position: absolute;
+            left: 50%;
+            bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+            transform: translateX(-50%) translateY(34px);
+            min-width: 190px;
+            padding: 15px 34px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fde68a 0%, #f59e0b 45%, #b45309 100%);
+            border: 1.5px solid rgba(255, 237, 190, 0.85);
+            color: #2a1c02;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+            box-shadow: 0 10px 26px rgba(180, 83, 9, 0.5),
+                inset 0 1.5px 0 rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .hub-close:active {
+            transform: translateX(-50%) scale(0.94) !important;
+        }
+
+        #hubFixedArea.open .hub-close {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+            transition-delay: 0.3s;
+        }
+
+        #hubFixedArea.gather .hub-close,
+        #hubFixedArea.tuck .hub-close {
+            opacity: 0;
+            transition-delay: 0s;
+        }
+
+        /* ---------- 四個分頁唔再為卡片預留頂部空位 ---------- */
+        #pageHome,
+        #pageExpense,
+        #pageSavings,
+        #pageLoans {
+            padding-top: calc(56px + var(--nav-strip-h) + env(safe-area-inset-top, 0px)) !important;
+        }
+
+        /* 舊版的迷你列、拉桿、指示點一律唔再用 */
+        #hubMini,
+        #hubHandle,
+        #hubDots,
+        #hubWallet {
+            display: none !important;
+        }
+
+        /* 底部圓形導覽列要浮喺遮罩之上，展開錢包時一樣撳得 */
+        .circle-nav-container {
+            z-index: 9400 !important;
+        }
+
+        /* ---------- 設定：錢包位置 ---------- */
+        .side-pick { display: flex; gap: 8px; margin: 4px 0 4px 0; }
+
+        .side-pick button {
+            flex: 1;
+            padding: 11px 4px;
+            border-radius: 13px;
+            border: 1.5px solid rgba(148, 163, 184, 0.3);
+            background: rgba(148, 163, 184, 0.09);
+            color: var(--box-text-sub);
+            font-size: 12.5px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s, background 0.2s;
+        }
+
+        .side-pick button:active { transform: scale(0.94); }
+
+        .side-pick button.on {
+            border-color: #d4af37;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.22), rgba(212, 175, 55, 0.1));
+            color: #b45309;
+            box-shadow: 0 3px 12px rgba(202, 138, 4, 0.28);
+        }
+
+        .dark-theme .side-pick button.on { color: #fcd34d; }
+
+        @media (prefers-reduced-motion: reduce) {
+            #hubCardStack .hub-card,
+            .hub-dock { transition-duration: 0.01s !important; }
+        }
+    </style>
 </head>
 
 <body>
@@ -6265,6 +7560,21 @@
                 </button>
             </div>
         </div>
+
+        <!-- ========================================================
+                 功能總覽快捷列：一按即跳去對應分頁
+                 ======================================================== -->
+        <div class="nav-strip" id="navStrip">
+            <button type="button" class="nav-chip" data-page="home" onclick="navChipTap('home')">💠 總覽</button>
+            <button type="button" class="nav-chip" data-page="expense" onclick="navChipTap('expense')">🧾 開銷<span
+                    id="navBudgetDot"></span></button>
+            <button type="button" class="nav-chip" data-page="savings" onclick="navChipTap('savings')">🏦 儲蓄</button>
+            <button type="button" class="nav-chip" data-page="loans" onclick="navChipTap('loans')">💳 借貸</button>
+            <button type="button" class="nav-chip" data-page="calendar" onclick="navChipTap('calendar')">🗓️ 行事曆</button>
+            <button type="button" class="nav-chip" data-page="goals" onclick="navChipTap('goals')">🎯 願望</button>
+            <button type="button" class="nav-chip" data-page="stats" onclick="navChipTap('stats')">📊 統計</button>
+        </div>
+        <div class="nav-panel" id="navPanel"></div>
         <!-- ========================================================
                  主要內容區：四個可左右滑動切換的分頁（首頁／開銷／借貸／儲蓄）
                  ======================================================== -->
@@ -6313,6 +7623,7 @@
                                         額外收入
                                     </button>
                                 </div>
+                                <div class="card-holder-name">CARD HOLDER</div>
                                 <div style="margin-top: 10px; position: relative; z-index: 3;">
                                     <p style="margin: 0 0 2px 0; font-size: 12px; color: #cbd5e1; font-weight: 600;">
                                         💵
@@ -6424,6 +7735,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="np-row">
+                        <h3 class="section-title">本月概要</h3>
+                        <span id="homeMonthLabel"
+                            style="font-size:10.5px; font-weight:800; color:var(--box-text-title);"></span>
+                    </div>
+                    <div class="np-panel">
+                        <div class="np-kv-grid" id="homeSummaryGrid"></div>
+                    </div>
+
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 class="section-title">
@@ -6437,6 +7757,36 @@
                     <!-- 現金流錢包 / 信用卡錢包（依消費記錄的付款分類自動歸納） -->
                     <div id="walletOverviewContainer">
                     </div>
+
+                    <div class="np-row" style="margin-top: 4px;">
+                        <h3 class="section-title">快捷操作</h3>
+                    </div>
+                    <div class="home-quick-grid">
+                        <button type="button" class="home-quick" onclick="openExpenseModal()">
+                            <span class="hq-ico">🧾</span><span class="hq-txt">記一筆消費</span>
+                        </button>
+                        <button type="button" class="home-quick" onclick="openIncomeModal()">
+                            <span class="hq-ico">💰</span><span class="hq-txt">設定月薪</span>
+                        </button>
+                        <button type="button" class="home-quick" onclick="openExtraIncomeModal()">
+                            <span class="hq-ico">➕</span><span class="hq-txt">額外收入</span>
+                        </button>
+                        <button type="button" class="home-quick" onclick="openFixedExpenseModal()">
+                            <span class="hq-ico">📌</span><span class="hq-txt">固定支出</span>
+                        </button>
+                        <button type="button" class="home-quick" onclick="openBudgetModal()">
+                            <span class="hq-ico">💳</span><span class="hq-txt">每月預算</span>
+                        </button>
+                        <button type="button" class="home-quick" onclick="openWishGoalModal()">
+                            <span class="hq-ico">🎯</span><span class="hq-txt">新增願望</span>
+                        </button>
+                    </div>
+
+                    <div class="np-row">
+                        <h3 class="section-title">最近消費</h3>
+                        <button type="button" class="np-mini-btn" onclick="switchPage('expense')">全部明細 →</button>
+                    </div>
+                    <div class="np-panel" id="homeRecentPanel"></div>
                 </div>
             </div>
             <!-- 分頁 2／4：日常開銷（消費卡片、預算進度、消費紀錄清單） -->
@@ -6471,6 +7821,7 @@
                                 <div class="card-number-sim" id="cardDateDisplay">
                                     •••• •••• WALLET 2026/08
                                 </div>
+                                <div class="card-holder-name">CARD HOLDER</div>
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; position: relative; z-index: 3;">
                                     <div>
@@ -6510,6 +7861,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="budget-alert" id="budgetAlertBox"></div>
                     <div
                         style="display: flex; justify-content: space-between; align-items: center; margin: 0 4px 12px 4px;">
                         <h3 class="section-title">
@@ -6622,6 +7974,7 @@
                                 <div class="card-number-sim" id="loanCardNumberDisplay">
                                     •••• •••• LOAN 2026/08
                                 </div>
+                                <div class="card-holder-name">CARD HOLDER</div>
                                 <div
                                     style="margin-top: 6px; background: rgba(0,0,0,0.35); padding: 6px 12px; border-radius: 12px; border: 1px solid rgba(129, 140, 248, 0.3); position: relative; z-index: 3;">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -6737,6 +8090,7 @@
                                 <div class="card-number-sim" id="savingsCardNumberDisplay">
                                     •••• •••• SAVINGS 2026/08
                                 </div>
+                                <div class="card-holder-name">CARD HOLDER</div>
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 6px; position: relative; z-index: 3;">
                                     <div>
@@ -6797,7 +8151,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="marketRateCard" style="margin-bottom: 20px;">
+                    <h3 class="section-title" style="margin: 4px 0 16px 4px !important; display: block !important;">
+                        儲蓄存入紀錄
+                    </h3>
+                    <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;">
+                    </ion-list>
+                    <div id="marketRateCard" style="margin: 26px 0 20px 0;">
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <h3
@@ -6822,11 +8181,6 @@
                             </div>
                         </div>
                     </div>
-                    <h3 class="section-title" style="margin: 28px 0 20px 4px !important; display: block !important;">
-                        儲蓄存入紀錄
-                    </h3>
-                    <ion-list id="savingsRecordContainer" lines="none" style="background: transparent;">
-                    </ion-list>
                 </div>
             </div>
             <!-- ========================================================
@@ -6981,6 +8335,7 @@
                                     </button>
                                 </div>
                                 <div class="card-number-sim" id="goalCardNumberDisplay">•••• •••• WISHLIST 2026/01</div>
+                                <div class="card-holder-name">CARD HOLDER</div>
                                 <div
                                     style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px; position:relative; z-index:3;">
                                     <div>
@@ -7028,18 +8383,18 @@
                     </div>
 
                     <div class="np-row">
+                        <h3 class="section-title">希望購買物品清單</h3>
+                        <button type="button" class="np-mini-btn" onclick="openWishGoalModal()">＋ 新增</button>
+                    </div>
+                    <div id="wishGoalList"></div>
+
+                    <div class="np-row">
                         <h3 class="section-title">可動用資金連動</h3>
                         <button type="button" class="np-mini-btn green" onclick="switchPage('savings')">儲蓄存簿 →</button>
                     </div>
                     <div class="np-panel">
                         <div class="np-kv-grid" id="goalFundGrid"></div>
                     </div>
-
-                    <div class="np-row">
-                        <h3 class="section-title">希望購買物品清單</h3>
-                        <button type="button" class="np-mini-btn" onclick="openWishGoalModal()">＋ 新增</button>
-                    </div>
-                    <div id="wishGoalList"></div>
 
                 </div>
             </div>
@@ -7070,6 +8425,7 @@
                                 </div>
                                 <div class="card-number-sim" id="statsCardNumberDisplay">•••• •••• ANALYTICS 2026/01
                                 </div>
+                                <div class="card-holder-name">CARD HOLDER</div>
                                 <div
                                     style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px; position:relative; z-index:3;">
                                     <div>
@@ -7113,10 +8469,16 @@
                     <div class="np-row">
                         <h3 class="section-title">消費圖表</h3>
                         <span id="statsChartName"
-                            style="font-size:10.5px; font-weight:800; color:var(--box-text-title);">本月每日花費</span>
+                            style="font-size:10.5px; font-weight:800; color:var(--box-text-title);">消費分類佔比</span>
                     </div>
                     <div class="np-panel" style="padding: 12px 10px;">
                         <div class="chart-carousel" id="statsChartCarousel">
+                            <div class="chart-slide">
+                                <p class="chart-slide-title">🥇 消費分類佔比</p>
+                                <p class="chart-slide-sub">本月各分類佔比及與上月比較</p>
+                                <div class="chart-wrap" id="statsDonutChart"></div>
+                                <div class="donut-legend" id="statsDonutLegend"></div>
+                            </div>
                             <div class="chart-slide">
                                 <p class="chart-slide-title">📊 本月每日花費</p>
                                 <p class="chart-slide-sub" id="statsDailyRangeLabel"></p>
@@ -7128,12 +8490,6 @@
                                 <p class="chart-slide-sub">柱狀為當月日均，金線為走勢</p>
                                 <div class="chart-wrap" id="statsMonthlyChart"></div>
                                 <div class="chart-foot" id="statsMonthlyFoot"></div>
-                            </div>
-                            <div class="chart-slide">
-                                <p class="chart-slide-title">🥇 消費分類佔比</p>
-                                <p class="chart-slide-sub">本月各分類佔比及與上月比較</p>
-                                <div class="chart-wrap" id="statsDonutChart"></div>
-                                <div class="donut-legend" id="statsDonutLegend"></div>
                             </div>
                         </div>
                         <div class="chart-dots" id="statsChartDots">
@@ -7298,9 +8654,12 @@
                     <div class="stepper-container">
                         <div class="stepper-header">
                             <span class="stepper-label">
-                                💵 金額 (HKD)
+                                💵 金額 <span id="expCurLabel">(HKD)</span>
                             </span>
+                            <select id="expCurrencySelect" class="exp-cur-select"
+                                onchange="onEntryCurrencyChanged()"></select>
                         </div>
+                        <div class="exp-fx-hint" id="expFxHint"></div>
                         <div class="stepper-main-row">
                             <button type="button" class="stepper-btn"
                                 onclick="stepAmount('finalAmountInput', -10, 'finalAmountRange')">
@@ -7308,10 +8667,11 @@
                             </button>
                             <div class="stepper-input-wrapper">
                                 <span class="stepper-currency">
-                                    <span class="cur-sym">HK$</span>
+                                    <span id="expCurSym">HK$</span>
                                 </span>
                                 <input type="number" id="finalAmountInput" class="stepper-input" value="65" min="1"
-                                    step="5" oninput="syncInputToRange('finalAmountInput', 'finalAmountRange')">
+                                    step="5"
+                                    oninput="syncInputToRange('finalAmountInput', 'finalAmountRange'); updateEntryFxHint();">
                             </div>
                             <button type="button" class="stepper-btn"
                                 onclick="stepAmount('finalAmountInput', 10, 'finalAmountRange')">
@@ -7319,7 +8679,8 @@
                             </button>
                         </div>
                         <input type="range" id="finalAmountRange" class="custom-range-slider" min="0" max="20000"
-                            step="5" value="65" oninput="syncRangeToInput('finalAmountRange', 'finalAmountInput')">
+                            step="5" value="65"
+                            oninput="syncRangeToInput('finalAmountRange', 'finalAmountInput'); updateEntryFxHint();">
                         <div class="quick-chip-row">
                             <button type="button" class="quick-chip"
                                 onclick="addAmount('finalAmountInput', 10, 'finalAmountRange')">
@@ -8371,6 +9732,30 @@
 
         <!-- Modal：新增／編輯希望購買目標 -->
         <!-- Modal：使用者帳戶與顯示貨幣 -->
+        <!-- Modal：選擇使用者頭像的圖像設計風格 -->
+        <ion-modal id="avatarPickerModal" class="custom-bottom-modal">
+            <ion-content class="ion-padding">
+                <div class="drag-handle-bar">
+                    <div class="handle-pill"></div>
+                    <span class="handle-text">下滑關閉</span>
+                </div>
+                <div class="modal-header-box"
+                    style="background: linear-gradient(135deg, #3f3111 0%, #7c5c17 100%); border-color: rgba(212, 175, 55, 0.45);">
+                    <h2 class="modal-header-title" style="color: #fcd34d;">
+                        🎨 選擇頭像圖案
+                    </h2>
+                </div>
+                <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:6px 0 10px 4px;">
+                    正在設定：<b id="avatarPickerName">－</b>　·　輕觸下方任何一款即時套用，深淺主題會自動跟色。
+                </p>
+                <div class="av-grid" id="avatarPickerGrid"></div>
+                <ion-button expand="block" color="danger"
+                    onclick="document.getElementById('avatarPickerModal').dismiss()"
+                    style="--border-radius: 12px; font-weight: bold; font-size: 16px;">
+                    完成
+                </ion-button>
+            </ion-content>
+        </ion-modal>
         <ion-modal id="userModal" class="custom-bottom-modal">
             <ion-content class="ion-padding">
                 <div class="drag-handle-bar">
@@ -8384,43 +9769,78 @@
                     </h2>
                 </div>
 
-                <div class="np-row" style="margin-top: 4px;">
-                    <h3 class="section-title">使用者帳戶</h3>
-                    <button type="button" class="np-mini-btn gold" onclick="promptAddUser()">＋ 新增帳戶</button>
+                <div class="set-group" id="setGrpUser">
+                    <button type="button" class="set-head" onclick="toggleSetGroup('setGrpUser')">
+                        <span class="sh-ico">👤</span>
+                        <span>
+                            <span class="sh-name">使用者帳戶</span>
+                            <span class="sh-sub">切換帳戶、改名、揀頭像</span>
+                        </span>
+                        <span class="sh-arrow">›</span>
+                    </button>
+                    <div class="set-body">
+                        <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 10px 0;">
+                            每個帳戶擁有完全獨立的消費、儲蓄、借貸、固定支出、願望項目、標籤與設定紀錄，互不影響。
+                        </p>
+                        <div id="userListPanel" style="margin-bottom:12px;"></div>
+                        <button type="button" class="np-mini-btn gold" style="width:100%; padding:10px;"
+                            onclick="promptAddUser()">＋ 新增帳戶</button>
+                    </div>
                 </div>
-                <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 10px 4px;">
-                    每個帳戶擁有完全獨立的消費、儲蓄、借貸、固定支出、願望項目、標籤與設定紀錄，互不影響。
-                </p>
-                <div class="np-panel" id="userListPanel" style="margin-bottom:16px;"></div>
 
-                <div class="np-row">
-                    <h3 class="section-title">顯示貨幣</h3>
-                    <span id="fxUpdatedLabel"
-                        style="font-size:10.5px; font-weight:800; color:var(--box-text-title);"></span>
+                <div class="set-group" id="setGrpSide">
+                    <button type="button" class="set-head" onclick="toggleSetGroup('setGrpSide')">
+                        <span class="sh-ico">💼</span>
+                        <span>
+                            <span class="sh-name">錢包位置</span>
+                            <span class="sh-sub">收埋喺畫面左邊定右邊</span>
+                        </span>
+                        <span class="sh-arrow">›</span>
+                    </button>
+                    <div class="set-body">
+                        <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 8px 0;">
+                            錢包收起時會貼在畫面的哪一邊。展開時卡片浮在內容之上，收起後整頁完全不受遮蔽。
+                        </p>
+                        <div class="side-pick">
+                            <button type="button" data-side="left" onclick="setHubSide('left')">◀ 收埋左邊</button>
+                            <button type="button" data-side="right" onclick="setHubSide('right')">收埋右邊 ▶</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="np-panel" style="margin-bottom:16px;">
-                    <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 10px 0;">
-                        選定後，全部頁面的金額將即時以該貨幣顯示。資料仍以港元為記帳基準，輸入金額時請沿用港元。
-                    </p>
-                    <div class="modal-dark-group" style="margin: 4px 0 12px 0;">
-                        <select id="currencySelect" class="modal-dark-input"></select>
-                        <label for="currencySelect">💱 全站顯示貨幣</label>
+
+                <div class="set-group" id="setGrpCurrency">
+                    <button type="button" class="set-head" onclick="toggleSetGroup('setGrpCurrency')">
+                        <span class="sh-ico">💱</span>
+                        <span>
+                            <span class="sh-name">顯示貨幣</span>
+                            <span class="sh-sub" id="fxUpdatedLabel">全站金額以哪種貨幣顯示</span>
+                        </span>
+                        <span class="sh-arrow">›</span>
+                    </button>
+                    <div class="set-body">
+                        <p style="font-size:11.5px; font-weight:700; color:var(--box-text-sub); line-height:1.75; margin:0 0 10px 0;">
+                            選定後，全部頁面的金額將即時以該貨幣顯示。資料仍以港元為記帳基準，輸入金額時請沿用港元。
+                        </p>
+                        <div class="modal-dark-group" style="margin: 4px 0 12px 0;">
+                            <select id="currencySelect" class="modal-dark-input"></select>
+                            <label for="currencySelect">💱 全站顯示貨幣</label>
+                        </div>
+                        <div id="currencyPreview" class="calc-info-box"
+                            style="font-size:11.5px; font-weight:800; line-height:1.8; margin-bottom:12px;"></div>
+                        <div style="display:flex; gap:8px;">
+                            <ion-button expand="block" color="warning" onclick="applyCurrencyFromModal()"
+                                style="flex:1; margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                                一鍵套用
+                            </ion-button>
+                            <ion-button expand="block" fill="outline" onclick="refreshFxRatesFromModal()"
+                                style="flex:1; margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
+                                更新匯率
+                            </ion-button>
+                        </div>
+                        <p style="font-size:10px; font-weight:700; color:var(--box-text-sub); margin:10px 0 0 0;">
+                            匯率資料來源：ExchangeRate-API 公開端點（備用來源：Frankfurter／歐洲央行）。
+                        </p>
                     </div>
-                    <div id="currencyPreview" class="calc-info-box"
-                        style="font-size:11.5px; font-weight:800; line-height:1.8; margin-bottom:12px;"></div>
-                    <div style="display:flex; gap:8px;">
-                        <ion-button expand="block" color="warning" onclick="applyCurrencyFromModal()"
-                            style="flex:1; margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
-                            一鍵套用
-                        </ion-button>
-                        <ion-button expand="block" fill="outline" onclick="refreshFxRatesFromModal()"
-                            style="flex:1; margin-inline:0px; --border-radius:12px; font-weight:bold; font-size:15px;">
-                            更新匯率
-                        </ion-button>
-                    </div>
-                    <p style="font-size:10px; font-weight:700; color:var(--box-text-sub); margin:10px 0 0 0;">
-                        匯率資料來源：ExchangeRate-API 公開端點（備用來源：Frankfurter／歐洲央行）。
-                    </p>
                 </div>
 
                 <ion-button expand="block" fill="outline" onclick="document.getElementById('userModal').dismiss()"
@@ -9091,7 +10511,7 @@
                 '交通': { name: '🚇 交通出行', icon: 'car-sport-sharp', color: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' },
                 '購物': { name: '🛒 購物消費', icon: 'bag-handle-sharp', color: 'linear-gradient(135deg, #a855f7 0%, #9333ea 100%)' },
                 '娛樂': { name: '🎮 娛樂消遣', icon: 'game-controller-sharp', color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
-                '居家': { name: '🏠 居家水電', icon: 'home-sharp', color: 'linear-gradient(135deg, #475569 0%, #334155 100%)' },
+                '居家': { name: '🏠 居家水電', icon: 'home-sharp', color: 'linear-gradient(135deg, #38bdf8 0%, #0369a1 100%)' },
                 '醫療': { name: '💊 醫療健康', icon: 'medkit-sharp', color: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)' },
                 '通訊': { name: '📱 數碼通訊', icon: 'phone-portrait-sharp', color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)' },
                 '美容': { name: '🛍️ 服飾美容', icon: 'shirt-sharp', color: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)' },
@@ -9100,7 +10520,7 @@
                 '社交': { name: '🎁 禮物人情', icon: 'gift-sharp', color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' },
                 '理財': { name: '📈 投資儲蓄', icon: 'trending-up-sharp', color: 'linear-gradient(135deg, #059669 0%, #047857 100%)' },
                 '教育': { name: '🎓 教育學習', icon: 'school-sharp', color: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' },
-                '其他': { name: '🪙 其他開銷', icon: 'receipt-sharp', color: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)' }
+                '其他': { name: '🪙 其他開銷', icon: 'receipt-sharp', color: 'linear-gradient(135deg, #cbd5e1 0%, #64748b 100%)' }
             };
 
             // 借貸分類對照表：分類名稱 → 顯示名稱／圖示／顏色
@@ -9403,6 +10823,9 @@
                 if (inputId === 'savingsAmountInput' && typeof onSavingsWishChanged === 'function') {
                     onSavingsWishChanged();
                 }
+                if (inputId === 'finalAmountInput' && typeof updateEntryFxHint === 'function') {
+                    updateEntryFxHint();
+                }
             }
 
             // 在現有金額上加上指定數值，用於快速金額調整按鈕
@@ -9540,7 +10963,8 @@
                 const hubPos = HUB_PAGES.indexOf(pageKey);
                 if (hubPos >= 0) {
                     dir = hubPos > hubIndex ? 1 : (hubPos < hubIndex ? -1 : 0);
-                    hubIndex = hubPos;
+                    // 被選中的卡片滑到最底、成為最前層
+                    setActiveHubCard(pageKey);
                 }
 
                 document.querySelectorAll('.view-page').forEach(el => {
@@ -9563,13 +10987,14 @@
                 if (headerTitle) headerTitle.textContent = titleMap[pageKey] || '個人理財記錄';
 
                 currentPageKey = pageKey;
+                syncNavStrip(pageKey);
+                setPageScroll(true);   // 換頁一律確保捲動可用
 
                 // 首頁四張卡共用同一個疊層卡片架；其他分頁把它收起來
+                // 錢包在七個分頁都用得著，只有卡片內容跟住當前頁走
                 const hubArea = document.getElementById('hubFixedArea');
-                if (hubArea) hubArea.style.display = (hubPos >= 0) ? '' : 'none';
+                if (hubArea) hubArea.style.display = '';
                 if (hubPos >= 0) layoutHubStack();
-                if (hubPos >= 0) updateHubMini();
-                updateHubDots();
 
                 if (pageKey === 'calendar') renderCalendarPage();
                 if (pageKey === 'goals') renderGoalsPage();
@@ -9960,6 +11385,9 @@
                 renderNoteTagRow('expense');
                 renderNoteTagRow('expPerson');
 
+                // 每次新增都由港元開始，避免沿用上一筆的外幣設定
+                setEntryCurrency(BASE_CURRENCY);
+
                 modal.present();
             }
 
@@ -10001,10 +11429,16 @@
                 const titleInput = document.getElementById('finalTitleInput');
                 if (titleInput) titleInput.value = rec.title || '';
 
+                /* 原本用外幣輸入的話，帶回外幣金額；否則直接顯示港元金額 */
+                const editCur = rec.origCur || BASE_CURRENCY;
+                const editAmt = rec.origCur ? (Number(rec.origAmt) || 0) : (Number(rec.amount) || 0);
+
                 const amountInput = document.getElementById('finalAmountInput');
                 const amountRange = document.getElementById('finalAmountRange');
-                if (amountInput) amountInput.value = Number(rec.amount) || 0;
-                if (amountRange) amountRange.value = Number(rec.amount) || 0;
+                if (amountInput) amountInput.value = editAmt;
+                if (amountRange) amountRange.value = editAmt;
+
+                setEntryCurrency(editCur);
 
                 const categorySelect = document.getElementById('manualCategorySelect');
                 if (categorySelect) categorySelect.value = rec.category || '其他';
@@ -10038,7 +11472,22 @@
                 const dateInput = document.getElementById('finalDateInput');
 
                 const noteText = titleInput.value.trim();
-                const amount = Number(amountInput.value) || 0;
+
+                /* 💱 輸入值可能是外幣。amount 一律換算成港元後才入帳，
+                   原幣資料另外保留在 origCur / origAmt / origRate。 */
+                /* 🕐 消費時間：新增時預設為現在，修改時保留原本嘅值 */
+                const nowTime = (() => {
+                    const d = new Date();
+                    return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+                })();
+
+                const rawAmount = Number(amountInput.value) || 0;
+                const isForeign = entryCurrency !== BASE_CURRENCY;
+                const amount = isForeign ? fxToBase(rawAmount, entryCurrency) : rawAmount;
+                const fxFields = isForeign
+                    ? { origCur: entryCurrency, origAmt: rawAmount, origRate: Number(fxRates[entryCurrency]) || 0 }
+                    : { origCur: '', origAmt: 0, origRate: 0 };
+
                 const category = categorySelect.value || '其他';
                 const payment = paymentInput.value || '現金';
                 const date = dateInput.value || new Date().toISOString().split('T')[0];
@@ -10046,7 +11495,7 @@
                 /* 備註屬選填。未填寫時，直接以消費分類作為該筆記錄的名稱；
                    若有填寫，內容會自動成為下次可快速選用的標籤。 */
                 const title = noteText || category;
-                if (noteText) rememberNoteTag('expense', noteText);
+                if (noteText) rememberNoteTag('expense', noteText, category);
 
                 const personEl = document.getElementById('expPersonInput');
                 const person = personEl ? personEl.value.trim() : '';
@@ -10087,8 +11536,9 @@
                     if (cardNote) wallet = 'credit';
 
                     const updated = Object.assign({}, oldRec, {
-                        title, amount, category, payment, date, wallet, cardNote, person
-                    });
+                        title, amount, category, payment, date, wallet, cardNote, person,
+                        time: oldRec.time || nowTime
+                    }, fxFields);
                     records[idx] = updated;
 
                     if (cardNote) {
@@ -10116,7 +11566,13 @@
                     // 💳 信用卡自訂備註（非信用卡消費則為空字串）
                     cardNote: cardNote,
                     // 👤 為誰而消費（選填）
-                    person: person
+                    person: person,
+                    // 🕐 消費時間 HH:MM
+                    time: nowTime,
+                    // 💱 若以外幣輸入，保留原幣資料（純作顯示，amount 已是港元）
+                    origCur: fxFields.origCur,
+                    origAmt: fxFields.origAmt,
+                    origRate: fxFields.origRate
                 };
 
                 records.unshift(newRecord);
@@ -10605,6 +12061,9 @@
                                             <span class="record-cat-chip" style="display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 2px 7px; font-size: 10px; color: var(--box-text-title); font-weight: 700; white-space: nowrap;">
                                                 ${escapeHtml(cat.name || r.category)}
                                             </span>
+                                            <span class="record-time-chip${r.time ? '' : ' unset'}"
+                                                onclick="event.stopPropagation(); promptEditRecordTime(${r.id});"
+                                                title="輕觸修改時間">🕐 ${r.time ? escapeHtml(r.time) : '--:--'}</span>
                                             ${(r.person || '').trim() ? `<span class="record-person-chip">👤 ${escapeHtml(r.person)}</span>` : ''}
 
                                             <div class="pay-type-toggle" onclick="event.stopPropagation();">
@@ -10622,6 +12081,9 @@
                                     <!-- 💡 右邊專區：金額 + 靠右支付方式 Badge（限制寬度避免出界） -->
                                     <div slot="end" class="record-end-col">
                                         <div class="record-amount">-${curSym()}${fmtAmt(Number(r.amount))}</div>
+                                        ${(r.origCur && r.origCur !== BASE_CURRENCY)
+                        ? `<div class="record-orig-amt">💱 ${escapeHtml(currencyMeta(r.origCur).symbol)}${(Number(r.origAmt) || 0).toLocaleString()}</div>`
+                        : ''}
                                         <div class="record-pay-badge">
                                             ${getPaymentBadgeHtml(r.payment)}
                                         </div>
@@ -10654,7 +12116,7 @@
                         total += (Number(r.amount) || 0);
                     }
                 });
-                document.getElementById('totalAmountDisplay').textContent = fmtAmt(total);
+                countUpTo(document.getElementById('totalAmountDisplay'), total);
                 document.getElementById('budgetLimitDisplay').textContent = fmtAmt(budgetLimit);
 
                 const progress = budgetLimit > 0 ? Math.min(1, total / budgetLimit) : 0;
@@ -10672,6 +12134,12 @@
                         tip.style.color = '#34d399';
                     }
                 }
+
+                // 開銷到達預算 80% / 100% 時發出警示
+                checkBudgetAlert();
+
+                // 首頁概要同最近消費
+                renderHomePanels();
 
                 // 同步更新上方三個錢包篩選按鈕的狀態與金額
                 renderWalletFilterChips();
@@ -10987,6 +12455,7 @@
 
                 saveData();
                 renderUI();
+                burstConfetti('coin');
                 addLog('儲蓄存款', '存入「' + title + '」' + curSym() + fmtAmt(amount)
                     + (goal ? `（已同步計入願望「${goal.title}」進度）` : ''));
 
@@ -11893,8 +13362,8 @@
                     toast.message = message;
                     toast.duration = 2000;
                     toast.position = 'top';
-                    toast.color = kind || 'success';
-                    toast.cssClass = 'novus-toast';
+                    // 唔設 toast.color：Ionic 會用佢覆寫 --background 變返實色
+                    toast.cssClass = 'novus-toast toast-' + (kind || 'success');
                     activeToastEl = toast;
                     document.body.appendChild(toast);
                     await toast.present();
@@ -11956,7 +13425,7 @@
                 const refreshIcon = document.getElementById('refreshIcon');
 
                 if (refreshIcon) refreshIcon.classList.add('refreshing-spin');
-                if (container) container.innerHTML = `<div style="text-align: center; padding: 12px 0; color: #ca8a04;">⏳ 正在連線金管局 API 檢查最新利率...</div>`;
+                if (container) container.innerHTML = skeletonRows(7);
 
                 let ratesList = [];
                 let dataSourceText = "";
@@ -12166,13 +13635,13 @@
                 const expDisplay = document.getElementById('overviewExpenseDisplay');
 
                 if (surplusDisplay) {
-                    surplusDisplay.textContent = fmtAmt(netSurplus);
+                    countUpTo(surplusDisplay, netSurplus);
                     // 如果結餘小於 0 顯示紅色警示，否則保持金色
                     surplusDisplay.style.color = netSurplus < 0 ? '#f87171' : '#fbbf24';
                 }
-                if (incomeDisplay) incomeDisplay.textContent = fmtAmt(totalMonthlyIncome);
-                if (loanDueDisplay) loanDueDisplay.textContent = fmtAmt(totalLoanDue);
-                if (expDisplay) expDisplay.textContent = fmtAmt(totalExp);
+                countUpTo(incomeDisplay, totalMonthlyIncome);
+                countUpTo(loanDueDisplay, totalLoanDue);
+                countUpTo(expDisplay, totalExp);
 
                 // 💼 首頁改為顯示「現金流錢包 / 信用卡錢包」的分類總覽
                 renderWallets();
@@ -12602,22 +14071,12 @@
             }
 
             // 依「頂部固定卡片」的實際高度，動態調整目前分頁的上方留白，避免被卡片蓋住
+            /* 側邊錢包是覆蓋層，唔再霸住頁面頂部，
+               所有分頁一律用同一個固定的頂部留白（見 CSS 第 25 區）。 */
             function syncTopPadding() {
-                const page = document.querySelector('.view-page.active-page');
-                if (!page) return;
-
-                // 行事曆／目標／統計三頁的卡片是跟著頁面一起捲動的，不需要留空位
-                if (HUB_PAGES.indexOf(currentPageKey) < 0) {
-                    page.style.removeProperty('padding-top');
-                    return;
-                }
-
-                const area = document.getElementById('hubFixedArea');
-                if (!area) return;
-                const h = area.getBoundingClientRect().height;
-                if (h < 60) return;
-                page.style.setProperty('padding-top',
-                    `calc(${Math.round(h + 60)}px + env(safe-area-inset-top, 0px))`, 'important');
+                document.querySelectorAll('.view-page').forEach(p => {
+                    p.style.removeProperty('padding-top');
+                });
             }
 
 
@@ -12628,8 +14087,14 @@
 
             // 非最上層卡片露出的「梯級標題列」高度
             // 被疊住嘅卡片露出幾多（剛好見到卡片頂部嘅彩色條、晶片同卡名）
-            const HUB_PEEK = 46;
+            const HUB_PEEK = 46;          // 下限：至少要見到卡頂彩條同卡名
             const HUB_GAP = 0;
+            const HUB_PEEK_RATIO = 0.5;   // 理想值：被疊住嗰張露一半
+
+            /* 實際採用的露出高度同卡片高度。
+               layoutHubStack() 會按畫面剩幾多位計，拖動邏輯亦要用返同一個數。 */
+            let hubPeek = HUB_PEEK;
+            let hubCardH = 246;
 
             // 卡片組是否已收起（撥上收起、拉下展開）
             let hubCollapsed = false;
@@ -12645,44 +14110,38 @@
             /* 把原本散在四個分頁中的卡片，集中搬進同一個「疊層卡片架」。
                只會在啟動時執行一次；卡片是整個 DOM 節點搬移，
                所以卡片上原有的按鈕、id 與事件全部維持不變。 */
+            /* ════════════════════════════════════════════
+               側邊錢包：收起貼邊，展開覆蓋，最底一張 = 當前頁
+               ════════════════════════════════════════════ */
+
+            // 錢包收埋邊一邊（'left' / 'right'），記入 localStorage
+            let hubSide = (localStorage.getItem('app_hub_side') === 'left') ? 'left' : 'right';
+
+            // 卡片由上而下的排列次序；最後一個 = 最底 = 最前層 = 當前頁
+            let hubOrder = HUB_PAGES.slice();
+
+            // 收合期間鎖住，避免動畫未完就再撳
+            let hubBusy = false;
+
+            /* 把四張卡由各自的分頁搬入同一個覆蓋層。只會執行一次；
+               卡片是整個 DOM 節點搬移，卡上原有按鈕與事件全部維持不變。 */
             function buildHubStack() {
                 const content = document.querySelector('ion-content');
                 if (!content || document.getElementById('hubFixedArea')) return;
 
                 const area = document.createElement('div');
-                area.className = 'fixed-top-card-area hub-fixed-area';
                 area.id = 'hubFixedArea';
+                area.setAttribute('data-side', hubSide);
+
+                const scrim = document.createElement('div');
+                scrim.className = 'hub-scrim';
+                scrim.addEventListener('click', () => setHubCollapsed(true));
+                area.appendChild(scrim);
 
                 const stack = document.createElement('div');
                 stack.className = 'hub-stack';
                 stack.id = 'hubCardStack';
                 area.appendChild(stack);
-
-                const dots = document.createElement('div');
-                dots.className = 'hub-dots';
-                dots.id = 'hubDots';
-                dots.innerHTML = HUB_PAGES.map(k =>
-                    `<button type="button" class="hub-dot" title="${HUB_LABELS[k]}" onclick="switchPage('${k}')"></button>`
-                ).join('');
-                area.appendChild(dots);
-
-                // 收起後顯示的迷你列（顯示目前卡片名稱與金額，點一下可拉回展開）
-                const mini = document.createElement('div');
-                mini.className = 'hub-mini';
-                mini.id = 'hubMini';
-                mini.innerHTML = `<span id="hubMiniName">💠 理財總覽</span><span class="hub-mini-amt" id="hubMiniAmt"></span>`;
-                mini.addEventListener('click', () => setHubCollapsed(false));
-                area.appendChild(mini);
-
-                // 拉桿：點一下或上下撥動即可收起／展開整組卡片
-                const handle = document.createElement('div');
-                handle.className = 'hub-handle';
-                handle.id = 'hubHandle';
-                handle.innerHTML = `<span class="hub-handle-pill"></span><span class="hub-handle-text" id="hubHandleText">▲ 上下滑動切換卡片 · 下拉收合 ▼</span>`;
-                handle.addEventListener('click', () => setHubCollapsed(!hubCollapsed));
-                area.appendChild(handle);
-
-                content.insertBefore(area, content.firstChild);
 
                 HUB_PAGES.forEach(key => {
                     const page = document.getElementById(HUB_PAGE_IDS[key]);
@@ -12695,12 +14154,18 @@
                     wrap.className = 'hub-card';
                     wrap.setAttribute('data-key', key);
 
+                    /* 非當前卡片上蓋一層透明感應區：
+                       輕觸即切換到該頁，同時避免誤按卡面上的按鈕。 */
                     const tab = document.createElement('div');
                     tab.className = 'hub-card-tab';
                     tab.innerHTML =
                         `<span class="hub-tab-name">${HUB_TAB_TITLES[key] || HUB_LABELS[key]}</span>` +
                         `<span class="hub-tab-amt" id="hubTabAmt_${key}"></span>`;
-                    tab.addEventListener('click', (e) => { e.stopPropagation(); switchPage(key); });
+                    tab.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (hubJustDragged()) return;   // 啱啱拖完，唔好再跳頁
+                        switchPage(key);
+                    });
 
                     wrap.appendChild(tab);
                     wrap.appendChild(card);
@@ -12709,49 +14174,118 @@
                     if (oldArea && oldArea.parentElement) oldArea.parentElement.removeChild(oldArea);
                 });
 
+                // 當前那張（最底、完整露出）：輕觸即收埋錢包
+                stack.addEventListener('click', (e) => {
+                    const wrap = e.target.closest ? e.target.closest('.hub-card') : null;
+                    if (!wrap || !wrap.classList.contains('top')) return;
+                    if (e.target.closest('button, ion-button, a, input, select, ion-icon')) return;
+                    if (hubJustDragged()) return;   // 啱啱拖完，唔好即刻收埋
+                    setHubCollapsed(true);
+                });
+
+                // 側邊卡夾
+                const dock = document.createElement('div');
+                dock.className = 'hub-dock';
+                dock.id = 'hubDock';
+                dock.innerHTML = `<span class="hub-dock-word">WALLET</span>`;
+                dock.addEventListener('click', () => setHubCollapsed(false));
+                area.appendChild(dock);
+
+                const close = document.createElement('button');
+                close.type = 'button';
+                close.className = 'hub-close';
+                close.id = 'hubClose';
+                close.textContent = '收埋錢包';
+                close.addEventListener('click', () => setHubCollapsed(true));
+                area.appendChild(close);
+
+                document.body.appendChild(area);
+
                 layoutHubStack();
             }
 
-            // 依目前選中的卡片，重新排出「一張在上、其餘梯級式露出標題」的疊層效果
+            // 切換錢包收埋的方向（左 / 右），即時生效並記住
+            function setHubSide(side) {
+                hubSide = (side === 'left') ? 'left' : 'right';
+                localStorage.setItem('app_hub_side', hubSide);
+
+                const area = document.getElementById('hubFixedArea');
+                if (area) area.setAttribute('data-side', hubSide);
+
+                document.querySelectorAll('.side-pick button').forEach(b => {
+                    b.classList.toggle('on', b.dataset.side === hubSide);
+                });
+            }
+
+            /* 依 hubOrder 重新排位：
+               最後一個排最底、scale 最大、z-index 最高（= 當前頁）。 */
             function layoutHubStack() {
                 const stack = document.getElementById('hubCardStack');
                 if (!stack) return;
+
                 const cards = Array.prototype.slice.call(stack.querySelectorAll('.hub-card'));
                 if (!cards.length) return;
 
-                const n = cards.length;
-                const activeCard = cards[hubIndex];
-                const inner = activeCard ? activeCard.querySelector('.debit-card') : null;
-                let H = inner ? inner.getBoundingClientRect().height : 0;
-                if (H < 80) H = 246;   // 頁面隱藏時量不到高度，用預設值
+                const n = hubOrder.length;
+                const activeKey = hubOrder[n - 1];
 
-                /* 由下而上梯級式：被蓋住的卡片排在上方，只露出最頂那條標題列；
-                   目前選中的卡片排在最下面、疊在最前層，整張完整顯示。 */
-                cards.forEach((c, i) => {
-                    const pos = (i - hubIndex - 1 + n) % n;   // 目前卡片 = n-1（最底、最前）
-                    const isTop = (pos === n - 1);
-                    c.classList.toggle('top', isTop);
-                    c.style.transform = `translateY(${pos * HUB_PEEK}px)`;
-                    c.style.zIndex = String(10 + pos);
+                let H = 0;
+                cards.forEach(c => {
+                    const inner = c.querySelector('.debit-card');
+                    const h = inner ? inner.getBoundingClientRect().height : 0;
+                    if (h > H) H = h;
+                });
+                if (H < 80) H = 246;   // 收起時量唔到高度，用預設值
+
+                /* 露出高度：以卡片一半為目標，但唔可以疊到超出畫面。
+                   位唔夠就自動收窄，最少都要見到卡頂 46px。 */
+                let peek = Math.round(H * HUB_PEEK_RATIO);
+                const top = stack.getBoundingClientRect().top || 180;
+                const avail = window.innerHeight - top - 182;  // 底部留返位俾收合掣（獨立唔重疊）
+                const maxPeek = Math.floor((avail - H) / Math.max(1, n - 1));
+                if (maxPeek >= HUB_PEEK && peek > maxPeek) peek = maxPeek;
+                if (peek < HUB_PEEK) peek = HUB_PEEK;
+                hubPeek = peek;
+                hubCardH = H;
+
+                cards.forEach(c => {
+                    const key = c.getAttribute('data-key');
+                    const i = hubOrder.indexOf(key);
+                    if (i < 0) return;
+
+                    const isActive = (key === activeKey);
+                    c.classList.toggle('top', isActive);
+                    c.style.removeProperty('transform');
+                    c.style.removeProperty('opacity');
+                    c.style.setProperty('--y', (i * hubPeek) + 'px');
+                    c.style.setProperty('--i', String(i));
+                    c.style.setProperty('--s', (0.94 + i * 0.02).toFixed(3));
+                    c.style.zIndex = String(41 + i);
                 });
 
-                stack.style.height = Math.round(H + (n - 1) * HUB_PEEK) + 'px';
+                stack.style.height = Math.round(H + (n - 1) * hubPeek) + 'px';
 
-                updateHubDots();
                 updateHubTabAmounts();
                 syncTopPadding();
             }
 
-            // 更新指示點的選中狀態
-            function updateHubDots() {
-                const wrap = document.getElementById('hubDots');
-                if (!wrap) return;
-                wrap.querySelectorAll('.hub-dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === hubIndex);
-                });
+            /* 把某一頁轉到最底（最前）。
+               用「循環旋轉」而唔係抽出再擺後 —— 即係把該張之前嗰啲
+               整批搬去後面，維持四張卡的循環次序。
+               咁樣先同 hubOrderAfter() 算出嚟的排列一致；
+               否則連續撥動時只會喺最底兩張之間彈來彈去。 */
+            function setActiveHubCard(key) {
+                if (HUB_PAGES.indexOf(key) < 0) return;
+                const i = hubOrder.indexOf(key);
+                if (i >= 0) hubOrder = hubOrder.slice(i + 1).concat(hubOrder.slice(0, i + 1));
+                hubIndex = HUB_PAGES.indexOf(key);
+                layoutHubStack();
             }
 
-            // 在梯級標題列右邊顯示每張卡的關鍵金額
+            // 舊版指示點已移除，保留空函式以免其他地方呼叫時出錯
+            function updateHubDots() { }
+
+            // 在感應層與卡夾上顯示每張卡的關鍵金額
             function updateHubTabAmounts() {
                 const ym = getCurrentYearMonth();
 
@@ -12784,43 +14318,63 @@
                 updateHubMini();
             }
 
-            // 收起 / 展開整組卡片，讓下面的資料可以用到整個畫面
+            // 卡夾已經唔顯示金額，保留空函式以免其他地方呼叫時出錯
+            function updateHubMini() { }
+
+            /* 展開 / 收埋錢包。
+               收埋分兩段：先「啪」一聲聚攏成一疊，再整疊縮返入側邊卡夾。 */
             function setHubCollapsed(collapsed) {
-                hubCollapsed = !!collapsed;
-                hubAutoLock = Date.now();
                 const area = document.getElementById('hubFixedArea');
-                if (area) area.classList.toggle('collapsed', hubCollapsed);
+                if (!area) { hubCollapsed = !!collapsed; return; }
 
-                const txt = document.getElementById('hubHandleText');
-                if (txt) txt.textContent = hubCollapsed
-                    ? '▼ 拉下展開卡片'
-                    : '▲ 上下滑動切換卡片 · 下拉收合 ▼';
+                releaseHubLocks();   // 開或合，一律先清走所有鎖
 
-                updateHubMini();
-                syncTopPadding();
-                setTimeout(syncTopPadding, 60);
+                if (!collapsed) {
+                    if (hubBusy) return;
+                    hubCollapsed = false;
+                    hubAutoLock = Date.now();
+                    area.classList.remove('gather', 'tuck');
+                    area.classList.add('open');
+                    /* 量兩次：第一次即刻排位，第二次等展開動畫做完先再量。
+                       第一次卡片可能仲未有最終高度，淨靠佢會計錯，
+                       收起鍵就會壓咗喺卡片上面。 */
+                    setTimeout(layoutHubStack, 40);
+                    setTimeout(layoutHubStack, 780);
+                    return;
+                }
+
+                if (hubBusy || !area.classList.contains('open')) {
+                    hubCollapsed = true;
+                    return;
+                }
+
+                /* 收埋嗰刻先真正切頁：最前（最底）嗰張卡係邊頁就去邊頁。 */
+                const frontKey = hubOrder[hubOrder.length - 1];
+                if (frontKey && frontKey !== currentPageKey) switchPage(frontKey);
+
+                hubBusy = true;
+                hubCollapsed = true;
+                hubAutoLock = Date.now();
+
+                area.classList.add('gather');
+                setTimeout(() => {
+                    area.classList.add('tuck');
+                    area.classList.remove('open');
+                    setTimeout(() => {
+                        area.classList.remove('gather', 'tuck');
+                        hubBusy = false;
+                    }, 420);
+                }, 250);
             }
 
-            // 更新收起後那條迷你列上的文字
-            function updateHubMini() {
-                const key = HUB_PAGES[hubIndex] || 'home';
-                const name = document.getElementById('hubMiniName');
-                const amt = document.getElementById('hubMiniAmt');
-                if (name) name.textContent = HUB_TAB_TITLES[key] || HUB_LABELS[key] || '';
-                const src = document.getElementById('hubTabAmt_' + key);
-                if (amt) amt.textContent = src ? src.textContent : '';
-            }
-
-            /* 當下面的資料區往上捲動時，自動把卡片組收起，
-               讓資料可以用到整個畫面（要重新展開就拉一下下方的拉桿）。 */
+            /* 頁面往上捲動時自動收埋錢包，讓內容用到整個畫面。 */
             let hubAutoLock = 0;
             function initHubAutoCollapse() {
                 const attach = (target, getTop) => {
                     target.addEventListener('scroll', () => {
-                        if (HUB_PAGES.indexOf(currentPageKey) < 0) return;
                         if (hubCollapsed) return;
                         if (Date.now() - hubAutoLock < 700) return;
-                        if (getTop() > 150) {
+                        if (getTop() > 120) {
                             hubAutoLock = Date.now();
                             setHubCollapsed(true);
                         }
@@ -12845,86 +14399,208 @@
                 switchPage(HUB_PAGES[i]);
             }
 
-            // 在疊層卡片上「上下撥動」切換卡片（也支援滑鼠拖曳）
+            /* 把卡片組轉一格：
+               dir > 0（向下拖）＝ 上面嗰張落嚟做當前卡；
+               dir < 0（向上拖）＝ 最頂嗰張繞到最底做當前卡。
+               新的當前卡會滑到最底完整露出 —— 落位嗰刻就係切換嗰刻。 */
+            function hubCycle(dir) {
+                const n = hubOrder.length;
+                if (n < 2) return;
+                const nextKey = (dir > 0) ? hubOrder[n - 2] : hubOrder[0];
+                switchPage(nextKey);   // 內部會呼叫 setActiveHubCard 重排
+            }
+
+            /* 轉一格之後嘅排列。
+               dir > 0（向下拖）＝ 最底嗰張繞返上頂；
+               dir < 0（向上拖）＝ 最頂嗰張繞落最底。 */
+            function hubOrderAfter(dir) {
+                const n = hubOrder.length;
+                return (dir > 0)
+                    ? [hubOrder[n - 1]].concat(hubOrder.slice(0, n - 1))
+                    : hubOrder.slice(1).concat([hubOrder[0]]);
+            }
+
+            // 依某個排列，直接寫 inline 位置（拖動途中同落位都用呢個）
+            function hubPaintOrder(order) {
+                const stack = document.getElementById('hubCardStack');
+                if (!stack) return;
+                stack.querySelectorAll('.hub-card').forEach(c => {
+                    const i = order.indexOf(c.getAttribute('data-key'));
+                    if (i < 0) return;
+                    c.style.transform =
+                        `translateX(0) translateY(${(i * hubPeek).toFixed(1)}px) scale(${(0.94 + i * 0.02).toFixed(3)})`;
+                    c.style.zIndex = String(41 + i);
+                    c.style.opacity = '1';
+                });
+            }
+
+            /* 拖動途中：每張卡由「現時位置」插值去「轉格後位置」。
+               拖到一半，後面嗰啲就移到一半 —— 唔係成疊一齊平移。
+               回傳 0~1 的進度，放手時用嚟決定轉唔轉格。 */
+            function hubApplyDrag(dy) {
+                const stack = document.getElementById('hubCardStack');
+                const n = hubOrder.length;
+                if (!stack || n < 2 || hubPeek <= 0) return 0;
+
+                const t = Math.max(0, Math.min(1, Math.abs(dy) / hubPeek));
+                const down = dy > 0;
+                const next = hubOrderAfter(down ? 1 : -1);
+
+                const lastY = (hubOrder.length - 1) * hubPeek;   // 最底那格的位置
+                const OUT = hubCardH + 70;                       // 要行幾遠先完全離開畫面
+
+                stack.querySelectorAll('.hub-card').forEach(c => {
+                    const key = c.getAttribute('data-key');
+                    const i0 = hubOrder.indexOf(key);
+                    const i1 = next.indexOf(key);
+                    if (i0 < 0 || i1 < 0) return;
+
+                    let y, sc, op, z;
+
+                    if (Math.abs(i1 - i0) <= 1) {
+                        // 普通卡：由現位插值去下一格
+                        const i = i0 + (i1 - i0) * t;
+                        y = i * hubPeek;
+                        sc = 0.94 + i * 0.02;
+                        op = 1;
+                        z = 41 + Math.round(i);
+                    } else if (down) {
+                        /* 向下拖：最底嗰張整張抽出畫面底部，
+                           走完一半就由頂部插返入疊嘅最後面。 */
+                        if (t < 0.5) {
+                            const k = t / 0.5;
+                            y = lastY + OUT * k; sc = 1; op = 1 - k; z = 60;
+                        } else {
+                            const k = (t - 0.5) / 0.5;
+                            y = -OUT * (1 - k); sc = 0.94; op = k; z = 40;
+                        }
+                    } else {
+                        /* 向上拖：最頂嗰張由畫面頂抽走，
+                           再由底部滑返入嚟做當前卡。 */
+                        if (t < 0.5) {
+                            const k = t / 0.5;
+                            y = -OUT * k; sc = 0.94; op = 1 - k; z = 60;
+                        } else {
+                            const k = (t - 0.5) / 0.5;
+                            y = lastY + OUT * (1 - k); sc = 1; op = k; z = 60;
+                        }
+                    }
+
+                    c.style.transform =
+                        `translateX(0) translateY(${y.toFixed(1)}px) scale(${sc.toFixed(3)})`;
+                    c.style.zIndex = String(z);
+                    c.style.opacity = op.toFixed(3);
+                });
+
+                return t;
+            }
+
+            /* 放手落位：拖過半格就轉，唔夠就彈返原位。
+               兩種情況都用同一條過渡曲線帶過去，之後清走 inline 樣式。 */
+            function hubSettleDrag(dy) {
+                const stack = document.getElementById('hubCardStack');
+                const area = document.getElementById('hubFixedArea');
+                if (!stack) return;
+
+                const t = hubPeek > 0 ? Math.abs(dy) / hubPeek : 0;
+                if (area) area.classList.add('settling');
+
+                if (t >= 0.5) {
+                    /* 只重排卡片，唔叫 switchPage。
+                       撥一下就重畫成頁（清單、圖表、日曆）會非常卡，
+                       所以真正切頁留到「點擊卡片」或者「收埋錢包」先做。 */
+                    hubOrder = hubOrderAfter(dy > 0 ? 1 : -1);
+                    hubIndex = HUB_PAGES.indexOf(hubOrder[hubOrder.length - 1]);
+                    layoutHubStack();
+                }
+
+                // 用最終排位覆寫 inline，讓過渡曲線把卡片帶到位
+                hubPaintOrder(hubOrder);
+
+                setTimeout(() => {
+                    stack.querySelectorAll('.hub-card').forEach(c => {
+                        c.style.removeProperty('transform');
+                        c.style.removeProperty('opacity');
+                    });
+                    const a = document.getElementById('hubFixedArea');
+                    if (a) a.classList.remove('settling');
+                }, 470);
+            }
+
+            /* 展開狀態下的手勢：
+               · 上下拖 → 卡片即時跟手，放手落位並切換頁面
+               · 向卡夾嗰邊橫撥 → 收埋錢包 */
+            const HUB_DRAG_DAMP = 0.9;   // 跟手阻尼；拖過半格就會轉卡
+
+            /* 剛剛拖完嗰陣，瀏覽器仲會補一個 click 出嚟。
+               記低時間，令卡片上的點擊切換喺嗰段時間內失效。 */
+            let hubDragAt = 0;
+            function hubJustDragged() { return Date.now() - hubDragAt < 400; }
+
             function initHubSwipe() {
-                let sx = 0, sy = 0, tracking = false, moved = false;
+                let sx = 0, sy = 0, tracking = false, axis = '', pid = null;
 
-                // 手勢起點喺卡片上 → 上下撥動 = 換卡片
-                const inCards = (target) =>
-                    target && target.closest && target.closest('#hubCardStack');
+                const area = () => document.getElementById('hubFixedArea');
+                const stack = () => document.getElementById('hubCardStack');
+                const isOpen = () => { const a = area(); return !!a && a.classList.contains('open'); };
+                const inStack = (t) => t && t.closest && t.closest('#hubCardStack');
 
-                // 手勢起點喺卡片以外嘅範圍（拉桿／迷你列／指示點）→ 上下撥動 = 收起／展開
-                const inArea = (target) =>
-                    target && target.closest && target.closest('#hubFixedArea');
-
-                const inHandle = (target) => !!inArea(target) && !inCards(target);
-
-                const inStack = (target) => !!inArea(target);
-
-                const canSwipe = () => HUB_PAGES.indexOf(currentPageKey) >= 0;
-
-                let onHandle = false;
-
-                const start = (x, y, target) => {
-                    if (!canSwipe() || !inStack(target)) { tracking = false; return; }
-                    tracking = true; moved = false; sx = x; sy = y;
-                    onHandle = !!inHandle(target);
+                const start = (e) => {
+                    if (hubTiltActive) { tracking = false; return; }
+                    if (!isOpen() || !inStack(e.target)) { tracking = false; return; }
+                    // 卡上的按鈕唔算撥動
+                    if (e.target.closest('button, ion-button, a, input, select')) { tracking = false; return; }
+                    tracking = true; axis = ''; pid = e.pointerId;
+                    sx = e.clientX; sy = e.clientY;
+                    const a = area();
+                    if (a) a.classList.remove('settling');
                 };
 
-                const end = (x, y) => {
+                const move = (e) => {
+                    if (!tracking || e.pointerId !== pid) return;
+                    if (hubTiltActive) { tracking = false; return; }   // 已入 3D 觀賞模式
+                    const dx = e.clientX - sx, dy = e.clientY - sy;
+
+                    // 頭 10px 決定當次係打直定打橫，之後唔再改
+                    if (!axis) {
+                        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+                        axis = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
+                        if (axis === 'y') { const a = area(); if (a) a.classList.add('dragging'); }
+                    }
+
+                    if (axis === 'y') hubApplyDrag(dy * HUB_DRAG_DAMP);
+                };
+
+                const end = (e) => {
                     if (!tracking) return;
                     tracking = false;
-                    const dx = x - sx, dy = y - sy;
-                    if (Math.abs(dy) < 34) return;
-                    if (Math.abs(dy) < Math.abs(dx) * 1.1) return;
+                    const dx = e.clientX - sx, dy = e.clientY - sy;
+                    const a = area();
 
-                    if (onHandle) {
-                        // 喺拉桿上：向上撥 = 收起卡片組；向下拉 = 重新展開
-                        setHubCollapsed(dy < 0);
-                    } else {
-                        // 喺卡片上：向上撥 = 睇下一張；向下撥 = 返上一張
-                        if (hubCollapsed) { setHubCollapsed(false); return; }
-                        hubGo(dy < 0 ? 1 : -1);
+                    if (axis === 'y') {
+                        hubDragAt = Date.now();
+                        if (a) a.classList.remove('dragging');
+                        hubSettleDrag(dy * HUB_DRAG_DAMP);
+                        return;
+                    }
+
+                    // 向卡夾嗰邊橫撥 = 收埋
+                    if (Math.abs(dx) < 46) return;
+                    hubDragAt = Date.now();
+                    if ((hubSide === 'right' && dx > 0) || (hubSide === 'left' && dx < 0)) {
+                        setHubCollapsed(true);
                     }
                 };
 
-                document.addEventListener('touchstart', e => {
-                    start(e.touches[0].clientX, e.touches[0].clientY, e.target);
-                }, { passive: true });
-
-                /* 🔒 喺卡片區內嘅任何移動都由我哋自己接手：
-                      橫向手勢直接吞掉，卡片永遠唔會左右郁。 */
-                document.addEventListener('touchmove', e => {
-                    if (!inStack(e.target)) return;
-                    if (e.cancelable) e.preventDefault();
+                document.addEventListener('pointerdown', start, { passive: true });
+                document.addEventListener('pointermove', move, { passive: true });
+                document.addEventListener('pointerup', end, { passive: true });
+                document.addEventListener('pointercancel', () => {
                     if (!tracking) return;
-                    const t = e.touches[0];
-                    if (Math.abs(t.clientY - sy) > 10) moved = true;
-                }, { passive: false });
-
-                // 桌面拖曳同樣唔准橫向拖走卡片
-                document.addEventListener('dragstart', e => {
-                    if (inStack(e.target)) e.preventDefault();
-                });
-
-                document.addEventListener('touchend', e => {
-                    const t = e.changedTouches[0];
-                    end(t.clientX, t.clientY);
-                }, { passive: true });
-
-                document.addEventListener('mousedown', e => start(e.clientX, e.clientY, e.target));
-                document.addEventListener('mouseup', e => end(e.clientX, e.clientY));
-
-                // 桌面：在卡片上用滾輪也可以換卡
-                let wheelLock = 0;
-                document.addEventListener('wheel', e => {
-                    if (!canSwipe() || !inStack(e.target)) return;
-                    const now = Date.now();
-                    if (now - wheelLock < 450) return;
-                    if (Math.abs(e.deltaY) < 18) return;
-                    wheelLock = now;
-                    if (inHandle(e.target)) setHubCollapsed(e.deltaY > 0);
-                    else hubGo(e.deltaY > 0 ? 1 : -1);
+                    tracking = false;
+                    const a = area();
+                    if (a) a.classList.remove('dragging');
+                    hubSettleDrag(0);   // 進度當 0，彈返原位
                 }, { passive: true });
             }
 
@@ -13935,6 +15611,12 @@
 
                 saveData();
                 renderUI();
+
+                // 🪙 達成整個目標放金幣雨，一般存入放金色紙花
+                const reached = (Number(g.savedAmount) || 0) >= (Number(g.targetAmount) || 0)
+                    && (Number(g.targetAmount) || 0) > 0;
+                burstConfetti(reached ? 'coin' : 'confetti');
+
                 addLog('目標儲蓄', `「${g.title}」存入 ${money(amt)}${src === 'self'
                     ? '（獨立存錢，不連動任何戶口）'
                     : (live ? `（已由${src === 'cash' ? '現金預算' : '儲蓄戶口'}扣除）` : '（只記錄進度）')}`);
@@ -14599,7 +16281,7 @@
             }
 
             /* ---------- 20.3 統計圖表左右滑動輪播 ---------- */
-            const STATS_CHART_NAMES = ['本月每日花費', '近 6 個月每日平均', '消費分類佔比'];
+            const STATS_CHART_NAMES = ['消費分類佔比', '本月每日花費', '近 6 個月每日平均'];
 
             // 跳到第 i 張圖表
             function statsGoChart(i) {
@@ -15047,19 +16729,22 @@
             }
 
             // 記下使用者填寫過的備註，成為下次可選用的標籤
-            function rememberNoteTag(scope, name) {
+            function rememberNoteTag(scope, name, category) {
                 const val = String(name || '').trim();
                 if (!val || !NOTE_TAG_SCOPES[scope]) return;
                 const key = tagPool(scope);
                 if (!Array.isArray(noteTags[key])) noteTags[key] = [];
 
+                const cat = String(category || '').trim();
                 const list = noteTags[key];
                 const idx = list.findIndex(t => t && t.name === val);
                 if (idx >= 0) {
                     const kept = list.splice(idx, 1)[0];
+                    // 同一個備註再用時，更新為最新一次揀嘅分類
+                    if (cat) kept.cat = cat;
                     list.unshift(kept);
                 } else {
-                    list.unshift({ name: val, hidden: false });
+                    list.unshift({ name: val, hidden: false, cat: cat });
                 }
                 if (list.length > 40) list.length = 40;
 
@@ -15088,10 +16773,19 @@
                 }
 
                 row.style.display = '';
-                row.innerHTML = list.slice(0, 14).map(t =>
-                    `<button type="button" class="note-tag-chip" data-name="${escapeHtml(t.name)}"
-                             onclick="applyNoteTag('${scope}', this.dataset.name)">#${escapeHtml(t.name)}</button>`
-                ).join('');
+                row.innerHTML = list.slice(0, 14).map(t => {
+                    const meta = t.cat ? CATEGORY_MAP[t.cat] : null;
+                    /* 有記低分類就用返嗰個分類嘅漸變色做底，
+                       順便喺 title показ返分類名，長按可以睇到。 */
+                    const style = meta
+                        ? ` style="background:${meta.color}; border-color:rgba(255,255,255,0.34); color:#fff;"`
+                        : '';
+                    const tip = meta ? ` title="${escapeHtml(t.cat)}"` : '';
+                    const dot = meta ? `<i class="tag-cat-dot"></i>` : '';
+                    return `<button type="button" class="note-tag-chip${meta ? ' has-cat' : ''}"
+                             data-name="${escapeHtml(t.name)}" data-cat="${escapeHtml(t.cat || '')}"${style}${tip}
+                             onclick="applyNoteTag('${scope}', this.dataset.name, this.dataset.cat)">${dot}#${escapeHtml(t.name)}</button>`;
+                }).join('');
             }
 
             // 全部輸入欄的標籤列一次過重新繪製
@@ -15100,11 +16794,21 @@
             }
 
             // 按下標籤：把內容填入對應的輸入欄
-            function applyNoteTag(scope, name) {
+            function applyNoteTag(scope, name, category) {
                 const cfg = NOTE_TAG_SCOPES[scope];
                 if (!cfg) return;
                 const input = document.getElementById(cfg.input);
                 if (!input) return;
+
+                /* 呢個備註上次係邊個分類，就順手幫使用者揀返，
+                   慳返一步，亦令分類同備註保持一致。 */
+                if (scope === 'expense' && category && CATEGORY_MAP[category]) {
+                    const sel = document.getElementById('manualCategorySelect');
+                    if (sel) {
+                        sel.value = category;
+                        try { sel.dispatchEvent(new Event('change', { bubbles: true })); } catch (e) { }
+                    }
+                }
 
                 input.value = name;
                 try { input.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) { }
@@ -15246,11 +16950,15 @@
             }
 
             function userAvatarInner(u) {
+                // 已選擇圖像風格 → 直接畫該款頭像
+                if (u && u.avatarStyle) return buildAvatarSvg(u.avatarStyle);
+
+                // 舊資料如果曾經填過 emoji，繼續沿用，唔會突然變樣
                 const icon = ((u && u.icon) || '').trim();
                 if (icon && icon !== '👤') {
                     return `<span class="user-emoji">${escapeHtml(icon)}</span>`;
                 }
-                return userAvatarSvg();
+                return buildAvatarSvg('tech');
             }
 
             // 更新標題列上的使用者頭像
@@ -15263,6 +16971,7 @@
 
             function openUserModal() {
                 renderUserList();
+                setHubSide(hubSide);
                 renderCurrencySelect();
                 updateCurrencyPreview();
 
@@ -15288,6 +16997,7 @@
                             </div>
                             <div class="user-actions">
                                 ${isActive ? '' : `<button type="button" class="np-mini-btn gold" data-id="${escapeHtml(u.id)}" onclick="switchUser(this.dataset.id)">切換</button>`}
+                                <button type="button" class="np-mini-btn" data-id="${escapeHtml(u.id)}" onclick="openAvatarPicker(this.dataset.id)">頭像</button>
                                 <button type="button" class="np-mini-btn" data-id="${escapeHtml(u.id)}" onclick="promptEditUser(this.dataset.id)">修改</button>
                                 ${userProfiles.length > 1 ? `<button type="button" class="np-mini-btn red" data-id="${escapeHtml(u.id)}" onclick="promptDeleteUser(this.dataset.id)">刪除</button>` : ''}
                             </div>
@@ -15304,6 +17014,7 @@
                 localStorage.setItem('app_active_user', activeUserId);
                 reloadActiveUserData();
                 renderUserList();
+                refreshCardHolderName();   // 卡面持卡人姓名跟住換
                 showToast(`已切換至帳戶「${activeUser().name}」`, 'primary');
             }
 
@@ -15336,21 +17047,24 @@
                 alertEl.header = '新增使用者帳戶';
                 alertEl.message = '新帳戶會由一份全新的空白紀錄開始。';
                 alertEl.inputs = [
-                    { name: 'name', type: 'text', placeholder: '帳戶名稱，例如：家庭開支' },
-                    { name: 'icon', type: 'text', placeholder: '代表圖示，可留空（留空則以名稱首字顯示）', attributes: { maxlength: 2 } }
+                    {
+                        name: 'name', type: 'text',
+                        placeholder: '帳戶名稱（英文／數字，最多 25 字元）',
+                        attributes: { maxlength: 25, autocapitalize: 'characters' }
+                    }
                 ];
                 alertEl.buttons = [
                     { text: '取消', role: 'cancel' },
                     {
                         text: '建立',
                         handler: (data) => {
-                            const name = (data.name || '').trim();
-                            if (!name) { showToast('請輸入帳戶名稱', 'warning'); return false; }
+                            const name = validateUserName(data.name);
+                            if (!name) return false;
                             const id = 'u' + Date.now();
-                            userProfiles.push({ id, name, icon: (data.icon || '').trim() });
+                            userProfiles.push({ id, name, icon: '', avatarStyle: 'tech' });
                             saveUserProfiles();
                             renderUserList();
-                            showToast(`已建立帳戶「${name}」`, 'success');
+                            showToast(`已建立帳戶「${name}」，可按「頭像」揀圖像風格`, 'success');
                         }
                     }
                 ];
@@ -15365,20 +17079,24 @@
                 const alertEl = document.createElement('ion-alert');
                 alertEl.cssClass = 'custom-danger-alert';
                 alertEl.header = '修改使用者帳戶';
+                alertEl.message = '名稱只可用英文字母同數字，最多 25 個字元；會即時顯示喺每張卡片上。頭像圖案請用列表上的「頭像」按鈕選擇。';
                 alertEl.inputs = [
-                    { name: 'name', type: 'text', value: u.name, placeholder: '帳戶名稱' },
-                    { name: 'icon', type: 'text', value: (u.icon === '👤' ? '' : (u.icon || '')), placeholder: '代表圖示，可留空（留空則以名稱首字顯示）', attributes: { maxlength: 2 } }
+                    {
+                        name: 'name', type: 'text', value: u.name,
+                        placeholder: '帳戶名稱（英文／數字，最多 25 字元）',
+                        attributes: { maxlength: 25, autocapitalize: 'characters' }
+                    }
                 ];
                 alertEl.buttons = [
                     { text: '取消', role: 'cancel' },
                     {
                         text: '儲存',
                         handler: (data) => {
-                            const name = (data.name || '').trim();
-                            if (!name) { showToast('請輸入帳戶名稱', 'warning'); return false; }
+                            const name = validateUserName(data.name);
+                            if (!name) return false;
                             u.name = name;
-                            u.icon = (data.icon || '').trim();
                             saveUserProfiles();
+                            refreshCardHolderName();
                             renderUserList();
                             refreshUserAvatar();
                             showToast(`帳戶資料已更新`, 'primary');
@@ -15639,13 +17357,916 @@
             }
 
 
+
+            /* ================================================
+               21. 功能總覽快捷列 / 錢包收合 / 預算警示
+               ================================================ */
+
+            // 快捷列高度（同 CSS 的 --nav-strip-h 一致）
+            const NAV_STRIP_H = 40;
+
+            // 切換分頁時，同步標題列下方快捷列的選中狀態
+            function syncNavStrip(pageKey) {
+                const strip = document.getElementById('navStrip');
+                if (!strip) return;
+                if (typeof closeNavPanel === 'function') closeNavPanel();
+            strip.querySelectorAll('.nav-chip').forEach(btn => {
+                    const on = btn.dataset.page === pageKey;
+                    btn.classList.toggle('active', on);
+                    if (on) {
+                        // 選中的按鈕自動捲入可視範圍
+                        const l = btn.offsetLeft - (strip.clientWidth - btn.offsetWidth) / 2;
+                        strip.scrollTo({ left: Math.max(0, l), behavior: 'smooth' });
+                    }
+                });
+            }
+
+/* ---------- 預算警示 ---------- */
+            /* 本月開銷去到預算的 80% / 100% 時：
+               在開銷頁顯示警示條、快捷列亮紅點，並在動態消息留低一次紀錄。 */
+            function checkBudgetAlert() {
+                const box = document.getElementById('budgetAlertBox');
+                const dot = document.getElementById('navBudgetDot');
+                if (budgetLimit <= 0) {
+                    if (box) box.className = 'budget-alert';
+                    if (dot) dot.innerHTML = '';
+                    return;
+                }
+
+                const ym = getCurrentYearMonth();
+                let spent = 0;
+                records.forEach(r => {
+                    if (r.date && r.date.startsWith(ym)) spent += (Number(r.amount) || 0);
+                });
+
+                const pct = Math.round(spent / budgetLimit * 100);
+                const over = spent - budgetLimit;
+
+                if (box) {
+                    if (pct >= 100) {
+                        box.className = 'budget-alert danger show';
+                        box.innerHTML = `🚨 <span>本月已用 <b>${pct}%</b> 預算，超支 ${curSym()}${fmtAmt(Math.abs(over))}。建議暫停非必要消費。</span>`;
+                    } else if (pct >= 80) {
+                        box.className = 'budget-alert warn show';
+                        box.innerHTML = `⚠️ <span>本月已用 <b>${pct}%</b> 預算，剩餘 ${curSym()}${fmtAmt(budgetLimit - spent)}。留意消費節奏。</span>`;
+                    } else {
+                        box.className = 'budget-alert';
+                        box.innerHTML = '';
+                    }
+                }
+
+                if (dot) dot.innerHTML = (pct >= 80) ? '<span class="nav-dot"></span>' : '';
+
+                // 同一個月、同一個級別只提示一次，避免不斷彈出騷擾
+                const level = pct >= 100 ? 'over' : (pct >= 80 ? 'near' : '');
+                if (!level) return;
+                const key = uk('app_budget_alert_seen');
+                let seen = {};
+                try { seen = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { seen = {}; }
+                if (seen[ym] === level || (seen[ym] === 'over' && level === 'near')) return;
+
+                seen[ym] = level;
+                localStorage.setItem(key, JSON.stringify(seen));
+
+                if (level === 'over') {
+                    showToast(`🚨 本月開銷已超出預算 ${curSym()}${fmtAmt(Math.abs(over))}`, 'warning');
+                    addLog('預算警示', `本月開銷已達預算的 ${pct}%，超支 ${curSym()}${fmtAmt(Math.abs(over))}`);
+                } else {
+                    showToast(`⚠️ 本月已用 ${pct}% 預算`, 'warning');
+                    addLog('預算提醒', `本月開銷已用去預算的 ${pct}%，尚餘 ${curSym()}${fmtAmt(budgetLimit - spent)}`);
+                }
+            }
+
+            /* ================================================
+               22. 微互動：數字滾動、3D 傾斜、金幣特效、骨架屏
+               ================================================ */
+
+            // 系統設定為「減少動態效果」時，全部微互動自動收斂
+            function fxReduced() {
+                return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            }
+
+            /* ---------- 22.1 數字由舊值滾動到新值 ---------- */
+            function countUpTo(el, target, opts) {
+                if (!el) return;
+                const o = opts || {};
+                const fmt = o.format || fmtAmt;
+                const to = Number(target) || 0;
+                const from = (el.dataset.cv !== undefined) ? (Number(el.dataset.cv) || 0) : to;
+
+                el.dataset.cv = String(to);
+
+                if (fxReduced() || from === to) { el.textContent = fmt(to); return; }
+
+                // 同一個元素重新觸發時，先取消上一次未完成的動畫
+                if (el._cvRaf) cancelAnimationFrame(el._cvRaf);
+
+                const dur = Math.min(900, Math.max(380, Math.abs(to - from) / Math.max(1, Math.abs(to) || 1) * 900));
+                const t0 = performance.now();
+
+                const step = (now) => {
+                    const p = Math.min(1, (now - t0) / dur);
+                    const e = 1 - Math.pow(1 - p, 3);   // easeOutCubic
+                    el.textContent = fmt(from + (to - from) * e);
+                    if (p < 1) el._cvRaf = requestAnimationFrame(step);
+                    else { el.textContent = fmt(to); el._cvRaf = null; }
+                };
+                el._cvRaf = requestAnimationFrame(step);
+            }
+
+            /* ---------- 22.2 金融卡跟手指 3D 傾斜 ---------- */
+            const TILT_MAX = 11;        // 最大傾斜角度（度）
+            const TILT_HOLD_MS = 320;   // 按住幾耐先入 3D 觀賞模式
+            const TILT_MOVE_TOL = 9;    // 未入模式前，郁超過幾多 px 就當係撥卡
+
+            /* 3D 觀賞模式開著時：
+               · 撥動切卡邏輯讓路（見 initHubSwipe）
+               · 頁面唔會跟住上下捲（body 加 .tilt-lock） */
+            let hubTiltActive = false;
+
+            /* 一次過解除所有可能卡住嘅鎖。
+               寧願重複叫都唔可以漏 —— 漏一次就成頁捲唔郁。 */
+            // 直接控制 ion-content 嘅捲動開關（Ionic 官方 API）
+            function setPageScroll(enabled) {
+                document.querySelectorAll('ion-content').forEach(c => {
+                    try { c.scrollY = !!enabled; } catch (e) { }
+                });
+            }
+
+            function releaseHubLocks() {
+                hubTiltActive = false;
+                document.body.classList.remove('tilt-lock');
+                setPageScroll(true);            // 無論如何都要還返捲動能力
+                const area = document.getElementById('hubFixedArea');
+                if (area) area.classList.remove('dragging');
+                document.querySelectorAll('.debit-card.is-tilting').forEach(c => {
+                    c.classList.remove('is-tilting');
+                    c.style.removeProperty('transform');
+                });
+                /* 3D 觀賞時曾經改過 overflow 嘅容器，一律還原。
+                   漏咗嘅話，卡片區會永久停喺 overflow:visible。 */
+                document.querySelectorAll('[data-tilt-unclipped]').forEach(el => {
+                    const prev = el.dataset.tiltUnclipped;
+                    el.style.removeProperty('overflow');
+                    if (prev && prev !== '1') el.style.setProperty('overflow', prev);
+                    delete el.dataset.tiltUnclipped;
+                });
+            }
+
+            /* 保險網：指標放開、離開頁面、視窗失焦都強制解鎖 */
+            function initLockSafetyNet() {
+                ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(ev => {
+                    window.addEventListener(ev, () => setTimeout(releaseHubLocks, 60), { passive: true });
+                });
+                window.addEventListener('blur', releaseHubLocks);
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) releaseHubLocks();
+                });
+            }
+
+            function initCardTilt() {
+                if (fxReduced()) return;
+
+                const findCard = (t) => (t && t.closest) ? t.closest('.debit-card') : null;
+
+                const applyTilt = (card, clientX, clientY) => {
+                    const r = card.getBoundingClientRect();
+                    if (!r.width || !r.height) return;
+                    const px = (clientX - r.left) / r.width;    // 0 ~ 1
+                    const py = (clientY - r.top) / r.height;
+                    const clamp = (v) => Math.max(-1, Math.min(1, v));
+                    const ry = clamp((px - 0.5) * 2) * TILT_MAX;         // 左右 → 繞 Y 軸
+                    // 卡片比較扁，打直角度加大 1.5 倍先睇得出
+                    const rx = clamp((0.5 - py) * 2) * TILT_MAX * 1.5;   // 上下 → 繞 X 軸
+                    /* 唔再放大 —— 一放大就會爆出容器邊界，兩邊好似俾背景遮住。
+                       純粹靠旋轉同陰影already夠立體。 */
+                    card.style.transform =
+                        `perspective(700px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+                };
+
+                const resetTilt = (card) => {
+                    if (!card) return;
+                    card.classList.remove('is-tilting');
+                    card.classList.add('tilt-reset');
+                    card.style.transform = '';
+                    // 等回位動畫做完先還原裁切，唔係中途又會被切一下
+                    setTimeout(() => {
+                        card.classList.remove('tilt-reset');
+                        reclipAncestors();
+                    }, 560);
+                };
+
+                let active = null, pending = null, holdTimer = null, px0 = 0, py0 = 0;
+
+                const cancelHold = () => {
+                    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+                    pending = null;
+                };
+
+                // 記低被改過 overflow 嘅上層容器，放手時逐個還原
+                let clipFixes = [];
+
+                const unclipAncestors = (card) => {
+                    clipFixes = [];
+                    let p = card.parentElement, hops = 0;
+                    while (p && p !== document.body && hops < 7) {
+                        const tag = p.tagName;
+                        if (tag !== 'ION-CONTENT' && tag !== 'ION-APP') {
+                            const cs = getComputedStyle(p);
+                            if (cs.overflow !== 'visible' || cs.overflowX !== 'visible' || cs.overflowY !== 'visible') {
+                                clipFixes.push([p, p.style.getPropertyValue('overflow'), p.style.getPropertyPriority('overflow')]);
+                                p.dataset.tiltUnclipped = p.style.getPropertyValue('overflow') || '1';
+                                p.style.setProperty('overflow', 'visible', 'important');
+                            }
+                        }
+                        p = p.parentElement; hops++;
+                    }
+                };
+
+                const reclipAncestors = () => {
+                    clipFixes.forEach(([el, val, pri]) => {
+                        el.style.removeProperty('overflow');
+                        if (val) el.style.setProperty('overflow', val, pri);
+                        delete el.dataset.tiltUnclipped;
+                    });
+                    clipFixes = [];
+                };
+
+                const enterTilt = (card, x, y) => {
+                    active = card;
+                    hubTiltActive = true;
+                    document.body.classList.add('tilt-lock');
+                    unclipAncestors(card);
+                    card.classList.remove('tilt-reset');
+                    card.classList.add('is-tilting');
+                    setPageScroll(false);       // 觀賞期間唔好跟住捲
+                    applyTilt(card, x, y);
+                    try { navigator.vibrate && navigator.vibrate(8); } catch (err) { }
+                };
+
+                const leaveTilt = () => { releaseHubLocks(); };
+
+                document.addEventListener('pointerdown', (e) => {
+                    const card = findCard(e.target);
+                    // 被疊住的卡片、以及卡上的按鈕唔觸發傾斜
+                    if (!card) return;
+                    if (e.target.closest && e.target.closest('button, ion-button, a, input, select')) return;
+                    const wrap = card.closest('.hub-card');
+                    if (wrap && !wrap.classList.contains('top')) return;
+
+                    /* 唔再一按即傾斜：要按住 320ms 先入 3D 觀賞模式。
+                       咁樣「撥動切卡」同「3D 觀賞」就唔會打架。 */
+                    pending = card; px0 = e.clientX; py0 = e.clientY;
+                    holdTimer = setTimeout(() => {
+                        holdTimer = null;
+                        if (pending) { const c = pending; pending = null; enterTilt(c, px0, py0); }
+                    }, TILT_HOLD_MS);
+                }, { passive: true });
+
+                document.addEventListener('pointermove', (e) => {
+                    // 未入模式前郁得多 = 使用者想撥卡，取消長按
+                    if (pending) {
+                        if (Math.abs(e.clientX - px0) > TILT_MOVE_TOL ||
+                            Math.abs(e.clientY - py0) > TILT_MOVE_TOL) cancelHold();
+                        return;
+                    }
+                    if (!active) return;
+                    applyTilt(active, e.clientX, e.clientY);
+                }, { passive: true });
+
+                ['pointerup', 'pointercancel', 'pointerleave'].forEach(evt => {
+                    document.addEventListener(evt, () => {
+                        cancelHold();
+                        if (!active) return;
+                        resetTilt(active);
+                        active = null;
+                        leaveTilt();
+                    }, { passive: true });
+                });
+            }
+
+            /* ---------- 22.3 金幣落下 / 金色紙花特效 ---------- */
+            /* kind: 'coin' 金幣落下（達成目標）、'confetti' 金色紙花（存入成功） */
+            function burstConfetti(kind) {
+                if (fxReduced()) return;
+
+                const old = document.getElementById('fxConfettiCanvas');
+                if (old) old.remove();
+
+                const cv = document.createElement('canvas');
+                cv.id = 'fxConfettiCanvas';
+                document.body.appendChild(cv);
+
+                const dpr = Math.min(2, window.devicePixelRatio || 1);
+                const W = window.innerWidth, H = window.innerHeight;
+                cv.width = W * dpr;
+                cv.height = H * dpr;
+                const ctx = cv.getContext('2d');
+                ctx.scale(dpr, dpr);
+
+                const isCoin = (kind === 'coin');
+                const N = isCoin ? 42 : 90;
+                const golds = ['#fde68a', '#fbbf24', '#f59e0b', '#d4af37', '#fff7d6', '#eab308'];
+                const bits = [];
+
+                for (let i = 0; i < N; i++) {
+                    bits.push({
+                        x: W * (0.12 + Math.random() * 0.76),
+                        y: -20 - Math.random() * H * 0.55,
+                        vx: (Math.random() - 0.5) * (isCoin ? 1.1 : 2.4),
+                        vy: 2 + Math.random() * (isCoin ? 3.2 : 2.6),
+                        g: 0.06 + Math.random() * 0.05,
+                        r: isCoin ? (7 + Math.random() * 5) : (3.5 + Math.random() * 4),
+                        rot: Math.random() * Math.PI * 2,
+                        vr: (Math.random() - 0.5) * 0.28,
+                        c: golds[(Math.random() * golds.length) | 0],
+                        w: 0.35 + Math.random() * 0.65      // 金幣側面收窄用
+                    });
+                }
+
+                const t0 = performance.now();
+                const LIFE = isCoin ? 2200 : 2600;
+
+                const frame = (now) => {
+                    const t = now - t0;
+                    ctx.clearRect(0, 0, W, H);
+                    const fade = t > LIFE - 500 ? Math.max(0, (LIFE - t) / 500) : 1;
+
+                    bits.forEach(b => {
+                        b.vy += b.g;
+                        b.x += b.vx;
+                        b.y += b.vy;
+                        b.rot += b.vr;
+
+                        ctx.save();
+                        ctx.globalAlpha = fade;
+                        ctx.translate(b.x, b.y);
+                        ctx.rotate(b.rot);
+                        ctx.fillStyle = b.c;
+
+                        if (isCoin) {
+                            // 金幣：用橢圓寬度模擬旋轉時的透視
+                            const w = Math.abs(Math.cos(b.rot)) * b.r + b.r * 0.18;
+                            ctx.beginPath();
+                            ctx.ellipse(0, 0, w, b.r, 0, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.strokeStyle = 'rgba(120, 72, 8, 0.55)';
+                            ctx.lineWidth = 1.1;
+                            ctx.stroke();
+                        } else {
+                            ctx.fillRect(-b.r, -b.r * 0.45, b.r * 2, b.r * 0.9);
+                        }
+                        ctx.restore();
+                    });
+
+                    if (t < LIFE) requestAnimationFrame(frame);
+                    else cv.remove();
+                };
+                requestAnimationFrame(frame);
+            }
+
+            /* ---------- 22.4 骨架屏 ---------- */
+            // 產生 n 行閃爍骨架，用嚟頂替「載入中」轉圈
+            function skeletonRows(n, opts) {
+                const o = opts || {};
+                const lw = o.left || ['62%', '54%', '70%', '58%', '66%', '50%', '60%'];
+                let out = '';
+                for (let i = 0; i < n; i++) {
+                    out += `<div class="sk-row">` +
+                        `<div class="sk-line" style="width:${lw[i % lw.length]};"></div>` +
+                        `<div class="sk-line" style="width:${o.right || '52px'};"></div>` +
+                        `</div>`;
+                }
+                return out;
+            }
+
+            /* ================================================
+               23. 使用者頭像：可選擇的圖像設計風格
+               ================================================ */
+            /* 全部頭像共用同一組金色漸變變數（--ua1 ~ --ua4 / --uaLine），
+               所以深淺主題切換時會自動跟色，唔使另外寫多套。 */
+            function avDefs(n) {
+                return `<defs>` +
+                    `<linearGradient id="uaG${n}" x1="0.12" y1="0" x2="0.78" y2="1">` +
+                    `<stop offset="0%" stop-color="var(--ua1)"/>` +
+                    `<stop offset="32%" stop-color="var(--ua2)"/>` +
+                    `<stop offset="64%" stop-color="var(--ua3)"/>` +
+                    `<stop offset="100%" stop-color="var(--ua4)"/>` +
+                    `</linearGradient>` +
+                    `<linearGradient id="uaS${n}" x1="0" y1="0" x2="0.6" y2="1">` +
+                    `<stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>` +
+                    `<stop offset="45%" stop-color="#ffffff" stop-opacity="0.12"/>` +
+                    `<stop offset="100%" stop-color="#000000" stop-opacity="0.18"/>` +
+                    `</linearGradient>` +
+                    `</defs>`;
+            }
+
+            const AVATAR_STYLES = [
+                {
+                    id: 'tech', name: '科技人像', draw: (n) => `
+                        <path d="M5.6 24.5a15.2 15.2 0 0 1 1.4-11" fill="none" stroke="var(--uaLine)"
+                              stroke-opacity="0.55" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M34.4 24.5a15.2 15.2 0 0 0-1.4-11" fill="none" stroke="var(--uaLine)"
+                              stroke-opacity="0.55" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="20" cy="14" r="6.4" fill="url(#uaG${n})"/>
+                        <circle cx="20" cy="14" r="6.4" fill="url(#uaS${n})"/>
+                        <path d="M9.2 34.2c0-6.2 4.9-10.4 10.8-10.4s10.8 4.2 10.8 10.4c0 .8-.6 1.4-1.4 1.4H10.6c-.8 0-1.4-.6-1.4-1.4z"
+                              fill="url(#uaG${n})"/>
+                        <path d="M9.2 34.2c0-6.2 4.9-10.4 10.8-10.4s10.8 4.2 10.8 10.4c0 .8-.6 1.4-1.4 1.4H10.6c-.8 0-1.4-.6-1.4-1.4z"
+                              fill="url(#uaS${n})"/>`
+                },
+                {
+                    id: 'hex', name: '六角盾', draw: (n) => `
+                        <path d="M20 3.6 34.2 11.8v16.4L20 36.4 5.8 28.2V11.8z" fill="url(#uaG${n})"/>
+                        <path d="M20 3.6 34.2 11.8v16.4L20 36.4 5.8 28.2V11.8z" fill="url(#uaS${n})"/>
+                        <path d="M20 9.4 29.2 14.7v10.6L20 30.6 10.8 25.3V14.7z" fill="none"
+                              stroke="var(--uaLine)" stroke-opacity="0.75" stroke-width="1.6"/>
+                        <circle cx="20" cy="20" r="3.1" fill="var(--uaLine)" fill-opacity="0.9"/>`
+                },
+                {
+                    id: 'orbit', name: '星軌', draw: (n) => `
+                        <ellipse cx="20" cy="20" rx="16.4" ry="7.2" fill="none" stroke="var(--uaLine)"
+                                 stroke-opacity="0.6" stroke-width="1.6" transform="rotate(-24 20 20)"/>
+                        <ellipse cx="20" cy="20" rx="16.4" ry="7.2" fill="none" stroke="var(--uaLine)"
+                                 stroke-opacity="0.35" stroke-width="1.4" transform="rotate(38 20 20)"/>
+                        <circle cx="20" cy="20" r="7.6" fill="url(#uaG${n})"/>
+                        <circle cx="20" cy="20" r="7.6" fill="url(#uaS${n})"/>
+                        <circle cx="33.4" cy="13.4" r="2.5" fill="url(#uaG${n})"/>`
+                },
+                {
+                    id: 'gem', name: '寶石', draw: (n) => `
+                        <path d="M11 8h18l5.6 8.4L20 35 4.4 16.4z" fill="url(#uaG${n})"/>
+                        <path d="M11 8h18l5.6 8.4L20 35 4.4 16.4z" fill="url(#uaS${n})"/>
+                        <path d="M11 8 20 35 29 8M4.4 16.4h31.2" fill="none" stroke="var(--uaLine)"
+                              stroke-opacity="0.62" stroke-width="1.3"/>
+                        <path d="M11 8 15.6 16.4 20 8l4.4 8.4L29 8" fill="none" stroke="var(--uaLine)"
+                              stroke-opacity="0.45" stroke-width="1.1"/>`
+                },
+                {
+                    id: 'wave', name: '流波', draw: (n) => `
+                        <circle cx="20" cy="20" r="16" fill="url(#uaG${n})" fill-opacity="0.24"/>
+                        <path d="M4.6 24.6c4-4.4 7.2-4.4 11.2 0s7.2 4.4 11.2 0 6-4.2 8.4-1.4"
+                              fill="none" stroke="url(#uaG${n})" stroke-width="3.4" stroke-linecap="round"/>
+                        <path d="M4.6 17.2c4-4.4 7.2-4.4 11.2 0s7.2 4.4 11.2 0 6-4.2 8.4-1.4"
+                              fill="none" stroke="var(--uaLine)" stroke-opacity="0.62" stroke-width="2.2"
+                              stroke-linecap="round"/>
+                        <circle cx="20" cy="20" r="15.2" fill="none" stroke="var(--uaLine)"
+                                stroke-opacity="0.45" stroke-width="1.4"/>`
+                },
+                {
+                    id: 'bloom', name: '花冠', draw: (n) => `
+                        ${[0, 60, 120, 180, 240, 300].map(a =>
+                        `<ellipse cx="20" cy="11.4" rx="4.3" ry="8" fill="url(#uaG${n})" fill-opacity="0.9"
+                                      transform="rotate(${a} 20 20)"/>`).join('')}
+                        <circle cx="20" cy="20" r="5" fill="url(#uaG${n})"/>
+                        <circle cx="20" cy="20" r="5" fill="url(#uaS${n})"/>
+                        <circle cx="20" cy="20" r="5" fill="none" stroke="var(--uaLine)"
+                                stroke-opacity="0.7" stroke-width="1.2"/>`
+                },
+                {
+                    id: 'pulse', name: '心跳', draw: (n) => `
+                        <circle cx="20" cy="20" r="15.4" fill="url(#uaG${n})" fill-opacity="0.2"/>
+                        <circle cx="20" cy="20" r="15.4" fill="none" stroke="url(#uaG${n})" stroke-width="2.6"/>
+                        <path d="M6.6 20.6h5.6l3-6.4 4.4 12.6 3.4-8.2 2.4 4h7.6"
+                              fill="none" stroke="url(#uaG${n})" stroke-width="2.8"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.6 20.6h5.6l3-6.4 4.4 12.6 3.4-8.2 2.4 4h7.6"
+                              fill="none" stroke="var(--uaLine)" stroke-opacity="0.55" stroke-width="1.1"
+                              stroke-linecap="round" stroke-linejoin="round"/>`
+                },
+                {
+                    id: 'crown', name: '皇冠', draw: (n) => `
+                        <path d="M5.4 13.6 12 21l8-12.6L28 21l6.6-7.4-2.6 17.8H8z" fill="url(#uaG${n})"/>
+                        <path d="M5.4 13.6 12 21l8-12.6L28 21l6.6-7.4-2.6 17.8H8z" fill="url(#uaS${n})"/>
+                        <rect x="8" y="32.6" width="24" height="3.4" rx="1.7" fill="url(#uaG${n})"/>
+                        <circle cx="5.4" cy="12.2" r="2.2" fill="url(#uaG${n})"/>
+                        <circle cx="34.6" cy="12.2" r="2.2" fill="url(#uaG${n})"/>
+                        <circle cx="20" cy="6.6" r="2.4" fill="url(#uaG${n})"/>`
+                }
+            ];
+
+            function avatarStyleById(id) {
+                return AVATAR_STYLES.find(x => x.id === id) || AVATAR_STYLES[0];
+            }
+
+            // 依風格 id 產生一個完整的頭像 SVG
+            function buildAvatarSvg(styleId) {
+                const n = ++userAvatarSeq;
+                const st = avatarStyleById(styleId);
+                return `<svg class="user-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`
+                    + avDefs(n) + st.draw(n) + `</svg>`;
+            }
+
+            /* ---------- 頭像選擇彈窗 ---------- */
+            let avatarEditingUserId = null;
+
+            function openAvatarPicker(userId) {
+                avatarEditingUserId = userId || activeUserId;
+                renderAvatarPicker();
+                const modal = document.getElementById('avatarPickerModal');
+                if (modal) {
+                    modal.present();
+                    if (typeof setupAllModalsDragToClose === 'function') setTimeout(setupAllModalsDragToClose, 100);
+                }
+            }
+
+            function renderAvatarPicker() {
+                const box = document.getElementById('avatarPickerGrid');
+                if (!box) return;
+                const u = userProfiles.find(x => x.id === avatarEditingUserId) || activeUser();
+                const cur = (u && u.avatarStyle) || 'tech';
+
+                const nameEl = document.getElementById('avatarPickerName');
+                if (nameEl && u) nameEl.textContent = u.name;
+
+                box.innerHTML = AVATAR_STYLES.map(st => `
+                    <div class="av-cell ${st.id === cur ? 'active' : ''}" data-style="${st.id}"
+                         onclick="pickAvatarStyle(this.dataset.style)">
+                        ${buildAvatarSvg(st.id)}
+                        <span>${st.name}</span>
+                    </div>`).join('');
+            }
+
+            function pickAvatarStyle(styleId) {
+                const u = userProfiles.find(x => x.id === avatarEditingUserId);
+                if (!u) return;
+                u.avatarStyle = styleId;
+                u.icon = '';                 // 選咗圖像風格就唔再用文字圖示
+                saveUserProfiles();
+                renderAvatarPicker();
+                renderUserList();
+                refreshUserAvatar();
+                refreshCardHolderName();
+                showToast(`頭像已換成「${avatarStyleById(styleId).name}」`, 'success');
+            }
+
+
+            /* ================================================
+               24. 記帳幣種：外幣輸入，自動折算為港元入帳
+               ================================================ */
+            /* 設計重點：records 裡的 amount 永遠是港元。
+               揀外幣時只是把輸入值折算後才寫入，另外保留
+               origCur / origAmt / origRate 三個欄位純作顯示，
+               所以統計、預算、信用卡同步等全部照舊運作。 */
+
+            // 目前「新增／修改開銷」視窗選用的輸入幣種
+            let entryCurrency = BASE_CURRENCY;
+
+            // 把某個幣種的金額折算成港元（匯率表以港元為基準：1 HKD = rate 外幣）
+            function fxToBase(amount, code) {
+                const n = Number(amount) || 0;
+                if (!code || code === BASE_CURRENCY) return n;
+                const r = Number(fxRates[code]);
+                if (!(r > 0)) return n;
+                return Math.round((n / r) * 100) / 100;
+            }
+
+            // 建立記帳視窗的幣種下拉選單
+            function renderEntryCurrencySelect() {
+                const sel = document.getElementById('expCurrencySelect');
+                if (!sel) return;
+                sel.innerHTML = CURRENCY_LIST.map(c =>
+                    `<option value="${c.code}">${c.code} ${escapeHtml(c.name)}</option>`
+                ).join('');
+                sel.value = entryCurrency;
+            }
+
+            // 切換輸入幣種：更新標籤、符號與換算提示
+            function setEntryCurrency(code) {
+                entryCurrency = CURRENCY_LIST.some(c => c.code === code) ? code : BASE_CURRENCY;
+
+                const sel = document.getElementById('expCurrencySelect');
+                if (sel) sel.value = entryCurrency;
+
+                const meta = currencyMeta(entryCurrency);
+
+                const label = document.getElementById('expCurLabel');
+                if (label) label.textContent = `(${entryCurrency})`;
+
+                const sym = document.getElementById('expCurSym');
+                if (sym) sym.textContent = meta.symbol;
+
+                updateEntryFxHint();
+            }
+
+            function onEntryCurrencyChanged() {
+                const sel = document.getElementById('expCurrencySelect');
+                setEntryCurrency(sel ? sel.value : BASE_CURRENCY);
+            }
+
+            /* 即時顯示「外幣 → 港元」的換算結果。
+               選港元時整條提示會收起，介面同以前一模一樣。 */
+            function updateEntryFxHint() {
+                const hint = document.getElementById('expFxHint');
+                if (!hint) return;
+
+                if (entryCurrency === BASE_CURRENCY) {
+                    hint.className = 'exp-fx-hint';
+                    hint.innerHTML = '';
+                    return;
+                }
+
+                const input = document.getElementById('finalAmountInput');
+                const amt = Number(input ? input.value : 0) || 0;
+                const rate = Number(fxRates[entryCurrency]);
+                const meta = currencyMeta(entryCurrency);
+
+                hint.className = 'exp-fx-hint show';
+
+                if (!(rate > 0)) {
+                    hint.innerHTML = `<span class="fx-stale">⚠️ 未有 ${entryCurrency} 匯率，請先在「使用者帳戶」內更新匯率；` +
+                        `現在儲存會按 1:1 入帳。</span>`;
+                    return;
+                }
+
+                const hkd = fxToBase(amt, entryCurrency);
+                hint.innerHTML =
+                    `💱 ${escapeHtml(meta.symbol)}${amt.toLocaleString()} ≈ <b>HK$${Math.round(hkd).toLocaleString()}</b>` +
+                    `　·　1 HK$ = ${rate.toFixed(4)} ${entryCurrency}` +
+                    (fxUpdatedAt ? `（匯率 ${escapeHtml(fxUpdatedAt)}）` : '') +
+                    `<br><span style="font-weight:700; opacity:0.85;">實際會以港元 HK$${Math.round(hkd).toLocaleString()} 入帳。</span>`;
+            }
+
+
+            /* ================================================
+               25. 快捷列展開面板
+               已經喺嗰頁時再撳一次同一個掣，就攤開該頁有咩功能可用。
+               ================================================ */
+            /* 每一項都係「留喺同一頁」的操作：開設定彈窗、重新整理資料等。
+               刻意唔放跳去第二頁嘅捷徑 —— 呢個面板係講「本頁有咩」，
+               唔係另一條導覽列。冇嘢好列嘅頁就唔會彈出面板。 */
+            const NAV_PANEL_ITEMS = {
+                home: [
+                    { icon: '\u{1F4B0}', label: '設定月薪收入', act: () => openIncomeModal() },
+                    { icon: '\u2795', label: '新增額外收入', act: () => openExtraIncomeModal() },
+                    { icon: '\u{1F4CC}', label: '固定每月支出', act: () => openFixedExpenseModal() },
+                    { icon: '\u{1F9EE}', label: '開啟計算機', act: () => openCalcModal() }
+                ],
+                expense: [
+                    { icon: '\u{1F9FE}', label: '新增一筆消費', act: () => openExpenseModal() },
+                    { icon: '\u{1F4B3}', label: '設定每月預算', act: () => openBudgetModal() },
+                    { icon: '\u{1F3F7}\uFE0F', label: '管理備註標籤', act: () => openTagManager('expense') },
+                    { icon: '\u2611\uFE0F', label: '多選 / 批次刪除', act: () => toggleMultiSelectMode() }
+                ],
+                savings: [
+                    { icon: '\u{1F3E6}', label: '新增儲蓄存款', act: () => openAddSavingsModal() },
+                    { icon: '\u{1F4C8}', label: '設定年利率', act: () => openSavingsPaModal() },
+                    { icon: '\u{1F504}', label: '更新市場利率', act: () => fetchTimeDepositRates() },
+                    { icon: '\u{1F4B1}', label: '更新外幣匯率', act: () => fetchFxRates() }
+                ],
+                loans: [
+                    { icon: '\u{1F4B3}', label: '新增借貸紀錄', act: () => openAddLoanModal() }
+                ],
+                calendar: [
+                    { icon: '\u{1F4CC}', label: '固定每月支出', act: () => openFixedExpenseModal() },
+                    { icon: '\u26A0\uFE0F', label: '設定分類上限', act: () => openCategoryLimitModal() }
+                ],
+                goals: [
+                    { icon: '\u{1F3AF}', label: '新增願望目標', act: () => openWishGoalModal() },
+                    { icon: '\u{1F4B0}', label: '為目標存錢', act: () => openGoalDepositModal() }
+                ],
+                stats: [
+                    { icon: '\u{1F947}', label: '消費分類佔比', act: () => statsGoChart(0) },
+                    { icon: '\u{1F4CA}', label: '本月每日花費', act: () => statsGoChart(1) },
+                    { icon: '\u{1F4C8}', label: '近 6 個月走勢', act: () => statsGoChart(2) },
+                    { icon: '\u26A0\uFE0F', label: '設定分類上限', act: () => openCategoryLimitModal() }
+                ]
+            };
+
+            function closeNavPanel() {
+                const p = document.getElementById('navPanel');
+                if (p) { p.classList.remove('show'); p.setAttribute('data-page', ''); }
+            }
+
+            /* 撳快捷列：未喺嗰頁就跳過去；已經喺嗰頁就開／關功能面板。 */
+            function navChipTap(pageKey) {
+                const panel = document.getElementById('navPanel');
+                if (currentPageKey !== pageKey) { switchPage(pageKey); return; }
+                if (!panel) return;
+
+                if (panel.classList.contains('show') && panel.getAttribute('data-page') === pageKey) {
+                    closeNavPanel();
+                    return;
+                }
+                openNavPanel(pageKey);
+            }
+
+            function openNavPanel(pageKey) {
+                const panel = document.getElementById('navPanel');
+                const items = NAV_PANEL_ITEMS[pageKey] || [];
+                if (!panel || !items.length) return;
+
+                panel.innerHTML =
+                    `<div class="nav-panel-title">本頁可用功能</div>` +
+                    `<div class="nav-panel-grid">` +
+                    items.map((it, i) =>
+                        `<button type="button" class="nav-panel-item" data-i="${i}">` +
+                        `<span class="npi-icon">${it.icon}</span>` +
+                        `<span class="npi-label">${escapeHtml(it.label)}</span>` +
+                        `</button>`
+                    ).join('') +
+                    `</div>`;
+
+                panel.querySelectorAll('.nav-panel-item').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const it = items[Number(btn.dataset.i)];
+                        closeNavPanel();
+                        if (it && typeof it.act === 'function') {
+                            try { it.act(); } catch (e) { showToast('呢個功能暫時開唔到', 'warning'); }
+                        }
+                    });
+                });
+
+                panel.setAttribute('data-page', pageKey);
+                panel.classList.add('show');
+            }
+
+            /* ================================================
+               26. 使用者名稱：只准英文同數字，上限 25 個字元
+               ================================================ */
+            const USER_NAME_MAX = 25;
+
+            /* 只保留 A-Z a-z 0-9 同空格；標點、符號、中文一律隔走。
+               連續空格會併埋一個，前後空白剪走。 */
+            function sanitizeUserName(raw) {
+                return String(raw || '')
+                    .replace(/[^A-Za-z0-9 ]/g, '')
+                    .replace(/ {2,}/g, ' ')
+                    .trim()
+                    .slice(0, USER_NAME_MAX);
+            }
+
+            /* 驗證並回報：回傳乾淨名稱，唔合格就出提示並回傳空字串 */
+            function validateUserName(raw) {
+                const original = String(raw || '').trim();
+                if (!original) { showToast('請輸入帳戶名稱', 'warning'); return ''; }
+
+                const clean = sanitizeUserName(original);
+                if (!clean) { showToast('名稱只可以用英文字母同數字', 'warning'); return ''; }
+                if (original.length > USER_NAME_MAX) {
+                    showToast(`名稱最多 ${USER_NAME_MAX} 個字元，已自動截短`, 'warning');
+                } else if (clean !== original) {
+                    showToast('已移除唔支援的符號，只保留英文同數字', 'warning');
+                }
+                return clean;
+            }
+
+            /* 把當前帳戶名稱寫入每張卡片卡號下面嗰行。
+               改名、切換帳戶、重新渲染卡片時都會叫一次。 */
+            function refreshCardHolderName() {
+                const u = activeUser();
+                const name = sanitizeUserName(u ? u.name : '') || 'CARD HOLDER';
+                document.querySelectorAll('.card-holder-name').forEach(el => {
+                    el.textContent = name.toUpperCase();
+                });
+            }
+
+
+            /* 撳一下消費明細上的時間標籤就可以改。
+               只接受 HH:MM（24 小時制），輸入唔啱會原封不動。 */
+            async function promptEditRecordTime(recordId) {
+                const rec = records.find(r => r.id === recordId);
+                if (!rec) return;
+
+                const alertEl = document.createElement('ion-alert');
+                alertEl.cssClass = 'custom-danger-alert';
+                alertEl.header = '修改消費時間';
+                alertEl.message = `「${escapeHtml(rec.title)}」· ${escapeHtml(rec.date || '')}`;
+                alertEl.inputs = [
+                    {
+                        name: 'time', type: 'time',
+                        value: /^\d{2}:\d{2}$/.test(rec.time || '') ? rec.time : '12:00'
+                    }
+                ];
+                alertEl.buttons = [
+                    { text: '取消', role: 'cancel' },
+                    {
+                        text: '儲存',
+                        handler: (data) => {
+                            const raw = String(data.time || '').trim();
+                            // <input type="time"> 有機會回傳 HH:MM:SS，剪返頭五個字
+                            const val = raw.slice(0, 5);
+                            if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(val)) {
+                                showToast('時間格式應為 HH:MM', 'warning');
+                                return false;
+                            }
+                            rec.time = val;
+                            saveData();
+                            renderUI();
+                            showToast(`時間已改為 ${val}`, 'success');
+                        }
+                    }
+                ];
+                document.body.appendChild(alertEl);
+                await alertEl.present();
+            }
+
+
+            /* ================================================
+               27. 首頁總覽內容 + 設定分組展開
+               ================================================ */
+
+            // 設定彈窗內：撳標題展開／收合該組設定（一次只開一組）
+            function toggleSetGroup(id) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const willOpen = !el.classList.contains('open');
+                document.querySelectorAll('.set-group').forEach(g => g.classList.remove('open'));
+                if (willOpen) el.classList.add('open');
+            }
+
+            /* 首頁「本月概要」同「最近消費」。
+               資料全部由現有陣列即場計，唔會另外儲存。 */
+            function renderHomePanels() {
+                const ym = getCurrentYearMonth();
+
+                const label = document.getElementById('homeMonthLabel');
+                if (label) label.textContent = ym.replace('-', ' 年 ') + ' 月';
+
+                let spent = 0, count = 0;
+                records.forEach(r => {
+                    if (r.date && r.date.startsWith(ym)) { spent += (Number(r.amount) || 0); count++; }
+                });
+
+                let extra = 0;
+                extraIncomeRecords.forEach(i => {
+                    if (i.date && i.date.startsWith(ym)) extra += (Number(i.amount) || 0);
+                });
+
+                let due = 0;
+                loanRecords.forEach(l => {
+                    if (Math.max(0, l.totalAmount - l.repaidAmount) > 0) due += (Number(l.monthlyAmount) || 0);
+                });
+
+                const income = (Number(monthlyIncome) || 0) + extra;
+                const left = budgetLimit > 0 ? budgetLimit - spent : null;
+                const d = new Date();
+                const daysInMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+                const daysLeft = Math.max(0, daysInMonth - d.getDate());
+                const perDay = (left !== null && daysLeft > 0) ? left / daysLeft : null;
+
+                const grid = document.getElementById('homeSummaryGrid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div class="np-kv">
+                            <div class="np-kv-label">🧾 本月開銷</div>
+                            <div class="np-kv-value" style="color:#dc2626;">${money(spent)}</div>
+                            <div class="np-kv-sub">共 ${count} 筆消費記錄</div>
+                        </div>
+                        <div class="np-kv">
+                            <div class="np-kv-label">💰 本月收入</div>
+                            <div class="np-kv-value" style="color:#047857;">${money(income)}</div>
+                            <div class="np-kv-sub">月薪連額外收入</div>
+                        </div>
+                        <div class="np-kv">
+                            <div class="np-kv-label">💳 每月還款</div>
+                            <div class="np-kv-value" style="color:#7c3aed;">${money(due)}</div>
+                            <div class="np-kv-sub">尚未清還的借貸月供</div>
+                        </div>
+                        <div class="np-kv">
+                            <div class="np-kv-label">🎯 預算剩餘</div>
+                            <div class="np-kv-value" style="color:${left === null ? '#64748b' : (left < 0 ? '#dc2626' : '#b45309')};">
+                                ${left === null ? '未設定' : money(left)}
+                            </div>
+                            <div class="np-kv-sub">${perDay !== null && perDay >= 0
+                            ? `餘 ${daysLeft} 日，日均可用 ${money(perDay)}`
+                            : (left === null ? '喺快捷操作設定每月預算' : '已超出本月預算')}</div>
+                        </div>`;
+                }
+
+                const box = document.getElementById('homeRecentPanel');
+                if (box) {
+                    const recent = records.slice().sort((a, b) =>
+                        String(b.date).localeCompare(String(a.date)) ||
+                        (Number(b.id) || 0) - (Number(a.id) || 0)
+                    ).slice(0, 5);
+
+                    box.innerHTML = recent.length === 0
+                        ? `<div class="np-empty">尚未有任何消費記錄<br><span style="font-size:11.5px;">用上面「記一筆消費」開始</span></div>`
+                        : recent.map(r => {
+                            const cat = CATEGORY_MAP[r.category] || CATEGORY_MAP['其他'];
+                            return `
+                                <div class="home-recent-row">
+                                    <span class="home-recent-dot" style="background:${cat.color};"></span>
+                                    <span>
+                                        <span class="home-recent-name">${escapeHtml(r.title)}</span>
+                                        <span class="home-recent-sub" style="display:block;">${escapeHtml(r.date || '')}${r.time ? ' · ' + escapeHtml(r.time) : ''}</span>
+                                    </span>
+                                    <span class="home-recent-amt">${money(Number(r.amount) || 0)}</span>
+                                </div>`;
+                        }).join('');
+                }
+            }
+
             /* ================================================
                19.F 啟動：建立疊層卡片、綁定手勢、初次渲染
                ================================================ */
             window.addEventListener('DOMContentLoaded', () => {
                 buildHubStack();
                 refreshUserAvatar();
+                refreshCardHolderName();
                 refreshCurrencySymbols();
+                renderEntryCurrencySelect();
                 renderAllNoteTagRows();
                 if (!fxUpdatedAt || fxUpdatedAt !== new Date().toISOString().split('T')[0]) {
                     fetchFxRates(true).then(() => { updateCalcFxHint(); if (currencyCode !== BASE_CURRENCY) renderUI(); });
@@ -15657,6 +18278,18 @@
                 renderGoalsPage();
                 renderStatsPage();
                 switchPage('home');
+
+                // 微互動：金融卡跟手指 3D 傾斜
+                initCardTilt();
+                initLockSafetyNet();
+
+                // 預設收埋喺側邊，輕觸卡夾先展開
+                setHubCollapsed(true);
+                setHubSide(hubSide);
+
+                // 開啟時檢查本月預算用量
+                setTimeout(checkBudgetAlert, 400);
+
                 setTimeout(syncTopPadding, 350);
                 window.addEventListener('resize', () => setTimeout(syncTopPadding, 60));
             });
