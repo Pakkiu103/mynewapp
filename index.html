@@ -6293,12 +6293,12 @@
            結尾 2.42s，啱啱喺 2.45s 放大交棒之前收乾淨。 */
 
         .ns-go .ns-word span{transform-origin:50% 55%;
-            animation:nsShine calc(.46s*var(--k)) cubic-bezier(.3,.9,.35,1) both}
-        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.560s*var(--k))}
-        .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.670s*var(--k))}
-        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.780s*var(--k))}
-        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.890s*var(--k))}
-        .ns-go .ns-word span:nth-child(5){animation-delay:calc(2.000s*var(--k))}
+            animation:nsShine calc(.40s*var(--k)) cubic-bezier(.3,.9,.35,1) both}
+        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.580s*var(--k))}
+        .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.665s*var(--k))}
+        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.750s*var(--k))}
+        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.835s*var(--k))}
+        .ns-go .ns-word span:nth-child(5){animation-delay:calc(1.920s*var(--k))}
         .ns-go{animation:nsZoom calc(.35s*var(--k)) cubic-bezier(.6,0,.9,.55) calc(2.45s*var(--k)) forwards}
 
         @keyframes nsIris{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(78% at 50% 50%)}}
@@ -6321,12 +6321,12 @@
         @keyframes nsShine{
             0%{background-position:150% 0,0 0;transform:scale(1);
                filter:drop-shadow(0 0 0 rgba(255,246,218,0))}
-            38%{background-position:30% 0,0 0;transform:scale(1.22);
-                filter:drop-shadow(0 0 3px rgba(255,255,255,1))
-                       drop-shadow(0 0 12px rgba(255,255,255,.9))
-                       drop-shadow(0 0 30px rgba(255,246,218,.9))
-                       drop-shadow(0 0 60px rgba(233,200,110,.75))}
-            62%{transform:scale(1.06)}
+            38%{background-position:30% 0,0 0;transform:scale(1.32);
+                filter:drop-shadow(0 0 4px rgba(255,255,255,1))
+                       drop-shadow(0 0 16px rgba(255,255,255,1))
+                       drop-shadow(0 0 40px rgba(255,246,218,1))
+                       drop-shadow(0 0 78px rgba(233,200,110,.9))}
+            62%{transform:scale(1.09)}
             100%{background-position:-60% 0,0 0;transform:scale(1);
                  filter:drop-shadow(0 0 0 rgba(255,246,218,0))}}
         @keyframes nsZoom{to{opacity:0;transform:scale(1.4)}}
@@ -7787,6 +7787,19 @@
             opacity: 0;
             transform: translateX(calc(var(--dir) * 176px)) translateY(calc(72px + var(--i, 0) * 7px))
                 rotate(calc(var(--dir) * 7deg)) scale(0.34) !important;
+        }
+
+        /* 🔑 錢包收埋咗嘅時候，把卡片組完全由版面移走。
+           收埋狀態下卡片係 opacity:0，睇唔到，但佢哋依然佔住
+           由頂部一直落到大半個畫面嘅範圍（stack 高度 600px 以上）。
+           pointer-events:none 只擋得住點擊，擋唔到 iOS 用嚟決定
+           捲動歸邊嘅命中測試 —— 結果就係畫面中上部撥極都唔郁，
+           淨係卡片組以外嘅位置（底部導覽附近）捲得到。
+           display:none 之後嗰塊區域先真正還返俾頁面。
+           收合動畫途中（gather / tuck）唔可以隱藏，否則會冇動畫。 */
+        #hubFixedArea:not(.open):not(.gather):not(.tuck) #hubCardStack,
+        #hubFixedArea:not(.open):not(.gather):not(.tuck) .hub-close {
+            display: none !important;
         }
 
         /* ---------- 側邊卡夾 ---------- */
@@ -14886,7 +14899,14 @@
                     const h = inner ? inner.getBoundingClientRect().height : 0;
                     if (h > H) H = h;
                 });
-                if (H < 80) H = 246;   // 收起時量唔到高度，用預設值
+                /* 收埋咗嘅時候 stack 係 display:none，量唔到真高度。
+                   照計落去會用預設值覆蓋咗之前算好嘅排位，
+                   所以直接返回 —— 展開嗰刻會再量一次。 */
+                if (H < 80) {
+                    const area = document.getElementById('hubFixedArea');
+                    if (area && !area.classList.contains('open')) return;
+                    H = 246;   // 真係量唔到先用預設值
+                }
 
                 /* 露出高度：以卡片一半為目標，但唔可以疊到超出畫面。
                    位唔夠就自動收窄，最少都要見到卡頂 46px。 */
