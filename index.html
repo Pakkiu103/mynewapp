@@ -11426,14 +11426,15 @@
                     if (typeof setHubCollapsed === 'function' && !hubCollapsed) setHubCollapsed(true);
                 } catch (e) { }
 
-                // 關掉其他已經開住嘅 modal
-                document.querySelectorAll('ion-modal').forEach(m => {
-                    if (m !== modal && m.isOpen !== false && m.classList.contains('custom-bottom-modal')) {
-                        try {
-                            const open = m.shadowRoot && m.shadowRoot.querySelector('.modal-wrapper');
-                            if (open) m.dismiss();
-                        } catch (e) { }
-                    }
+                /* 關掉其他真係開緊嘅 modal。
+                   ⚠️ 唔可以用 shadowRoot 入面有冇 .modal-wrapper 嚟判斷 ——
+                   嗰個 wrapper 由頭到尾都存在，用佢判斷等於每次都向
+                   全部 modal 派 dismiss()，會搞亂 Ionic 嘅捲動鎖計數。
+                   要用 Ionic 自己嘅 .overlay-hidden 標記。 */
+                document.querySelectorAll('ion-modal.custom-bottom-modal').forEach(m => {
+                    if (m === modal) return;
+                    if (m.classList.contains('overlay-hidden')) return;   // 根本冇開
+                    try { m.dismiss(); } catch (e) { }
                 });
 
                 if (!modal || !modal.classList || !modal.classList.contains('custom-bottom-modal')) return;
@@ -14971,10 +14972,28 @@
                 hubBusy = false;
             }
 
+            /* Ionic 每次有 overlay 彈出就會喺 <body> 加 .backdrop-no-scroll，
+               關閉時再除返。只要有一次冇成對，成個 App 就捲唔郁。
+               呢度確認冇任何 overlay 開緊之後，主動幫佢除返。 */
+            const OVERLAY_TAGS =
+                'ion-modal, ion-alert, ion-action-sheet, ion-popover, ion-picker, ion-loading, ion-toast';
+
+            function anyOverlayOpen() {
+                return Array.from(document.querySelectorAll(OVERLAY_TAGS))
+                    .some(el => !el.classList.contains('overlay-hidden'));
+            }
+
+            function healScrollLock() {
+                if (anyOverlayOpen()) return;      // 真係有嘢開緊，唔好郁
+                document.querySelectorAll('.backdrop-no-scroll')
+                    .forEach(el => el.classList.remove('backdrop-no-scroll'));
+            }
+
             /* 自我修復：如果狀態講緊「已收埋」但畫面上仲留住 .open，
                即係有一次收合中途爆咗，即刻夾正佢。
                覆蓋層鋪滿全螢幕，卡住嘅代價太大，所以寧枉勿縱。 */
             function hubHealthCheck() {
+                healScrollLock();                  // 順手清走殘留嘅捲動鎖
                 const el = document.getElementById('hubFixedArea');
                 if (!el) return;
                 if (hubCollapsed && el.classList.contains('open')) hubFinishCollapse(el);
@@ -18159,6 +18178,20 @@
                 ['pointercancel', 'touchcancel'].forEach(ev => {
                     window.addEventListener(ev, () => setTimeout(releaseHubLocks, 60), { passive: true });
                 });
+
+                /* 每個 overlay 收埋之後都驗一次捲動鎖。
+                   Ionic 有時會漏低 .backdrop-no-scroll，
+                   一漏低成個 App 就捲唔郁。 */
+                ['ionModalDidDismiss', 'ionAlertDidDismiss', 'ionActionSheetDidDismiss',
+                    'ionPopoverDidDismiss', 'ionPickerDidDismiss', 'ionLoadingDidDismiss']
+                    .forEach(ev => {
+                        document.addEventListener(ev, () => setTimeout(healScrollLock, 120));
+                    });
+
+                // 收埋錢包之後亦檢查一次
+                document.addEventListener('touchstart', () => {
+                    if (document.querySelector('.backdrop-no-scroll')) healScrollLock();
+                }, { passive: true });
 
                 /* 由背景切返出嚟時，被節流嘅計時器可能已經丟失，
                    所以一返到前台就即刻檢查錢包狀態。 */
