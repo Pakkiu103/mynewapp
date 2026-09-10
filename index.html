@@ -6243,7 +6243,7 @@
         .ns-word span{display:inline-block;
             background:linear-gradient(180deg,#fff6da 0%,#e9c86e 48%,#b8891f 100%);
             -webkit-background-clip:text;background-clip:text;color:transparent}
-        .ns-tag{font-size:clamp(14px,4.6vw,18px);letter-spacing:.34em;text-indent:.34em;color:#a3853f;
+        .ns-tag{font-size:clamp(12px,4.1vw,16px);letter-spacing:.34em;text-indent:.34em;color:#a3853f;
             opacity:0;margin-top:-4px;white-space:pre;font-family:system-ui,-apple-system,sans-serif}
 
         /* 時間軸（--k = 1.14 → 全長 3.2 秒）
@@ -11517,6 +11517,7 @@
                 currentPageKey = pageKey;
                 syncNavStrip(pageKey);
                 setPageScroll(true);   // 換頁一律確保捲動可用
+                if (typeof hubHealthCheck === 'function') hubHealthCheck();
                 if (typeof homeFanClose === 'function' && pageKey !== 'home') homeFanClose();
 
                 // 首頁四張卡共用同一個疊層卡片架；其他分頁把它收起來
@@ -14906,7 +14907,11 @@
                 releaseHubLocks();      // 開或合，一律先清走所有鎖（冇鎖就自動略過）
 
                 if (!collapsed) {
-                    if (hubBusy) return;
+                    /* 唔再因為 hubBusy 就唔開 —— 取消上一次未做完嘅收合即可。
+                       之前撞到 hubBusy 就直接 return，一旦 hubBusy 卡住咗
+                       就永遠開唔返。 */
+                    hubClearTimers();
+                    hubBusy = false;
                     hubCollapsed = false;
                     hubAutoLock = Date.now();
                     area.classList.remove('gather', 'tuck');
@@ -14919,8 +14924,9 @@
                     return;
                 }
 
-                if (hubBusy || !area.classList.contains('open')) {
-                    hubCollapsed = true;
+                if (!area.classList.contains('open')) {
+                    // 已經係收埋狀態，順手清乾淨殘留 class
+                    hubFinishCollapse(area);
                     return;
                 }
 
@@ -14928,19 +14934,50 @@
                    想換頁就撳卡片 —— 喺其他頁隨手收個錢包
                    就被拉走去第二頁，好唔合理。 */
 
+                hubClearTimers();          // 取消上一次未做完嘅收合，唔好互相卡住
                 hubBusy = true;
                 hubCollapsed = true;
                 hubAutoLock = Date.now();
 
                 area.classList.add('gather');
-                setTimeout(() => {
+
+                hubTimers.push(setTimeout(() => {
                     area.classList.add('tuck');
                     area.classList.remove('open');
-                    setTimeout(() => {
-                        area.classList.remove('gather', 'tuck');
-                        hubBusy = false;
-                    }, 420);
-                }, 250);
+                    hubTimers.push(setTimeout(() => hubFinishCollapse(area), 420));
+                }, 250));
+
+                /* 看門狗：無論上面兩個計時器發生咩事（PWA 節流、切走
+                   App、系統手勢打斷），1.2 秒後一定強制收尾。
+                   寧願動畫跳格，都好過成個畫面卡死撳唔到。 */
+                hubTimers.push(setTimeout(() => hubFinishCollapse(area), 1200));
+            }
+
+            // 收合動畫用嘅計時器，方便隨時取消
+            let hubTimers = [];
+            function hubClearTimers() {
+                hubTimers.forEach(t => clearTimeout(t));
+                hubTimers = [];
+            }
+
+            /* 強制把錢包帶返一個乾淨嘅收埋狀態。
+               呢個 function 可以重複叫，唔會有副作用。 */
+            function hubFinishCollapse(area) {
+                const el = area || document.getElementById('hubFixedArea');
+                if (!el) { hubBusy = false; return; }
+                hubClearTimers();
+                el.classList.remove('open', 'gather', 'tuck', 'dragging', 'settling');
+                hubCollapsed = true;
+                hubBusy = false;
+            }
+
+            /* 自我修復：如果狀態講緊「已收埋」但畫面上仲留住 .open，
+               即係有一次收合中途爆咗，即刻夾正佢。
+               覆蓋層鋪滿全螢幕，卡住嘅代價太大，所以寧枉勿縱。 */
+            function hubHealthCheck() {
+                const el = document.getElementById('hubFixedArea');
+                if (!el) return;
+                if (hubCollapsed && el.classList.contains('open')) hubFinishCollapse(el);
             }
 
             /* 頁面往上捲動時自動收埋錢包，讓內容用到整個畫面。 */
@@ -18122,6 +18159,14 @@
                 ['pointercancel', 'touchcancel'].forEach(ev => {
                     window.addEventListener(ev, () => setTimeout(releaseHubLocks, 60), { passive: true });
                 });
+
+                /* 由背景切返出嚟時，被節流嘅計時器可能已經丟失，
+                   所以一返到前台就即刻檢查錢包狀態。 */
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) setTimeout(hubHealthCheck, 60);
+                });
+                window.addEventListener('focus', () => setTimeout(hubHealthCheck, 60));
+                window.addEventListener('pageshow', () => setTimeout(hubHealthCheck, 60));
                 window.addEventListener('blur', releaseHubLocks);
                 document.addEventListener('visibilitychange', () => {
                     if (document.hidden) releaseHubLocks();
