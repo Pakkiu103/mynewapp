@@ -4759,11 +4759,17 @@
            ================================================================ */
 
         /* ---------- 20.1 首頁疊層卡片 ---------- */
-        /* 🔒 卡片區完全唔接受任何方向嘅瀏覽器預設手勢，
-              上下撥動由 JS 自己處理，橫向手勢一律無效。 */
-        .hub-fixed-area,
-        .hub-fixed-area * {
-            touch-action: none !important;
+        /* ⚠️ 呢條規則以前係 touch-action: none —— 嗰時 .hub-fixed-area
+           只係頂部一格卡片區，封鎖手勢冇問題。但錢包改成覆蓋層之後，
+           佢變成 position:fixed; inset:0，即係鋪滿成個畫面。
+           touch-action 唔受 pointer-events:none 影響，所以就算層嘢
+           點都撳唔到，佢照樣封鎖晒全螢幕嘅捲動手勢 —— 呢個就係
+           「錢包用完之後成頁捲唔郁」嘅真正原因。
+
+           收埋狀態一律放行；展開狀態先封鎖，而且只封卡片組
+           （見下面 #hubFixedArea.open #hubCardStack 嗰組規則）。 */
+        .hub-fixed-area {
+            touch-action: auto !important;
         }
 
         .hub-fixed-area {
@@ -6238,8 +6244,21 @@
         .ns-icon{width:100%;height:100%;display:block;object-fit:contain}
         .ns-glow{position:absolute;inset:-16%;border-radius:50%;
             background:radial-gradient(circle,rgba(233,200,110,.32) 0%,transparent 62%);opacity:0;pointer-events:none}
-        .ns-word{display:flex;letter-spacing:.42em;text-indent:.42em;font-size:clamp(21px,6.6vw,29px);
+        .ns-word{position:relative;display:flex;letter-spacing:.42em;text-indent:.42em;
+            font-size:clamp(21px,6.6vw,29px);
             font-weight:600;opacity:0;font-family:system-ui,-apple-system,sans-serif}
+        /* 一條真正嘅光柱，由左掃到右略過五隻字。
+           screen 混合模式令佢好似光線射過，而唔係一塊白色遮住個字。 */
+        .ns-word::after{content:'';position:absolute;top:-45%;bottom:-45%;width:16%;
+            left:-25%;pointer-events:none;opacity:0;
+            background:linear-gradient(90deg,
+                transparent 0%,
+                rgba(255,246,218,.35) 28%,
+                rgba(255,255,255,.98) 50%,
+                rgba(255,246,218,.35) 72%,
+                transparent 100%);
+            filter:blur(5px);mix-blend-mode:screen;
+            transform:skewX(-14deg)}
         /* 兩層背景都剪成字形：
              上層 = 一條窄白光帶，靠移動 background-position 掃過字身
              下層 = 原本嘅金色漸變
@@ -6247,11 +6266,11 @@
         .ns-word span{display:inline-block;
             background-image:
                 linear-gradient(100deg,
-                    transparent 30%,
-                    rgba(255,255,255,.35) 42%,
+                    transparent 22%,
+                    rgba(255,255,255,.55) 38%,
                     rgba(255,255,255,1) 50%,
-                    rgba(255,255,255,.35) 58%,
-                    transparent 70%),
+                    rgba(255,255,255,.55) 62%,
+                    transparent 78%),
                 linear-gradient(180deg,#fff6da 0%,#e9c86e 48%,#b8891f 100%);
             background-size:320% 100%,100% 100%;
             background-position:150% 0,0 0;
@@ -6281,6 +6300,7 @@
         .ns-go .ns-tag{animation:nsTagIn calc(.45s*var(--k)) ease calc(1.5s*var(--k)) both}
         /* 光掃：五個字母各自延遲 75ms 觸發，形成由左至右略過嘅光線。
            結尾 2.42s，啱啱喺 2.45s 放大交棒之前收乾淨。 */
+        .ns-go .ns-word::after{animation:nsBeam calc(.86s*var(--k)) cubic-bezier(.4,0,.3,1) calc(1.56s*var(--k)) both}
         .ns-go .ns-word span{animation:nsShine calc(.52s*var(--k)) cubic-bezier(.35,0,.25,1) both}
         .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.600s*var(--k))}
         .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.670s*var(--k))}
@@ -6297,13 +6317,22 @@
         @keyframes nsSpread{from{opacity:0;letter-spacing:-.12em;text-indent:-.12em;transform:scale(.92)}
                             to{opacity:1;letter-spacing:.42em;text-indent:.42em;transform:none}}
         @keyframes nsTagIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-        /* 光帶由字嘅右外側掃到左外側（視覺上係光線略過），
-           途中用 drop-shadow 令光由筆畫射出嚟，完結時完全歸零。 */
+        /* 光柱橫越成個字組 */
+        @keyframes nsBeam{
+            0%{left:-25%;opacity:0}
+            12%{opacity:1}
+            88%{opacity:1}
+            100%{left:112%;opacity:0}}
+
+        /* 每隻字喺光柱掃到嗰陣，筆畫本身亮起並向外射光。
+           drop-shadow 疊三層：貼身白光、中距暖白、遠距金光。 */
         @keyframes nsShine{
             0%{background-position:150% 0,0 0;
                filter:drop-shadow(0 0 0 rgba(255,246,218,0))}
-            45%{filter:drop-shadow(0 0 10px rgba(255,246,218,.95))
-                      drop-shadow(0 0 26px rgba(233,200,110,.7))}
+            42%{background-position:20% 0,0 0;
+                filter:drop-shadow(0 0 4px rgba(255,255,255,1))
+                       drop-shadow(0 0 16px rgba(255,246,218,.95))
+                       drop-shadow(0 0 40px rgba(233,200,110,.85))}
             100%{background-position:-60% 0,0 0;
                  filter:drop-shadow(0 0 0 rgba(255,246,218,0))}}
         @keyframes nsZoom{to{opacity:0;transform:scale(1.4)}}
@@ -19350,7 +19379,10 @@
                用 toast 而唔用 alert —— ion-toast 唔會加 backdrop-no-scroll，
                所以量到嘅係「冇 modal 狀態下」嘅真實情況。 */
             function initTitleDiagnostic() {
-                const title = document.getElementById('pageHeaderTitle');
+                /* 掛喺成條標題列而唔係嗰隻字 —— 標題文字範圍好窄，
+                   而且中間有其他掣，好難按得中。 */
+                const title = document.querySelector('.my-custom-header') ||
+                    document.getElementById('pageHeaderTitle');
                 if (!title) return;
                 let timer = null;
 
