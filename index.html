@@ -6252,6 +6252,7 @@
            0.52-1.32  icon 光環擴散浮現
            1.05-1.65  NOVUS 展開
            1.50-1.95  標語墊底
+           1.64-2.36  一道光由左至右掃過 N-O-V-U-S（乘 --k 後約 1.87-2.69s）
            1.95-2.45  停留（icon 光暈呼吸）
            2.45-2.80  穿透式放大交棒俾 app        */
         .ns-go .ns-iconwrap{opacity:1;animation:nsIris calc(.8s*var(--k)) cubic-bezier(.45,0,.2,1) calc(.52s*var(--k)) both}
@@ -6264,6 +6265,14 @@
         .ns-go .ns-rings i:nth-child(3){animation-delay:calc(.76s*var(--k))}
         .ns-go .ns-word{animation:nsSpread calc(.6s*var(--k)) cubic-bezier(.2,.9,.3,1.06) calc(1.05s*var(--k)) both}
         .ns-go .ns-tag{animation:nsTagIn calc(.45s*var(--k)) ease calc(1.5s*var(--k)) both}
+        /* 光掃：五個字母各自延遲 75ms 觸發，形成由左至右略過嘅光線。
+           結尾 2.42s，啱啱喺 2.45s 放大交棒之前收乾淨。 */
+        .ns-go .ns-word span{animation:nsShine calc(.42s*var(--k)) ease-out both}
+        .ns-go .ns-word span:nth-child(1){animation-delay:calc(1.640s*var(--k))}
+        .ns-go .ns-word span:nth-child(2){animation-delay:calc(1.715s*var(--k))}
+        .ns-go .ns-word span:nth-child(3){animation-delay:calc(1.790s*var(--k))}
+        .ns-go .ns-word span:nth-child(4){animation-delay:calc(1.865s*var(--k))}
+        .ns-go .ns-word span:nth-child(5){animation-delay:calc(1.940s*var(--k))}
         .ns-go{animation:nsZoom calc(.35s*var(--k)) cubic-bezier(.6,0,.9,.55) calc(2.45s*var(--k)) forwards}
 
         @keyframes nsIris{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(78% at 50% 50%)}}
@@ -6274,6 +6283,12 @@
         @keyframes nsSpread{from{opacity:0;letter-spacing:-.12em;text-indent:-.12em;transform:scale(.92)}
                             to{opacity:1;letter-spacing:.42em;text-indent:.42em;transform:none}}
         @keyframes nsTagIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+        /* 亮度提升配合暖白光暈，收返嗰陣完全歸零，唔會殘留 */
+        @keyframes nsShine{
+            0%{filter:brightness(1);text-shadow:none}
+            38%{filter:brightness(2.15) saturate(.72);
+                text-shadow:0 0 14px rgba(255,246,218,.95),0 0 38px rgba(233,200,110,.6)}
+            100%{filter:brightness(1);text-shadow:none}}
         @keyframes nsZoom{to{opacity:0;transform:scale(1.4)}}
 
         @media (prefers-reduced-motion:reduce){
@@ -6471,6 +6486,15 @@
         .dark-theme .home-fan::after {
             border-right-color: rgba(245, 158, 11, 0.4);
             border-bottom-color: rgba(245, 158, 11, 0.4);
+        }
+
+        /* 診斷框：保留換行，字體細啲好讀啲 */
+        .diag-alert .alert-message {
+            white-space: pre-line;
+            text-align: left;
+            font-size: 12px;
+            line-height: 1.7;
+            font-family: ui-monospace, Menlo, 'Courier New', monospace;
         }
 
         /* ---------- 頁頂金額摘要條 ---------- */
@@ -11427,17 +11451,11 @@
                     if (typeof setHubCollapsed === 'function' && !hubCollapsed) setHubCollapsed(true);
                 } catch (e) { }
 
-                /* 關掉其他真係開緊嘅 modal。
-                   ⚠️ 唔可以靠 DOM 上面嘅 class 去估邊個開緊：
-                   .modal-wrapper 由頭到尾都存在，而 .overlay-hidden
-                   要關閉過一次先會有 —— 兩者都會令未彈過嘅 modal
-                   被誤判，然後收到多餘嘅 dismiss()，搞亂 Ionic
-                   嘅捲動鎖計數。所以改用自己維護嘅 openOverlays。 */
-                openOverlays.forEach(m => {
-                    if (m === modal || !m.isConnected) return;
-                    if (m.tagName !== 'ION-MODAL') return;
-                    try { m.dismiss(); } catch (e) { }
-                });
+                /* 「同時只開一個 modal」已改由 initSingleModalPolicy() 處理：
+                   在 present() 之前 await 舊 modal 關閉完成。
+                   不可以在這裡派 dismiss() —— 此時 Ionic 已經替新 modal
+                   加了捲動鎖計數，再對舊 modal 做非同步關閉，兩個生命
+                   週期會重疊，計數器便會失衡。 */
 
                 if (!modal || !modal.classList || !modal.classList.contains('custom-bottom-modal')) return;
                 const wrapper = modal.shadowRoot ? modal.shadowRoot.querySelector('.modal-wrapper') : null;
@@ -15002,8 +15020,16 @@
             }
 
             function anyOverlayOpen() {
-                // 順手清走已經由 DOM 移除嘅殘留紀錄
-                openOverlays.forEach(el => { if (!el.isConnected) openOverlays.delete(el); });
+                /* 清走已經唔算開緊嘅紀錄：
+                   已離開 DOM 嘅，同埋 Ionic 已經標記咗 .overlay-hidden 嘅。
+                   單靠自己個 Set 有機會同真實狀態脫節（例如關閉動畫
+                   中途被打斷），加呢層對照就唔會誤判成「仲有嘢開緊」
+                   而永遠唔肯解鎖。 */
+                openOverlays.forEach(el => {
+                    if (!el.isConnected || el.classList.contains('overlay-hidden')) {
+                        openOverlays.delete(el);
+                    }
+                });
                 return openOverlays.size > 0;
             }
 
@@ -15062,10 +15088,14 @@
                 hubHealthCheck();
                 setPageScroll(true);
 
+                lines.push('');
+                lines.push('已即場嘗試解除所有已知的鎖。');
+
                 const alertEl = document.createElement('ion-alert');
-                alertEl.cssClass = 'custom-danger-alert';
+                // Ionic 預設會逃逸 HTML，所以唔可以用 <br>，要靠 pre-line 換行
+                alertEl.cssClass = 'custom-danger-alert diag-alert';
                 alertEl.header = '🩺 捲動診斷';
-                alertEl.message = lines.join('<br>') + '<br><br>已即場嘗試解除所有已知的鎖。';
+                alertEl.message = lines.join('\n');
                 alertEl.buttons = ['知道了'];
                 document.body.appendChild(alertEl);
                 await alertEl.present();
@@ -19285,6 +19315,66 @@
                 }, true);
             }
 
+
+            /* ================================================
+               30. 同時只開一個 Modal（安全版本）
+               ================================================
+               上一版係喺 ionModalWillPresent 度向其他 modal 派
+               dismiss()，結果搞爛咗 Ionic 嘅捲動鎖計數。問題有兩重：
+
+                 1. 派咗俾從來未開過嘅 modal —— 減去從未加過的數
+                 2. 就算派啱對象，都係「派完就走」，冇等佢關完；
+                    新 modal 喺舊嗰個關閉動畫中途就 present，
+                    兩個生命週期重疊，計數器一樣會亂
+
+               所以今次改為包住 present() 本身：開新 modal 之前，
+               先 await 舊嗰個完全關好，等 Ionic 內部一加一減行完
+               一整個週期，計數器就唔會失衡。
+
+               包 prototype 嘅好處係全部開啟位置自動覆蓋，
+               唔使逐個 openXxxModal() 去改，亦唔會有漏網之魚。 */
+            const MODAL_DISMISS_TIMEOUT = 1200;   // 等唔到就唔好卡死，照開
+
+            function initSingleModalPolicy() {
+                if (!window.customElements || !customElements.whenDefined) return;
+
+                customElements.whenDefined('ion-modal').then(() => {
+                    const ctor = customElements.get('ion-modal');
+                    const proto = ctor && ctor.prototype;
+                    if (!proto || typeof proto.present !== 'function') return;
+                    if (proto.__novusSingleModal) return;      // 唔好重複包
+                    proto.__novusSingleModal = true;
+
+                    const originalPresent = proto.present;
+
+                    proto.present = async function (...args) {
+                        /* 只處理「真係開緊」嘅 modal：
+                           要喺追蹤紀錄入面、仲喺 DOM、而且未被標記關閉。
+                           三重確認，避免又再誤傷未開過嘅 modal。 */
+                        const others = Array.from(openOverlays).filter(m =>
+                            m !== this &&
+                            m.tagName === 'ION-MODAL' &&
+                            m.isConnected &&
+                            !m.classList.contains('overlay-hidden'));
+
+                        for (const m of others) {
+                            try {
+                                // 等佢關完，但唔可以無限等 —— 逾時就放行
+                                await Promise.race([
+                                    m.dismiss(),
+                                    new Promise(res => setTimeout(res, MODAL_DISMISS_TIMEOUT))
+                                ]);
+                                openOverlays.delete(m);
+                            } catch (e) {
+                                openOverlays.delete(m);
+                            }
+                        }
+
+                        return originalPresent.apply(this, args);
+                    };
+                }).catch(() => { });
+            }
+
             /* ================================================
                19.F 啟動：建立疊層卡片、綁定手勢、初次渲染
                ================================================ */
@@ -19310,6 +19400,7 @@
                 // 微互動：金融卡跟手指 3D 傾斜
                 initCardTilt();
                 initOverlayTracking();
+                initSingleModalPolicy();
                 initLockSafetyNet();
                 initHomeFan();
 
