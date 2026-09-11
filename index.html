@@ -14472,6 +14472,10 @@
             // 而家睇唔睇到卡片？睇唔到就唔好燒電
             function particlesVisible() {
                 if (document.hidden) return false;
+                /* 拖動卡片期間唔好畫。canvas 就喺卡片入面，
+                   佢一更新就令成張卡嘅 GPU 圖層作廢，
+                   而卡片同時喺度移動 —— 兩樣夾埋就係「起格」。 */
+                if (typeof hubDragging !== 'undefined' && hubDragging) return false;
                 const area = document.getElementById('hubFixedArea');
                 if (area && !area.classList.contains('open')) return false;
                 return true;
@@ -15316,117 +15320,234 @@
                     : hubOrder.slice(1).concat([hubOrder[0]]);
             }
 
-            // 依某個排列，直接寫 inline 位置（拖動途中同落位都用呢個）
-            function hubPaintOrder(order) {
-                const stack = document.getElementById('hubCardStack');
-                if (!stack) return;
-                stack.querySelectorAll('.hub-card').forEach(c => {
-                    const i = order.indexOf(c.getAttribute('data-key'));
-                    if (i < 0) return;
-                    c.style.transform =
-                        `translateX(0) translateY(${(i * hubPeek).toFixed(1)}px) scale(${(0.94 + i * 0.02).toFixed(3)})`;
-                    c.style.zIndex = String(41 + i);
-                    c.style.opacity = '1';
-                });
-            }
-
-            /* 拖動途中：每張卡由「現時位置」插值去「轉格後位置」。
+/* 拖動途中：每張卡由「現時位置」插值去「轉格後位置」。
                拖到一半，後面嗰啲就移到一半 —— 唔係成疊一齊平移。
                回傳 0~1 的進度，放手時用嚟決定轉唔轉格。 */
-            function hubApplyDrag(dy) {
+            /* ================================================
+               卡片轉盤：連續位置 + 慣性
+               ================================================
+               舊做法係「拖一格就封頂」—— t 夾死喺 0~1，
+               所以一個手勢極其量只轉到一張，撥得幾快都一樣，
+               而且到咗頂之後手指再郁都冇反應，感覺就係窒住。
+
+               而家改為連續位置 hubPos（浮點，唔設上限）：
+                 · 拖動   pos = 起點 + 位移 / 每格高度   → 想轉幾多張都得
+                 · 放手   計出速度，逐格衰減，似老虎機咁溜幾張先停
+                 · 停低   吸附到最接近嘅整數格
+               所有卡片位置由同一個 pos 推算，唔使逐張夾邏輯。 */
+
+            let hubPos = 0;             // 連續格位；0 = 目前排列
+            let hubBaseOrder = null;    // 手勢開始嗰刻嘅排列（用嚟計相對位移）
+            let dragCards = null;
+            let hubDragging = false;
+            let hubRaf = 0;
+            let hubVel = 0;             // 每格/幀
+            let hubGlideOn = false;
+
+            const HUB_FRICTION = 0.915;  // 慣性衰減：愈接近 1 溜得愈遠
+            const HUB_MIN_VEL = 0.010;   // 低過呢個速度就開始吸附（早啲介入）
+            const HUB_SNAP = 0.34;       // 吸附力度：愈大愈快啲「咔」一聲入位
+
+            function hubBeginDrag() {
+                hubDragging = true;
+                hubGlideOn = false;
+                hubVel = 0;
+                hubPos = 0;
+                hubBaseOrder = hubOrder.slice();
+
+                /* 一開始就關死 CSS 過渡。由拖動到慣性滑行完，
+                   位置完全由 JS 逐格話事；留低過渡就會兩邊搶控制權。 */
+                const a0 = document.getElementById('hubFixedArea');
+                if (a0) { a0.classList.add('dragging'); a0.classList.remove('settling'); }
+
                 const stack = document.getElementById('hubCardStack');
-                const n = hubOrder.length;
-                if (!stack || n < 2 || hubPeek <= 0) return 0;
+                dragCards = stack
+                    ? Array.prototype.slice.call(stack.querySelectorAll('.hub-card'))
+                    : [];
+                dragCards.forEach(c => { c._lz = null; c._lo = null; c._ls = null; });
+            }
 
-                const t = Math.max(0, Math.min(1, Math.abs(dy) / hubPeek));
-                const down = dy > 0;
-                const next = hubOrderAfter(down ? 1 : -1);
+            /* 依 hubPos 擺位。每張卡嘅格位 = 開場格位 − pos，
+               再用取模繞圈，所以永遠有卡喺每一格，冇盡頭。 */
+            function hubRender() {
+                const n = hubBaseOrder ? hubBaseOrder.length : 0;
+                if (!dragCards || n < 2 || hubPeek <= 0) return;
 
-                const lastY = (hubOrder.length - 1) * hubPeek;   // 最底那格的位置
-                const OUT = hubCardH + 70;                       // 要行幾遠先完全離開畫面
+                const lastY = (n - 1) * hubPeek;
+                const OUT = hubCardH + 70;
 
-                stack.querySelectorAll('.hub-card').forEach(c => {
+                dragCards.forEach(c => {
                     const key = c.getAttribute('data-key');
-                    const i0 = hubOrder.indexOf(key);
-                    const i1 = next.indexOf(key);
-                    if (i0 < 0 || i1 < 0) return;
+                    const i0 = hubBaseOrder.indexOf(key);
+                    if (i0 < 0) return;
 
-                    let y, sc, op, z;
+                    // 繞圈格位，範圍 [0, n)
+                    let slot = (i0 - hubPos) % n;
+                    if (slot < 0) slot += n;
 
-                    if (Math.abs(i1 - i0) <= 1) {
-                        // 普通卡：由現位插值去下一格
-                        const i = i0 + (i1 - i0) * t;
-                        y = i * hubPeek;
-                        sc = 0.94 + i * 0.02;
+                    let y, op, zSlot;
+                    if (slot <= n - 1) {
+                        y = slot * hubPeek;
                         op = 1;
-                        z = 41 + Math.round(i);
-                    } else if (down) {
-                        /* 向下拖：最底嗰張整張抽出畫面底部，
-                           走完一半就由頂部插返入疊嘅最後面。 */
-                        if (t < 0.5) {
-                            const k = t / 0.5;
-                            y = lastY + OUT * k; sc = 1; op = 1 - k; z = 60;
-                        } else {
-                            const k = (t - 0.5) / 0.5;
-                            y = -OUT * (1 - k); sc = 0.94; op = k; z = 40;
-                        }
+                        zSlot = Math.round(slot);
                     } else {
-                        /* 向上拖：最頂嗰張由畫面頂抽走，
-                           再由底部滑返入嚟做當前卡。 */
-                        if (t < 0.5) {
-                            const k = t / 0.5;
-                            y = -OUT * k; sc = 0.94; op = 1 - k; z = 60;
+                        /* 最後一格到第一格之間嘅接縫：
+                           前半段由底部滑走，後半段由頂部滑返入嚟。
+
+                           ⚠️ 層級一定要跟住轉：
+                           前半段佢仲係最前（由底走），後半段佢已經係
+                           最後一張（由頂入），所以要即刻跌到最低層。
+                           之前一律用 Math.round(slot) 夾到 n-1，
+                           即係由頂插入嗰張攞咗最高層，會壓住其他卡，
+                           要等成個手勢完先重排 —— 就係你見到嗰下「疊面」。 */
+                        const k = slot - (n - 1);
+                        if (k < 0.5) {
+                            y = lastY + OUT * (k * 2); op = 1 - k * 2; zSlot = n - 1;
                         } else {
-                            const k = (t - 0.5) / 0.5;
-                            y = lastY + OUT * (1 - k); sc = 1; op = k; z = 60;
+                            y = -OUT * (1 - (k - 0.5) * 2); op = (k - 0.5) * 2; zSlot = 0;
                         }
                     }
 
-                    c.style.transform =
-                        `translateX(0) translateY(${y.toFixed(1)}px) scale(${sc.toFixed(3)})`;
-                    c.style.zIndex = String(z);
-                    c.style.opacity = op.toFixed(3);
-                });
+                    /* transform 逐格寫（佢就係動畫本身），
+                       但 scale / z-index / opacity 只喺真係變咗先寫 ——
+                       scale 一改就要重新柵格化成張卡，z-index 一改
+                       就要重排合成圖層，兩樣都係「起格」嘅來源。 */
+                    const si = Math.max(0, Math.min(n - 1, zSlot));
+                    const ss = (0.94 + si * 0.02).toFixed(3);
+                    if (c._ls !== ss) c._ls = ss;
+                    c.style.transform = `translate3d(0,${y.toFixed(1)}px,0) scale(${ss})`;
 
-                return t;
+                    const zs = String(41 + si);
+                    if (c._lz !== zs) { c.style.zIndex = zs; c._lz = zs; }
+
+                    const os = op.toFixed(2);
+                    if (c._lo !== os) { c.style.opacity = os; c._lo = os; }
+                });
             }
 
-            /* 放手落位：拖過半格就轉，唔夠就彈返原位。
-               兩種情況都用同一條過渡曲線帶過去，之後清走 inline 樣式。 */
-            function hubSettleDrag(dy) {
+            // 拖動中：位移直接換算成格位，唔設上限
+            function hubQueueDrag(dy) {
+                if (hubPeek <= 0) return;
+                const next = -dy / hubPeek;          // 向下拖 = pos 減少
+                hubVel = next - hubPos;              // 順手記低速度俾慣性用
+                hubPos = next;
+                if (hubRaf) return;
+                hubRaf = requestAnimationFrame(() => { hubRaf = 0; hubRender(); });
+            }
+
+            /* 手勢結束但根本冇拖過（例如輕觸、橫撥）：
+               直接還原，唔好留低 hubDragging（會令粒子永遠停住）
+               同埋 dragCards 快取。 */
+            function hubCancelDrag() {
+                if (!hubDragging && !dragCards) return;
+                hubDragging = false;
+                hubGlideOn = false;
+                (dragCards || []).forEach(c => {
+                    c.style.removeProperty('transform');
+                    c.style.removeProperty('opacity');
+                    c._lz = null; c._lo = null; c._ls = null;
+                });
+                dragCards = null;
+                hubBaseOrder = null;
+                hubPos = 0;
+                hubVel = 0;
+                const a = document.getElementById('hubFixedArea');
+                if (a) a.classList.remove('dragging', 'settling');
+                if (typeof initParticleCanvas === 'function') initParticleCanvas();
+            }
+
+            /* 放手：帶住速度溜一段，衰減到夠慢就吸附到最近嘅格。
+               呢個就係「老虎機」嘅感覺 —— 撥得愈用力轉得愈多張。 */
+            function hubEndDrag() {
+                hubDragging = false;
+                if (!hubBaseOrder || !dragCards) { hubCancelDrag(); return; }
+                if (Math.abs(hubPos) < 0.001 && Math.abs(hubVel) < 0.001) { hubCancelDrag(); return; }
+
+                const n = hubBaseOrder.length;
+                hubGlideOn = true;
+                if (hubVel > 0.45) hubVel = 0.45;    // 封頂，唔好轉到飛起
+                if (hubVel < -0.45) hubVel = -0.45;
+
+                let guard = 0;
+                const step = () => {
+                    if (!hubGlideOn) return;
+
+                    /* 保險：正常情況 40~90 幀就收到尾。
+                       萬一因為數值問題收唔到斂，2 秒後強制入位，
+                       唔可以留低一個永遠行緊嘅 rAF 迴圈燒電。 */
+                    if (++guard > 120) { hubPos = Math.round(hubPos); hubRender(); hubCommitRotation(Math.round(hubPos), n); return; }
+
+                    const target = Math.round(hubPos);
+                    const diff = target - hubPos;
+
+                    if (Math.abs(hubVel) > HUB_MIN_VEL) {
+                        hubPos += hubVel;
+                        hubVel *= HUB_FRICTION;
+                    } else {
+                        hubPos += diff * HUB_SNAP;          // 吸附
+                        if (Math.abs(diff) < 0.004) {
+                            hubPos = target;
+                            hubRender();
+                            hubCommitRotation(target, n);
+                            return;
+                        }
+                    }
+                    hubRender();
+                    requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+            }
+
+            /* 溜完之後把 hubOrder 真正轉過去，再清走 inline 樣式，
+               交返俾 CSS 變數控制，狀態就同拖動前一致。 */
+            function hubCommitRotation(steps, n) {
+                hubGlideOn = false;
+                const shift = ((steps % n) + n) % n;
+                hubOrder = hubBaseOrder.slice(shift).concat(hubBaseOrder.slice(0, shift));
+                hubIndex = HUB_PAGES.indexOf(hubOrder[hubOrder.length - 1]);
+
+                hubRefreshTabs();
+
+                (dragCards || []).forEach(c => {
+                    c.style.removeProperty('transform');
+                    c.style.removeProperty('opacity');
+                    c._lz = null; c._lo = null; c._ls = null;
+                });
+
+                dragCards = null;
+                hubBaseOrder = null;
+                hubPos = 0;
+                hubVel = 0;
+
+                const a = document.getElementById('hubFixedArea');
+                if (a) a.classList.remove('dragging', 'settling');
+
+                if (typeof initParticleCanvas === 'function') initParticleCanvas();
+            }
+
+            /* 只更新卡片上嘅標籤同 top 狀態，唔做任何量度。
+               拖完落位時用，避免觸發同步排版。 */
+            function hubRefreshTabs() {
                 const stack = document.getElementById('hubCardStack');
-                const area = document.getElementById('hubFixedArea');
                 if (!stack) return;
-
-                const t = hubPeek > 0 ? Math.abs(dy) / hubPeek : 0;
-                if (area) area.classList.add('settling');
-
-                if (t >= 0.5) {
-                    /* 只重排卡片，唔叫 switchPage。
-                       撥一下就重畫成頁（清單、圖表、日曆）會非常卡，
-                       所以真正切頁留到「點擊卡片」或者「收埋錢包」先做。 */
-                    hubOrder = hubOrderAfter(dy > 0 ? 1 : -1);
-                    hubIndex = HUB_PAGES.indexOf(hubOrder[hubOrder.length - 1]);
-                    layoutHubStack();
-                }
-
-                // 用最終排位覆寫 inline，讓過渡曲線把卡片帶到位
-                hubPaintOrder(hubOrder);
-
-                setTimeout(() => {
-                    stack.querySelectorAll('.hub-card').forEach(c => {
-                        c.style.removeProperty('transform');
-                        c.style.removeProperty('opacity');
-                    });
-                    const a = document.getElementById('hubFixedArea');
-                    if (a) a.classList.remove('settling');
-                }, 470);
+                const activeKey = hubOrder[hubOrder.length - 1];
+                stack.querySelectorAll('.hub-card').forEach(c => {
+                    const key = c.getAttribute('data-key');
+                    const i = hubOrder.indexOf(key);
+                    if (i < 0) return;
+                    c.classList.toggle('top', key === activeKey);
+                    c.style.setProperty('--y', (i * hubPeek) + 'px');
+                    c.style.setProperty('--i', String(i));
+                    c.style.setProperty('--s', (0.94 + i * 0.02).toFixed(3));
+                    c.style.zIndex = String(41 + i);
+                });
+                if (typeof updateHubMini === 'function') updateHubMini();
             }
 
             /* 展開狀態下的手勢：
                · 上下拖 → 卡片即時跟手，放手落位並切換頁面
                · 向卡夾嗰邊橫撥 → 收埋錢包 */
-            const HUB_DRAG_DAMP = 0.9;   // 跟手阻尼；拖過半格就會轉卡
+            const HUB_DRAG_DAMP = 1;     // 1 = 完全跟手；轉幾多張由放手速度決定
 
             /* 剛剛拖完嗰陣，瀏覽器仲會補一個 click 出嚟。
                記低時間，令卡片上的點擊切換喺嗰段時間內失效。 */
@@ -15448,6 +15569,7 @@
                     if (e.target.closest('button, ion-button, a, input, select')) { tracking = false; return; }
                     tracking = true; axis = ''; pid = e.pointerId;
                     sx = e.clientX; sy = e.clientY;
+                    hubBeginDrag();          // 開場快取卡片清單
                     const a = area();
                     if (a) a.classList.remove('settling');
                 };
@@ -15464,7 +15586,7 @@
                         if (axis === 'y') { const a = area(); if (a) a.classList.add('dragging'); }
                     }
 
-                    if (axis === 'y') hubApplyDrag(dy * HUB_DRAG_DAMP);
+                    if (axis === 'y') hubQueueDrag(dy * HUB_DRAG_DAMP);
                 };
 
                 const end = (e) => {
@@ -15475,10 +15597,17 @@
 
                     if (axis === 'y') {
                         hubDragAt = Date.now();
-                        if (a) a.classList.remove('dragging');
-                        hubSettleDrag(dy * HUB_DRAG_DAMP);
+                        /* ⚠️ 唔可以喺呢度除 .dragging。
+                           除咗之後，CSS 過渡（每張卡仲有唔同嘅 transition-delay）
+                           就會即刻生效，同慣性滑行逐格寫嘅 transform 打交 ——
+                           每張卡各自延遲唔同，就會散開走位。
+                           .dragging 要一直留到 hubCommitRotation() 先除。 */
+                        hubEndDrag();
                         return;
                     }
+
+                    // 唔係打直拖（例如輕觸）→ 清走拖動狀態，唔好留低
+                    hubCancelDrag();
 
                     // 向卡夾嗰邊橫撥 = 收埋
                     if (Math.abs(dx) < 46) return;
@@ -15492,11 +15621,11 @@
                 document.addEventListener('pointermove', move, { passive: true });
                 document.addEventListener('pointerup', end, { passive: true });
                 document.addEventListener('pointercancel', () => {
-                    if (!tracking) return;
+                    if (!tracking) { hubCancelDrag(); return; }
                     tracking = false;
                     const a = area();
                     if (a) a.classList.remove('dragging');
-                    hubSettleDrag(0);   // 進度當 0，彈返原位
+                    hubEndDrag();       // 帶住速度溜到最近一格
                 }, { passive: true });
             }
 
