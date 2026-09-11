@@ -366,6 +366,18 @@
             opacity: 0.75;
         }
 
+        /* 一定要拉滿。.debit-card 靠 2.5px padding 做漸變邊框，
+           內容如果冇填滿高度，底部就會露出一截漸變色 ——
+           睇落好似卡片底同邊緣有兩截唔同色。 */
+        .debit-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .debit-card > .card-inner-content {
+            flex: 1 1 auto;
+        }
+
         .card-inner-content {
             position: relative;
             z-index: 2;
@@ -761,6 +773,21 @@
             pointer-events: auto !important;
         }
 
+        /* 呢個唔係 ion-modal，係自訂嘅 div，所以上面嗰條
+           ion-modal::part(content) 規則覆蓋唔到佢。
+           要另外寫一次，靠邊方式同其他 modal 保持一致。 */
+        /* 只有「快速新增」需要讓開書脊。
+           支付方式揀選要壓喺所有嘢之上（包括書脊），
+           所以佢維持全闊置中，唔加任何留白。 */
+        .quick-add-picker {
+            justify-content: flex-start !important;
+            z-index: 20000 !important;   /* 要低過書脊（20050），書脊先撳得到 */
+        }
+
+        body[data-hub-side="left"] .quick-add-picker {
+            justify-content: flex-end !important;
+        }
+
         .payment-picker-modal .picker-content {
             z-index: 10000000 !important;
             background: linear-gradient(135deg, #9bb5ad 0%, #eaf3f0 50%, #829f95 100%) !important;
@@ -774,6 +801,24 @@
             max-height: 75vh !important;
             overflow-y: auto !important;
             box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        }
+
+        /* 快速新增：讓開書脊，書脊嗰邊補返底部圓角 */
+        .quick-add-picker .picker-content {
+            width: calc(100% - 22px) !important;
+        }
+
+        body[data-hub-side="right"] .quick-add-picker .picker-content {
+            border-radius: 24px 24px 24px 0 !important;
+        }
+
+        body[data-hub-side="left"] .quick-add-picker .picker-content {
+            border-radius: 24px 24px 0 24px !important;
+        }
+
+        /* 快速新增嘅內容層亦要低過書脊 */
+        .quick-add-picker .picker-content {
+            z-index: 20001 !important;
         }
 
         .payment-picker-modal.active .picker-content {
@@ -1181,6 +1226,32 @@
             border-top-left-radius: 24px !important;
             border-top-right-radius: 24px !important;
             overflow: hidden !important;
+
+            /* 單邊靠齊：只喺書脊嗰一邊留位，另一邊貼實螢幕。
+               22px = 書脊淨闊度，所以 modal 邊啱啱貼實書脊，
+               同其他頁面嘅清單框對齊，唔會多咗一條空隙。
+               實際靠邊方向見下面 body[data-hub-side] 兩條規則。 */
+            width: calc(100% - 22px) !important;
+        }
+
+        /* 書脊喺右 → modal 靠左，右邊留返 30px */
+        body[data-hub-side="right"] ion-modal.custom-bottom-modal::part(content) {
+            left: 0 !important;
+            right: auto !important;
+            margin-inline: 0 !important;
+            border-top-left-radius: 24px !important;
+            border-top-right-radius: 24px !important;
+            border-bottom-right-radius: 24px !important;
+        }
+
+        /* 書脊喺左 → modal 靠右，左邊留返 30px */
+        body[data-hub-side="left"] ion-modal.custom-bottom-modal::part(content) {
+            left: auto !important;
+            right: 0 !important;
+            margin-inline: 0 !important;
+            border-top-left-radius: 24px !important;
+            border-top-right-radius: 24px !important;
+            border-bottom-left-radius: 24px !important;
         }
 
         ion-app.dark-theme ion-modal.custom-bottom-modal::part(content),
@@ -4773,7 +4844,9 @@
         }
 
         .hub-fixed-area {
+            /* 同上：留返空間俾卡片陰影散開，唔好一刀切 */
             overflow-x: clip;
+            overflow-clip-margin: 40px;
             overscroll-behavior: contain;
         }
 
@@ -4797,8 +4870,15 @@
             overflow-x: hidden !important;
         }
 
+        /* ⚠️ 以前呢度有 overflow-x: clip。
+           .view-page 左右各有 8px padding，而入面啲 box 嘅陰影
+           模糊半徑成 16~22px —— clip 會喺元素邊界一刀切斷，
+           所以陰影只畫得到 8px 就被切平，淺色模式下就見到
+           一條垂直白界線。
+           橫向捲動其實已經喺 html / body / ion-app / ion-content /
+           ::part(scroll) 五個層級鎖死，呢度再 clip 係多餘，
+           拆走之後陰影就可以自然散開。 */
         .view-page {
-            overflow-x: clip;
             max-width: 100%;
         }
 
@@ -6528,15 +6608,6 @@
             border-bottom-color: rgba(245, 158, 11, 0.4);
         }
 
-        /* 診斷框：保留換行，字體細啲好讀啲 */
-        .diag-alert .alert-message {
-            white-space: pre-line;
-            text-align: left;
-            font-size: 12px;
-            line-height: 1.7;
-            font-family: ui-monospace, Menlo, 'Courier New', monospace;
-        }
-
         /* ---------- 頁頂金額摘要條 ---------- */
         .mini-sum {
             display: flex;
@@ -6885,28 +6956,14 @@
         }
 
         /* 設定彈窗唔好食晒成個畫面，留一條透光位。
-           留邊一邊由 body 上面嘅 data-hub-side 決定 ——
-           錢包喺右就靠左開，錢包喺左就靠右開，唔會撞到書脊。 */
+           而家所有 modal 一律兩邊各讓 28px（見上面通用規則），
+           無論書脊收埋左定右都避得開，唔使分方向。 */
         #userModal::part(content) {
-            width: calc(100% - 34px);
             box-shadow: 0 0 36px rgba(3, 7, 18, 0.5);
         }
 
-        body[data-hub-side="right"] #userModal::part(content) {
-            left: 0;
-            right: auto;
-            border-radius: 26px 26px 0 0;
-            border-top-right-radius: 26px;
-            border-bottom-right-radius: 26px;
-        }
-
-        body[data-hub-side="left"] #userModal::part(content) {
-            left: auto;
-            right: 0;
-            border-radius: 26px 26px 0 0;
-            border-top-left-radius: 26px;
-            border-bottom-left-radius: 26px;
-        }
+        /* 設定彈窗以前係單邊靠齊，而家跟返上面嗰條通用規則
+           （兩邊各讓 28px），全部 modal 一致。 */
 
         /* 完成掣：成個 box 半透明藍 */
         .settings-done-btn {
@@ -7802,6 +7859,13 @@
             display: none !important;
         }
 
+        /* 有 overlay 開緊嗰陣，把錢包層提到 modal（20000）之上，
+           書脊先至撳得到。呢個時候卡片組係 display:none，
+           所以提上去唔會遮到任何嘢。 */
+        body.overlay-open #hubFixedArea {
+            z-index: 20050 !important;
+        }
+
         /* ---------- 側邊卡夾 ---------- */
         /* 薄身卡夾：只留一條金色書脊同直排 WALLET 字樣，
            淨闊 22px，其餘畫面全部留返俾內容。 */
@@ -7980,7 +8044,7 @@
     </style>
 </head>
 
-<body>
+<body data-hub-side="right">
     <!-- ===== NOVUS 開場動畫：遮罩本體（播完自動移除）===== -->
     <div class="ns" id="novusSplash" aria-hidden="true">
         <canvas class="ns-canvas" id="nsCanvas"></canvas>
@@ -10333,7 +10397,6 @@
                             <button type="button" class="set-btn" onclick="openTagManager('expPerson')">👤 對象標籤</button>
                             <button type="button" class="set-btn" onclick="openCategoryLimitModal()">⚠️ 分類支出上限</button>
                             <button type="button" class="set-btn" onclick="openSavingsPaModal()">📈 儲蓄年利率</button>
-                            <button type="button" class="set-btn" onclick="runScrollDiagnostic()">🩺 捲動診斷</button>
                         </div>
                     </div>
                 </div>
@@ -11637,6 +11700,7 @@
                 modal.classList.toggle('dark-theme', !!isDark);
 
                 modal.classList.add('active');
+                document.body.classList.add('overlay-open');   // 令書脊浮到最上，撳得到
                 document.getElementById('openModalBtn')?.classList.add('menu-open');
             }
 
@@ -11645,6 +11709,8 @@
                 const modal = document.getElementById('quickAddModal');
                 if (modal) modal.classList.remove('active');
                 document.getElementById('openModalBtn')?.classList.remove('menu-open');
+                // 交返俾追蹤器判斷仲有冇其他 overlay 開緊
+                if (typeof markOverlayState === 'function') markOverlayState();
             }
 
             /* 依使用者所揀嘅項目，跳去相應分頁再開對應的新增視窗。
@@ -14893,7 +14959,17 @@
                 dock.className = 'hub-dock';
                 dock.id = 'hubDock';
                 dock.innerHTML = `<span class="hub-dock-word">WALLET</span>`;
-                dock.addEventListener('click', () => setHubCollapsed(false));
+                dock.addEventListener('click', async () => {
+                    /* 有 modal 開緊就先關咗佢。
+                       等佢完全關好先開錢包，兩者唔會疊住，
+                       Ionic 嘅捲動鎖計數亦唔會亂。 */
+                    if (anyOverlayOpen()) {
+                        await dismissAllOverlays();
+                        setTimeout(() => setHubCollapsed(false), 60);
+                        return;
+                    }
+                    setHubCollapsed(false);
+                });
                 area.appendChild(dock);
 
                 const close = document.createElement('button');
@@ -15136,7 +15212,10 @@
 
             const OVERLAY_PRESENT_EVENTS = [
                 'ionModalWillPresent', 'ionAlertWillPresent', 'ionActionSheetWillPresent',
-                'ionPopoverWillPresent', 'ionPickerWillPresent', 'ionLoadingWillPresent'
+                'ionPopoverWillPresent', 'ionPickerWillPresent', 'ionLoadingWillPresent',
+                // 再綁 DidPresent 做保險：萬一 WillPresent 漏咗都追蹤到
+                'ionModalDidPresent', 'ionAlertDidPresent', 'ionActionSheetDidPresent',
+                'ionPopoverDidPresent', 'ionPickerDidPresent', 'ionLoadingDidPresent'
             ];
             const OVERLAY_DISMISS_EVENTS = [
                 'ionModalDidDismiss', 'ionAlertDidDismiss', 'ionActionSheetDidDismiss',
@@ -15145,26 +15224,61 @@
 
             function initOverlayTracking() {
                 OVERLAY_PRESENT_EVENTS.forEach(ev =>
-                    document.addEventListener(ev, (e) => openOverlays.add(e.target)));
+                    document.addEventListener(ev, (e) => {
+                        openOverlays.add(e.target);
+                        markOverlayState();
+                    }));
                 OVERLAY_DISMISS_EVENTS.forEach(ev =>
                     document.addEventListener(ev, (e) => {
                         openOverlays.delete(e.target);
+                        markOverlayState();
                         setTimeout(healScrollLock, 120);
                     }));
             }
 
+            // 有冇 overlay 開緊，寫落 body，俾 CSS 提升書脊層級
+            function markOverlayState() {
+                document.body.classList.toggle('overlay-open', anyOverlayOpen());
+            }
+
+            /* 關掉所有開緊嘅 overlay，等到全部關好先 resolve。
+               撳書脊開錢包時用 —— 要先清場，唔好錢包同 modal 疊住。 */
+            async function dismissAllOverlays() {
+                // 先收埋自訂 picker（佢哋唔係 ion-overlay，冇 dismiss()）
+                document.querySelectorAll('.payment-picker-modal.active')
+                    .forEach(el => el.classList.remove('active'));
+                document.getElementById('openModalBtn')?.classList.remove('menu-open');
+
+                const list = Array.from(openOverlays).filter(o => o && o.isConnected);
+                for (const o of list) {
+                    try {
+                        await Promise.race([
+                            o.dismiss(),
+                            new Promise(res => setTimeout(res, 900))
+                        ]);
+                    } catch (e) { }
+                    openOverlays.delete(o);
+                }
+                markOverlayState();
+            }
+
+            // 自訂 picker（快速新增／支付方式）唔係 ion-overlay，要另外數
+            function anyCustomPickerOpen() {
+                return !!document.querySelector('.payment-picker-modal.active');
+            }
+
             function anyOverlayOpen() {
-                /* 清走已經唔算開緊嘅紀錄：
-                   已離開 DOM 嘅，同埋 Ionic 已經標記咗 .overlay-hidden 嘅。
-                   單靠自己個 Set 有機會同真實狀態脫節（例如關閉動畫
-                   中途被打斷），加呢層對照就唔會誤判成「仲有嘢開緊」
-                   而永遠唔肯解鎖。 */
+                /* ⚠️ 千祈唔好再用 .overlay-hidden 做判斷。
+                   WillPresent 觸發嗰一刻，Ionic 仲未除呢個 class，
+                   所以啱啱加入 Set 嘅 modal 會即刻被當成「冇開」踢走 ——
+                   結果 body.overlay-open 永遠唔會加，書脊提唔到上去，
+                   撳書脊亦唔會關 modal。
+                   Set 由 WillPresent / DidDismiss 成對維護，本身已經準確，
+                   只需要清走已經離開 DOM 嘅殘留。 */
                 openOverlays.forEach(el => {
-                    if (!el.isConnected || el.classList.contains('overlay-hidden')) {
-                        openOverlays.delete(el);
-                    }
+                    if (!el || !el.isConnected) openOverlays.delete(el);
                 });
-                return openOverlays.size > 0;
+                return openOverlays.size > 0 || anyCustomPickerOpen();
             }
 
             /* Ionic 用 <body> 上面嘅 .backdrop-no-scroll 鎖住捲動。
@@ -15181,83 +15295,7 @@
                 });
             }
 
-            /* 背景見證：喺完全冇 overlay 嘅時候如果仲見到捲動鎖，
-               就係真正嘅洩漏。記低時間，等診斷可以показ返證據 ——
-               唔使再靠「開 modal 去睇有冇 modal 鎖」呢種自相矛盾嘅測法。 */
-            let leakWitness = '';
-
-            function watchScrollLeak() {
-                if (anyOverlayOpen()) return;
-                if (!document.querySelector('.backdrop-no-scroll')) return;
-                const t = new Date();
-                leakWitness = `${String(t.getHours()).padStart(2, '0')}:` +
-                    `${String(t.getMinutes()).padStart(2, '0')}:` +
-                    `${String(t.getSeconds()).padStart(2, '0')}（已自動解除）`;
-                healScrollLock();
-            }
-
-            /* 🩺 捲動診斷：捲唔郁嗰陣撳一下，會話你知究竟卡喺邊。
-               同時會即場嘗試解除所有已知嘅鎖。 */
-            async function runScrollDiagnostic() {
-                const area = document.getElementById('hubFixedArea');
-                const content = document.querySelector('ion-content');
-                const lines = [];
-
-                const bad = (label, cond, detail) =>
-                    lines.push(`${cond ? '🔴' : '🟢'} ${label}${detail ? '：' + detail : ''}`);
-
-                /* 有 modal 開緊嗰陣，backdrop-no-scroll 存在係正確行為，
-                   唔可以當成錯。真正嘅問題係「冇 overlay 但鎖仲喺度」。 */
-                const lockOn = !!document.querySelector('.backdrop-no-scroll');
-                const overlayOn = anyOverlayOpen();
-                lines.push(`${lockOn && !overlayOn ? '🔴' : '🟢'} 捲動鎖洩漏` +
-                    (lockOn ? (overlayOn ? '：鎖住中，但有 overlay 開緊，屬正常' : '：冇 overlay 但仍然鎖住')
-                        : '：冇鎖'));
-                if (leakWitness) lines.push('🔴 曾經偵測到洩漏：' + leakWitness);
-                bad('body.tilt-lock', document.body.classList.contains('tilt-lock'));
-                bad('錢包仍為展開 (.open)', !!area && area.classList.contains('open'));
-                bad('hubBusy 卡住', !!hubBusy);
-                bad('hubTiltActive 卡住', !!hubTiltActive);
-                bad('overflow 被鎖', document.documentElement.style.overflow === 'hidden'
-                    || document.body.style.overflow === 'hidden');
-                bad('殘留 overflow 覆寫', !!document.querySelector('[data-tilt-unclipped]'));
-
-                let scrollInfo = '讀唔到';
-                if (content && content.getScrollElement) {
-                    try {
-                        const el = await content.getScrollElement();
-                        const cs = getComputedStyle(el);
-                        scrollInfo = `overflow-y=${cs.overflowY}, touch-action=${cs.touchAction}, ` +
-                            `scrollH=${el.scrollHeight}, clientH=${el.clientHeight}`;
-                        bad('捲動層唔容許捲動', cs.overflowY === 'hidden');
-                        bad('內容唔夠長冇得捲', el.scrollHeight <= el.clientHeight + 4);
-                    } catch (e) { }
-                }
-
-                lines.push('');
-                lines.push('紀錄中的開啟 overlay：' + openOverlays.size);
-                lines.push('捲動層：' + scrollInfo);
-
-                // 即場嘗試修復
-                healScrollLock();
-                releaseHubLocks();
-                hubHealthCheck();
-                setPageScroll(true);
-
-                lines.push('');
-                lines.push('已即場嘗試解除所有已知的鎖。');
-
-                const alertEl = document.createElement('ion-alert');
-                // Ionic 預設會逃逸 HTML，所以唔可以用 <br>，要靠 pre-line 換行
-                alertEl.cssClass = 'custom-danger-alert diag-alert';
-                alertEl.header = '🩺 捲動診斷';
-                alertEl.message = lines.join('\n');
-                alertEl.buttons = ['知道了'];
-                document.body.appendChild(alertEl);
-                await alertEl.present();
-            }
-
-            /* 自我修復：如果狀態講緊「已收埋」但畫面上仲留住 .open，
+/* 自我修復：如果狀態講緊「已收埋」但畫面上仲留住 .open，
                即係有一次收合中途爆咗，即刻夾正佢。
                覆蓋層鋪滿全螢幕，卡住嘅代價太大，所以寧枉勿縱。 */
             function hubHealthCheck() {
@@ -19599,63 +19637,7 @@
                 switchPage(pageKey);
             }
 
-            /* 撳畫面其他地方就收埋。用 capture 階段，
-               確保喺其他 click 處理器之前判斷得到。 */
-            /* 長按標題就出診斷。
-               用 toast 而唔用 alert —— ion-toast 唔會加 backdrop-no-scroll，
-               所以量到嘅係「冇 modal 狀態下」嘅真實情況。 */
-            function initTitleDiagnostic() {
-                /* 掛喺成條標題列而唔係嗰隻字 —— 標題文字範圍好窄，
-                   而且中間有其他掣，好難按得中。 */
-                const title = document.querySelector('.my-custom-header') ||
-                    document.getElementById('pageHeaderTitle');
-                if (!title) return;
-                let timer = null;
-
-                const start = () => {
-                    timer = setTimeout(() => {
-                        timer = null;
-                        const lock = !!document.querySelector('.backdrop-no-scroll');
-                        const overlays = openOverlays.size;
-                        const leaked = lock && overlays === 0;
-                        if (leaked) healScrollLock();
-
-                        const actives = document.querySelectorAll('.view-page.active-page');
-                        const page = actives[0];
-                        const c = document.querySelector('ion-content');
-
-                        const finish = (sc) => {
-                            const pt = page ? getComputedStyle(page).paddingTop : '?';
-                            showToast(
-                                (leaked ? '🔴 鎖洩漏已解除' : '🟢 無鎖')
-                                + `｜active頁 ${actives.length}`
-                                + `｜top ${sc.top}／${sc.max}`
-                                + `｜padTop ${pt}`,
-                                leaked ? 'warning' : 'success');
-                        };
-
-                        if (c && c.getScrollElement) {
-                            c.getScrollElement().then(el => {
-                                finish({
-                                    top: Math.round(el.scrollTop),
-                                    max: Math.round(el.scrollHeight - el.clientHeight)
-                                });
-                            }).catch(() => finish({ top: '?', max: '?' }));
-                        } else {
-                            finish({ top: '?', max: '?' });
-                        }
-                    }, 1100);
-                };
-                const cancel = () => { if (timer) { clearTimeout(timer); timer = null; } };
-
-                title.addEventListener('touchstart', start, { passive: true });
-                ['touchend', 'touchcancel', 'touchmove'].forEach(ev =>
-                    title.addEventListener(ev, cancel, { passive: true }));
-                title.addEventListener('mousedown', start);
-                ['mouseup', 'mouseleave'].forEach(ev => title.addEventListener(ev, cancel));
-            }
-
-            function initHomeFan() {
+function initHomeFan() {
                 document.addEventListener('click', (e) => {
                     if (!homeFanVisible()) return;
                     if (e.target.closest && (e.target.closest('.home-fan') || e.target.closest('#navBtnHome'))) return;
@@ -19751,8 +19733,6 @@
                 initSingleModalPolicy();
                 initLockSafetyNet();
                 initHomeFan();
-                initTitleDiagnostic();
-                setInterval(watchScrollLeak, 1500);   // 持續監察洩漏
 
                 // 預設收埋喺側邊，輕觸卡夾先展開
                 setHubCollapsed(true);
