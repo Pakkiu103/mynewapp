@@ -1728,6 +1728,7 @@ NOVUS.i18n.register('en', {
 
     /* ── 頭像風格 ── */
     '科技人像': 'Tech portrait', '六角盾': 'Hex shield', '星軌': 'Star trail',
+    '錢包顏色': 'Wallet color', '香檳金': 'Champagne gold', '翡翠綠': 'Emerald', '寶石藍': 'Sapphire', '玫瑰紅': 'Rose', '紫水晶': 'Amethyst', '曜石銀': 'Graphite silver', '寶石紅': 'Ruby', '蜜桃橙': 'Peach orange', '曜石黑': 'Obsidian', '頭像底色': 'Avatar background', '錢包顏色已換成「': 'Wallet color changed to \u201c', '頭像底色已換成「': 'Avatar background changed to \u201c',
     '流波': 'Wave', '心跳': 'Pulse', '寶石': 'Gem', '皇冠': 'Crown', '花冠': 'Wreath',
 
     /* ── 示範資料 ── */
@@ -1952,6 +1953,7 @@ NOVUS.i18n.register('zh-Hans', {
     '香港': '香港', '日本': '日本', '新加坡': '新加坡', '美國': '美国', '英國': '英国',
     '澳洲': '澳洲', '加拿大': '加拿大', '微信支付': '微信支付', '渣打 Mastercard': '渣打 Mastercard',
     '科技人像': '科技人像', '六角盾': '六角盾', '星軌': '星轨', '流波': '流波',
+    '錢包顏色': '钱包颜色', '香檳金': '香槟金', '翡翠綠': '翡翠绿', '寶石藍': '宝石蓝', '玫瑰紅': '玫瑰红', '紫水晶': '紫水晶', '曜石銀': '曜石银', '寶石紅': '宝石红', '蜜桃橙': '蜜桃橙', '曜石黑': '曜石黑', '頭像底色': '头像底色', '錢包顏色已換成「': '钱包颜色已换成「', '頭像底色已換成「': '头像底色已换成「',
     '心跳': '心跳', '寶石': '宝石', '皇冠': '皇冠', '花冠': '花冠',
     '✏️ 修改每月固定支出': '✏️ 修改每月固定支出', '⏸️ 停用': '⏸️ 停用',
     '今日 ·': '今日 ·', '昨日 ·': '昨日 ·', '前日 ·': '前日 ·',
@@ -2428,6 +2430,7 @@ NOVUS.i18n.register('ja', {
 
     /* 頭像風格 */
     '科技人像': 'テック', '六角盾': 'ヘキシシールド', '星軌': 'スタートレイル',
+    '錢包顏色': 'ウォレットカラー', '香檳金': 'シャンパンゴールド', '翡翠綠': 'エメラルド', '寶石藍': 'サファイア', '玫瑰紅': 'ローズ', '紫水晶': 'アメジスト', '曜石銀': 'グラファイトシルバー', '寶石紅': 'ルビー', '蜜桃橙': 'ピーチオレンジ', '曜石黑': 'オブシディアン', '頭像底色': 'アイコン背景色', '錢包顏色已換成「': 'ウォレットカラー変更：「', '頭像底色已換成「': 'アイコン背景色変更：「',
     '流波': 'ウェーブ', '心跳': 'パルス', '寶石': 'ジュエル',
     '皇冠': 'クラウン', '花冠': 'リース',
 
@@ -4243,6 +4246,7 @@ NOVUS.i18n.register('ko', {
     "例如：家用寬頻月費 / 流動通訊月費 / 租金": "예: 인터넷 요금 / 휴대폰 요금 / 월세",
     "系統實時算出剩餘金額": "시스템이 실시간으로 잔액을 계산합니다",
     "科技人像": "테크 인물",
+    "錢包顏色": "지갑 색상", "香檳金": "샴페인 골드", "翡翠綠": "에메랄드", "寶石藍": "사파이어", "玫瑰紅": "로즈", "紫水晶": "자수정", "曜石銀": "그래파이트 실버", "寶石紅": "루비", "蜜桃橙": "피치 오렌지", "曜石黑": "옵시디언", "頭像底色": "아이콘 배경색", "錢包顏色已換成「": "지갑 색상 변경: 「", "頭像底色已換成「": "아이콘 배경색 변경: 「",
     "六角盾": "육각 방패",
     "星軌": "별 궤적",
     "流波": "웨이브",
@@ -10942,6 +10946,24 @@ NOVUS.i18n.register('ko', {
                 0 3px 8px rgba(15, 23, 42, 0.16);
         }
 
+        /* ══ 頭像底色（7 款，gold 用原有樣式） ══ */
+        [data-avc="ruby"] { --avc-bg-d: radial-gradient(120% 120% at 30% 18%, rgba(255,220,224,.32) 0%, rgba(190,18,60,.35) 40%, rgba(28,6,12,.62) 100%); --avc-bg-l: radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(254,205,211,.9) 44%, rgba(190,18,60,.38) 100%); --avc-bd: rgba(251,113,133,.78); --avc-bd-l: rgba(159,18,57,.6); }
+        [data-avc="orange"] { --avc-bg-d: radial-gradient(120% 120% at 30% 18%, rgba(255,237,213,.34) 0%, rgba(234,88,12,.32) 40%, rgba(30,14,4,.6) 100%); --avc-bg-l: radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(254,215,170,.9) 44%, rgba(234,88,12,.38) 100%); --avc-bd: rgba(251,146,60,.8); --avc-bd-l: rgba(154,52,18,.6); }
+        [data-avc="emerald"] { --avc-bg-d: radial-gradient(120% 120% at 30% 18%, rgba(209,250,229,.3) 0%, rgba(5,150,105,.32) 40%, rgba(4,24,18,.62) 100%); --avc-bg-l: radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(167,243,208,.9) 44%, rgba(5,150,105,.38) 100%); --avc-bd: rgba(52,211,153,.75); --avc-bd-l: rgba(6,95,70,.6); }
+        [data-avc="sapphire"] { --avc-bg-d: radial-gradient(120% 120% at 30% 18%, rgba(219,234,254,.32) 0%, rgba(37,99,235,.32) 40%, rgba(8,14,32,.62) 100%); --avc-bg-l: radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(191,219,254,.9) 44%, rgba(37,99,235,.38) 100%); --avc-bd: rgba(96,165,250,.78); --avc-bd-l: rgba(30,64,175,.6); }
+        [data-avc="amethyst"] { --avc-bg-d: radial-gradient(120% 120% at 30% 18%, rgba(243,232,255,.32) 0%, rgba(147,51,234,.32) 40%, rgba(20,8,36,.62) 100%); --avc-bg-l: radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(233,213,255,.9) 44%, rgba(147,51,234,.38) 100%); --avc-bd: rgba(192,132,252,.78); --avc-bd-l: rgba(107,33,168,.6); }
+        [data-avc="graphite"] { --avc-bg-d: radial-gradient(120% 120% at 30% 18%, rgba(226,232,240,.28) 0%, rgba(71,85,105,.4) 40%, rgba(8,10,14,.66) 100%); --avc-bg-l: radial-gradient(120% 120% at 30% 18%, #ffffff 0%, rgba(203,213,225,.9) 44%, rgba(71,85,105,.4) 100%); --avc-bd: rgba(148,163,184,.7); --avc-bd-l: rgba(51,65,85,.6); }
+        html[data-theme] #userToggleBtn[data-avc]:not([data-avc="gold"]),
+        html[data-theme] .user-avatar[data-avc]:not([data-avc="gold"]) { background: var(--avc-bg-d) !important; border-color: var(--avc-bd) !important; }
+        html[data-theme] ion-app:not(.dark-theme) #userToggleBtn[data-avc]:not([data-avc="gold"]),
+        html[data-theme] ion-app:not(.dark-theme) .user-avatar[data-avc]:not([data-avc="gold"]) { background: var(--avc-bg-l) !important; border-color: var(--avc-bd-l) !important; }
+
+        /* 頭像底色選擇行（帳戶頭像彈窗） */
+        .av-color-label { margin: 12px 0 6px; font-size: 12px; font-weight: 600; color: var(--nv-sub); }
+        .av-color-row { display: flex; flex-wrap: wrap; gap: 10px; }
+        .av-color-dot { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid; cursor: pointer; position: relative; transition: transform .16s ease; }
+        .av-color-dot.on { transform: scale(1.12); outline: 2px solid var(--nv-text); outline-offset: 2px; }
+
         .user-name {
             flex: 1;
             min-width: 0;
@@ -12880,6 +12902,38 @@ NOVUS.i18n.register('ko', {
             user-select: none;
         }
 
+                /* ══ 錢包顏色主題 ══ */
+        .wt-label { margin: 12px 0 6px; font-size: 12px; font-weight: 600; color: var(--nv-sub); }
+        .wt-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        .wt-cell { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+        .wt-prev { width: 34px; height: 78px; border-radius: 12px; border: 1.5px solid; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: transform .18s ease, box-shadow .18s ease; box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+        .wt-prev::before { content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .85; }
+        .wt-prev::after { content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .85; }
+        .wt-prev span { writing-mode: vertical-rl; text-orientation: mixed; font-size: 8px; font-weight: 900; letter-spacing: 1.6px; }
+        .wt-cell .wt-name { font-size: 10.5px; color: var(--nv-sub); }
+        .wt-cell.on .wt-prev { transform: translateY(-2px); outline: 2px solid var(--wt-acc, #fcd34d); outline-offset: 2px; }
+        .wt-cell.on .wt-name { color: var(--nv-text); font-weight: 700; }
+        body[data-wallet-theme="emerald"] .hub-dock { background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.02) 45%, rgba(0,0,0,.26) 100%), linear-gradient(135deg, #0f2e22 0%, #17523c 45%, #0a1f17 100%); border-color: rgba(52,211,153,.45); }
+        body[data-wallet-theme="emerald"] .hub-dock::before { background: linear-gradient(180deg, rgba(52,211,153,0), rgba(52,211,153,.55)); }
+        body[data-wallet-theme="emerald"] .hub-dock::after { background: linear-gradient(180deg, rgba(52,211,153,.55), rgba(52,211,153,0)); }
+        body[data-wallet-theme="emerald"] .hub-dock .hub-dock-word { color: #6ee7b7; }
+        body[data-wallet-theme="sapphire"] .hub-dock { background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.02) 45%, rgba(0,0,0,.26) 100%), linear-gradient(135deg, #122036 0%, #1e3a5f 45%, #0b1526 100%); border-color: rgba(96,165,250,.45); }
+        body[data-wallet-theme="sapphire"] .hub-dock::before { background: linear-gradient(180deg, rgba(96,165,250,0), rgba(96,165,250,.55)); }
+        body[data-wallet-theme="sapphire"] .hub-dock::after { background: linear-gradient(180deg, rgba(96,165,250,.55), rgba(96,165,250,0)); }
+        body[data-wallet-theme="sapphire"] .hub-dock .hub-dock-word { color: #93c5fd; }
+        body[data-wallet-theme="rose"] .hub-dock { background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.02) 45%, rgba(0,0,0,.26) 100%), linear-gradient(135deg, #33121e 0%, #5c1f33 45%, #220a12 100%); border-color: rgba(251,113,133,.45); }
+        body[data-wallet-theme="rose"] .hub-dock::before { background: linear-gradient(180deg, rgba(251,113,133,0), rgba(251,113,133,.55)); }
+        body[data-wallet-theme="rose"] .hub-dock::after { background: linear-gradient(180deg, rgba(251,113,133,.55), rgba(251,113,133,0)); }
+        body[data-wallet-theme="rose"] .hub-dock .hub-dock-word { color: #fda4af; }
+        body[data-wallet-theme="amethyst"] .hub-dock { background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.02) 45%, rgba(0,0,0,.26) 100%), linear-gradient(135deg, #241335 0%, #3b1f5c 45%, #150a22 100%); border-color: rgba(192,132,252,.45); }
+        body[data-wallet-theme="amethyst"] .hub-dock::before { background: linear-gradient(180deg, rgba(192,132,252,0), rgba(192,132,252,.55)); }
+        body[data-wallet-theme="amethyst"] .hub-dock::after { background: linear-gradient(180deg, rgba(192,132,252,.55), rgba(192,132,252,0)); }
+        body[data-wallet-theme="amethyst"] .hub-dock .hub-dock-word { color: #d8b4fe; }
+        body[data-wallet-theme="silver"] .hub-dock { background: linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.02) 45%, rgba(0,0,0,.26) 100%), linear-gradient(135deg, #1c2128 0%, #39424e 45%, #10141a 100%); border-color: rgba(148,163,184,.45); }
+        body[data-wallet-theme="silver"] .hub-dock::before { background: linear-gradient(180deg, rgba(148,163,184,0), rgba(148,163,184,.55)); }
+        body[data-wallet-theme="silver"] .hub-dock::after { background: linear-gradient(180deg, rgba(148,163,184,.55), rgba(148,163,184,0)); }
+        body[data-wallet-theme="silver"] .hub-dock .hub-dock-word { color: #e2e8f0; }
+
         #hubFixedArea[data-side="left"] .hub-dock .hub-dock-word {
             transform: rotate(180deg);
         }
@@ -13260,7 +13314,7 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
 
 </head>
 
-<body data-hub-side="right">
+<body data-hub-side="right" data-wallet-theme="gold">
     <!-- ===== NOVUS 開場動畫：遮罩本體（播完自動移除）===== -->
     <div class="ns" id="novusSplash" aria-hidden="true">
         <canvas class="ns-canvas" id="nsCanvas"></canvas>
@@ -15590,9 +15644,11 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                     正在設定：<b id="avatarPickerName">－</b>　·　輕觸下方任何一款即時套用，深淺主題會自動跟色。
                 </p>
                 <div class="av-grid" id="avatarPickerGrid"></div>
+                <div class="av-color-label">頭像底色</div>
+                <div class="av-color-row" id="avatarColorRow"></div>
                 <ion-button expand="block" color="danger"
                     onclick="document.getElementById('avatarPickerModal').dismiss()"
-                    style="--border-radius: 12px; font-weight: bold; font-size: 16px;">
+                    style="--border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 14px;">
                     完成
                 </ion-button>
             </ion-content>
@@ -15753,6 +15809,8 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                             <button type="button" data-side="left" onclick="setHubSide('left')">◀ 收起左邊</button>
                             <button type="button" data-side="right" onclick="setHubSide('right')">收起右邊 ▶</button>
                         </div>
+                        <div class="wt-label">錢包顏色</div>
+                        <div class="wt-grid" id="walletThemeGrid"></div>
                     </div>
                 </div>
 
@@ -20692,6 +20750,44 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                 layoutHubStack();
             }
 
+
+            /* ══ 錢包顏色主題 ══ */
+            const WALLET_THEMES = [
+                { id: 'gold',     name: '香檳金', bg: 'linear-gradient(135deg,#3a2a18 0%,#5c4326 45%,#2b1e10 100%)', bd: 'rgba(212,175,55,.5)',  word: '#fcd34d' },
+                { id: 'emerald',  name: '翡翠綠', bg: 'linear-gradient(135deg,#0f2e22 0%,#17523c 45%,#0a1f17 100%)', bd: 'rgba(52,211,153,.5)',  word: '#6ee7b7' },
+                { id: 'sapphire', name: '寶石藍', bg: 'linear-gradient(135deg,#122036 0%,#1e3a5f 45%,#0b1526 100%)', bd: 'rgba(96,165,250,.5)',  word: '#93c5fd' },
+                { id: 'rose',     name: '玫瑰紅', bg: 'linear-gradient(135deg,#33121e 0%,#5c1f33 45%,#220a12 100%)', bd: 'rgba(251,113,133,.5)', word: '#fda4af' },
+                { id: 'amethyst', name: '紫水晶', bg: 'linear-gradient(135deg,#241335 0%,#3b1f5c 45%,#150a22 100%)', bd: 'rgba(192,132,252,.5)', word: '#d8b4fe' },
+                { id: 'silver',   name: '曜石銀', bg: 'linear-gradient(135deg,#1c2128 0%,#39424e 45%,#10141a 100%)', bd: 'rgba(148,163,184,.55)', word: '#e2e8f0' },
+            ];
+            let walletTheme = localStorage.getItem('app_wallet_theme') || 'gold';
+
+            function setWalletTheme(id) {
+                if (!WALLET_THEMES.some(t => t.id === id)) id = 'gold';
+                walletTheme = id;
+                document.body.setAttribute('data-wallet-theme', id);
+                localStorage.setItem('app_wallet_theme', id);
+                renderWalletThemeGrid();
+            }
+
+            /* 設定彈窗入面嘅打豎細框預覽（WALLET 字跟主題色） */
+            function renderWalletThemeGrid() {
+                const grid = document.getElementById('walletThemeGrid');
+                if (!grid) return;
+                grid.innerHTML = WALLET_THEMES.map(t => `
+                    <div class="wt-cell${t.id === walletTheme ? ' on' : ''}" style="--wt-acc:${t.word}" data-wt="${t.id}">
+                        <div class="wt-prev" style="background:${t.bg};border-color:${t.bd};color:${t.word}"><span style="color:${t.word}">WALLET</span></div>
+                        <div class="wt-name">${t.name}</div>
+                    </div>`).join('');
+                grid.querySelectorAll('.wt-cell').forEach(c => {
+                    c.addEventListener('click', () => {
+                        setWalletTheme(c.dataset.wt);
+                        const t = WALLET_THEMES.find(x => x.id === c.dataset.wt);
+                        showToast(`錢包顏色已換成「${t ? t.name : ''}」`, 'primary');
+                    });
+                });
+            }
+
             // 切換錢包收起的方向（左 / 右），即時生效並記住
             function setHubSide(side) {
                 // 記在 body 上面，設定彈窗的 CSS 會據此自動反邊
@@ -23817,11 +23913,14 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                 const u = activeUser();
                 if (!el || !u) return;
                 el.innerHTML = userAvatarInner(u);
+                const btn = document.getElementById('userToggleBtn');
+                if (btn) btn.setAttribute('data-avc', (u && u.avatarColor) || 'gold');
             }
 
             function openUserModal() {
                 renderUserList();
                 setHubSide(hubSide);
+                renderWalletThemeGrid();
                 renderCurrencySelect();
                 updateCurrencyPreview();
                 renderLangSelect();
@@ -23844,7 +23943,7 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                     const isActive = (u.id === activeUserId);
                     return `
                         <div class="user-row">
-                            <div class="user-avatar">${userAvatarInner(u)}</div>
+                            <div class="user-avatar" data-avc="${escapeHtml(u.avatarColor || 'gold')}">${userAvatarInner(u)}</div>
                             <div class="user-name">
                                 ${escapeHtml(u.name)}
                                 ${isActive ? '<span class="user-active-tag">使用中</span>' : ''}
@@ -23916,7 +24015,8 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                     `<option value="${c.code}">${c.code} · ${c.name}（${c.symbol.trim()}）</option>`).join('');
                 sel.value = u ? (u.baseCurrency || NOVUS.currency.base) : NOVUS.currency.base;
                 // 已經有資料的帳戶不讓改記帳貨幣，避免既有金額的意義被改掉
-                const locked = !!(u && hasAnyRecords());
+                // （鎖定要查返被編輯嗰個帳戶，唔係淨係睇使用中帳戶）
+                const locked = !!(u && (u.id === activeUserId ? hasAnyRecords() : userHasAnyRecords(u.id)));
                 sel.disabled = locked;
                 document.getElementById('ueCurrencyLock').style.display = locked ? 'block' : 'none';
 
@@ -23926,6 +24026,15 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
             // 目前帳戶是否已經記過任何一筆資料
             function hasAnyRecords() {
                 return (records.length + savingsRecords.length + loanRecords.length) > 0;
+            }
+
+            /* 指定帳戶（唔一定係使用中嗰個）有冇任何記錄 —— 直接查佢名下嘅儲存鍵 */
+            function userHasAnyRecords(id) {
+                const p = 'u_' + id + '::';
+                return ['app_expense_records', 'app_savings_records', 'app_loan_records'].some(k => {
+                    try { return (JSON.parse(localStorage.getItem(p + k) || '[]') || []).length > 0; }
+                    catch (e) { return false; }
+                });
             }
 
             function saveUserEditModal() {
@@ -23947,9 +24056,19 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                     if (!u) return;
                     u.name = rawName.slice(0, 40);
                     u.cardName = cardName;
-                    if (!document.getElementById('ueCurrency').disabled) u.baseCurrency = cur;
+                    const curLocked = document.getElementById('ueCurrency').disabled;
+                    const baseChanged = !curLocked && cur !== (u.baseCurrency || NOVUS.currency.base);
+                    if (!curLocked) u.baseCurrency = cur;
                     saveUserProfiles();
-                    if (u.id === activeUserId) applyUserBaseCurrency();
+                    /* 改使用中帳戶嘅記帳貨幣要行足成套路：顯示貨幣跟住轉、
+                       舊匯率表作廢重攞、頁面金額同標籤即時重繪 ——
+                       淨係 setBase 的話畫面乜都冇變，即係「改咗冇效」。 */
+                    if (u.id === activeUserId && baseChanged) {
+                        commitBaseCurrency(cur);
+                        renderCurrencySelect();
+                        updateCurrencyPreview();
+                        renderRegionSelect();
+                    }
                     showToast('帳戶資料已更新', 'primary');
                 } else {
                     const id = 'u' + Date.now();
@@ -25057,6 +25176,22 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                 }
             ];
 
+
+            /* 頭像底色 7 款（gold = 原有黑金） */
+            const AVATAR_COLORS = [
+                { id: 'gold',     name: '香檳金', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(255,244,214,.5) 0%, rgba(212,175,55,.55) 45%, rgba(15,23,42,.85) 100%)', bd: 'rgba(212,175,55,.8)' },
+                { id: 'ruby',     name: '寶石紅', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(255,220,224,.5) 0%, rgba(190,18,60,.6) 45%, rgba(28,6,12,.9) 100%)',   bd: 'rgba(251,113,133,.8)' },
+                { id: 'orange',   name: '蜜桃橙', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(255,237,213,.5) 0%, rgba(234,88,12,.6) 45%, rgba(30,14,4,.9) 100%)',    bd: 'rgba(251,146,60,.8)' },
+                { id: 'emerald',  name: '翡翠綠', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(209,250,229,.5) 0%, rgba(5,150,105,.6) 45%, rgba(4,24,18,.9) 100%)',   bd: 'rgba(52,211,153,.8)' },
+                { id: 'sapphire', name: '寶石藍', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(219,234,254,.5) 0%, rgba(37,99,235,.6) 45%, rgba(8,14,32,.9) 100%)',   bd: 'rgba(96,165,250,.8)' },
+                { id: 'amethyst', name: '紫水晶', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(243,232,255,.5) 0%, rgba(147,51,234,.6) 45%, rgba(20,8,36,.9) 100%)',  bd: 'rgba(192,132,252,.8)' },
+                { id: 'graphite', name: '曜石黑', dot: 'radial-gradient(120% 120% at 30% 18%, rgba(226,232,240,.4) 0%, rgba(71,85,105,.65) 45%, rgba(8,10,14,.95) 100%)', bd: 'rgba(148,163,184,.8)' },
+            ];
+
+            function avatarColorById(id) {
+                return AVATAR_COLORS.find(c => c.id === id) || AVATAR_COLORS[0];
+            }
+
             function avatarStyleById(id) {
                 return AVATAR_STYLES.find(x => x.id === id) || AVATAR_STYLES[0];
             }
@@ -25097,6 +25232,31 @@ html[data-theme-base="light"] #themePick button.on .tp-name {
                         ${buildAvatarSvg(st.id)}
                         <span>${st.name}</span>
                     </div>`).join('');
+
+                renderAvatarColorRow(u);
+            }
+
+            /* 頭像底色選擇行 */
+            function renderAvatarColorRow(u) {
+                const row = document.getElementById('avatarColorRow');
+                if (!row) return;
+                u = u || userProfiles.find(x => x.id === avatarEditingUserId) || activeUser();
+                const curC = (u && u.avatarColor) || 'gold';
+                row.innerHTML = AVATAR_COLORS.map(c => `
+                    <div class="av-color-dot ${c.id === curC ? 'on' : ''}" data-color="${c.id}"
+                         title="${c.name}" style="background:${c.dot};border-color:${c.bd}"
+                         onclick="pickAvatarColor(this.dataset.color)"></div>`).join('');
+            }
+
+            function pickAvatarColor(colorId) {
+                const u = userProfiles.find(x => x.id === avatarEditingUserId);
+                if (!u) return;
+                u.avatarColor = avatarColorById(colorId).id;
+                saveUserProfiles();
+                renderAvatarPicker();
+                renderUserList();
+                refreshUserAvatar();
+                showToast(`頭像底色已換成「${avatarColorById(colorId).name}」`, 'success');
             }
 
             function pickAvatarStyle(styleId) {
@@ -25813,6 +25973,7 @@ function initHomeFan() {
             window.addEventListener('DOMContentLoaded', () => {
                 buildHubStack();
                 document.body.setAttribute('data-hub-side', hubSide === 'left' ? 'left' : 'right');
+                document.body.setAttribute('data-wallet-theme', walletTheme);
                 refreshUserAvatar();
                 refreshCardHolderName();
                 refreshCurrencySymbols();
@@ -26215,6 +26376,29 @@ function initHomeFan() {
     color: var(--nv-ink-3, #94a3b8); font-size: 13px; cursor: pointer; padding: 6px;
 }
 #nvOnboard .nv-ob-dots { text-align: center; margin-top: 14px; font-size: 11px; letter-spacing: 6px; color: var(--nv-ink-3, #94a3b8); }
+#nvOnboard .nv-ob-avgrid { display: flex; flex-wrap: wrap; gap: 8px; }
+#nvOnboard .nv-ob-avcell {
+    width: 46px; height: 46px; border-radius: 12px; cursor: pointer;
+    border: 1.5px solid var(--nv-line, rgba(255,255,255,0.12));
+    background: var(--nv-surface-3, #0d131a);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s ease, border-color .15s ease;
+}
+#nvOnboard .nv-ob-avcell svg { width: 34px; height: 34px; }
+#nvOnboard .nv-ob-avcell.on {
+    border-color: var(--nv-gold1, #fbbf24);
+    transform: scale(1.06);
+    box-shadow: 0 0 0 3px rgba(251,191,36,0.22);
+}
+#nvOnboard .nv-ob-avcolors { display: flex; flex-wrap: wrap; gap: 9px; }
+#nvOnboard .nv-ob-avdot {
+    width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid; cursor: pointer;
+    transition: transform .15s ease;
+}
+#nvOnboard .nv-ob-avdot.on {
+    transform: scale(1.14);
+    box-shadow: 0 0 0 2.5px var(--nv-ink, #fff);
+}
 #nvOnboard .nv-ob-dots b { color: var(--nv-gold1, #fbbf24); }
 </style>
 <script id="novus-onboarding">
@@ -26240,7 +26424,7 @@ function initHomeFan() {
         } catch (e) { return false; }
     }
 
-    var step = 1, region = null;
+    var step = 1, region = null, avStyle = 'tech', avColor = 'gold';
 
     function regionGrid() {
         return Object.keys(NOVUS.regions).map(function (code) {
@@ -26300,12 +26484,50 @@ function initHomeFan() {
                 '<label class="nv-ob-label">記帳貨幣</label>' +
                 '<select class="nv-ob-input" id="nvObCur">' + currencyOptions(preCur) + '</select>' +
                 '<div class="nv-ob-note">所有金額都會用呢種貨幣儲存，開始記帳後唔可以更改。</div>' +
+                '<label class="nv-ob-label">頭像</label>' +
+                '<div class="nv-ob-avgrid" id="nvObAvGrid"></div>' +
+                '<label class="nv-ob-label">頭像底色</label>' +
+                '<div class="nv-ob-avcolors" id="nvObAvColors"></div>' +
                 '<button type="button" class="nv-ob-btn" id="nvObDone">完成並開始使用</button>' +
                 '<button type="button" class="nv-ob-back" id="nvObBack">上一步</button>' +
                 dots + '</div>';
             document.getElementById('nvObBack').addEventListener('click', function () { step = 1; render(); });
             document.getElementById('nvObDone').addEventListener('click', finish);
+            renderObAvatarPickers();
             setTimeout(function () { var n = document.getElementById('nvObName'); if (n) n.focus(); }, 300);
+        }
+    }
+
+
+    /* 第二步：頭像圖案＋底色選擇 */
+    function renderObAvatarPickers() {
+        var grid = document.getElementById('nvObAvGrid');
+        if (grid) {
+            grid.innerHTML = AVATAR_STYLES.map(function (st) {
+                return '<div class="nv-ob-avcell' + (st.id === avStyle ? ' on' : '') + '" data-style="' + st.id + '">' +
+                    buildAvatarSvg(st.id) + '</div>';
+            }).join('');
+            grid.querySelectorAll('.nv-ob-avcell').forEach(function (c) {
+                c.addEventListener('click', function () {
+                    avStyle = c.getAttribute('data-style');
+                    grid.querySelectorAll('.nv-ob-avcell').forEach(function (x) { x.classList.remove('on'); });
+                    c.classList.add('on');
+                });
+            });
+        }
+        var row = document.getElementById('nvObAvColors');
+        if (row) {
+            row.innerHTML = AVATAR_COLORS.map(function (c) {
+                return '<div class="nv-ob-avdot' + (c.id === avColor ? ' on' : '') + '" data-color="' + c.id +
+                    '" title="' + c.name + '" style="background:' + c.dot + ';border-color:' + c.bd + '"></div>';
+            }).join('');
+            row.querySelectorAll('.nv-ob-avdot').forEach(function (d) {
+                d.addEventListener('click', function () {
+                    avColor = d.getAttribute('data-color');
+                    row.querySelectorAll('.nv-ob-avdot').forEach(function (x) { x.classList.remove('on'); });
+                    d.classList.add('on');
+                });
+            });
         }
     }
 
@@ -26330,6 +26552,9 @@ function initHomeFan() {
         u.name = name.slice(0, 40);
         u.cardName = cardName;
         u.baseCurrency = cur;
+        u.avatarStyle = avStyle;
+        u.avatarColor = avColor;
+        u.icon = '';
         saveUserProfiles();
         applyUserBaseCurrency();
 
